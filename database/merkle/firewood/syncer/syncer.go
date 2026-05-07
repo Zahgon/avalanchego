@@ -34,6 +34,7 @@ type Config struct {
 	SimultaneousWorkLimit int
 	Log                   logging.Logger
 	StateSyncNodes        []ids.NodeID
+	PeerTracker           *p2p.PeerTracker
 	Registerer            prometheus.Registerer
 }
 
@@ -65,6 +66,7 @@ func newWithDB(config Config, db sync.DB[*RangeProof, struct{}], targetRoot ids.
 			EmptyRoot:             ids.ID(types.EmptyRootHash),
 			RangeProofClient:      rangeProofClient,
 			ChangeProofClient:     changeProofClient,
+			PeerTracker:           config.PeerTracker,
 			SimultaneousWorkLimit: config.SimultaneousWorkLimit,
 			Log:                   config.Log,
 			TargetRoot:            targetRoot,

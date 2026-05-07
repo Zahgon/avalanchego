@@ -411,17 +411,19 @@ func (c *client) newSyncerRegistry(summary message.Syncable) (*SyncerRegistry, e
 		if err != nil {
 			return nil, fmt.Errorf("failed to create firewood syncer metrics registerer: %w", err)
 		}
+		network := c.config.Client.Network()
 		stateSyncer, err = evmstate.NewFirewoodSyncer(
 			syncer.Config{
-				Log:            c.config.SnowCtx.Log,
-				Registerer:     registerer,
-				StateSyncNodes: c.config.Client.StateSyncNodes(),
+				Log:             c.config.SnowCtx.Log,
+				Registerer:      registerer,
+				StateSyncNodes:  c.config.Client.StateSyncNodes(),
+				ResponseTracker: network,
 			},
 			tdb.Firewood,
 			summary.GetBlockRoot(),
 			codeQueue,
-			c.config.Client.AddClient(p2p.FirewoodRangeProofHandlerID),
-			c.config.Client.AddClient(p2p.FirewoodChangeProofHandlerID),
+			network.P2PNetwork().NewClient(p2p.FirewoodRangeProofHandlerID, network),
+			network.P2PNetwork().NewClient(p2p.FirewoodChangeProofHandlerID, network),
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create firewood syncer: %w", err)

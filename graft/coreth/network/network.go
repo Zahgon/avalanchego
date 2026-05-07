@@ -180,6 +180,7 @@ func (n *network) Sample(_ context.Context, limit int) []ids.NodeID {
 	if !ok {
 		return nil
 	}
+	n.peers.RegisterRequest(node)
 	return []ids.NodeID{node}
 }
 

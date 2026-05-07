@@ -144,15 +144,18 @@ type Syncer[R any, C any] struct {
 
 // TODO remove non-config values out of this struct
 type Config[R any, C any] struct {
-	RangeProofMarshaler   Marshaler[R]
-	ChangeProofMarshaler  Marshaler[C]
-	RangeProofClient      *p2p.Client
-	ChangeProofClient     *p2p.Client
+	// Required fields:
+	RangeProofMarshaler  Marshaler[R]
+	ChangeProofMarshaler Marshaler[C]
+	RangeProofClient     *p2p.Client
+	ChangeProofClient    *p2p.Client
+	TargetRoot           ids.ID
+	EmptyRoot            ids.ID // defaults to [ids.Empty] if not set
+
 	SimultaneousWorkLimit int
 	Log                   logging.Logger
-	TargetRoot            ids.ID
-	EmptyRoot             ids.ID
 	StateSyncNodes        []ids.NodeID
+	PeerTracker           *p2p.PeerTracker
 }
 
 func NewSyncer[R any, C any](
@@ -413,15 +416,16 @@ func (s *Syncer[_, _]) requestChangeProof(ctx context.Context, work *workItem) {
 		return
 	}
 
-	onResponse := func(ctx context.Context, _ ids.NodeID, responseBytes []byte, err error) {
+	onResponse := func(ctx context.Context, _ ids.NodeID, responseBytes []byte, appErr error) bool {
 		defer s.finishWorkItem()
 
-		if err := s.handleChangeProofResponse(ctx, targetRootID, work, request, responseBytes, err); err != nil {
+		if err := s.handleChangeProofResponse(ctx, targetRootID, work, request, responseBytes, appErr); err != nil {
 			// TODO log responses
 			s.config.Log.Debug("dropping response", zap.Error(err), zap.Stringer("request", request))
 			s.retryWork(work)
-			return
+			return false
 		}
+		return true
 	}
 
 	if err := s.sendRequest(ctx, s.config.ChangeProofClient, requestBytes, onResponse); err != nil {
@@ -465,15 +469,16 @@ func (s *Syncer[_, _]) requestRangeProof(ctx context.Context, work *workItem) {
 		return
 	}
 
-	onResponse := func(ctx context.Context, _ ids.NodeID, responseBytes []byte, appErr error) {
+	onResponse := func(ctx context.Context, _ ids.NodeID, responseBytes []byte, appErr error) bool {
 		defer s.finishWorkItem()
 
 		if err := s.handleRangeProofResponse(ctx, targetRootID, work, request, responseBytes, appErr); err != nil {
 			// TODO log responses
 			s.config.Log.Debug("dropping response", zap.Error(err), zap.Stringer("request", request))
 			s.retryWork(work)
-			return
+			return false
 		}
+		return true
 	}
 
 	if err := s.sendRequest(ctx, s.config.RangeProofClient, requestBytes, onResponse); err != nil {
@@ -485,22 +490,55 @@ func (s *Syncer[_, _]) requestRangeProof(ctx context.Context, work *workItem) {
 	s.metrics.RequestMade()
 }
 
+type appResponseCallbackWithHandling func(ctx context.Context, nodeID ids.NodeID, responseBytes []byte, err error) bool
+
+func (c appResponseCallbackWithHandling) toAppResponseCallback() p2p.AppResponseCallback {
+	return func(ctx context.Context, nodeID ids.NodeID, responseBytes []byte, err error) {
+		_ = c(ctx, nodeID, responseBytes, err)
+	}
+}
+
 func (s *Syncer[_, _]) sendRequest(
 	ctx context.Context,
 	client *p2p.Client,
 	requestBytes []byte,
-	onResponse p2p.AppResponseCallback,
+	onResponse appResponseCallbackWithHandling,
 ) error {
-	if len(s.config.StateSyncNodes) == 0 {
-		return client.AppRequestAny(ctx, requestBytes, onResponse)
+	switch {
+	case len(s.config.StateSyncNodes) > 0:
+		// Get the next nodeID to query using the [nodeIdx] offset.
+		// If we're out of nodes, loop back to 0.
+		// We do this try to query a different node each time if possible.
+		// This selection makes no difference on the bandwidth tracking for other consumers.
+		nodeIdx := atomic.AddUint32(&s.stateSyncNodeIdx, 1)
+		nodeID := s.config.StateSyncNodes[nodeIdx%uint32(len(s.config.StateSyncNodes))]
+		return client.AppRequest(ctx, set.Of(nodeID), requestBytes, onResponse.toAppResponseCallback())
+	case s.config.PeerTracker != nil:
+		// TODO(alarso16): This logic should be pushed to the [p2p.Client] implementation.
+		return sendRequestWithPeerTracker(client, s.config.PeerTracker, ctx, requestBytes, onResponse)
+	default:
+		// Default to built-in selection from the [p2p.Nodeampler].
+		return client.AppRequestAny(ctx, requestBytes, onResponse.toAppResponseCallback())
 	}
+}
 
-	// Get the next nodeID to query using the [nodeIdx] offset.
-	// If we're out of nodes, loop back to 0.
-	// We do this try to query a different node each time if possible.
-	nodeIdx := atomic.AddUint32(&s.stateSyncNodeIdx, 1)
-	nodeID := s.config.StateSyncNodes[nodeIdx%uint32(len(s.config.StateSyncNodes))]
-	return client.AppRequest(ctx, set.Of(nodeID), requestBytes, onResponse)
+func sendRequestWithPeerTracker(c *p2p.Client, pt *p2p.PeerTracker, ctx context.Context, requestBytes []byte, onResponse appResponseCallbackWithHandling) error {
+	t := time.Now()
+	nodeID, ok := pt.SelectPeer()
+	if !ok {
+		return errors.New("no peers available")
+	}
+	pt.RegisterRequest(nodeID)
+	return c.AppRequest(ctx, set.Of(nodeID), requestBytes, func(ctx context.Context, nodeID ids.NodeID, responseBytes []byte, appErr error) {
+		if handled := onResponse(ctx, nodeID, responseBytes, appErr); !handled || appErr != nil {
+			pt.RegisterFailure(nodeID)
+			return
+		}
+
+		const epsilon = 1e-9 // avoid division by zero
+		bandwidth := float64(len(responseBytes)) / float64(time.Since(t).Seconds()+epsilon)
+		pt.RegisterResponse(nodeID, bandwidth)
+	})
 }
 
 func (s *Syncer[_, _]) retryWork(work *workItem) {

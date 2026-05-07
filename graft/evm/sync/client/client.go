@@ -89,8 +89,7 @@ type Client interface {
 	// GetCode synchronously retrieves code associated with the given hashes
 	GetCode(ctx context.Context, hashes []common.Hash) ([][]byte, error)
 
-	// AddClient creates a separate client on the underlying [p2p.Network].
-	AddClient(handlerID uint64) *p2p.Client
+	Network() Network
 
 	// StateSyncNodes returns the list of nodes provided via config.
 	StateSyncNodes() []ids.NodeID
@@ -133,8 +132,8 @@ func New(config *Config) *client {
 	}
 }
 
-func (c *client) AddClient(handlerID uint64) *p2p.Client {
-	return c.network.P2PNetwork().NewClient(handlerID, c.network)
+func (c *client) Network() Network {
+	return c.network
 }
 
 func (c *client) StateSyncNodes() []ids.NodeID {
