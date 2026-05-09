@@ -11,12 +11,12 @@ import (
 
 // NewGetRangeProofHandler returns a handler that services GetRangeProof requests
 // using the provided Firewood database for p2p connections.
-func NewGetRangeProofHandler(db *ffi.Database) *sync.GetRangeProofHandler[*RangeProof, struct{}] {
+func NewGetRangeProofHandler(db *ffi.Database) *sync.GetRangeProofHandler[*RangeProof, *ChangeProof] {
 	return sync.NewGetRangeProofHandler(&database{db: db}, rangeProofMarshaler{})
 }
 
 // NewGetChangeProofHandler returns a handler that services GetChangeProof requests
 // using the provided Firewood database for p2p connections.
-func NewGetChangeProofHandler(db *ffi.Database) *sync.GetChangeProofHandler[*RangeProof, struct{}] {
+func NewGetChangeProofHandler(db *ffi.Database) *sync.GetChangeProofHandler[*RangeProof, *ChangeProof] {
 	return sync.NewGetChangeProofHandler(&database{db: db}, rangeProofMarshaler{}, changeProofMarshaler{})
 }
