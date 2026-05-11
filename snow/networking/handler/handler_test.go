@@ -446,6 +446,84 @@ func TestHandlerDispatchInternal(t *testing.T) {
 	}
 }
 
+// Test that a gossipFrequency of 0 disables the periodic gossip ticker.
+//
+// Instead of waiting a fixed duration, we pump a VM notification through the
+// chan dispatcher and wait for the engine to receive it. That proves the
+// dispatcher goroutine is alive and actively select-ing; if the gossip arm
+// were going to fire, GossipF would have failed the test before the
+// notification completed.
+func TestHandlerGossipFrequencyZeroDisablesGossip(t *testing.T) {
+	require := require.New(t)
+
+	snowCtx := snowtest.Context(t, snowtest.CChainID)
+	ctx := snowtest.ConsensusContext(snowCtx)
+	vdrs := validators.NewManager()
+	require.NoError(vdrs.AddStaker(ctx.SubnetID, ids.GenerateTestNodeID(), nil, ids.Empty, 1))
+
+	resourceTracker, err := tracker.NewResourceTracker(
+		prometheus.NewRegistry(),
+		resource.NoUsage,
+		meter.ContinuousFactory{},
+		time.Second,
+	)
+	require.NoError(err)
+
+	peerTracker, err := p2p.NewPeerTracker(logging.NoLog{}, "", prometheus.NewRegistry(), nil, version.Current)
+	require.NoError(err)
+
+	subscription, messages := createSubscriber()
+
+	handler, err := New(
+		ctx,
+		&block.ChangeNotifier{},
+		subscription,
+		vdrs,
+		0, // disables the gossip ticker
+		testThreadPoolSize,
+		resourceTracker,
+		subnets.New(ctx.NodeID, subnets.Config{}),
+		commontracker.NewPeers(),
+		peerTracker,
+		prometheus.NewRegistry(),
+		func() {},
+	)
+	require.NoError(err)
+
+	bootstrapper := &enginetest.Bootstrapper{Engine: enginetest.Engine{T: t}}
+	bootstrapper.Default(false)
+	bootstrapper.StartF = func(context.Context, uint32) error { return nil }
+
+	notified := make(chan struct{})
+	engine := &enginetest.Engine{T: t}
+	engine.Default(false)
+	engine.ContextF = func() *snow.ConsensusContext { return ctx }
+	engine.NotifyF = func(context.Context, common.Message) error {
+		close(notified)
+		return nil
+	}
+	engine.GossipF = func(context.Context) error {
+		t.Fatal("engine.Gossip must not be called when gossipFrequency is 0")
+		return nil
+	}
+
+	handler.SetEngineManager(&EngineManager{
+		Chain: &Engine{Bootstrapper: bootstrapper, Consensus: engine},
+	})
+	ctx.State.Set(snow.EngineState{
+		Type:  p2ppb.EngineType_ENGINE_TYPE_CHAIN,
+		State: snow.NormalOp,
+	})
+
+	handler.Start(t.Context(), false)
+	messages <- common.PendingTxs
+	select {
+	case <-notified:
+	case <-time.After(time.Minute):
+		t.Fatal("handler did not dispatch the VM notification")
+	}
+}
+
 // Tests that messages are routed to the correct engine type
 func TestDynamicEngineTypeDispatch(t *testing.T) {
 	tests := []struct {
