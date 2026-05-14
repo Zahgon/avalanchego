@@ -12,6 +12,7 @@ go_library(
         "codec.go",
         "export.go",
         "fx.go",
+        "gossip.go",
         "import.go",
         "tx.go",
     ],
