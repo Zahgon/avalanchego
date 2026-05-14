@@ -22,14 +22,12 @@ import (
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/state"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
-	"github.com/ava-labs/avalanchego/vms/saevm/sae/rpc"
 )
 
 type service struct {
-	ctx     *snow.Context
-	backend rpc.GethBackends
-	txpool  *txpool.Txpool
-	state   *state.State
+	ctx    *snow.Context
+	txpool *txpool.Txpool
+	state  *state.State
 
 	chainAlias string
 	hrp        string
@@ -37,7 +35,6 @@ type service struct {
 
 func newService(
 	ctx *snow.Context,
-	backend rpc.GethBackends,
 	txpool *txpool.Txpool,
 	state *state.State,
 ) (*service, error) {
@@ -46,10 +43,9 @@ func newService(
 		return nil, err
 	}
 	return &service{
-		ctx:     ctx,
-		backend: backend,
-		txpool:  txpool,
-		state:   state,
+		ctx:    ctx,
+		txpool: txpool,
+		state:  state,
 
 		chainAlias: chainAlias,
 		hrp:        constants.GetHRP(ctx.NetworkID),

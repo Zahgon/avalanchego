@@ -33,10 +33,10 @@ import (
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
-	config  sae.Config
-	ctx     *snow.Context
-	state   *state.State
-	mempool *txpool.Txpool
+	config sae.Config
+	ctx    *snow.Context
+	state  *state.State
+	txpool *txpool.Txpool
 
 	// onClose are executed in reverse order during [SinceGenesis.Shutdown].
 	// If a resource depends on another resource, it MUST be added AFTER the
@@ -63,8 +63,6 @@ func (v *VM) Initialize(
 	db := rawdb.NewDatabase(database.New(prefixdb.NewNested(ethDBPrefix, avaDB)))
 	tdb := triedb.NewDatabase(db, v.config.DBConfig.TrieDBConfig)
 
-	snowCtx.Log.Info("parsing genesis")
-
 	// TODO(StephenButtolph): Replace this with Coreth's genesis format.
 	genesis := new(core.Genesis)
 	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
@@ -74,8 +72,6 @@ func (v *VM) Initialize(
 	if err != nil {
 		return fmt.Errorf("core.SetupGenesisBlock(...): %v", err)
 	}
-
-	snowCtx.Log.Info("constructing cross-chain state")
 
 	cchainState, err := state.New(snowCtx, avaDB)
 	if err != nil {
@@ -89,9 +85,6 @@ func (v *VM) Initialize(
 		cchainState,
 		pendingTxs,
 	)
-
-	snowCtx.Log.Info("constructing the sae VM")
-
 	inner, err := sae.NewVM(ctx, hooks, v.config, snowCtx, config, db, genesis.ToBlock(), appSender)
 	if err != nil {
 		return err
@@ -100,17 +93,15 @@ func (v *VM) Initialize(
 	v.ctx = snowCtx
 	v.state = cchainState
 
-	v.mempool, err = txpool.New(snowCtx, config, pendingTxs, inner, 1024)
+	const maxTxPoolSize = 1024
+	v.txpool, err = txpool.New(snowCtx, config, pendingTxs, inner, maxTxPoolSize)
 	if err != nil {
 		return fmt.Errorf("creating txpool: %w", err)
 	}
 	v.onClose = append(v.onClose, func() error {
-		v.mempool.Close()
+		v.txpool.Close()
 		return nil
 	})
-
-	snowCtx.Log.Info("initialized saevm")
-
 	return nil
 }
 
@@ -125,7 +116,7 @@ func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error
 		return nil, err
 	}
 
-	service, err := newService(v.ctx, v.GethRPCBackends(), v.mempool, v.state)
+	service, err := newService(v.ctx, v.txpool, v.state)
 	if err != nil {
 		return nil, fmt.Errorf("creating avax service: %w", err)
 	}
@@ -142,10 +133,11 @@ func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error
 // produce an event.
 func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 	// TODO(StephenButtolph): Do not busy loop with [common.PendingTxs]. The
-	// mempools are cleared after block execution, so we may still have
-	// transactions in the mempool while blocks containing those transactions
-	// are processing.
-	// TODO(StephenButtolph): Wait until we are allowed to build a block.
+	// txpools are cleared after block execution, so we may still have
+	// transactions in the txpool while blocks containing those transactions are
+	// processing.
+
+	// TODO(StephenButtolph): Wait until the minimum block delay has passed.
 
 	ctx, cancel := context.WithCancel(ctx)
 	type result struct {
@@ -160,7 +152,7 @@ func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 	}()
 	go func() {
 		defer cancel()
-		err := v.mempool.AwaitTxs(ctx)
+		err := v.txpool.AwaitTxs(ctx)
 		results <- result{common.PendingTxs, err}
 	}()
 
