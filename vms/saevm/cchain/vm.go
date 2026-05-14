@@ -65,6 +65,7 @@ func (v *VM) Initialize(
 
 	snowCtx.Log.Info("parsing genesis")
 
+	// TODO(StephenButtolph): Replace this with Coreth's genesis format.
 	genesis := new(core.Genesis)
 	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
 		return fmt.Errorf("json.Unmarshal(%T): %v", genesis, err)
