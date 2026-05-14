@@ -13,6 +13,7 @@ import (
 
 	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/rawdb"
+	"github.com/ava-labs/libevm/core/txpool/legacypool"
 	"github.com/ava-labs/libevm/triedb"
 
 	"github.com/ava-labs/avalanchego/database/prefixdb"
@@ -23,6 +24,7 @@ import (
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/state"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
 	"github.com/ava-labs/avalanchego/vms/saevm/sae"
+	"github.com/ava-labs/avalanchego/vms/saevm/saedb"
 
 	avadb "github.com/ava-labs/avalanchego/database"
 )
@@ -33,7 +35,6 @@ import (
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
-	config sae.Config
 	ctx    *snow.Context
 	state  *state.State
 	txpool *txpool.Txpool
@@ -56,45 +57,59 @@ func (v *VM) Initialize(
 	configBytes []byte,
 	_ []*common.Fx,
 	appSender common.AppSender,
-) error {
+) (retErr error) {
+	defer func() {
+		if retErr != nil {
+			retErr = errors.Join(retErr, v.Shutdown(ctx))
+		}
+	}()
+
+	v.ctx = snowCtx
+
 	// [prefixdb.NewNested] is used because coreth used to be run as a plugin.
 	// This meant that the database's prefix was not compacted, because the
 	// provided database was wrapped by the rpcchainvm.
-	db := rawdb.NewDatabase(database.New(prefixdb.NewNested(ethDBPrefix, avaDB)))
-	tdb := triedb.NewDatabase(db, v.config.DBConfig.TrieDBConfig)
+	ethDB := rawdb.NewDatabase(database.New(prefixdb.NewNested(ethDBPrefix, avaDB)))
+	trieDBConfig := triedb.HashDefaults
+	trieDB := triedb.NewDatabase(ethDB, trieDBConfig)
 
 	// TODO(StephenButtolph): Replace this with Coreth's genesis format.
 	genesis := new(core.Genesis)
 	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
 		return fmt.Errorf("json.Unmarshal(%T): %v", genesis, err)
 	}
-	config, _, err := core.SetupGenesisBlock(db, tdb, genesis)
+	chainConfig, _, err := core.SetupGenesisBlock(ethDB, trieDB, genesis)
 	if err != nil {
 		return fmt.Errorf("core.SetupGenesisBlock(...): %v", err)
 	}
 
-	cchainState, err := state.New(snowCtx, avaDB)
+	v.state, err = state.New(snowCtx, avaDB)
 	if err != nil {
 		return fmt.Errorf("creating cchain state: %w", err)
 	}
-	v.onClose = append(v.onClose, cchainState.Close)
+	v.onClose = append(v.onClose, v.state.Close)
 
 	pendingTxs := txpool.NewPending()
 	hooks := newHooks(
 		snowCtx,
-		cchainState,
+		v.state,
 		pendingTxs,
 	)
-	inner, err := sae.NewVM(ctx, hooks, v.config, snowCtx, config, db, genesis.ToBlock(), appSender)
-	if err != nil {
-		return err
+	mempoolConfig := legacypool.DefaultConfig
+	mempoolConfig.NoLocals = true
+	saeConfig := sae.Config{
+		MempoolConfig: mempoolConfig,
+		DBConfig: saedb.Config{
+			TrieDBConfig: trieDBConfig,
+		},
 	}
-	v.VM = inner
-	v.ctx = snowCtx
-	v.state = cchainState
+	v.VM, err = sae.NewVM(ctx, hooks, saeConfig, snowCtx, chainConfig, ethDB, genesis.ToBlock(), appSender)
+	if err != nil {
+		return fmt.Errorf("creating SAE VM: %w", err)
+	}
 
 	const maxTxPoolSize = 1024
-	v.txpool, err = txpool.New(snowCtx, config, pendingTxs, inner, maxTxPoolSize)
+	v.txpool, err = txpool.New(snowCtx, chainConfig, pendingTxs, v.VM, maxTxPoolSize)
 	if err != nil {
 		return fmt.Errorf("creating txpool: %w", err)
 	}
@@ -113,7 +128,7 @@ const (
 func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error) {
 	m, err := v.VM.CreateHandlers(ctx)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("creating SAE handlers: %w", err)
 	}
 
 	service, err := newService(v.ctx, v.txpool, v.state)
