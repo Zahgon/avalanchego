@@ -10,21 +10,17 @@ import (
 	"fmt"
 	"net/http"
 	"slices"
-	"time"
 
 	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/triedb"
 
 	"github.com/ava-labs/avalanchego/database/prefixdb"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
 	"github.com/ava-labs/avalanchego/graft/evm/utils/rpc"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/vms/evm/database"
-	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/state"
-	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
 	"github.com/ava-labs/avalanchego/vms/saevm/sae"
 
@@ -37,6 +33,7 @@ import (
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
+	config  sae.Config
 	ctx     *snow.Context
 	state   *state.State
 	mempool *txpool.Txpool
@@ -140,11 +137,6 @@ func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error
 	return m, nil
 }
 
-// Prevent busy looping when the chain is more advanced than the mempool.
-const waitForEventDelay = 100 * time.Millisecond
-
-var errNoPreference = errors.New("no preferred block")
-
 // WaitForEvent waits for a transaction to be in the txpool or for the SAE VM to
 // produce an event.
 func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
@@ -173,20 +165,6 @@ func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 
 	r := <-results
 	return r.msg, r.err
-}
-
-func (v *VM) RejectBlock(ctx context.Context, b *blocks.Block) error {
-	// If the block is rejected, the transactions might get dropped from the
-	// network. If the transactions are still valid, it is a better UX to add
-	// them into our mempool.
-	txs, err := tx.ParseSlice(customtypes.BlockExtData(b.EthBlock()))
-	if err != nil {
-		return fmt.Errorf("parsing txs: %w", err)
-	}
-	for _, tx := range txs {
-		_ = v.mempool.Add(tx)
-	}
-	return v.VM.RejectBlock(ctx, b)
 }
 
 func (v *VM) Shutdown(ctx context.Context) error {
