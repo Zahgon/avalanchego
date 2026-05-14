@@ -30,7 +30,7 @@ import (
 	ethparams "github.com/ava-labs/libevm/params"
 )
 
-var _ hook.PointsG[*transaction] = (*hooks)(nil)
+var _ hook.PointsG[*hookTx] = (*hooks)(nil)
 
 type hooks struct {
 	builder
@@ -42,17 +42,17 @@ func newHooks(
 	state *saestate.State,
 	pool *txpool.Pending,
 ) *hooks {
-	poolTxs := func(yield func(*transaction) bool) {
-		for rawTx := range pool.Iter() {
-			t, err := newTx(rawTx, ctx.AVAXAssetID)
+	poolTxs := func(yield func(*hookTx) bool) {
+		for t := range pool.Iter() {
+			ht, err := newHookTx(t, ctx.AVAXAssetID)
 			if err != nil {
-				ctx.Log.Warn("failed to wrap tx",
-					zap.Stringer("txID", rawTx.ID()),
+				ctx.Log.Warn("failed to convert tx",
+					zap.Stringer("txID", t.ID()),
 					zap.Error(err),
 				)
 				continue
 			}
-			if !yield(t) {
+			if !yield(ht) {
 				return
 			}
 		}
@@ -61,7 +61,7 @@ func newHooks(
 		builder{
 			ctx,
 			time.Now,
-			func() iter.Seq[*transaction] {
+			func() iter.Seq[*hookTx] {
 				return poolTxs
 			},
 		},
@@ -69,19 +69,19 @@ func newHooks(
 	}
 }
 
-func (h *hooks) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transaction], error) {
+func (h *hooks) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*hookTx], error) {
 	rawTxs, err := tx.ParseSlice(customtypes.BlockExtData(b))
 	if err != nil {
 		return nil, fmt.Errorf("parsing txs: %w", err)
 	}
 
-	txs := make([]*transaction, len(rawTxs))
-	for i, rawTx := range rawTxs {
-		tx, err := newTx(rawTx, h.ctx.AVAXAssetID)
+	txs := make([]*hookTx, len(rawTxs))
+	for i, t := range rawTxs {
+		ht, err := newHookTx(t, h.ctx.AVAXAssetID)
 		if err != nil {
-			return nil, fmt.Errorf("converting tx %s (%d): %w", rawTx.ID(), i, err)
+			return nil, fmt.Errorf("converting tx %s (%d): %w", t.ID(), i, err)
 		}
-		txs[i] = tx
+		txs[i] = ht
 	}
 
 	now := h.BlockTime(b.Header())
@@ -91,7 +91,7 @@ func (h *hooks) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transacti
 		func() time.Time {
 			return now
 		},
-		func() iter.Seq[*transaction] {
+		func() iter.Seq[*hookTx] {
 			return potentialTxs
 		},
 	}, nil

@@ -28,12 +28,12 @@ import (
 	saetypes "github.com/ava-labs/avalanchego/vms/saevm/types"
 )
 
-var _ hook.BlockBuilder[*transaction] = (*builder)(nil)
+var _ hook.BlockBuilder[*hookTx] = (*builder)(nil)
 
 type builder struct {
 	ctx          *snow.Context
 	now          func() time.Time
-	potentialTxs func() iter.Seq[*transaction]
+	potentialTxs func() iter.Seq[*hookTx]
 }
 
 func (b *builder) BuildHeader(parent *types.Header) (*types.Header, error) {
@@ -67,9 +67,9 @@ func (b *builder) PotentialEndOfBlockOps(
 	header *types.Header,
 	settledHash common.Hash,
 	source saetypes.BlockSource,
-) iter.Seq[*transaction] {
+) iter.Seq[*hookTx] {
 	seq := b.potentialTxs()
-	return func(yield func(*transaction) bool) {
+	return func(yield func(*hookTx) bool) {
 		// Transactions are verified against the last executed state. We must
 		// guarantee that they don't conflict with any transactions in blocks
 		// between the block we are building and the last executed block.
@@ -139,7 +139,7 @@ func (*builder) BuildBlock(
 	blockCtx *block.Context,
 	ethTxs []*types.Transaction,
 	receipts []*types.Receipt,
-	avaxTxs []*transaction,
+	avaxTxs []*hookTx,
 	settledHeight uint64,
 ) (*types.Block, error) {
 	txs := make([]*tx.Tx, len(avaxTxs))

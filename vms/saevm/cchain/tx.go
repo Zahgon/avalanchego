@@ -10,22 +10,22 @@ import (
 	"github.com/ava-labs/avalanchego/vms/saevm/hook"
 )
 
-var _ hook.Transaction = (*transaction)(nil)
+var _ hook.Transaction = (*hookTx)(nil)
 
-// transaction adapts a [tx.Tx] to the [hook.Transaction] interface.
-type transaction struct {
+// hookTx adapts a [tx.Tx] to the [hook.Transaction] interface.
+type hookTx struct {
 	id     ids.ID
 	tx     *tx.Tx
 	inputs set.Set[ids.ID]
 	op     hook.Op
 }
 
-func newTx(t *tx.Tx, avaxAssetID ids.ID) (*transaction, error) {
+func newHookTx(t *tx.Tx, avaxAssetID ids.ID) (*hookTx, error) {
 	op, err := t.AsOp(avaxAssetID)
 	if err != nil {
 		return nil, err
 	}
-	return &transaction{
+	return &hookTx{
 		id:     op.ID,
 		tx:     t,
 		inputs: t.InputIDs(),
@@ -33,4 +33,4 @@ func newTx(t *tx.Tx, avaxAssetID ids.ID) (*transaction, error) {
 	}, nil
 }
 
-func (t *transaction) AsOp() hook.Op { return t.op }
+func (t *hookTx) AsOp() hook.Op { return t.op }
