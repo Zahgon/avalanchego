@@ -108,21 +108,21 @@ func (p *Points) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, 
 	return saetypes.ExecutionResults{HeightIndex: db}, nil
 }
 
-func (*Points) GasConfigAfter(h *types.Header) (gas.Gas, gastime.GasPriceConfig) {
-	// TODO(StephenButtolph): Extract from the header.
+func (*Points) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
+	// TODO(StephenButtolph): Extract parameters from the header.
 	return 1_000_000, gastime.GasPriceConfig{
 		TargetToExcessScaling: 87,
 		MinPrice:              1,
 	}
 }
 
-func (*Points) SettledHeight(h *types.Header) uint64 {
+func (*Points) SettledHeight(*types.Header) uint64 {
 	// TODO(StephenButtolph): Extract from the header.
 	return 0
 }
 
 func (*Points) BlockTime(h *types.Header) time.Time {
-	// TODO(StephenButtolph): Include milliseconds.
+	// TODO(StephenButtolph): Extract milliseconds from the header.
 	return time.Unix(int64(h.Time), 0) //#nosec G115 -- Won't overflow for a few millennia
 }
 
@@ -167,5 +167,8 @@ func (p *Points) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, rec
 	if err := p.state.Apply(b.NumberU64(), txs); err != nil {
 		return fmt.Errorf("applying cross-chain state: %w", err)
 	}
+
+	// TODO(StephenButtolph): Persist produced warp messages.
+	_ = receipts
 	return nil
 }

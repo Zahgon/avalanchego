@@ -37,6 +37,9 @@ type builder struct {
 }
 
 func (b *builder) BuildHeader(parent *types.Header) (*types.Header, error) {
+	// TODO(StephenButtolph): Encode the ACP-176 target excess in the header.
+	// TODO(StephenButtolph): Encode the ACP-183 min price excess in the header.
+	// TODO(StephenButtolph): Enforce the minimum block time here.
 	return customtypes.WithHeaderExtra(
 		&types.Header{
 			ParentHash:       parent.Hash(),
@@ -131,7 +134,7 @@ func ancestorInputIDs(h *types.Header, settled common.Hash, source saetypes.Bloc
 	return s, nil
 }
 
-func (b *builder) BuildBlock(
+func (*builder) BuildBlock(
 	header *types.Header,
 	blockCtx *block.Context,
 	ethTxs []*types.Transaction,
@@ -148,6 +151,8 @@ func (b *builder) BuildBlock(
 		return nil, fmt.Errorf("marshalling txs: %w", err)
 	}
 
+	// TODO(StephenButtolph): Encode warp predicate results in the header.
+	_ = blockCtx
 	// TODO(StephenButtolph): Encode settledHeight in the block.
 	_ = settledHeight
 	// TODO(StephenButtolph): Verify the extDataHash matches the hash of extData
