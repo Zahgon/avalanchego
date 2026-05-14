@@ -12,31 +12,23 @@ import (
 	"slices"
 	"time"
 
+	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/rawdb"
-	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/rlp"
 	"github.com/ava-labs/libevm/triedb"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/database/prefixdb"
-	"github.com/ava-labs/avalanchego/graft/coreth/core"
-	"github.com/ava-labs/avalanchego/graft/coreth/params/extras"
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
 	"github.com/ava-labs/avalanchego/graft/evm/utils/rpc"
-	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
-	"github.com/ava-labs/avalanchego/vms/evm/acp226"
 	"github.com/ava-labs/avalanchego/vms/evm/database"
 	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
-	"github.com/ava-labs/avalanchego/vms/saevm/cchain/api"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/state"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
 	"github.com/ava-labs/avalanchego/vms/saevm/sae"
 
 	avadb "github.com/ava-labs/avalanchego/database"
-	corethparams "github.com/ava-labs/avalanchego/graft/coreth/params"
 )
 
 // VM is a harness around an [sae.VM], providing an `Initialize`
@@ -45,9 +37,9 @@ import (
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
-	ctx    *snow.Context
-	state  *state.State
-	txpool *txpool.Txpool
+	ctx     *snow.Context
+	state   *state.State
+	mempool *txpool.Txpool
 
 	// onClose are executed in reverse order during [SinceGenesis.Shutdown].
 	// If a resource depends on another resource, it MUST be added AFTER the
@@ -76,36 +68,13 @@ func (v *VM) Initialize(
 
 	snowCtx.Log.Info("parsing genesis")
 
-	genesis, err := parseGenesis(snowCtx, genesisBytes)
-	if err != nil {
-		return fmt.Errorf("json.Unmarshal(%T): %w", genesis, err)
+	genesis := new(core.Genesis)
+	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
+		return fmt.Errorf("json.Unmarshal(%T): %v", genesis, err)
 	}
-
-	snowCtx.Log.Info("establishing last synchronous block")
-
-	var lastSync *types.Block
-	lastSyncBytes, err := state.ReadLastSync(avaDB)
-	switch {
-	case err == nil:
-		lastSync = new(types.Block)
-		if err := rlp.DecodeBytes(lastSyncBytes, lastSync); err != nil {
-			return fmt.Errorf("rlp.DecodeBytes(..., %T): %w", lastSync, err)
-		}
-	case errors.Is(err, avadb.ErrNotFound):
-		lastSync = genesis.ToBlock()
-	default:
-		return err
-	}
-
-	snowCtx.Log.Info("setting up the genesis",
-		zap.Stringer("lastID", ids.ID(lastSync.Hash())),
-		zap.Uint64("lastHeight", lastSync.NumberU64()),
-	)
-
-	// TODO: Are these reasonable?
-	config, _, err := core.SetupGenesisBlock(db, tdb, genesis, lastSync.Hash(), false)
+	config, _, err := core.SetupGenesisBlock(db, tdb, genesis)
 	if err != nil {
-		return fmt.Errorf("core.SetupGenesisBlock(...): %w", err)
+		return fmt.Errorf("core.SetupGenesisBlock(...): %v", err)
 	}
 
 	snowCtx.Log.Info("constructing cross-chain state")
@@ -116,47 +85,16 @@ func (v *VM) Initialize(
 	}
 	v.onClose = append(v.onClose, cchainState.Close)
 
-	snowCtx.Log.Info("parsing user config")
-
-	userConfig, err := ParseConfig(configBytes)
-	if err != nil {
-		return err
-	}
-
-	snowCtx.Log.Info("parsing warp message overrides")
-
-	warpMessages, err := userConfig.WarpMessages()
-	if err != nil {
-		return err
-	}
-
-	var desiredDelayExcess *acp226.DelayExcess
-	if userConfig.MinDelayTarget != nil {
-		desiredDelayExcess = new(acp226.DelayExcess)
-		*desiredDelayExcess = acp226.DesiredDelayExcess(*userConfig.MinDelayTarget)
-	}
-	var desiredTargetExcess *acp176.TargetExcess
-	if userConfig.GasTarget != nil {
-		desiredTargetExcess = new(acp176.TargetExcess)
-		*desiredTargetExcess = acp176.DesiredTargetExcess(*userConfig.GasTarget)
-	}
-
 	pendingTxs := txpool.NewPending()
-	warpStorage := saewarp.NewStorage(avaDB, warpMessages...)
-
-	hooks := hook.NewPoints(
+	hooks := newHooks(
 		snowCtx,
 		cchainState,
-		config,
-		desiredDelayExcess,
-		desiredTargetExcess,
 		pendingTxs,
-		warpStorage,
 	)
 
 	snowCtx.Log.Info("constructing the sae VM")
 
-	inner, err := sae.NewVM(ctx, hooks, v.config, snowCtx, config, db, lastSync, appSender)
+	inner, err := sae.NewVM(ctx, hooks, v.config, snowCtx, config, db, genesis.ToBlock(), appSender)
 	if err != nil {
 		return err
 	}
@@ -178,37 +116,6 @@ func (v *VM) Initialize(
 	return nil
 }
 
-// TODO: copied from coreth
-func parseGenesis(ctx *snow.Context, bytes []byte) (*core.Genesis, error) {
-	g := new(core.Genesis)
-	if err := json.Unmarshal(bytes, g); err != nil {
-		return nil, fmt.Errorf("parsing genesis: %w", err)
-	}
-
-	// Populate the Avalanche config extras.
-	configExtra := corethparams.GetExtra(g.Config)
-	configExtra.AvalancheContext = extras.AvalancheContext{
-		SnowCtx: ctx,
-	}
-	configExtra.NetworkUpgrades = extras.GetNetworkUpgrades(ctx.NetworkUpgrades)
-
-	// If Durango is scheduled, schedule the Warp Precompile at the same time.
-	if configExtra.DurangoBlockTimestamp != nil {
-		configExtra.PrecompileUpgrades = append(configExtra.PrecompileUpgrades, extras.PrecompileUpgrade{
-			Config: warpcontract.NewDefaultConfig(configExtra.DurangoBlockTimestamp),
-		})
-	}
-	if err := configExtra.Verify(); err != nil {
-		return nil, fmt.Errorf("invalid chain config: %w", err)
-	}
-
-	// Align all the Ethereum upgrades to the Avalanche upgrades
-	if err := corethparams.SetEthUpgrades(g.Config); err != nil {
-		return nil, fmt.Errorf("setting eth upgrades: %w", err)
-	}
-	return g, nil
-}
-
 const (
 	avaxServiceName       = "avax"
 	avaxHTTPExtensionPath = "/" + avaxServiceName
@@ -220,7 +127,10 @@ func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error
 		return nil, err
 	}
 
-	service := api.NewService(v.ctx, v.GethRPCBackends(), v.mempool, v.pushGossiper, v.state)
+	service, err := newService(v.ctx, v.GethRPCBackends(), v.mempool, v.state)
+	if err != nil {
+		return nil, fmt.Errorf("creating avax service: %w", err)
+	}
 	handler, err := rpc.NewHandler(avaxServiceName, service)
 	if err != nil {
 		return nil, fmt.Errorf("rpc.NewHandler(%s, ...): %w", avaxServiceName, err)

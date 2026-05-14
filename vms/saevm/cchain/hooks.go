@@ -17,7 +17,9 @@ import (
 
 	"github.com/ava-labs/avalanchego/graft/coreth/core/extstate"
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
+	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
+	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
@@ -172,3 +174,28 @@ func (h *hooks) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, rece
 	_ = receipts
 	return nil
 }
+
+var _ hook.Transaction = (*hookTx)(nil)
+
+// hookTx adapts a [tx.Tx] to the [hook.Transaction] interface.
+type hookTx struct {
+	id     ids.ID
+	tx     *tx.Tx
+	inputs set.Set[ids.ID]
+	op     hook.Op
+}
+
+func newHookTx(t *tx.Tx, avaxAssetID ids.ID) (*hookTx, error) {
+	op, err := t.AsOp(avaxAssetID)
+	if err != nil {
+		return nil, err
+	}
+	return &hookTx{
+		id:     op.ID,
+		tx:     t,
+		inputs: t.InputIDs(),
+		op:     op,
+	}, nil
+}
+
+func (t *hookTx) AsOp() hook.Op { return t.op }
