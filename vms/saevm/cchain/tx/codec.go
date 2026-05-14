@@ -6,26 +6,18 @@ package tx
 import (
 	"errors"
 
-	"github.com/ava-labs/avalanchego/chains/atomic"
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
-const (
-	codecVersion uint16 = 0
-	CodecVersion        = codecVersion
-)
+const codecVersion uint16 = 0
 
-var (
-	c     codec.Manager
-	Codec codec.Manager
-)
+var c codec.Manager
 
 func init() {
 	c = codec.NewDefaultManager()
-	Codec = c
 
 	// Registration order impacts the typeID included in the canonical format.
 	// We skip registrations in specific locations so that UTXOs in shared
@@ -80,8 +72,4 @@ func ParseSlice(b []byte) ([]*Tx, error) {
 		return nil, errInefficientSlicePacking
 	}
 	return txs, nil
-}
-
-func MarshalAtomicRequests(r *atomic.Requests) ([]byte, error) {
-	return c.Marshal(codecVersion, r)
 }
