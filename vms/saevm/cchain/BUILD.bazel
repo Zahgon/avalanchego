@@ -1,3 +1,5 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
 # gazelle:default_visibility //vms/saevm/cchain:__subpackages__,//vms/saevm/cchain:external_consumers
 
 package(default_visibility = [
@@ -8,4 +10,39 @@ package(default_visibility = [
 package_group(
     name = "external_consumers",
     packages = [],
+)
+
+go_library(
+    name = "cchain",
+    srcs = [
+        "builder.go",
+        "hooks.go",
+        "tx.go",
+    ],
+    importpath = "github.com/ava-labs/avalanchego/vms/saevm/cchain",
+    deps = [
+        "//graft/coreth/core/extstate",
+        "//graft/coreth/plugin/evm/customtypes",
+        "//graft/evm/constants",
+        "//ids",
+        "//snow",
+        "//snow/engine/snowman/block",
+        "//utils/set",
+        "//vms/components/gas",
+        "//vms/evm/acp226",
+        "//vms/saevm/cchain/state",
+        "//vms/saevm/cchain/tx",
+        "//vms/saevm/cchain/txpool",
+        "//vms/saevm/gastime",
+        "//vms/saevm/hook",
+        "//vms/saevm/types",
+        "//x/blockdb",
+        "@com_github_ava_labs_libevm//common",
+        "@com_github_ava_labs_libevm//core/state",
+        "@com_github_ava_labs_libevm//core/types",
+        "@com_github_ava_labs_libevm//libevm",
+        "@com_github_ava_labs_libevm//params",
+        "@com_github_ava_labs_libevm//trie",
+        "@org_uber_go_zap//:zap",
+    ],
 )

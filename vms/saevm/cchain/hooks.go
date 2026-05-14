@@ -1,7 +1,7 @@
 // Copyright (C) 2019, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
-package hook
+package cchain
 
 import (
 	"fmt"
@@ -30,18 +30,18 @@ import (
 	ethparams "github.com/ava-labs/libevm/params"
 )
 
-var _ hook.PointsG[*transaction] = (*Points)(nil)
+var _ hook.PointsG[*transaction] = (*hooks)(nil)
 
-type Points struct {
+type hooks struct {
 	builder
 	state *saestate.State
 }
 
-func NewPoints(
+func newHooks(
 	ctx *snow.Context,
 	state *saestate.State,
 	pool *txpool.Pending,
-) *Points {
+) *hooks {
 	poolTxs := func(yield func(*transaction) bool) {
 		for rawTx := range pool.Iter() {
 			t, err := newTx(rawTx, ctx.AVAXAssetID)
@@ -57,7 +57,7 @@ func NewPoints(
 			}
 		}
 	}
-	return &Points{
+	return &hooks{
 		builder{
 			ctx,
 			time.Now,
@@ -69,7 +69,7 @@ func NewPoints(
 	}
 }
 
-func (p *Points) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transaction], error) {
+func (h *hooks) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transaction], error) {
 	rawTxs, err := tx.ParseSlice(customtypes.BlockExtData(b))
 	if err != nil {
 		return nil, fmt.Errorf("parsing txs: %w", err)
@@ -77,17 +77,17 @@ func (p *Points) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transact
 
 	txs := make([]*transaction, len(rawTxs))
 	for i, rawTx := range rawTxs {
-		tx, err := newTx(rawTx, p.ctx.AVAXAssetID)
+		tx, err := newTx(rawTx, h.ctx.AVAXAssetID)
 		if err != nil {
 			return nil, fmt.Errorf("converting tx %s (%d): %w", rawTx.ID(), i, err)
 		}
 		txs[i] = tx
 	}
 
-	now := p.BlockTime(b.Header())
+	now := h.BlockTime(b.Header())
 	potentialTxs := slices.Values(txs)
 	return &builder{
-		p.ctx,
+		h.ctx,
 		func() time.Time {
 			return now
 		},
@@ -97,10 +97,10 @@ func (p *Points) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[*transact
 	}, nil
 }
 
-func (p *Points) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, error) {
+func (h *hooks) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, error) {
 	db, err := blockdb.New(
 		blockdb.DefaultConfig().WithDir(dataDir),
-		p.ctx.Log,
+		h.ctx.Log,
 	)
 	if err != nil {
 		return saetypes.ExecutionResults{}, fmt.Errorf("creating execution results db: %w", err)
@@ -108,7 +108,7 @@ func (p *Points) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, 
 	return saetypes.ExecutionResults{HeightIndex: db}, nil
 }
 
-func (*Points) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
+func (*hooks) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
 	// TODO(StephenButtolph): Extract parameters from the header.
 	return 1_000_000, gastime.GasPriceConfig{
 		TargetToExcessScaling: 87,
@@ -116,17 +116,17 @@ func (*Points) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
 	}
 }
 
-func (*Points) SettledHeight(*types.Header) uint64 {
+func (*hooks) SettledHeight(*types.Header) uint64 {
 	// TODO(StephenButtolph): Extract from the header.
 	return 0
 }
 
-func (*Points) BlockTime(h *types.Header) time.Time {
+func (*hooks) BlockTime(h *types.Header) time.Time {
 	// TODO(StephenButtolph): Extract milliseconds from the header.
 	return time.Unix(int64(h.Time), 0) //#nosec G115 -- Won't overflow for a few millennia
 }
 
-func (p *Points) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
+func (h *hooks) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
 	txs, err := tx.ParseSlice(customtypes.BlockExtData(b))
 	if err != nil {
 		return nil, fmt.Errorf("parsing txs: %w", err)
@@ -134,7 +134,7 @@ func (p *Points) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
 
 	ops := make([]hook.Op, len(txs))
 	for i, tx := range txs {
-		op, err := tx.AsOp(p.ctx.AVAXAssetID)
+		op, err := tx.AsOp(h.ctx.AVAXAssetID)
 		if err != nil {
 			return nil, fmt.Errorf("converting tx %s (%d): %w", tx.ID(), i, err)
 		}
@@ -143,15 +143,15 @@ func (p *Points) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
 	return ops, nil
 }
 
-func (*Points) CanExecuteTransaction(common.Address, *common.Address, libevm.StateReader) error {
+func (*hooks) CanExecuteTransaction(common.Address, *common.Address, libevm.StateReader) error {
 	return nil
 }
 
-func (*Points) BeforeExecutingBlock(ethparams.Rules, *state.StateDB, *types.Block) error {
+func (*hooks) BeforeExecutingBlock(ethparams.Rules, *state.StateDB, *types.Block) error {
 	return nil
 }
 
-func (p *Points) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, receipts types.Receipts) error {
+func (h *hooks) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, receipts types.Receipts) error {
 	txs, err := tx.ParseSlice(customtypes.BlockExtData(b))
 	if err != nil {
 		return fmt.Errorf("parsing txs: %w", err)
@@ -159,12 +159,12 @@ func (p *Points) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, rec
 
 	extstatedb := extstate.New(statedb)
 	for i, tx := range txs {
-		if err := tx.TransferNonAVAX(p.ctx.AVAXAssetID, extstatedb); err != nil {
+		if err := tx.TransferNonAVAX(h.ctx.AVAXAssetID, extstatedb); err != nil {
 			return fmt.Errorf("transferring non-AVAX assets of tx %s (%d): %w", tx.ID(), i, err)
 		}
 	}
 
-	if err := p.state.Apply(b.NumberU64(), txs); err != nil {
+	if err := h.state.Apply(b.NumberU64(), txs); err != nil {
 		return fmt.Errorf("applying cross-chain state: %w", err)
 	}
 
