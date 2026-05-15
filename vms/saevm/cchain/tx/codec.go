@@ -9,6 +9,7 @@ import (
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
+	"github.com/ava-labs/avalanchego/vms/components/avax"
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
@@ -57,6 +58,16 @@ func MarshalSlice(txs []*Tx) ([]byte, error) {
 }
 
 var errInefficientSlicePacking = errors.New("inefficient slice packing: empty slices should be packed as nil")
+
+// ParseUTXO deserializes an [avax.UTXO] from its canonical binary format used
+// in cross-chain shared memory.
+func ParseUTXO(b []byte) (*avax.UTXO, error) {
+	utxo := new(avax.UTXO)
+	if _, err := c.Unmarshal(b, utxo); err != nil {
+		return nil, err
+	}
+	return utxo, nil
+}
 
 // ParseSlice deserializes a slice of [Tx] from its canonical binary format.
 func ParseSlice(b []byte) ([]*Tx, error) {

@@ -66,6 +66,9 @@ func (v *VM) Initialize(
 
 	v.ctx = snowCtx
 
+	// TODO(StephenButtolph): Allow minimal user configuration via configBytes.
+	_ = configBytes
+
 	// [prefixdb.NewNested] is used because coreth used to be run as a plugin.
 	// This meant that the database's prefix was not compacted, because the
 	// provided database was wrapped by the rpcchainvm.
