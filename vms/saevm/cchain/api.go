@@ -10,7 +10,6 @@ import (
 	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/api"
-	"github.com/ava-labs/avalanchego/chains/atomic"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/utils/constants"
@@ -18,7 +17,6 @@ import (
 	"github.com/ava-labs/avalanchego/utils/formatting/address"
 	"github.com/ava-labs/avalanchego/utils/json"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/state"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
@@ -70,13 +68,13 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		return fmt.Errorf("too many addresses: %d exceeds %d", len(a.Addresses), maxAddrs)
 	}
 
-	var addrs set.Set[ids.ShortID]
-	for _, str := range a.Addresses {
+	addrs := make([][]byte, len(a.Addresses))
+	for i, str := range a.Addresses {
 		addr, err := s.parseAddress(str)
 		if err != nil {
 			return fmt.Errorf("parsing address %q: %w", str, err)
 		}
-		addrs.Add(addr)
+		addrs[i] = addr[:]
 	}
 
 	var (
@@ -95,14 +93,12 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 	}
 
 	const maxLimit = 1024
-	limit := int(min(a.Limit, maxLimit))
-	utxos, endAddr, endUTXOID, err := GetAtomicUTXOs(
-		s.ctx.SharedMemory,
+	utxos, lastAddr, lastUTXO, err := s.ctx.SharedMemory.Indexed(
 		sourceChainID,
 		addrs,
-		startAddr,
-		startUTXO,
-		limit,
+		startAddr[:],
+		startUTXO[:],
+		int(min(a.Limit, maxLimit)),
 	)
 	if err != nil {
 		return fmt.Errorf("retrieving UTXOs: %w", err)
@@ -116,60 +112,24 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		}
 	}
 
-	r.EndIndex.Address, err = address.Format(s.chainAlias, s.hrp, endAddr.Bytes())
+	endAddr, err := ids.ToShortID(lastAddr)
+	if err != nil {
+		endAddr = ids.ShortEmpty
+	}
+	r.EndIndex.Address, err = address.Format(s.chainAlias, s.hrp, endAddr[:])
 	if err != nil {
 		return fmt.Errorf("formatting address: %w", err)
 	}
 
-	r.EndIndex.UTXO = endUTXOID.String()
+	endUTXO, err := ids.ToID(lastUTXO)
+	if err != nil {
+		endUTXO = ids.Empty
+	}
+	r.EndIndex.UTXO = endUTXO.String()
+
 	r.NumFetched = json.Uint64(len(utxos))
 	r.Encoding = a.Encoding
 	return nil
-}
-
-// GetAtomicUTXOs returns exported UTXOs such that at least one of the
-// addresses in [addrs] is referenced.
-//
-// Returns at most [limit] UTXOs.
-//
-// Returns:
-// * The fetched UTXOs
-// * The address associated with the last UTXO fetched
-// * The ID of the last UTXO fetched
-// * Any error that may have occurred upstream.
-func GetAtomicUTXOs(
-	sharedMemory atomic.SharedMemory,
-	chainID ids.ID,
-	addrs set.Set[ids.ShortID],
-	startAddr ids.ShortID,
-	startUTXOID ids.ID,
-	limit int,
-) ([][]byte, ids.ShortID, ids.ID, error) {
-	addrsList := make([][]byte, 0, addrs.Len())
-	for addr := range addrs {
-		addrsList = append(addrsList, addr.Bytes())
-	}
-
-	allUTXOBytes, lastAddr, lastUTXO, err := sharedMemory.Indexed(
-		chainID,
-		addrsList,
-		startAddr.Bytes(),
-		startUTXOID[:],
-		limit,
-	)
-	if err != nil {
-		return nil, ids.ShortID{}, ids.Empty, fmt.Errorf("fetching UTXOs: %w", err)
-	}
-
-	lastAddrID, err := ids.ToShortID(lastAddr)
-	if err != nil {
-		lastAddrID = ids.ShortEmpty
-	}
-	lastUTXOID, err := ids.ToID(lastUTXO)
-	if err != nil {
-		lastUTXOID = ids.Empty
-	}
-	return allUTXOBytes, lastAddrID, lastUTXOID, nil
 }
 
 func (s *service) parseAddress(str string) (ids.ShortID, error) {
@@ -184,7 +144,6 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 	if hrp != s.hrp {
 		return ids.ShortID{}, fmt.Errorf("expected hrp %q but got %q", s.hrp, hrp)
 	}
-
 	chainID, err := s.ctx.BCLookup.Lookup(chainAlias)
 	if err != nil {
 		return ids.ShortID{}, err
@@ -192,7 +151,6 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 	if chainID != s.ctx.ChainID {
 		return ids.ShortID{}, fmt.Errorf("expected chainID to be %q but was %q", s.ctx.ChainID, chainID)
 	}
-
 	return ids.ToShortID(bytes)
 }
 
@@ -208,15 +166,15 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 	if err != nil {
 		return fmt.Errorf("decoding transaction: %w", err)
 	}
-	tx, err := tx.Parse(txBytes)
+	t, err := tx.Parse(txBytes)
 	if err != nil {
 		return fmt.Errorf("parsing transaction: %w", err)
 	}
 
 	// TODO(StephenButtolph): Push gossip the tx.
 
-	r.TxID = tx.ID()
-	return s.txpool.Add(tx)
+	r.TxID = t.ID()
+	return s.txpool.Add(t)
 }
 
 type apiTx struct {
@@ -232,11 +190,11 @@ func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *apiTx) error
 		zap.Stringer("encoding", a.Encoding),
 	)
 
-	tx, height, err := s.state.GetTx(a.TxID)
+	t, height, err := s.state.GetTx(a.TxID)
 	if err != nil {
 		return fmt.Errorf("fetching tx: %w", err)
 	}
-	txBytes, err := tx.Bytes()
+	txBytes, err := t.Bytes()
 	if err != nil {
 		return fmt.Errorf("marshalling tx: %w", err)
 	}
@@ -244,7 +202,6 @@ func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *apiTx) error
 	if err != nil {
 		return fmt.Errorf("encoding tx: %w", err)
 	}
-
 	r.Encoding = a.Encoding
 	r.Height = json.Uint64(height)
 	return nil
