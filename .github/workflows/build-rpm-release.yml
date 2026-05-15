@@ -55,7 +55,7 @@ jobs:
         run: |
           rm -rf .github/packaging
           mkdir -p .github
-          cp -r .packaging-overlay/.github/packaging .github/packaging
+          mv .packaging-overlay/.github/packaging .github/packaging
           rm -rf .packaging-overlay
         shell: bash
 

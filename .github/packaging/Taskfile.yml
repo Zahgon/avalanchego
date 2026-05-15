@@ -72,6 +72,8 @@ tasks:
     vars:
       PACKAGE_ARCH: '{{.PACKAGE_ARCH | default .PACKAGING_HOST_ARCH}}'
       RPM_TAG: '{{.PACKAGING_TAG}}'
+    env:
+      NFPM_RPM_PASSPHRASE: '{{.NFPM_RPM_PASSPHRASE}}'
     deps: [build-builder-docker-image]
     cmds:
       - cmd: mkdir -p {{.PACKAGING_OUTPUT_DIR}}
@@ -88,7 +90,7 @@ tasks:
           -e OUTPUT_DIR=/output
           -e AVALANCHEGO_COMMIT={{.PACKAGING_GIT_COMMIT}}
           {{if .RPM_GPG_KEY_FILE}}-e RPM_GPG_KEY_FILE={{.RPM_GPG_KEY_FILE}}{{end}}
-          {{if .NFPM_RPM_PASSPHRASE}}-e NFPM_RPM_PASSPHRASE={{.NFPM_RPM_PASSPHRASE}}{{end}}
+          {{if .NFPM_RPM_PASSPHRASE}}-e NFPM_RPM_PASSPHRASE{{end}}
           {{.PACKAGING_DOCKER_IMAGE}}
           .github/packaging/scripts/build-package.sh
 
@@ -97,6 +99,8 @@ tasks:
     vars:
       PACKAGE_ARCH: '{{.PACKAGE_ARCH | default .PACKAGING_HOST_ARCH}}'
       RPM_TAG: '{{.PACKAGING_TAG}}'
+    env:
+      NFPM_RPM_PASSPHRASE: '{{.NFPM_RPM_PASSPHRASE}}'
     deps: [build-builder-docker-image]
     cmds:
       - cmd: mkdir -p {{.PACKAGING_OUTPUT_DIR}}
@@ -113,7 +117,7 @@ tasks:
           -e OUTPUT_DIR=/output
           -e AVALANCHEGO_COMMIT={{.PACKAGING_GIT_COMMIT}}
           {{if .RPM_GPG_KEY_FILE}}-e RPM_GPG_KEY_FILE={{.RPM_GPG_KEY_FILE}}{{end}}
-          {{if .NFPM_RPM_PASSPHRASE}}-e NFPM_RPM_PASSPHRASE={{.NFPM_RPM_PASSPHRASE}}{{end}}
+          {{if .NFPM_RPM_PASSPHRASE}}-e NFPM_RPM_PASSPHRASE{{end}}
           {{.PACKAGING_DOCKER_IMAGE}}
           .github/packaging/scripts/build-package.sh
 
@@ -155,6 +159,8 @@ tasks:
     vars:
       DEB_ARCH: '{{.DEB_ARCH | default .PACKAGING_HOST_DEB_ARCH}}'
       DEB_TAG: '{{.PACKAGING_TAG}}'
+    env:
+      NFPM_DEB_PASSPHRASE: '{{.NFPM_DEB_PASSPHRASE}}'
     deps: [build-deb-builder-docker-image]
     cmds:
       - cmd: mkdir -p {{.PACKAGING_DEB_OUTPUT_DIR}}
@@ -171,7 +177,7 @@ tasks:
           -e OUTPUT_DIR=/output
           -e AVALANCHEGO_COMMIT={{.PACKAGING_GIT_COMMIT}}
           {{if .DEB_GPG_KEY_FILE}}-e DEB_GPG_KEY_FILE={{.DEB_GPG_KEY_FILE}}{{end}}
-          {{if .NFPM_DEB_PASSPHRASE}}-e NFPM_DEB_PASSPHRASE={{.NFPM_DEB_PASSPHRASE}}{{end}}
+          {{if .NFPM_DEB_PASSPHRASE}}-e NFPM_DEB_PASSPHRASE{{end}}
           {{.PACKAGING_DEB_DOCKER_IMAGE}}
           .github/packaging/scripts/build-package.sh
 
@@ -180,6 +186,8 @@ tasks:
     vars:
       DEB_ARCH: '{{.DEB_ARCH | default .PACKAGING_HOST_DEB_ARCH}}'
       DEB_TAG: '{{.PACKAGING_TAG}}'
+    env:
+      NFPM_DEB_PASSPHRASE: '{{.NFPM_DEB_PASSPHRASE}}'
     deps: [build-deb-builder-docker-image]
     cmds:
       - cmd: mkdir -p {{.PACKAGING_DEB_OUTPUT_DIR}}
@@ -196,7 +204,7 @@ tasks:
           -e OUTPUT_DIR=/output
           -e AVALANCHEGO_COMMIT={{.PACKAGING_GIT_COMMIT}}
           {{if .DEB_GPG_KEY_FILE}}-e DEB_GPG_KEY_FILE={{.DEB_GPG_KEY_FILE}}{{end}}
-          {{if .NFPM_DEB_PASSPHRASE}}-e NFPM_DEB_PASSPHRASE={{.NFPM_DEB_PASSPHRASE}}{{end}}
+          {{if .NFPM_DEB_PASSPHRASE}}-e NFPM_DEB_PASSPHRASE{{end}}
           {{.PACKAGING_DEB_DOCKER_IMAGE}}
           .github/packaging/scripts/build-package.sh
 
