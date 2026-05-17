@@ -180,12 +180,12 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 	return s.txpool.Add(t)
 }
 
-type apiTx struct {
+type GetAtomicTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`
 }
 
-func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *apiTx) error {
+func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetAtomicTxReply) error {
 	s.ctx.Log.Debug("API called",
 		zap.String("service", "avax"),
 		zap.String("method", "getAtomicTx"),
@@ -215,7 +215,10 @@ type Client struct {
 	r rpc.EndpointRequester
 }
 
-const avaxHTTPPath = "/ext/" + constants.ChainAliasPrefix + "/C" + avaxHTTPExtensionPath
+const (
+	avaxHTTPPrefix = "/ext/" + constants.ChainAliasPrefix + "/C"
+	avaxHTTPPath   = avaxHTTPPrefix + avaxHTTPExtensionPath
+)
 
 // NewClient returns a [Client] that targets the C-Chain reachable at uri.
 func NewClient(uri string) *Client {
@@ -248,7 +251,7 @@ func (c *Client) IssueTx(ctx context.Context, t *tx.Tx, options ...rpc.Option) e
 // GetAtomicTx returns an accepted cross-chain transaction along with the block
 // height at which it was accepted.
 func (c *Client) GetAtomicTx(ctx context.Context, txID ids.ID, options ...rpc.Option) (*tx.Tx, uint64, error) {
-	res := &apiTx{}
+	res := &GetAtomicTxReply{}
 	err := c.r.SendRequest(ctx, "avax.getAtomicTx", &api.GetTxArgs{
 		TxID:     txID,
 		Encoding: formatting.Hex,

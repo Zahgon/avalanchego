@@ -59,16 +59,6 @@ func MarshalSlice(txs []*Tx) ([]byte, error) {
 
 var errInefficientSlicePacking = errors.New("inefficient slice packing: empty slices should be packed as nil")
 
-// ParseUTXO deserializes an [avax.UTXO] from its canonical binary format used
-// in cross-chain shared memory.
-func ParseUTXO(b []byte) (*avax.UTXO, error) {
-	utxo := new(avax.UTXO)
-	if _, err := c.Unmarshal(b, utxo); err != nil {
-		return nil, err
-	}
-	return utxo, nil
-}
-
 // ParseSlice deserializes a slice of [Tx] from its canonical binary format.
 func ParseSlice(b []byte) ([]*Tx, error) {
 	if len(b) == 0 {
@@ -83,4 +73,20 @@ func ParseSlice(b []byte) ([]*Tx, error) {
 		return nil, errInefficientSlicePacking
 	}
 	return txs, nil
+}
+
+// MarshalUTXO serializes an [avax.UTXO] to its canonical binary format used in
+// cross-chain shared memory.
+func MarshalUTXO(utxo *avax.UTXO) ([]byte, error) {
+	return c.Marshal(codecVersion, utxo)
+}
+
+// ParseUTXO deserializes an [avax.UTXO] from its canonical binary format used
+// in cross-chain shared memory.
+func ParseUTXO(b []byte) (*avax.UTXO, error) {
+	utxo := new(avax.UTXO)
+	if _, err := c.Unmarshal(b, utxo); err != nil {
+		return nil, err
+	}
+	return utxo, nil
 }
