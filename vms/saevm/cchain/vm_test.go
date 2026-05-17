@@ -42,10 +42,6 @@ import (
 	saeparams "github.com/ava-labs/avalanchego/vms/saevm/params"
 )
 
-// nAVAXToAAVAX is the scaling factor between the smallest denomination on the
-// X/P-Chain (1 nAVAX) and the C-Chain (1 aAVAX).
-const nAVAXToAAVAX = 1_000_000_000
-
 func TestMain(m *testing.M) {
 	evm.RegisterAllLibEVMExtras()
 	goleak.VerifyTestMain(m, goleak.IgnoreCurrent())
@@ -143,31 +139,34 @@ func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 
 // assertUTXOsExist fails tb unless shared memory between peerChainID and the
 // C-Chain contains each of the expected UTXOs.
-func (sut *SUT) assertUTXOsExist(tb testing.TB, peerChainID ids.ID, expected ...*avax.UTXO) {
+func (s *SUT) assertUTXOsExist(tb testing.TB, peerChainID ids.ID, want ...*avax.UTXO) {
 	tb.Helper()
 
-	keys := make([][]byte, len(expected))
-	for i, u := range expected {
+	keys := make([][]byte, len(want))
+	for i, u := range want {
 		inputID := u.InputID()
 		keys[i] = inputID[:]
 	}
-	peerMemory := sut.memory.NewSharedMemory(peerChainID)
+	peerMemory := s.memory.NewSharedMemory(peerChainID)
 	raw, err := peerMemory.Get(snowtest.CChainID, keys)
 	require.NoErrorf(tb, err, "%T.Get()", peerMemory)
 
 	got := make([]*avax.UTXO, len(raw))
 	for i, b := range raw {
-		got[i], err = tx.ParseUTXO(b)
-		require.NoErrorf(tb, err, "tx.ParseUTXO()")
+		got[i] = txtest.MustParseUTXO(tb, b)
 	}
-	if diff := cmp.Diff(expected, got, utxoCmpOpts); diff != "" {
+	opts := cmp.Options{
+		cmpopts.IgnoreUnexported(avax.UTXOID{}, secp256k1fx.OutputOwners{}),
+		cmpopts.EquateEmpty(),
+	}
+	if diff := cmp.Diff(want, got, opts); diff != "" {
 		tb.Errorf("UTXOs in shared memory with %s (-want +got):\n%s", peerChainID, diff)
 	}
 }
 
 // addUTXOs seeds shared memory between peerChainID and the C-Chain with the
 // given UTXOs.
-func (sut *SUT) addUTXOs(tb testing.TB, peerChainID ids.ID, utxos ...*avax.UTXO) {
+func (s *SUT) addUTXOs(tb testing.TB, peerChainID ids.ID, utxos ...*avax.UTXO) {
 	tb.Helper()
 
 	elems := make([]*atomic.Element, len(utxos))
@@ -182,7 +181,7 @@ func (sut *SUT) addUTXOs(tb testing.TB, peerChainID ids.ID, utxos ...*avax.UTXO)
 		}
 		elems[i] = e
 	}
-	peerMemory := sut.memory.NewSharedMemory(peerChainID)
+	peerMemory := s.memory.NewSharedMemory(peerChainID)
 	err := peerMemory.Apply(map[ids.ID]*atomic.Requests{
 		snowtest.CChainID: {PutRequests: elems},
 	})
@@ -190,65 +189,61 @@ func (sut *SUT) addUTXOs(tb testing.TB, peerChainID ids.ID, utxos ...*avax.UTXO)
 }
 
 // balance returns the balance of addr at the last-executed state.
-func (sut *SUT) balance(tb testing.TB, addr common.Address) uint256.Int {
+func (s *SUT) balance(tb testing.TB, addr common.Address) uint256.Int {
 	tb.Helper()
 
-	state, err := sut.LastExecutedState()
-	require.NoErrorf(tb, err, "%T.LastExecutedState()", sut.VM)
+	state, err := s.LastExecutedState()
+	require.NoErrorf(tb, err, "%T.LastExecutedState()", s.VM)
 	return *state.GetBalance(addr)
 }
 
-// assertBalanceChange asserts that addr's balance equals before plus
-// nAVAXDelta nAVAX (scaled to aAVAX). The delta may be negative.
-func (sut *SUT) assertBalanceChange(tb testing.TB, addr common.Address, before uint256.Int, nAVAXDelta int64) {
+// assertBalance asserts that addr's balance at the last-executed state equals
+// want.
+func (s *SUT) assertBalance(tb testing.TB, addr common.Address, want uint256.Int) {
 	tb.Helper()
-
-	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(nAVAXToAAVAX))
-	want, overflow := uint256.FromBig(new(big.Int).Add(before.ToBig(), delta))
-	require.Falsef(tb, overflow, "want balance overflows uint256")
-	require.Equalf(tb, *want, sut.balance(tb, addr), "balance of %s after %+d nAVAX", addr, nAVAXDelta)
+	require.Equalf(tb, want, s.balance(tb, addr), "balance of %s", addr)
 }
 
 // issueAndExecute submits t through the HTTP [Client] and drives the consensus
 // loop to produce, accept, and execute the next block, which is returned.
-func (sut *SUT) issueAndExecute(tb testing.TB, t *tx.Tx) *blocks.Block {
+func (s *SUT) issueAndExecute(tb testing.TB, t *tx.Tx) *blocks.Block {
 	tb.Helper()
 
-	require.NoErrorf(tb, sut.IssueTx(tb.Context(), t), "%T.IssueTx()", sut.Client)
-	return sut.runConsensusLoop(tb)
+	require.NoErrorf(tb, s.IssueTx(tb.Context(), t), "%T.IssueTx()", s.Client)
+	return s.runConsensusLoop(tb)
 }
 
 // assertTxAccepted asserts that [Client.GetAtomicTx] returns the given tx at
 // the given block height.
-func (sut *SUT) assertTxAccepted(tb testing.TB, expected *tx.Tx, height uint64) {
+func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 	tb.Helper()
 
-	got, gotHeight, err := sut.GetAtomicTx(tb.Context(), expected.ID())
-	require.NoErrorf(tb, err, "%T.GetAtomicTx()", sut.Client)
-	if diff := cmp.Diff(expected, got, txtest.CmpOpt()); diff != "" {
-		tb.Errorf("%T.GetAtomicTx() (-want +got):\n%s", sut.Client, diff)
+	got, gotHeight, err := s.GetAtomicTx(tb.Context(), want.ID())
+	require.NoErrorf(tb, err, "%T.GetAtomicTx()", s.Client)
+	if diff := cmp.Diff(want, got, txtest.CmpOpt()); diff != "" {
+		tb.Errorf("%T.GetAtomicTx() (-want +got):\n%s", s.Client, diff)
 	}
-	require.Equalf(tb, height, gotHeight, "%T.GetAtomicTx() block height", sut.Client)
+	require.Equalf(tb, wantHeight, gotHeight, "%T.GetAtomicTx() block height", s.Client)
 }
 
 // runConsensusLoop builds a block on top of the last-accepted block, drives it
 // through verify+accept, and blocks until it has been executed.
-func (sut *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
+func (s *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
 	tb.Helper()
 
 	ctx := tb.Context()
-	lastAcceptedID, err := sut.LastAccepted(ctx)
-	require.NoErrorf(tb, err, "%T.LastAccepted()", sut.VM)
+	lastAcceptedID, err := s.LastAccepted(ctx)
+	require.NoErrorf(tb, err, "%T.LastAccepted()", s.VM)
 
 	// TODO(StephenButtolph): When implementing Warp, we will need to provide
 	// meaningful block contexts.
 	var blockCtx *block.Context
-	require.NoErrorf(tb, sut.SetPreference(ctx, lastAcceptedID, blockCtx), "%T.SetPreference()", sut.VM)
+	require.NoErrorf(tb, s.SetPreference(ctx, lastAcceptedID, blockCtx), "%T.SetPreference()", s.VM)
 
-	blk, err := sut.BuildBlock(ctx, blockCtx)
-	require.NoErrorf(tb, err, "%T.BuildBlock()", sut.VM)
-	require.NoErrorf(tb, sut.VerifyBlock(ctx, blockCtx, blk), "%T.VerifyBlock()", sut.VM)
-	require.NoErrorf(tb, sut.AcceptBlock(ctx, blk), "%T.AcceptBlock()", sut.VM)
+	blk, err := s.BuildBlock(ctx, blockCtx)
+	require.NoErrorf(tb, err, "%T.BuildBlock()", s.VM)
+	require.NoErrorf(tb, s.VerifyBlock(ctx, blockCtx, blk), "%T.VerifyBlock()", s.VM)
+	require.NoErrorf(tb, s.AcceptBlock(ctx, blk), "%T.AcceptBlock()", s.VM)
 	require.NoErrorf(tb, blk.WaitUntilExecuted(ctx), "%T.WaitUntilExecuted()", blk)
 	return blk
 }
@@ -266,59 +261,25 @@ func TestExport(t *testing.T) {
 	}))
 
 	const (
-		// inputAmount is the nAVAX consumed from the sender's C-Chain balance.
-		// outputAmount is the nAVAX that ends up as a UTXO on the destination
-		// chain. The difference (inputAmount - outputAmount) is burned as the
-		// gas fee.
-		inputAmount  = 100
-		outputAmount = 50
+		exportedAmount = 50
+		txFee          = 50
 	)
-	avaxAssetID := sut.snowCtx.AVAXAssetID
-	export := &tx.Export{
-		NetworkID:        sut.snowCtx.NetworkID,
-		BlockchainID:     sut.snowCtx.ChainID,
-		DestinationChain: sut.snowCtx.XChainID,
-		Ins: []tx.Input{{
-			Address: sender,
-			Amount:  inputAmount,
-			AssetID: avaxAssetID,
-			Nonce:   0,
-		}},
-		ExportedOutputs: []*avax.TransferableOutput{{
-			Asset: avax.Asset{ID: avaxAssetID},
-			Out: &secp256k1fx.TransferOutput{
-				Amt: outputAmount,
-				OutputOwners: secp256k1fx.OutputOwners{
-					Threshold: 1,
-					Addrs:     []ids.ShortID{sk.Address()},
-				},
-			},
-		}},
-	}
-	crossTx := &tx.Tx{
-		Unsigned: export,
-		Creds: []tx.Credential{
-			&secp256k1fx.Credential{
-				Sigs: []txtest.Signature{txtest.Sign(t, export, sk)},
-			},
+
+	wallet := txtest.NewWallet(sk, sut.snowCtx, sut.memory)
+	signedExport, export := wallet.NewExportTx(t, sut.snowCtx.XChainID, []*secp256k1fx.TransferOutput{{
+		Amt: exportedAmount,
+		OutputOwners: secp256k1fx.OutputOwners{
+			Threshold: 1,
+			Addrs:     []ids.ShortID{sk.Address()},
 		},
-	}
+	}}, txFee)
 
 	initialBalance := sut.balance(t, sender)
-	blk := sut.issueAndExecute(t, crossTx)
-	sut.assertTxAccepted(t, crossTx, blk.NumberU64())
-	sut.assertBalanceChange(t, sender, initialBalance, -inputAmount)
-
-	// The exported outputs must land in the destination chain's shared memory.
-	wantUTXOs := txtest.ExportedUTXOs(crossTx.ID(), export)
-	sut.assertUTXOsExist(t, sut.snowCtx.XChainID, wantUTXOs...)
-}
-
-// utxoCmpOpts compares [avax.UTXO] values, ignoring the unexported cached id
-// on [avax.UTXOID] and equating nil and empty slices.
-var utxoCmpOpts = cmp.Options{
-	cmpopts.IgnoreUnexported(avax.UTXOID{}, secp256k1fx.OutputOwners{}),
-	cmpopts.EquateEmpty(),
+	blk := sut.issueAndExecute(t, signedExport)
+	sut.assertTxAccepted(t, signedExport, blk.NumberU64())
+	const amountBurned = exportedAmount + txFee
+	sut.assertBalance(t, sender, txtest.AddNAVAX(initialBalance, -amountBurned))
+	sut.assertUTXOsExist(t, sut.snowCtx.XChainID, txtest.ExportedUTXOs(signedExport.ID(), export)...)
 }
 
 // TestImport exercises the cchain VM end-to-end with an Import tx: it seeds a
@@ -328,23 +289,15 @@ var utxoCmpOpts = cmp.Options{
 // as accepted and that the recipient's C-Chain balance increased by exactly
 // the minted amount.
 func TestImport(t *testing.T) {
-	sk := txtest.NewKey(t)
 	sut := newSUT(t)
-	avaxAssetID := sut.snowCtx.AVAXAssetID
 
-	const (
-		// utxoAmount is the nAVAX in the seeded source UTXO.
-		// outputAmount is the nAVAX credited to the recipient on the C-Chain.
-		// The difference (utxoAmount - outputAmount) is burned as the gas fee.
-		utxoAmount   = 100
-		outputAmount = 50
-	)
+	const utxoAmount = 100
+	sk := txtest.NewKey(t)
 
 	// Seed an X-Chain UTXO controlled by sk and destined for the C-Chain.
-	utxoID := avax.UTXOID{TxID: ids.GenerateTestID()}
 	sut.addUTXOs(t, snowtest.XChainID, &avax.UTXO{
-		UTXOID: utxoID,
-		Asset:  avax.Asset{ID: avaxAssetID},
+		UTXOID: avax.UTXOID{TxID: ids.GenerateTestID()},
+		Asset:  avax.Asset{ID: sut.snowCtx.AVAXAssetID},
 		Out: &secp256k1fx.TransferOutput{
 			Amt: utxoAmount,
 			OutputOwners: secp256k1fx.OutputOwners{
@@ -354,40 +307,16 @@ func TestImport(t *testing.T) {
 		},
 	})
 
+	const txFee = 50
+
 	// Use a fresh recipient address whose balance starts at 0 so we can
 	// trivially verify the mint.
 	recipient := common.Address{0xde, 0xad, 0xbe, 0xef}
-	imp := &tx.Import{
-		NetworkID:    sut.snowCtx.NetworkID,
-		BlockchainID: sut.snowCtx.ChainID,
-		SourceChain:  sut.snowCtx.XChainID,
-		ImportedInputs: []*avax.TransferableInput{{
-			UTXOID: utxoID,
-			Asset:  avax.Asset{ID: avaxAssetID},
-			In: &secp256k1fx.TransferInput{
-				Amt:   utxoAmount,
-				Input: secp256k1fx.Input{SigIndices: []uint32{0}},
-			},
-		}},
-		Outs: []tx.Output{{
-			Address: recipient,
-			Amount:  outputAmount,
-			AssetID: avaxAssetID,
-		}},
-	}
-	crossTx := &tx.Tx{
-		Unsigned: imp,
-		Creds: []tx.Credential{
-			&secp256k1fx.Credential{
-				Sigs: []txtest.Signature{txtest.Sign(t, imp, sk)},
-			},
-		},
-	}
+	wallet := txtest.NewWallet(sk, sut.snowCtx, sut.memory)
+	signedImport, _ := wallet.NewImportTx(t, sut.snowCtx.XChainID, recipient, txFee)
 
-	initialBalance := sut.balance(t, recipient)
-	blk := sut.issueAndExecute(t, crossTx)
-
-	sut.assertTxAccepted(t, crossTx, blk.NumberU64())
-
-	sut.assertBalanceChange(t, recipient, initialBalance, outputAmount)
+	blk := sut.issueAndExecute(t, signedImport)
+	sut.assertTxAccepted(t, signedImport, blk.NumberU64())
+	const amountMinted = utxoAmount - txFee
+	sut.assertBalance(t, recipient, txtest.ScaleAVAX(amountMinted))
 }
