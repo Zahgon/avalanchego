@@ -22,23 +22,10 @@ import (
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
-const _x2cRate = 1_000_000_000
-
-var x2cRate = uint256.NewInt(_x2cRate)
-
-// ScaleAVAX converts an amount denominated in nAVAX into the C-Chain's aAVAX
-// denomination.
-func ScaleAVAX(nAVAX uint64) uint256.Int {
-	var aAVAX uint256.Int
-	aAVAX.SetUint64(nAVAX)
-	aAVAX.Mul(&aAVAX, x2cRate)
-	return aAVAX
-}
-
 // AddNAVAX returns balance + nAVAXDelta nAVAX (scaled to aAVAX). The delta
 // may be negative. It panics if the result does not fit in a uint256.
 func AddNAVAX(balance uint256.Int, nAVAXDelta int64) uint256.Int {
-	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(_x2cRate))
+	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(tx.X2CRate))
 	sum := new(big.Int).Add(balance.ToBig(), delta)
 	result, overflow := uint256.FromBig(sum)
 	if overflow {

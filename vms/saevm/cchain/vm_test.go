@@ -240,6 +240,10 @@ func (s *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
 	var blockCtx *block.Context
 	require.NoErrorf(tb, s.SetPreference(ctx, lastAcceptedID, blockCtx), "%T.SetPreference()", s.VM)
 
+	e, err := s.WaitForEvent(ctx)
+	require.NoErrorf(tb, err, "%T.WaitForEvent()", s.VM)
+	require.Equalf(tb, snowcommon.PendingTxs, e, "%T.WaitForEvent() event", s.VM)
+
 	blk, err := s.BuildBlock(ctx, blockCtx)
 	require.NoErrorf(tb, err, "%T.BuildBlock()", s.VM)
 	require.NoErrorf(tb, s.VerifyBlock(ctx, blockCtx, blk), "%T.VerifyBlock()", s.VM)
@@ -318,5 +322,5 @@ func TestImport(t *testing.T) {
 	blk := sut.issueAndExecute(t, signedImport)
 	sut.assertTxAccepted(t, signedImport, blk.NumberU64())
 	const amountMinted = utxoAmount - txFee
-	sut.assertBalance(t, recipient, txtest.ScaleAVAX(amountMinted))
+	sut.assertBalance(t, recipient, tx.ScaleAVAX(amountMinted))
 }

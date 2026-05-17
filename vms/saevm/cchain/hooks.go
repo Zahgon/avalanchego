@@ -141,10 +141,10 @@ func (h *hooks) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
 	}
 
 	ops := make([]hook.Op, len(txs))
-	for i, tx := range txs {
-		op, err := tx.AsOp(h.ctx.AVAXAssetID)
+	for i, t := range txs {
+		op, err := t.AsOp(h.ctx.AVAXAssetID)
 		if err != nil {
-			return nil, fmt.Errorf("converting tx %s (%d): %w", tx.ID(), i, err)
+			return nil, fmt.Errorf("converting tx %s (%d): %w", t.ID(), i, err)
 		}
 		ops[i] = op
 	}
@@ -166,9 +166,9 @@ func (h *hooks) AfterExecutingBlock(statedb *state.StateDB, b *types.Block, rece
 	}
 
 	extstatedb := extstate.New(statedb)
-	for i, tx := range txs {
-		if err := tx.TransferNonAVAX(h.ctx.AVAXAssetID, extstatedb); err != nil {
-			return fmt.Errorf("transferring non-AVAX assets of tx %s (%d): %w", tx.ID(), i, err)
+	for i, t := range txs {
+		if err := t.TransferNonAVAX(h.ctx.AVAXAssetID, extstatedb); err != nil {
+			return fmt.Errorf("transferring non-AVAX assets of tx %s (%d): %w", t.ID(), i, err)
 		}
 	}
 
@@ -279,8 +279,8 @@ func ancestorInputIDs(h *types.Header, settled common.Hash, source saetypes.Bloc
 		if err != nil {
 			return nil, fmt.Errorf("parsing txs in %s (%d): %w", h.ParentHash, parentNumber, err)
 		}
-		for _, tx := range txs {
-			s.Union(tx.InputIDs())
+		for _, t := range txs {
+			s.Union(t.InputIDs())
 		}
 		h = p.Header()
 	}

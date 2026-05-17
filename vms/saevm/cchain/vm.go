@@ -42,7 +42,7 @@ type VM struct {
 	// onClose are executed in reverse order during [SinceGenesis.Shutdown].
 	// If a resource depends on another resource, it MUST be added AFTER the
 	// resource it depends on.
-	onClose []func() error
+	onClose []func(context.Context) error
 }
 
 var ethDBPrefix = []byte("ethdb")
@@ -90,7 +90,9 @@ func (v *VM) Initialize(
 	if err != nil {
 		return fmt.Errorf("creating cchain state: %w", err)
 	}
-	v.onClose = append(v.onClose, v.state.Close)
+	v.onClose = append(v.onClose, func(ctx context.Context) error {
+		return v.state.Close()
+	})
 
 	pendingTxs := txpool.NewPending()
 	hooks := newHooks(
@@ -99,6 +101,8 @@ func (v *VM) Initialize(
 		pendingTxs,
 	)
 	mempoolConfig := legacypool.DefaultConfig
+	// Treat all transactions equally regardless of submission source — no
+	// preferential admission or pricing for locally-submitted txs.
 	mempoolConfig.NoLocals = true
 	saeConfig := sae.Config{
 		MempoolConfig: mempoolConfig,
@@ -110,13 +114,14 @@ func (v *VM) Initialize(
 	if err != nil {
 		return fmt.Errorf("creating SAE VM: %w", err)
 	}
+	v.onClose = append(v.onClose, v.VM.Shutdown)
 
 	const maxTxPoolSize = 1024
 	v.txpool, err = txpool.New(snowCtx, chainConfig, pendingTxs, v.VM, maxTxPoolSize)
 	if err != nil {
 		return fmt.Errorf("creating txpool: %w", err)
 	}
-	v.onClose = append(v.onClose, func() error {
+	v.onClose = append(v.onClose, func(context.Context) error {
 		v.txpool.Close()
 		return nil
 	})
@@ -181,14 +186,7 @@ func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 func (v *VM) Shutdown(ctx context.Context) error {
 	errs := make([]error, len(v.onClose))
 	for i, f := range slices.Backward(v.onClose) {
-		errs[i] = f()
+		errs[i] = f(ctx)
 	}
-	if err := errors.Join(errs...); err != nil {
-		return fmt.Errorf("closing resources: %w", err)
-	}
-
-	if v.VM == nil {
-		return nil
-	}
-	return v.VM.Shutdown(ctx)
+	return errors.Join(errs...)
 }

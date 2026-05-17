@@ -217,7 +217,7 @@ func (i *Import) asOp(avaxAssetID ids.ID) (op, error) {
 
 		var (
 			total  = mint[out.Address]
-			amount = scaleAVAX(out.Amount)
+			amount = ScaleAVAX(out.Amount)
 		)
 		if _, overflow := total.AddOverflow(&total, &amount); overflow {
 			return op{}, fmt.Errorf("%w: for address %s", errOverflow, out.Address)

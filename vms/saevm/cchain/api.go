@@ -140,7 +140,7 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 		return a, nil
 	}
 
-	chainAlias, hrp, bytes, err := address.Parse(str)
+	chainAlias, hrp, addrBytes, err := address.Parse(str)
 	if err != nil {
 		return ids.ShortID{}, err
 	}
@@ -154,7 +154,7 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 	if chainID != s.ctx.ChainID {
 		return ids.ShortID{}, fmt.Errorf("expected chainID to be %q but was %q", s.ctx.ChainID, chainID)
 	}
-	return ids.ToShortID(bytes)
+	return ids.ToShortID(addrBytes)
 }
 
 func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) error {
