@@ -242,7 +242,7 @@ func (e *Export) atomicRequests(txID ids.ID) (ids.ID, *chainsatomic.Requests, er
 			Out:   out.Out,
 		}
 
-		utxoBytes, err := c.Marshal(codecVersion, utxo)
+		utxoBytes, err := MarshalUTXO(utxo)
 		if err != nil {
 			return ids.ID{}, nil, err
 		}
