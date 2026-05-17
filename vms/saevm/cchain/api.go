@@ -96,12 +96,15 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 	}
 
 	const maxLimit = 1024
+	if a.Limit == 0 || a.Limit > maxLimit {
+		a.Limit = maxLimit
+	}
 	utxos, lastAddr, lastUTXO, err := s.ctx.SharedMemory.Indexed(
 		sourceChainID,
 		addrs,
 		startAddr[:],
 		startUTXO[:],
-		int(min(a.Limit, maxLimit)),
+		int(a.Limit),
 	)
 	if err != nil {
 		return fmt.Errorf("retrieving UTXOs: %w", err)
@@ -180,6 +183,8 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 	return s.txpool.Add(t)
 }
 
+// GetTxReply is the response from [Client.GetTx]: the encoded transaction
+// along with the height of the block in which it was accepted.
 type GetTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`

@@ -220,11 +220,11 @@ func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 	tb.Helper()
 
 	got, gotHeight, err := s.GetTx(tb.Context(), want.ID())
-	require.NoErrorf(tb, err, "%T.GetAtomicTx()", s.Client)
+	require.NoErrorf(tb, err, "%T.GetTx()", s.Client)
 	if diff := cmp.Diff(want, got, txtest.CmpOpt()); diff != "" {
-		tb.Errorf("%T.GetAtomicTx() (-want +got):\n%s", s.Client, diff)
+		tb.Errorf("%T.GetTx() (-want +got):\n%s", s.Client, diff)
 	}
-	require.Equalf(tb, wantHeight, gotHeight, "%T.GetAtomicTx() block height", s.Client)
+	require.Equalf(tb, wantHeight, gotHeight, "%T.GetTx() block height", s.Client)
 }
 
 // runConsensusLoop builds a block on top of the last-accepted block, drives it
@@ -341,7 +341,7 @@ func (w *wallet) newImportTx(
 			startAddr,
 			startUTXOID,
 		)
-		require.NoErrorf(tb, err, "%T.GetAtomicUTXOs()", w.client)
+		require.NoErrorf(tb, err, "%T.GetUTXOs()", w.client)
 		utxos = append(utxos, page...)
 		if uint32(len(page)) < limit {
 			break

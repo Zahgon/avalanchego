@@ -133,6 +133,8 @@ const (
 	avaxHTTPExtensionPath = "/" + avaxServiceName
 )
 
+// CreateHandlers returns the HTTP handlers exposed by the underlying SAE VM
+// augmented with the avax service at [avaxHTTPExtensionPath].
 func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error) {
 	m, err := v.VM.CreateHandlers(ctx)
 	if err != nil {
@@ -183,10 +185,14 @@ func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 	return r.msg, r.err
 }
 
+// Shutdown releases every resource allocated by [VM.Initialize] in reverse
+// order. It is idempotent and safe to call after a partially-failed
+// [VM.Initialize].
 func (v *VM) Shutdown(ctx context.Context) error {
 	errs := make([]error, len(v.onClose))
 	for i, f := range slices.Backward(v.onClose) {
 		errs[i] = f(ctx)
 	}
+	v.onClose = nil
 	return errors.Join(errs...)
 }
