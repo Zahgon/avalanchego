@@ -8,6 +8,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	// Imported for [secp256k1fx.Credential] comment resolution.
+	_ "github.com/ava-labs/avalanchego/vms/secp256k1fx"
+
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/crypto/keychain"
 	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
@@ -77,4 +80,3 @@ func ExportedUTXOs(txID ids.ID, e *tx.Export) []*avax.UTXO {
 	}
 	return utxos
 }
-

@@ -79,11 +79,11 @@ func (v *VM) Initialize(
 	// TODO(StephenButtolph): Replace this with Coreth's genesis format.
 	genesis := new(core.Genesis)
 	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
-		return fmt.Errorf("json.Unmarshal(%T): %v", genesis, err)
+		return fmt.Errorf("json.Unmarshal(%T): %w", genesis, err)
 	}
 	chainConfig, _, err := core.SetupGenesisBlock(ethDB, trieDB, genesis)
 	if err != nil {
-		return fmt.Errorf("core.SetupGenesisBlock(...): %v", err)
+		return fmt.Errorf("core.SetupGenesisBlock(...): %w", err)
 	}
 
 	v.state, err = state.New(snowCtx, avaDB)
