@@ -180,12 +180,12 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 	return s.txpool.Add(t)
 }
 
-type GetAtomicTxReply struct {
+type GetTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`
 }
 
-func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetAtomicTxReply) error {
+func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetTxReply) error {
 	s.ctx.Log.Debug("API called",
 		zap.String("service", "avax"),
 		zap.String("method", "getAtomicTx"),
@@ -227,57 +227,13 @@ func NewClient(uri string) *Client {
 	}
 }
 
-// IssueTx submits t to the txpool.
-func (c *Client) IssueTx(ctx context.Context, t *tx.Tx, options ...rpc.Option) error {
-	txBytes, err := t.Bytes()
-	if err != nil {
-		return fmt.Errorf("marshalling tx: %w", err)
-	}
-	txStr, err := formatting.Encode(formatting.Hex, txBytes)
-	if err != nil {
-		return fmt.Errorf("encoding tx: %w", err)
-	}
-
-	err = c.r.SendRequest(ctx, "avax.issueTx", &api.FormattedTx{
-		Tx:       txStr,
-		Encoding: formatting.Hex,
-	}, &api.JSONTxID{}, options...)
-	if err != nil {
-		return fmt.Errorf("sending request: %w", err)
-	}
-	return nil
-}
-
-// GetAtomicTx returns an accepted cross-chain transaction along with the block
-// height at which it was accepted.
-func (c *Client) GetAtomicTx(ctx context.Context, txID ids.ID, options ...rpc.Option) (*tx.Tx, uint64, error) {
-	res := &GetAtomicTxReply{}
-	err := c.r.SendRequest(ctx, "avax.getAtomicTx", &api.GetTxArgs{
-		TxID:     txID,
-		Encoding: formatting.Hex,
-	}, res, options...)
-	if err != nil {
-		return nil, 0, fmt.Errorf("sending request: %w", err)
-	}
-
-	txBytes, err := formatting.Decode(res.Encoding, res.Tx)
-	if err != nil {
-		return nil, 0, fmt.Errorf("decoding tx: %w", err)
-	}
-	t, err := tx.Parse(txBytes)
-	if err != nil {
-		return nil, 0, fmt.Errorf("parsing tx: %w", err)
-	}
-	return t, uint64(res.Height), nil
-}
-
-// GetAtomicUTXOs returns the UTXOs controlled by addrs that have been exported
-// to this chain from sourceChain.
+// GetUTXOs returns the UTXOs controlled by addrs that have been exported to
+// this chain from sourceChain.
 //
 // Paginates via startAddr and startUTXOID; pass the zero values on the first
 // call and the returned (endAddr, endUTXOID) on each subsequent call until
 // fewer than limit results are returned.
-func (c *Client) GetAtomicUTXOs(
+func (c *Client) GetUTXOs(
 	ctx context.Context,
 	addrs []ids.ShortID,
 	sourceChain string,
@@ -321,4 +277,48 @@ func (c *Client) GetAtomicUTXOs(
 		return nil, ids.ShortID{}, ids.Empty, fmt.Errorf("parsing end utxoID: %w", err)
 	}
 	return utxos, endAddr, endUTXOID, nil
+}
+
+// IssueTx submits t to the txpool.
+func (c *Client) IssueTx(ctx context.Context, t *tx.Tx, options ...rpc.Option) error {
+	txBytes, err := t.Bytes()
+	if err != nil {
+		return fmt.Errorf("marshalling tx: %w", err)
+	}
+	txStr, err := formatting.Encode(formatting.Hex, txBytes)
+	if err != nil {
+		return fmt.Errorf("encoding tx: %w", err)
+	}
+
+	err = c.r.SendRequest(ctx, "avax.issueTx", &api.FormattedTx{
+		Tx:       txStr,
+		Encoding: formatting.Hex,
+	}, &api.JSONTxID{}, options...)
+	if err != nil {
+		return fmt.Errorf("sending request: %w", err)
+	}
+	return nil
+}
+
+// GetTx returns an accepted cross-chain transaction along with the block height
+// at which it was accepted.
+func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) (*tx.Tx, uint64, error) {
+	res := &GetTxReply{}
+	err := c.r.SendRequest(ctx, "avax.getAtomicTx", &api.GetTxArgs{
+		TxID:     txID,
+		Encoding: formatting.Hex,
+	}, res, options...)
+	if err != nil {
+		return nil, 0, fmt.Errorf("sending request: %w", err)
+	}
+
+	txBytes, err := formatting.Decode(res.Encoding, res.Tx)
+	if err != nil {
+		return nil, 0, fmt.Errorf("decoding tx: %w", err)
+	}
+	t, err := tx.Parse(txBytes)
+	if err != nil {
+		return nil, 0, fmt.Errorf("parsing tx: %w", err)
+	}
+	return t, uint64(res.Height), nil
 }

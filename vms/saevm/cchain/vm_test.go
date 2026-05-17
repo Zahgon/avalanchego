@@ -30,6 +30,7 @@ import (
 	"github.com/ava-labs/avalanchego/snow/engine/enginetest"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/snow/snowtest"
+	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
 	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
@@ -213,12 +214,12 @@ func (s *SUT) issueAndExecute(tb testing.TB, t *tx.Tx) *blocks.Block {
 	return s.runConsensusLoop(tb)
 }
 
-// assertTxAccepted asserts that [Client.GetAtomicTx] returns the given tx at
+// assertTxAccepted asserts that [Client.GetTx] returns the given tx at
 // the given block height.
 func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 	tb.Helper()
 
-	got, gotHeight, err := s.GetAtomicTx(tb.Context(), want.ID())
+	got, gotHeight, err := s.GetTx(tb.Context(), want.ID())
 	require.NoErrorf(tb, err, "%T.GetAtomicTx()", s.Client)
 	if diff := cmp.Diff(want, got, txtest.CmpOpt()); diff != "" {
 		tb.Errorf("%T.GetAtomicTx() (-want +got):\n%s", s.Client, diff)
@@ -252,6 +253,171 @@ func (s *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
 	return blk
 }
 
+// wallet builds and signs cross-chain transactions on behalf of a single key.
+// It is the analog of [wallet/chain/c.Wallet] for SAE.
+type wallet struct {
+	sk      *secp256k1.PrivateKey
+	snowCtx *snow.Context
+	client  *Client
+	nonce   uint64
+}
+
+// newWallet returns a [*wallet] backed by sk for the chain described by
+// snowCtx. client is queried when building imports to discover spendable
+// UTXOs.
+func newWallet(sk *secp256k1.PrivateKey, snowCtx *snow.Context, client *Client) *wallet {
+	return &wallet{
+		sk:      sk,
+		snowCtx: snowCtx,
+		client:  client,
+	}
+}
+
+// newExportTx builds and signs an [tx.Export] sending outputs to
+// destinationChain. The wallet contributes a single AVAX input from its eth
+// address with Amount = sum(outputs.Amt) + fee, using its next nonce.
+func (w *wallet) newExportTx(
+	tb testing.TB,
+	destinationChain ids.ID,
+	outputs []*secp256k1fx.TransferOutput,
+	fee uint64,
+) (*tx.Tx, *tx.Export) {
+	tb.Helper()
+
+	avaxAssetID := w.snowCtx.AVAXAssetID
+	var exportedAmount uint64
+	transferable := make([]*avax.TransferableOutput, len(outputs))
+	for i, out := range outputs {
+		transferable[i] = &avax.TransferableOutput{
+			Asset: avax.Asset{ID: avaxAssetID},
+			Out:   out,
+		}
+		exportedAmount += out.Amt
+	}
+
+	export := &tx.Export{
+		NetworkID:        w.snowCtx.NetworkID,
+		BlockchainID:     w.snowCtx.ChainID,
+		DestinationChain: destinationChain,
+		Ins: []tx.Input{{
+			Address: w.sk.EthAddress(),
+			Amount:  exportedAmount + fee,
+			AssetID: avaxAssetID,
+			Nonce:   w.nonce,
+		}},
+		ExportedOutputs: transferable,
+	}
+	w.nonce++
+
+	return w.sign(tb, export, 1), export
+}
+
+// newImportTx builds and signs an [tx.Import] consuming all spendable AVAX
+// UTXOs that have been exported to this chain from sourceChain and are owned
+// by the wallet, crediting the total imported (minus fee) to `to` on the
+// C-Chain.
+func (w *wallet) newImportTx(
+	tb testing.TB,
+	sourceChain ids.ID,
+	to common.Address,
+	fee uint64,
+) (*tx.Tx, *tx.Import) {
+	tb.Helper()
+
+	var (
+		addrs       = []ids.ShortID{w.sk.Address()}
+		sourceStr   = sourceChain.String()
+		startAddr   ids.ShortID
+		startUTXOID ids.ID
+		utxos       []*avax.UTXO
+	)
+	for {
+		const limit = 1024
+		page, endAddr, endUTXOID, err := w.client.GetUTXOs(
+			tb.Context(),
+			addrs,
+			sourceStr,
+			limit,
+			startAddr,
+			startUTXOID,
+		)
+		require.NoErrorf(tb, err, "%T.GetAtomicUTXOs()", w.client)
+		utxos = append(utxos, page...)
+		if uint32(len(page)) < limit {
+			break
+		}
+		startAddr, startUTXOID = endAddr, endUTXOID
+	}
+
+	var (
+		avaxAssetID  = w.snowCtx.AVAXAssetID
+		importedAVAX uint64
+		inputs       = make([]*avax.TransferableInput, 0, len(utxos))
+	)
+	for _, utxo := range utxos {
+		if utxo.Asset.ID != avaxAssetID {
+			continue
+		}
+
+		out, ok := utxo.Out.(*secp256k1fx.TransferOutput)
+		require.Truef(tb, ok, "unexpected UTXO output type %T", utxo.Out)
+
+		importedAVAX += out.Amt
+		inputs = append(inputs, &avax.TransferableInput{
+			UTXOID: utxo.UTXOID,
+			Asset:  utxo.Asset,
+			In: &secp256k1fx.TransferInput{
+				Amt: out.Amt,
+				Input: secp256k1fx.Input{
+					SigIndices: []uint32{0},
+				},
+			},
+		})
+	}
+	require.Greaterf(tb, importedAVAX, fee, "imported AVAX insufficient to cover fee")
+
+	imp := &tx.Import{
+		NetworkID:      w.snowCtx.NetworkID,
+		BlockchainID:   w.snowCtx.ChainID,
+		SourceChain:    sourceChain,
+		ImportedInputs: inputs,
+		Outs: []tx.Output{{
+			Address: to,
+			Amount:  importedAVAX - fee,
+			AssetID: avaxAssetID,
+		}},
+	}
+	return w.sign(tb, imp, len(inputs)), imp
+}
+
+// sign wraps u in a [tx.Tx] with numCreds copies of a single-sig credential
+// over u.
+func (w *wallet) sign(tb testing.TB, u tx.Unsigned, numCreds int) *tx.Tx {
+	tb.Helper()
+
+	sig := txtest.Sign(tb, u, w.sk)
+	creds := make([]tx.Credential, numCreds)
+	for i := range creds {
+		creds[i] = &secp256k1fx.Credential{Sigs: []txtest.Signature{sig}}
+	}
+	return &tx.Tx{
+		Unsigned: u,
+		Creds:    creds,
+	}
+}
+
+// addNAVAX returns balance + nAVAXDelta nAVAX (scaled to aAVAX). The delta
+// may be negative. It panics if the result does not fit in a uint256.
+func addNAVAX(balance uint256.Int, nAVAXDelta int64) uint256.Int {
+	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(tx.X2CRate))
+	sum := new(big.Int).Add(balance.ToBig(), delta)
+	result, overflow := uint256.FromBig(sum)
+	if overflow {
+		panic("addNAVAX: result overflows uint256")
+	}
+	return *result
+}
+
 // TestExport exercises the cchain VM end-to-end with an Export tx: it builds
 // and signs the tx, issues it through the HTTP [Client], drives a block
 // through build/verify/accept, waits for execution to complete, and verifies
@@ -269,8 +435,8 @@ func TestExport(t *testing.T) {
 		txFee          = 50
 	)
 
-	wallet := txtest.NewWallet(sk, sut.snowCtx, sut.memory)
-	signedExport, export := wallet.NewExportTx(t, sut.snowCtx.XChainID, []*secp256k1fx.TransferOutput{{
+	w := newWallet(sk, sut.snowCtx, sut.Client)
+	signedExport, export := w.newExportTx(t, sut.snowCtx.XChainID, []*secp256k1fx.TransferOutput{{
 		Amt: exportedAmount,
 		OutputOwners: secp256k1fx.OutputOwners{
 			Threshold: 1,
@@ -282,7 +448,7 @@ func TestExport(t *testing.T) {
 	blk := sut.issueAndExecute(t, signedExport)
 	sut.assertTxAccepted(t, signedExport, blk.NumberU64())
 	const amountBurned = exportedAmount + txFee
-	sut.assertBalance(t, sender, txtest.AddNAVAX(initialBalance, -amountBurned))
+	sut.assertBalance(t, sender, addNAVAX(initialBalance, -amountBurned))
 	sut.assertUTXOsExist(t, sut.snowCtx.XChainID, txtest.ExportedUTXOs(signedExport.ID(), export)...)
 }
 
@@ -316,8 +482,8 @@ func TestImport(t *testing.T) {
 	// Use a fresh recipient address whose balance starts at 0 so we can
 	// trivially verify the mint.
 	recipient := common.Address{0xde, 0xad, 0xbe, 0xef}
-	wallet := txtest.NewWallet(sk, sut.snowCtx, sut.memory)
-	signedImport, _ := wallet.NewImportTx(t, sut.snowCtx.XChainID, recipient, txFee)
+	w := newWallet(sk, sut.snowCtx, sut.Client)
+	signedImport, _ := w.newImportTx(t, sut.snowCtx.XChainID, recipient, txFee)
 
 	blk := sut.issueAndExecute(t, signedImport)
 	sut.assertTxAccepted(t, signedImport, blk.NumberU64())
