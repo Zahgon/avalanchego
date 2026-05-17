@@ -29,9 +29,10 @@ import (
 	avadb "github.com/ava-labs/avalanchego/database"
 )
 
-// VM is a harness around an [sae.VM], providing an `Initialize`
-// method that supports being asynchronous since genesis or after a previously
-// accepted synchronous block.
+// VM wraps an [sae.VM] with the cross-chain pieces specific to the C-Chain:
+// the [hooks] driving block building and execution, the cross-chain transaction
+// state, the cross-chain txpool, and the avax JSON-RPC service mounted
+// alongside the inherited SAE handlers.
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
@@ -39,9 +40,9 @@ type VM struct {
 	state  *state.State
 	txpool *txpool.Txpool
 
-	// onClose are executed in reverse order during [SinceGenesis.Shutdown].
-	// If a resource depends on another resource, it MUST be added AFTER the
-	// resource it depends on.
+	// onClose are executed in reverse order during [VM.Shutdown]. If a resource
+	// depends on another resource, it MUST be added AFTER the resource it
+	// depends on.
 	onClose []func(context.Context) error
 }
 

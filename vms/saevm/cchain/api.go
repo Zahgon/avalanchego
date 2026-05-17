@@ -190,6 +190,9 @@ type GetTxReply struct {
 	Height json.Uint64 `json:"blockHeight"`
 }
 
+// GetAtomicTx serves the legacy `avax.getAtomicTx` route, preserved for
+// compatibility with existing C-Chain clients. The [Client] exposes it as
+// [Client.GetTx].
 func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetTxReply) error {
 	s.ctx.Log.Debug("API called",
 		zap.String("service", "avax"),
