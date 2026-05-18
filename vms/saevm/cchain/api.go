@@ -155,7 +155,7 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 		return ids.ShortID{}, err
 	}
 	if chainID != s.ctx.ChainID {
-		return ids.ShortID{}, fmt.Errorf("expected chainID to be %q but was %q", s.ctx.ChainID, chainID)
+		return ids.ShortID{}, fmt.Errorf("expected chainID %q but got %q", s.ctx.ChainID, chainID)
 	}
 	return ids.ToShortID(addrBytes)
 }
