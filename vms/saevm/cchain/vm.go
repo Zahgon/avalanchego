@@ -1,6 +1,10 @@
 // Copyright (C) 2019, Ava Labs, Inc. All rights reserved.
 // See the file LICENSE for licensing terms.
 
+// Package cchain implements the C-Chain virtual machine atop [sae.VM]. It
+// composes the C-Chain block-building hooks, the cross-chain transaction pool,
+// and the avax JSON-RPC service that ingests Export and Import transactions
+// alongside the inherited SAE machinery.
 package cchain
 
 import (

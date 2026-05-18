@@ -45,7 +45,7 @@ import (
 
 func TestMain(m *testing.M) {
 	evm.RegisterAllLibEVMExtras()
-	goleak.VerifyTestMain(m, goleak.IgnoreCurrent())
+	goleak.VerifyTestMain(m, saetest.GoleakOptions()...)
 }
 
 // SUT is the system under test for the cchain [VM]. It bundles the [VM]
@@ -312,20 +312,12 @@ func (w *wallet) newExportTx(
 	return w.sign(tb, export, 1), export
 }
 
-// newImportTx builds and signs an [tx.Import] consuming all spendable AVAX
-// UTXOs that have been exported to this chain from sourceChain and are owned
-// by the wallet, crediting the total imported (minus fee) to `to` on the
-// C-Chain.
-func (w *wallet) newImportTx(
-	tb testing.TB,
-	sourceChain ids.ID,
-	to common.Address,
-	fee uint64,
-) (*tx.Tx, *tx.Import) {
+// getUTXOs paginates [Client.GetUTXOs] and returns every UTXO controlled by
+// any of addrs that has been exported to this chain from sourceChain.
+func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID, addrs ...ids.ShortID) []*avax.UTXO {
 	tb.Helper()
 
 	var (
-		addrs       = []ids.ShortID{w.sk.Address()}
 		sourceStr   = sourceChain.String()
 		startAddr   ids.ShortID
 		startUTXOID ids.ID
@@ -343,11 +335,26 @@ func (w *wallet) newImportTx(
 		)
 		require.NoErrorf(tb, err, "%T.GetUTXOs()", w.client)
 		utxos = append(utxos, page...)
-		if uint32(len(page)) < limit {
-			break
+		if len(page) < limit {
+			return utxos
 		}
 		startAddr, startUTXOID = endAddr, endUTXOID
 	}
+}
+
+// newImportTx builds and signs an [tx.Import] consuming all spendable AVAX
+// UTXOs that have been exported to this chain from sourceChain and are owned
+// by the wallet, crediting the total imported (minus fee) to `to` on the
+// C-Chain.
+func (w *wallet) newImportTx(
+	tb testing.TB,
+	sourceChain ids.ID,
+	to common.Address,
+	fee uint64,
+) (*tx.Tx, *tx.Import) {
+	tb.Helper()
+
+	utxos := w.getUTXOs(tb, sourceChain, w.sk.Address())
 
 	var (
 		avaxAssetID  = w.snowCtx.AVAXAssetID
@@ -489,4 +496,113 @@ func TestImport(t *testing.T) {
 	sut.assertTxAccepted(t, signedImport, blk.NumberU64())
 	const amountMinted = utxoAmount - txFee
 	sut.assertBalance(t, recipient, tx.ScaleAVAX(amountMinted))
+}
+
+// TestIssueTxFailures asserts that [Client.IssueTx] surfaces a meaningful
+// error for each category of pool-level rejection.
+//
+// The cases are ordered to mirror the validation pipeline in [txpool.Add]:
+// sanity check → credentials → state nonce → state balance. Each tx is
+// built fresh so it triggers exactly one failure mode.
+func TestIssueTxFailures(t *testing.T) {
+	sk := txtest.NewKey(t)
+	sender := sk.EthAddress()
+	sut := newSUT(t, options.Func[sutConfig](func(c *sutConfig) {
+		c.genesis.Alloc = saetest.MaxAllocFor(sender)
+	}))
+
+	const (
+		exportedAmount = 50
+		txFee          = 50
+	)
+	outputs := []*secp256k1fx.TransferOutput{{
+		Amt: exportedAmount,
+		OutputOwners: secp256k1fx.OutputOwners{
+			Threshold: 1,
+			Addrs:     []ids.ShortID{sk.Address()},
+		},
+	}}
+
+	tests := []struct {
+		name      string
+		construct func(*testing.T, *wallet) *tx.Tx
+		wantErr   string
+	}{
+		{
+			name: "wrong network ID",
+			construct: func(t *testing.T, w *wallet) *tx.Tx {
+				_, export := w.newExportTx(t, sut.snowCtx.XChainID, outputs, txFee)
+				export.NetworkID++
+				return w.sign(t, export, 1)
+			},
+			wantErr: "wrong network ID",
+		},
+		{
+			name: "credential signed by wrong key",
+			construct: func(t *testing.T, w *wallet) *tx.Tx {
+				signed, _ := w.newExportTx(t, sut.snowCtx.XChainID, outputs, txFee)
+				wrong := txtest.NewKey(t)
+				signed.Creds = []tx.Credential{&secp256k1fx.Credential{
+					Sigs: []txtest.Signature{txtest.Sign(t, signed.Unsigned, wrong)},
+				}}
+				return signed
+			},
+			wantErr: "signature does not match address",
+		},
+		{
+			name: "nonce mismatch",
+			construct: func(t *testing.T, w *wallet) *tx.Tx {
+				w.nonce = 99
+				signed, _ := w.newExportTx(t, sut.snowCtx.XChainID, outputs, txFee)
+				return signed
+			},
+			wantErr: "nonce mismatch",
+		},
+		{
+			name: "insufficient balance",
+			construct: func(t *testing.T, _ *wallet) *tx.Tx {
+				// A wallet for a fresh key holds zero balance.
+				pauper := newWallet(txtest.NewKey(t), sut.snowCtx, sut.Client)
+				signed, _ := pauper.newExportTx(t, sut.snowCtx.XChainID, outputs, txFee)
+				return signed
+			},
+			wantErr: "insufficient funds",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			w := newWallet(sk, sut.snowCtx, sut.Client)
+			err := sut.IssueTx(t.Context(), tt.construct(t, w))
+			require.ErrorContainsf(t, err, tt.wantErr, "%T.IssueTx()", sut.Client)
+		})
+	}
+}
+
+// TestIssueTxAlreadyKnown asserts that resubmitting a tx already in the pool
+// returns an error mentioning the duplicate, while leaving the original
+// admission intact.
+func TestIssueTxAlreadyKnown(t *testing.T) {
+	sk := txtest.NewKey(t)
+	sender := sk.EthAddress()
+	sut := newSUT(t, options.Func[sutConfig](func(c *sutConfig) {
+		c.genesis.Alloc = saetest.MaxAllocFor(sender)
+	}))
+
+	const (
+		exportedAmount = 50
+		txFee          = 50
+	)
+	w := newWallet(sk, sut.snowCtx, sut.Client)
+	signed, _ := w.newExportTx(t, sut.snowCtx.XChainID, []*secp256k1fx.TransferOutput{{
+		Amt: exportedAmount,
+		OutputOwners: secp256k1fx.OutputOwners{
+			Threshold: 1,
+			Addrs:     []ids.ShortID{sk.Address()},
+		},
+	}}, txFee)
+
+	require.NoErrorf(t, sut.IssueTx(t.Context(), signed), "%T.IssueTx() first call", sut.Client)
+	err := sut.IssueTx(t.Context(), signed)
+	require.ErrorContainsf(t, err, "already in pool", "%T.IssueTx() resubmit", sut.Client)
 }
