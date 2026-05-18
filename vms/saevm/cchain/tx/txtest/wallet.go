@@ -8,14 +8,12 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	// Imported for [secp256k1fx.Credential] comment resolution.
-	_ "github.com/ava-labs/avalanchego/vms/secp256k1fx"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/crypto/keychain"
 	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
+	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 // Signature can be used within a [secp256k1fx.Credential] to authorize a
@@ -62,6 +60,28 @@ func MustParseUTXO(tb testing.TB, b []byte) *avax.UTXO {
 	utxo, err := tx.ParseUTXO(b)
 	require.NoError(tb, err, "tx.ParseUTXO()")
 	return utxo
+}
+
+// NewTransferOutput returns a single-owner [secp256k1fx.TransferOutput] with
+// threshold 1 paying amt to addr.
+func NewTransferOutput(amt uint64, addr ids.ShortID) *secp256k1fx.TransferOutput {
+	return &secp256k1fx.TransferOutput{
+		Amt: amt,
+		OutputOwners: secp256k1fx.OutputOwners{
+			Threshold: 1,
+			Addrs:     []ids.ShortID{addr},
+		},
+	}
+}
+
+// NewUTXO returns an [avax.UTXO] with a freshly-generated TxID wrapping a
+// single-owner output of amt of assetID held by addr.
+func NewUTXO(amt uint64, assetID ids.ID, addr ids.ShortID) *avax.UTXO {
+	return &avax.UTXO{
+		UTXOID: avax.UTXOID{TxID: ids.GenerateTestID()},
+		Asset:  avax.Asset{ID: assetID},
+		Out:    NewTransferOutput(amt, addr),
+	}
 }
 
 // ExportedUTXOs returns the UTXOs produced by e when wrapped in a [tx.Tx]

@@ -224,8 +224,8 @@ type Client struct {
 }
 
 const (
-	avaxHTTPPrefix = "/ext/" + constants.ChainAliasPrefix + "/C"
-	avaxHTTPPath   = avaxHTTPPrefix + avaxHTTPExtensionPath
+	cchainHTTPPrefix = "/ext/" + constants.ChainAliasPrefix + "/C"
+	avaxHTTPPath     = cchainHTTPPrefix + avaxHTTPExtensionPath
 )
 
 // NewClient returns a [Client] that targets the C-Chain reachable at uri.
