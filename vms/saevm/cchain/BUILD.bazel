@@ -69,10 +69,14 @@ go_library(
 
 go_test(
     name = "cchain_test",
-    srcs = ["vm_test.go"],
+    srcs = [
+        "api_test.go",
+        "vm_test.go",
+    ],
     embed = [":cchain"],
     deps = [
         "//chains/atomic",
+        "//database",
         "//database/memdb",
         "//database/prefixdb",
         "//graft/coreth/plugin/evm",
@@ -88,6 +92,7 @@ go_test(
         "//vms/saevm/blocks",
         "//vms/saevm/cchain/tx",
         "//vms/saevm/cchain/tx/txtest",
+        "//vms/saevm/cchain/txpool",
         "//vms/saevm/params",
         "//vms/saevm/saetest",
         "//vms/secp256k1fx",

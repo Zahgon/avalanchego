@@ -5,6 +5,7 @@ package cchain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -30,8 +31,9 @@ type service struct {
 	txpool *txpool.Txpool
 	state  *state.State
 
-	chainAlias string
-	hrp        string
+	chainAlias  string
+	hrp         string
+	zeroAddress string
 }
 
 func newService(
@@ -43,15 +45,30 @@ func newService(
 	if err != nil {
 		return nil, err
 	}
+
+	hrp := constants.GetHRP(ctx.NetworkID)
+	zeroAddress, err := address.Format(chainAlias, hrp, ids.ShortEmpty[:])
+	if err != nil {
+		return nil, fmt.Errorf("formatting zero address: %w", err)
+	}
+
 	return &service{
 		ctx:    ctx,
 		txpool: txpool,
 		state:  state,
 
-		chainAlias: chainAlias,
-		hrp:        constants.GetHRP(ctx.NetworkID),
+		chainAlias:  chainAlias,
+		hrp:         hrp,
+		zeroAddress: zeroAddress,
 	}, nil
 }
+
+// terminal IDs are the IDs with all 1s used as a sentinel to indicate the end
+// of pagination.
+var (
+	termAddr   = ids.ShortFromStringOrPanic("QLbz7JHiBTspS962RLKV8GndWFwdYhk6V")
+	termUTXOID = ids.FromStringOrPanic("2wkBET2rRgE8pahuaczxKbmv7ciehqsne57F9gtzf1PVcUJEQG")
+)
 
 func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOsReply) error {
 	s.ctx.Log.Debug("API called",
@@ -95,19 +112,50 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		}
 	}
 
-	const maxLimit = 1024
-	if a.Limit == 0 || a.Limit > maxLimit {
-		a.Limit = maxLimit
+	if startAddr == termAddr && startUTXO == termUTXOID {
+		// Client is asking for the final page, so return the terminal cursor
+		// and no results without hitting shared memory.
+		r.EndIndex.Address = s.zeroAddress
+		r.EndIndex.UTXO = ids.Empty.String()
+		r.Encoding = a.Encoding
+		return nil
 	}
-	utxos, lastAddr, lastUTXO, err := s.ctx.SharedMemory.Indexed(
+
+	const maxLimit = 1024
+	limit := a.Limit
+	if limit == 0 || limit > maxLimit {
+		limit = maxLimit
+	}
+
+	// [atomic.SharedMemory.Indexed] iterates inclusively from startKey, so
+	// a naive limit-sized fetch returns the prior page's cursor again and
+	// loops at the boundary. To present clients with the standard
+	// "len(page) < limit => done" contract, fetch one extra UTXO, drop the
+	// prior cursor on the way in, and drop the +1 sentinel on the way out.
+	utxos, nextAddr, nextUTXO, err := s.ctx.SharedMemory.Indexed(
 		sourceChainID,
 		addrs,
 		startAddr[:],
 		startUTXO[:],
-		int(a.Limit),
+		int(limit)+1,
 	)
 	if err != nil {
 		return fmt.Errorf("retrieving UTXOs: %w", err)
+	}
+
+	// If there are more UTXOs than the requested limit, trim the extra one used
+	// to detect the boundary and use its index as the next page's start index.
+	var (
+		endAddr ids.ShortID
+		endUTXO ids.ID
+	)
+	if len(utxos) > int(limit) {
+		utxos = utxos[:limit]
+		endAddr, _ = ids.ToShortID(nextAddr)
+		endUTXO, _ = ids.ToID(nextUTXO)
+	} else {
+		endAddr = termAddr
+		endUTXO = termUTXOID
 	}
 
 	r.UTXOs = make([]string, len(utxos))
@@ -118,18 +166,9 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		}
 	}
 
-	endAddr, err := ids.ToShortID(lastAddr)
-	if err != nil {
-		endAddr = ids.ShortEmpty
-	}
 	r.EndIndex.Address, err = address.Format(s.chainAlias, s.hrp, endAddr[:])
 	if err != nil {
 		return fmt.Errorf("formatting address: %w", err)
-	}
-
-	endUTXO, err := ids.ToID(lastUTXO)
-	if err != nil {
-		endUTXO = ids.Empty
 	}
 	r.EndIndex.UTXO = endUTXO.String()
 
@@ -138,6 +177,8 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 	return nil
 }
 
+// parseAddress parses str as either a human-readable address or cb58-encoded
+// address.
 func (s *service) parseAddress(str string) (ids.ShortID, error) {
 	if a, err := ids.ShortFromString(str); err == nil {
 		return a, nil
@@ -160,6 +201,8 @@ func (s *service) parseAddress(str string) (ids.ShortID, error) {
 	return ids.ToShortID(addrBytes)
 }
 
+var errIssuingTx = errors.New("issuing tx")
+
 func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) error {
 	s.ctx.Log.Debug("API called",
 		zap.String("service", "avax"),
@@ -177,22 +220,26 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 		return fmt.Errorf("parsing transaction: %w", err)
 	}
 
+	if err := s.txpool.Add(t); err != nil {
+		return fmt.Errorf("%w: %w", errIssuingTx, err)
+	}
+
 	// TODO(StephenButtolph): Push gossip the tx.
 
 	r.TxID = t.ID()
-	return s.txpool.Add(t)
+	return nil
 }
 
-// GetTxReply is the response from [Client.GetTx]: the encoded transaction
-// along with the height of the block in which it was accepted.
+// GetTxReply is the response returned by [service.GetAtomicTx].
+//
+// It must be exported for gorilla RPC to access.
 type GetTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`
 }
 
-// GetAtomicTx serves the legacy `avax.getAtomicTx` route, preserved for
-// compatibility with existing C-Chain clients. The [Client] exposes it as
-// [Client.GetTx].
+var errFetchingTx = errors.New("fetching tx")
+
 func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetTxReply) error {
 	s.ctx.Log.Debug("API called",
 		zap.String("service", "avax"),
@@ -203,7 +250,7 @@ func (s *service) GetAtomicTx(_ *http.Request, a *api.GetTxArgs, r *GetTxReply) 
 
 	t, height, err := s.state.GetTx(a.TxID)
 	if err != nil {
-		return fmt.Errorf("fetching tx: %w", err)
+		return fmt.Errorf("%w: %w", errFetchingTx, err)
 	}
 	txBytes, err := t.Bytes()
 	if err != nil {
@@ -235,16 +282,20 @@ func NewClient(uri string) *Client {
 	}
 }
 
+// The most efficient encoding format is used for all calls by the client.
+const clientEncoding = formatting.HexNC
+
 // GetUTXOs returns the UTXOs controlled by addrs that have been exported to
 // this chain from sourceChain.
 //
-// Paginates via startAddr and startUTXOID; pass the zero values on the first
-// call and the returned (endAddr, endUTXOID) on each subsequent call until
-// fewer than limit results are returned.
+// Responses are paginated via startAddr and startUTXOID. To fetch all UTXOs,
+// the zero values can be passed on the first call and the returned
+// (endAddr, endUTXOID) on each subsequent call until fewer than limit
+// results are returned.
 func (c *Client) GetUTXOs(
 	ctx context.Context,
 	addrs []ids.ShortID,
-	sourceChain string,
+	sourceChain ids.ID,
 	limit uint32,
 	startAddr ids.ShortID,
 	startUTXOID ids.ID,
@@ -253,13 +304,13 @@ func (c *Client) GetUTXOs(
 	res := &api.GetUTXOsReply{}
 	err := c.r.SendRequest(ctx, "avax.getUTXOs", &api.GetUTXOsArgs{
 		Addresses:   ids.ShortIDsToStrings(addrs),
-		SourceChain: sourceChain,
+		SourceChain: sourceChain.String(),
 		Limit:       json.Uint32(limit),
 		StartIndex: api.Index{
 			Address: startAddr.String(),
 			UTXO:    startUTXOID.String(),
 		},
-		Encoding: formatting.Hex,
+		Encoding: clientEncoding,
 	}, res, options...)
 	if err != nil {
 		return nil, ids.ShortID{}, ids.Empty, fmt.Errorf("sending request: %w", err)
@@ -293,14 +344,14 @@ func (c *Client) IssueTx(ctx context.Context, t *tx.Tx, options ...rpc.Option) e
 	if err != nil {
 		return fmt.Errorf("marshalling tx: %w", err)
 	}
-	txStr, err := formatting.Encode(formatting.Hex, txBytes)
+	txStr, err := formatting.Encode(clientEncoding, txBytes)
 	if err != nil {
 		return fmt.Errorf("encoding tx: %w", err)
 	}
 
 	err = c.r.SendRequest(ctx, "avax.issueTx", &api.FormattedTx{
 		Tx:       txStr,
-		Encoding: formatting.Hex,
+		Encoding: clientEncoding,
 	}, &api.JSONTxID{}, options...)
 	if err != nil {
 		return fmt.Errorf("sending request: %w", err)
@@ -314,7 +365,7 @@ func (c *Client) GetTx(ctx context.Context, txID ids.ID, options ...rpc.Option) 
 	res := &GetTxReply{}
 	err := c.r.SendRequest(ctx, "avax.getAtomicTx", &api.GetTxArgs{
 		TxID:     txID,
-		Encoding: formatting.Hex,
+		Encoding: clientEncoding,
 	}, res, options...)
 	if err != nil {
 		return nil, 0, fmt.Errorf("sending request: %w", err)

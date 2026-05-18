@@ -25,6 +25,7 @@ import (
 	"github.com/ava-labs/avalanchego/database/memdb"
 	"github.com/ava-labs/avalanchego/database/prefixdb"
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm"
+	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/engine/enginetest"
@@ -232,6 +233,17 @@ func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 func (s *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
 	tb.Helper()
 
+	blk := s.buildVerifyAccept(tb)
+	require.NoErrorf(tb, blk.WaitUntilExecuted(tb.Context()), "%T.WaitUntilExecuted()", blk)
+	return blk
+}
+
+// buildVerifyAccept builds, verifies, and accepts a block but does NOT wait
+// for execution to complete. This lets a test build a successor block while
+// the prior one is still being executed.
+func (s *SUT) buildVerifyAccept(tb testing.TB) *blocks.Block {
+	tb.Helper()
+
 	ctx := tb.Context()
 	lastAcceptedID, err := s.LastAccepted(ctx)
 	require.NoErrorf(tb, err, "%T.LastAccepted()", s.VM)
@@ -249,7 +261,6 @@ func (s *SUT) runConsensusLoop(tb testing.TB) *blocks.Block {
 	require.NoErrorf(tb, err, "%T.BuildBlock()", s.VM)
 	require.NoErrorf(tb, s.VerifyBlock(ctx, blockCtx, blk), "%T.VerifyBlock()", s.VM)
 	require.NoErrorf(tb, s.AcceptBlock(ctx, blk), "%T.AcceptBlock()", s.VM)
-	require.NoErrorf(tb, blk.WaitUntilExecuted(ctx), "%T.WaitUntilExecuted()", blk)
 	return blk
 }
 
@@ -318,7 +329,6 @@ func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID, addrs ...ids.ShortI
 	tb.Helper()
 
 	var (
-		sourceStr   = sourceChain.String()
 		startAddr   ids.ShortID
 		startUTXOID ids.ID
 		utxos       []*avax.UTXO
@@ -328,7 +338,7 @@ func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID, addrs ...ids.ShortI
 		page, endAddr, endUTXOID, err := w.client.GetUTXOs(
 			tb.Context(),
 			addrs,
-			sourceStr,
+			sourceChain,
 			limit,
 			startAddr,
 			startUTXOID,
@@ -414,14 +424,14 @@ func (w *wallet) sign(tb testing.TB, u tx.Unsigned, numCreds int) *tx.Tx {
 }
 
 // addNAVAX returns balance + nAVAXDelta nAVAX (scaled to aAVAX). The delta
-// may be negative. It panics if the result does not fit in a uint256.
-func addNAVAX(balance uint256.Int, nAVAXDelta int64) uint256.Int {
+// may be negative.
+func addNAVAX(tb testing.TB, balance uint256.Int, nAVAXDelta int64) uint256.Int {
+	tb.Helper()
+
 	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(tx.X2CRate))
 	sum := new(big.Int).Add(balance.ToBig(), delta)
 	result, overflow := uint256.FromBig(sum)
-	if overflow {
-		panic("addNAVAX: result overflows uint256")
-	}
+	require.Falsef(tb, overflow, "addNAVAX(%s, %d) overflows uint256", balance.String(), nAVAXDelta)
 	return *result
 }
 
@@ -456,7 +466,7 @@ func TestExport(t *testing.T) {
 	blk := sut.issueAndExecute(t, signedExport)
 	sut.assertTxAccepted(t, signedExport, blk.NumberU64())
 	const amountBurned = exportedAmount + txFee
-	sut.assertBalance(t, sender, addNAVAX(initialBalance, -amountBurned))
+	sut.assertBalance(t, sender, addNAVAX(t, initialBalance, -amountBurned))
 	sut.assertUTXOsExist(t, sut.snowCtx.XChainID, txtest.ExportedUTXOs(signedExport.ID(), export)...)
 }
 
@@ -472,50 +482,88 @@ func TestImport(t *testing.T) {
 	const utxoAmount = 100
 	sk := txtest.NewKey(t)
 
-	// Seed an X-Chain UTXO controlled by sk and destined for the C-Chain.
+	// Seed an X-Chain UTXO controlled by sk to import.
 	sut.addUTXOs(
 		t,
 		snowtest.XChainID,
 		txtest.NewUTXO(utxoAmount, sut.snowCtx.AVAXAssetID, sk.Address()),
 	)
 
-	const txFee = 50
-
-	// Use a fresh recipient address whose balance starts at 0 so we can
-	// trivially verify the mint.
-	recipient := txtest.NewKey(t).EthAddress()
 	w := newWallet(sk, sut.snowCtx, sut.Client)
-	signedImport, _ := w.newImportTx(t, sut.snowCtx.XChainID, recipient, txFee)
+	receiver := txtest.NewKey(t).EthAddress()
+	const txFee = 50
+	signedImport, _ := w.newImportTx(t, sut.snowCtx.XChainID, receiver, txFee)
 
 	blk := sut.issueAndExecute(t, signedImport)
 	sut.assertTxAccepted(t, signedImport, blk.NumberU64())
 	const amountMinted = utxoAmount - txFee
-	sut.assertBalance(t, recipient, tx.ScaleAVAX(amountMinted))
+	sut.assertBalance(t, receiver, tx.ScaleAVAX(amountMinted))
 }
 
-// TestIssueTxRejectsInvalidTransaction asserts that [Client.IssueTx] surfaces
-// an error from the transaction pool's verification pipeline. The individual
-// rejection categories are covered by [txpool] tests; this test only confirms
-// that verification is wired into the API layer.
-func TestIssueTxRejectsInvalidTransaction(t *testing.T) {
-	sk := txtest.NewKey(t)
-	sender := sk.EthAddress()
+// TestBuildBlockWhilePriorBlockProcessing exercises the case where a
+// successor block is built before its parent has finished executing. blockA
+// is accepted but not executed before blockB is built, so blockA's tx is
+// still in the txpool. The test asserts that each block contains exactly the
+// tx it was built around — proving the pipeline supports back-to-back block
+// production and that [ancestorInputIDs] (which guards block-building during
+// this window) doesn't spuriously exclude blockB's tx.
+//
+// Two distinct senders are used because [Client.IssueTx] verifies tx state
+// against the last-executed state: a second tx from the same sender would be
+// rejected for a nonce mismatch while blockA is unsettled.
+func TestBuildBlockWhilePriorBlockProcessing(t *testing.T) {
+	var (
+		skA = txtest.NewKey(t)
+		skB = txtest.NewKey(t)
+	)
 	sut := newSUT(t, options.Func[sutConfig](func(c *sutConfig) {
-		c.genesis.Alloc = saetest.MaxAllocFor(sender)
+		c.genesis.Alloc = saetest.MaxAllocFor(skA.EthAddress(), skB.EthAddress())
 	}))
 
-	w := newWallet(sk, sut.snowCtx, sut.Client)
-	_, export := w.newExportTx(
-		t,
-		sut.snowCtx.XChainID,
-		[]*secp256k1fx.TransferOutput{
-			txtest.NewTransferOutput(50, sk.Address()),
-		},
-		50,
-	)
-	export.NetworkID++ // breaks the sanity check
-	invalid := w.sign(t, export, 1)
+	newExport := func(w *wallet) *tx.Tx {
+		signed, _ := w.newExportTx(
+			t,
+			sut.snowCtx.XChainID,
+			[]*secp256k1fx.TransferOutput{txtest.NewTransferOutput(50, w.sk.Address())},
+			50,
+		)
+		return signed
+	}
 
-	err := sut.IssueTx(t.Context(), invalid)
-	require.ErrorContainsf(t, err, "wrong network ID", "%T.IssueTx()", sut.Client)
+	wA := newWallet(skA, sut.snowCtx, sut.Client)
+	txA := newExport(wA)
+	require.NoErrorf(t, sut.IssueTx(t.Context(), txA), "%T.IssueTx(txA)", sut.Client)
+	blockA := sut.buildVerifyAccept(t)
+
+	// Issue txB only AFTER blockA has been accepted so that blockA's pool
+	// snapshot contained only txA. blockA is intentionally not yet executed:
+	// txA still sits in the pool, and [ancestorInputIDs] must walk back
+	// through blockA when building blockB.
+	wB := newWallet(skB, sut.snowCtx, sut.Client)
+	txB := newExport(wB)
+	require.NoErrorf(t, sut.IssueTx(t.Context(), txB), "%T.IssueTx(txB)", sut.Client)
+	blockB := sut.buildVerifyAccept(t)
+
+	require.NoErrorf(t, blockA.WaitUntilExecuted(t.Context()), "%T.WaitUntilExecuted(blockA)", blockA)
+	require.NoErrorf(t, blockB.WaitUntilExecuted(t.Context()), "%T.WaitUntilExecuted(blockB)", blockB)
+
+	sut.assertTxAccepted(t, txA, blockA.NumberU64())
+	sut.assertTxAccepted(t, txB, blockB.NumberU64())
+
+	require.Equalf(t, []ids.ID{txA.ID()}, blockTxIDs(t, blockA), "%T txs", blockA)
+	require.Equalf(t, []ids.ID{txB.ID()}, blockTxIDs(t, blockB), "%T txs", blockB)
+}
+
+// blockTxIDs returns the IDs of every cross-chain tx in the block's ExtData.
+func blockTxIDs(tb testing.TB, blk *blocks.Block) []ids.ID {
+	tb.Helper()
+
+	txs, err := tx.ParseSlice(customtypes.BlockExtData(blk.EthBlock()))
+	require.NoErrorf(tb, err, "tx.ParseSlice()")
+
+	ids := make([]ids.ID, len(txs))
+	for i, t := range txs {
+		ids[i] = t.ID()
+	}
+	return ids
 }
