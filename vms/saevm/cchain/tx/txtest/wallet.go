@@ -20,8 +20,7 @@ import (
 // transaction.
 type Signature = [secp256k1.SignatureLen]byte
 
-// NewKey returns a freshly-generated [secp256k1.PrivateKey], failing tb on any
-// error.
+// NewKey returns a freshly-generated [secp256k1.PrivateKey].
 func NewKey(tb testing.TB) *secp256k1.PrivateKey {
 	tb.Helper()
 
@@ -42,8 +41,7 @@ func Sign(tb testing.TB, u tx.Unsigned, s keychain.Signer) Signature {
 	return Signature(sig)
 }
 
-// MustMarshalUTXO returns the canonical binary format of utxo, failing tb on
-// any error.
+// MustMarshalUTXO returns the canonical binary format of utxo.
 func MustMarshalUTXO(tb testing.TB, utxo *avax.UTXO) []byte {
 	tb.Helper()
 
@@ -52,8 +50,7 @@ func MustMarshalUTXO(tb testing.TB, utxo *avax.UTXO) []byte {
 	return b
 }
 
-// MustParseUTXO deserializes an [avax.UTXO] from its canonical binary format,
-// failing tb on any error.
+// MustParseUTXO deserializes an [avax.UTXO] from its canonical binary format.
 func MustParseUTXO(tb testing.TB, b []byte) *avax.UTXO {
 	tb.Helper()
 
@@ -74,8 +71,8 @@ func NewTransferOutput(amt uint64, addr ids.ShortID) *secp256k1fx.TransferOutput
 	}
 }
 
-// NewUTXO returns an [avax.UTXO] with a freshly-generated TxID wrapping a
-// single-owner output of amt of assetID held by addr.
+// NewUTXO returns a new [avax.UTXO] containing a single-owner output of amt of
+// assetID held by addr.
 func NewUTXO(amt uint64, assetID ids.ID, addr ids.ShortID) *avax.UTXO {
 	return &avax.UTXO{
 		UTXOID: avax.UTXOID{TxID: ids.GenerateTestID()},
