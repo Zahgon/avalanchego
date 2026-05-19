@@ -114,7 +114,9 @@ func (h *hooks) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, e
 	if err != nil {
 		return saetypes.ExecutionResults{}, fmt.Errorf("creating execution results db: %w", err)
 	}
-	return saetypes.ExecutionResults{HeightIndex: db}, nil
+	return saetypes.ExecutionResults{
+		HeightIndex: db,
+	}, nil
 }
 
 func (*hooks) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
