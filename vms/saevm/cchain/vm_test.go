@@ -146,16 +146,16 @@ func (s *SUT) assertUTXOsExist(tb testing.TB, peerChainID ids.ID, want ...*avax.
 	tb.Helper()
 
 	keys := make([][]byte, len(want))
-	for i, u := range want {
-		inputID := u.InputID()
+	for i, utxo := range want {
+		inputID := utxo.InputID()
 		keys[i] = inputID[:]
 	}
 	peerMemory := s.memory.NewSharedMemory(peerChainID)
-	raw, err := peerMemory.Get(snowtest.CChainID, keys)
+	utxoBytes, err := peerMemory.Get(snowtest.CChainID, keys)
 	require.NoErrorf(tb, err, "%T.Get()", peerMemory)
 
-	got := make([]*avax.UTXO, len(raw))
-	for i, b := range raw {
+	got := make([]*avax.UTXO, len(utxoBytes))
+	for i, b := range utxoBytes {
 		got[i] = txtest.MustParseUTXO(tb, b)
 	}
 	if diff := cmp.Diff(want, got, txtest.UTXOCmpOpt()); diff != "" {
