@@ -32,10 +32,7 @@ import (
 	avadb "github.com/ava-labs/avalanchego/database"
 )
 
-// VM wraps an [sae.VM] with the cross-chain pieces specific to the C-Chain:
-// the [hooks] driving block building and execution, the cross-chain transaction
-// state, the cross-chain txpool, and the avax JSON-RPC service mounted
-// alongside the inherited SAE handlers.
+// VM wraps an [sae.VM] with the cross-chain pieces specific to the C-Chain.
 type VM struct {
 	*sae.VM // created by [VM.Initialize]
 
