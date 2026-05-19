@@ -187,8 +187,9 @@ func (v *VM) WaitForEvent(ctx context.Context) (common.Message, error) {
 }
 
 // Shutdown releases every resource allocated by [VM.Initialize] in reverse
-// order. It is idempotent and safe to call after a partially-failed
-// [VM.Initialize].
+// order.
+//
+// It is idempotent and safe to call after a partially-failed [VM.Initialize].
 func (v *VM) Shutdown(ctx context.Context) error {
 	errs := make([]error, len(v.onClose))
 	for i, f := range slices.Backward(v.onClose) {
