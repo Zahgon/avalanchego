@@ -5,15 +5,8 @@ package saetest
 
 import "go.uber.org/goleak"
 
-// GoleakOptions returns [goleak.Option]s suitable for [goleak.VerifyTestMain]
-// in test binaries built on top of [sae.VM]. It snapshots the goroutines
-// running when called (via [goleak.IgnoreCurrent]) and ignores libevm
-// goroutines that are not reliably stopped during [sae.VM] shutdown.
-//
-// Call after any TestMain initialization that itself spawns goroutines, so
-// they are captured by the [goleak.IgnoreCurrent] snapshot.
-//
-// [sae.VM]: https://pkg.go.dev/github.com/ava-labs/avalanchego/vms/saevm/sae#VM
+// GoleakOptions ignores known leaking goroutines in libevm. It also includes
+// [goleak.IgnoreCurrent].
 func GoleakOptions() []goleak.Option {
 	return []goleak.Option{
 		goleak.IgnoreCurrent(),
