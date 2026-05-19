@@ -140,7 +140,7 @@ func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 	}
 }
 
-// assertUTXOsExist fails tb unless shared memory between peerChainID and the
+// assertUTXOsExist asserts that the shared memory between peerChainID and the
 // C-Chain contains each of the expected UTXOs.
 func (s *SUT) assertUTXOsExist(tb testing.TB, peerChainID ids.ID, want ...*avax.UTXO) {
 	tb.Helper()
@@ -163,8 +163,8 @@ func (s *SUT) assertUTXOsExist(tb testing.TB, peerChainID ids.ID, want ...*avax.
 	}
 }
 
-// addUTXOs seeds shared memory between peerChainID and the C-Chain with the
-// given UTXOs.
+// addUTXOs puts the given UTXOs into shared memory between peerChainID and the
+// C-Chain.
 func (s *SUT) addUTXOs(tb testing.TB, peerChainID ids.ID, utxos ...*avax.UTXO) {
 	tb.Helper()
 
@@ -196,10 +196,12 @@ func (s *SUT) balance(tb testing.TB, addr common.Address) uint256.Int {
 	return *state.GetBalance(addr)
 }
 
-// assertBalance asserts that addr's balance at the last-executed state.
+// assertBalance asserts addr's balance at the last-executed state.
 func (s *SUT) assertBalance(tb testing.TB, addr common.Address, want uint256.Int) {
 	tb.Helper()
-	assert.Equalf(tb, want, s.balance(tb, addr), "balance of %s", addr)
+
+	got := s.balance(tb, addr)
+	assert.Equalf(tb, want, got, "balance of %s", addr)
 }
 
 // issueAndExecute submits t through [Client.IssueTx] and drives the consensus
@@ -211,8 +213,8 @@ func (s *SUT) issueAndExecute(tb testing.TB, t *tx.Tx) *blocks.Block {
 	return s.runConsensusLoop(tb)
 }
 
-// assertTxAccepted asserts that [Client.GetTx] returns the given tx at
-// the given block height.
+// assertTxAccepted asserts that [Client.GetTx] returns the given tx at the
+// given block height.
 func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 	tb.Helper()
 
@@ -331,47 +333,6 @@ func (w *wallet) newExportTx(
 	return w.sign(tb, export, 1), export
 }
 
-// getUTXOs returns every UTXO controlled by the wallet that has been exported
-// to this chain from sourceChain.
-func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID) []*avax.UTXO {
-	tb.Helper()
-	return getUTXOs(tb, w.client, sourceChain, maxGetUTXOsLimit, w.sk.Address())
-}
-
-// getUTXOs drains [Client.GetUTXOs] for addrs by walking pages of size limit
-// until a short page signals the end of the result set.
-func getUTXOs(
-	tb testing.TB,
-	client *Client,
-	sourceChain ids.ID,
-	limit uint32,
-	addrs ...ids.ShortID,
-) []*avax.UTXO {
-	tb.Helper()
-
-	var (
-		startAddr   ids.ShortID
-		startUTXOID ids.ID
-		utxos       []*avax.UTXO
-	)
-	for {
-		page, endAddr, endUTXOID, err := client.GetUTXOs(
-			tb.Context(),
-			addrs,
-			sourceChain,
-			limit,
-			startAddr,
-			startUTXOID,
-		)
-		require.NoErrorf(tb, err, "%T.GetUTXOs()", client)
-		utxos = append(utxos, page...)
-		if uint32(len(page)) < limit {
-			return utxos
-		}
-		startAddr, startUTXOID = endAddr, endUTXOID
-	}
-}
-
 // newImportTx builds and signs an [tx.Import] consuming all spendable AVAX
 // UTXOs that have been exported to this chain from sourceChain and are owned
 // by the wallet, crediting the total imported (minus fee) to `to` on the
@@ -427,6 +388,47 @@ func (w *wallet) newImportTx(
 	return w.sign(tb, imp, len(inputs)), imp
 }
 
+// getUTXOs returns every UTXO controlled by the wallet that has been exported
+// to this chain from sourceChain.
+func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID) []*avax.UTXO {
+	tb.Helper()
+	return getUTXOs(tb, w.client, sourceChain, maxGetUTXOsLimit, w.sk.Address())
+}
+
+// getUTXOs drains [Client.GetUTXOs] for addrs by walking pages of size limit
+// until a short page signals the end of the result set.
+func getUTXOs(
+	tb testing.TB,
+	client *Client,
+	sourceChain ids.ID,
+	limit uint32,
+	addrs ...ids.ShortID,
+) []*avax.UTXO {
+	tb.Helper()
+
+	var (
+		startAddr   ids.ShortID
+		startUTXOID ids.ID
+		utxos       []*avax.UTXO
+	)
+	for {
+		page, endAddr, endUTXOID, err := client.GetUTXOs(
+			tb.Context(),
+			addrs,
+			sourceChain,
+			limit,
+			startAddr,
+			startUTXOID,
+		)
+		require.NoErrorf(tb, err, "%T.GetUTXOs()", client)
+		utxos = append(utxos, page...)
+		if uint32(len(page)) < limit {
+			return utxos
+		}
+		startAddr, startUTXOID = endAddr, endUTXOID
+	}
+}
+
 // sign wraps u in a [tx.Tx] with numCreds copies of a single-sig credential
 // over u.
 func (w *wallet) sign(tb testing.TB, u tx.Unsigned, numCreds int) *tx.Tx {
@@ -443,13 +445,18 @@ func (w *wallet) sign(tb testing.TB, u tx.Unsigned, numCreds int) *tx.Tx {
 	}
 }
 
-// addNAVAX returns balance + nAVAXDelta. The delta may be negative.
+var x2cRate = big.NewInt(tx.X2CRate)
+
+// addNAVAX returns balance + nAVAXDelta. nAVAXDelta may be negative.
 func addNAVAX(tb testing.TB, balance uint256.Int, nAVAXDelta int64) uint256.Int {
 	tb.Helper()
 
-	delta := new(big.Int).Mul(big.NewInt(nAVAXDelta), big.NewInt(tx.X2CRate))
-	sum := new(big.Int).Add(balance.ToBig(), delta)
-	result, overflow := uint256.FromBig(sum)
+	delta := big.NewInt(nAVAXDelta)
+	delta.Mul(delta, x2cRate)
+	bigBalance := balance.ToBig()
+	bigBalance.Add(bigBalance, delta)
+
+	result, overflow := uint256.FromBig(bigBalance)
 	require.Falsef(tb, overflow, "addNAVAX(%s, %d) overflows uint256", balance, nAVAXDelta)
 	return *result
 }
