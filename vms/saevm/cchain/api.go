@@ -99,6 +99,10 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		addrs[i] = addr[:]
 	}
 
+	// Set the response encoding here in case the client provided the terminal
+	// cursor.
+	r.Encoding = a.Encoding
+
 	var (
 		startAddr ids.ShortID
 		startUTXO ids.ID
@@ -112,15 +116,12 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		if err != nil {
 			return fmt.Errorf("parsing start utxoID %q: %w", a.StartIndex.UTXO, err)
 		}
-	}
-
-	if startAddr == termAddr && startUTXO == termUTXOID {
-		// Client is asking for the final page, so return the terminal cursor
-		// and no results without hitting shared memory.
-		r.EndIndex.Address = s.zeroAddress
-		r.EndIndex.UTXO = ids.Empty.String()
-		r.Encoding = a.Encoding
-		return nil
+		if startAddr == termAddr && startUTXO == termUTXOID {
+			// Client provided the terminal index, so there are no more results.
+			r.EndIndex.Address = s.zeroAddress
+			r.EndIndex.UTXO = ids.Empty.String()
+			return nil
+		}
 	}
 
 	limit := a.Limit
@@ -128,8 +129,8 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		limit = maxGetUTXOsLimit
 	}
 
-	// [atomic.SharedMemory.Indexed] iterates inclusively from startKey, so we
-	// fetch one extra UTXO to return the next startKey.
+	// [atomic.SharedMemory.Indexed] iterates inclusively from startAddr and
+	// startUTXO, so we fetch one extra UTXO to return the next index.
 	utxos, nextAddr, nextUTXO, err := s.ctx.SharedMemory.Indexed(
 		sourceChainID,
 		addrs,
@@ -141,8 +142,6 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		return fmt.Errorf("retrieving UTXOs: %w", err)
 	}
 
-	// If there are more UTXOs than the requested limit, trim the extra one used
-	// to detect the boundary and use its index as the next page's start index.
 	var (
 		endAddr ids.ShortID
 		endUTXO ids.ID
@@ -169,9 +168,7 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		return fmt.Errorf("formatting address: %w", err)
 	}
 	r.EndIndex.UTXO = endUTXO.String()
-
 	r.NumFetched = json.Uint64(len(utxos))
-	r.Encoding = a.Encoding
 	return nil
 }
 
@@ -230,7 +227,7 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 
 // GetTxReply is the response returned by [service.GetAtomicTx].
 //
-// It must be exported for gorilla RPC to access.
+// It must be exported for gorilla RPC to publicly expose [service.GetAtomicTx].
 type GetTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`
@@ -284,7 +281,7 @@ func NewClient(uri string) *Client {
 const clientEncoding = formatting.HexNC
 
 // GetUTXOs returns the UTXOs controlled by addrs that have been exported to
-// this chain from sourceChain.
+// the C-Chain from sourceChain.
 //
 // Responses are paginated via startAddr and startUTXOID. To fetch all UTXOs,
 // the zero values can be passed on the first call and the returned
