@@ -6,7 +6,6 @@ package cchain
 import (
 	"testing"
 
-	"github.com/ava-labs/libevm/libevm/options"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"
 
@@ -14,30 +13,28 @@ import (
 	"github.com/ava-labs/avalanchego/snow/snowtest"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx/txtest"
-	"github.com/ava-labs/avalanchego/vms/saevm/saetest"
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 // TestIssueTxRejectsInvalidTransaction asserts that [Client.IssueTx] surfaces
 // an error from the transaction pool's verification pipeline.
 func TestIssueTxRejectsInvalidTransaction(t *testing.T) {
-	sk := txtest.NewKey(t)
-	sender := sk.EthAddress()
-	sut := newSUT(t, options.Func[sutConfig](func(c *sutConfig) {
-		c.genesis.Alloc = saetest.MaxAllocFor(sender)
-	}))
+	sut := newSUT(t)
 
+	sk := txtest.NewKey(t) // sk is NOT funded.
 	w := newWallet(sk, sut.snowCtx, sut.Client)
+	const (
+		exportedAmount = 50
+		txFee          = 50
+	)
 	tx, _ := w.newExportTx(
 		t,
 		sut.snowCtx.XChainID,
-		[]*secp256k1fx.TransferOutput{txtest.NewTransferOutput(50, sk.Address())},
-		50,
+		[]*secp256k1fx.TransferOutput{
+			txtest.NewTransferOutput(exportedAmount, sk.Address()),
+		},
+		txFee,
 	)
-
-	// First submission seeds the pool; the second exercises the pool's
-	// duplicate check, proving the full verification pipeline is wired.
-	require.NoErrorf(t, sut.IssueTx(t.Context(), tx), "%T.IssueTx()", sut.Client)
 
 	err := sut.IssueTx(t.Context(), tx)
 	require.ErrorContainsf(t, err, errIssuingTx.Error(), "%T.IssueTx()", sut.Client)
