@@ -109,6 +109,68 @@ func TestReconstructedRevisions(t *testing.T) {
 	}
 }
 
+// TestReconstructedCopyTrie verifies that CopyTrie on a reconstructed account
+// trie returns a usable, independent trie.
+func TestReconstructedCopyTrie(t *testing.T) {
+	r := require.New(t)
+	db := newTestDatabase(t)
+
+	// Commit an initial revision so we can open a reconstructed view on top.
+	initTrie, err := db.OpenTrie(types.EmptyRootHash)
+	r.NoError(err)
+
+	addr := common.HexToAddress("1234")
+	r.NoError(initTrie.UpdateAccount(addr, &types.StateAccount{Balance: uint256.NewInt(100)}))
+	initialRoot, _, err := initTrie.Commit(true)
+	r.NoError(err)
+
+	r.NoError(db.TrieDB().Update(
+		initialRoot,
+		types.EmptyRootHash,
+		0,
+		nil,
+		nil,
+		stateconf.WithTrieDBUpdatePayload(common.Hash{}, common.Hash{1})),
+	)
+	r.NoError(db.TrieDB().Commit(initialRoot, true))
+
+	tdb := db.TrieDB().Backend().(*TrieDB)
+	rev, err := tdb.Firewood.LatestRevision()
+	r.NoError(err)
+	recon, err := rev.Reconstruct(nil)
+	r.NoError(err)
+	r.NoError(rev.Drop())
+	t.Cleanup(func() { r.NoError(recon.Drop()) })
+
+	reconDB, err := NewReconstructedStateAccessor(db, recon, true /* computeRootOnHash */)
+	r.NoError(err)
+
+	originalTrie, err := reconDB.OpenTrie(initialRoot)
+	r.NoError(err)
+
+	// CopyTrie must return a non-nil trie that observes the same initial state.
+	copyTrie := reconDB.CopyTrie(originalTrie)
+	r.NotNil(copyTrie, "CopyTrie must not return nil")
+
+	gotAccount, err := copyTrie.GetAccount(addr)
+	r.NoError(err)
+	r.NotNil(gotAccount, "copy must observe accounts from the original view")
+	r.Equal(uint256.NewInt(100), gotAccount.Balance)
+
+	// Mutate only the copy: the copy's root changes, the original's does not.
+	r.NoError(copyTrie.UpdateAccount(addr, &types.StateAccount{Balance: uint256.NewInt(200)}))
+	copyRoot := copyTrie.Hash()
+	originalRoot := originalTrie.Hash()
+	r.NotEqual(originalRoot, copyRoot, "mutation on copy must not affect original")
+	r.Equal(initialRoot, originalRoot, "original must remain at initial root")
+
+	// Re-open the original and confirm it still observes the pre-copy balance.
+	originalAccount, err := originalTrie.GetAccount(addr)
+	r.NoError(err)
+	r.NotNil(originalAccount)
+	r.Equal(uint256.NewInt(100), originalAccount.Balance)
+}
+
 // TestReconstructedRevisionHashing verifies computeRootOnHash=false only
 // flushes writes without computing the reconstructed root.
 func TestReconstructedRevisionHashing(t *testing.T) {
