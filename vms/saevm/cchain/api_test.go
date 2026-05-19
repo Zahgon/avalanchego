@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/libevm/libevm/options"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 
 	"github.com/ava-labs/avalanchego/ids"
@@ -20,9 +19,7 @@ import (
 )
 
 // TestIssueTxRejectsInvalidTransaction asserts that [Client.IssueTx] surfaces
-// an error from the transaction pool's verification pipeline. The individual
-// rejection categories are covered by [txpool] tests; this test only confirms
-// that verification is wired into the API layer.
+// an error from the transaction pool's verification pipeline.
 func TestIssueTxRejectsInvalidTransaction(t *testing.T) {
 	sk := txtest.NewKey(t)
 	sender := sk.EthAddress()
@@ -31,7 +28,7 @@ func TestIssueTxRejectsInvalidTransaction(t *testing.T) {
 	}))
 
 	w := newWallet(sk, sut.snowCtx, sut.Client)
-	signed, _ := w.newExportTx(
+	tx, _ := w.newExportTx(
 		t,
 		sut.snowCtx.XChainID,
 		[]*secp256k1fx.TransferOutput{txtest.NewTransferOutput(50, sk.Address())},
@@ -40,10 +37,10 @@ func TestIssueTxRejectsInvalidTransaction(t *testing.T) {
 
 	// First submission seeds the pool; the second exercises the pool's
 	// duplicate check, proving the full verification pipeline is wired.
-	require.NoErrorf(t, sut.IssueTx(t.Context(), signed), "%T.IssueTx() seed", sut.Client)
+	require.NoErrorf(t, sut.IssueTx(t.Context(), tx), "%T.IssueTx()", sut.Client)
 
-	err := sut.IssueTx(t.Context(), signed)
-	require.ErrorContainsf(t, err, errIssuingTx.Error(), "%T.IssueTx() resubmit", sut.Client)
+	err := sut.IssueTx(t.Context(), tx)
+	require.ErrorContainsf(t, err, errIssuingTx.Error(), "%T.IssueTx()", sut.Client)
 }
 
 // TestGetTxNotFound asserts that [Client.GetTx] surfaces an error when the
@@ -55,55 +52,24 @@ func TestGetTxNotFound(t *testing.T) {
 	require.ErrorContainsf(t, err, errFetchingTx.Error(), "%T.GetTx()", sut.Client)
 }
 
-// TestGetUTXOsPagination seeds N UTXOs and walks [Client.GetUTXOs] with
-// limit=1, asserting that each non-terminal page returns exactly one UTXO,
-// that the terminal page is signaled by len(page) < limit (i.e. zero
-// results), and that the union of pages matches the seeded set with no
-// duplicates.
+// TestGetUTXOsPagination asserts that walking [Client.GetUTXOs] yields each
+// seeded UTXO exactly once.
 func TestGetUTXOsPagination(t *testing.T) {
 	sut := newSUT(t)
 
-	addr := txtest.NewKey(t).Address()
-
 	const numUTXOs = 5
 	want := make([]*avax.UTXO, numUTXOs)
+	addr := txtest.NewKey(t).Address()
 	for i := range want {
 		want[i] = txtest.NewUTXO(uint64(i+1), sut.snowCtx.AVAXAssetID, addr)
 	}
 	sut.addUTXOs(t, snowtest.XChainID, want...)
 
-	var (
-		ctx         = t.Context()
-		got         []*avax.UTXO
-		startAddr   ids.ShortID
-		startUTXOID ids.ID
-	)
-	for {
-		const limit = 1
-		page, endAddr, endUTXOID, err := sut.GetUTXOs(
-			ctx,
-			[]ids.ShortID{addr},
-			snowtest.XChainID,
-			limit,
-			startAddr,
-			startUTXOID,
-		)
-		require.NoErrorf(t, err, "%T.GetUTXOs()", sut.Client)
-		got = append(got, page...)
-		if len(page) < limit {
-			break
-		}
-		startAddr, startUTXOID = endAddr, endUTXOID
-	}
-
-	opts := cmp.Options{
-		cmpopts.IgnoreUnexported(avax.UTXOID{}, secp256k1fx.OutputOwners{}),
-		cmpopts.SortSlices(func(a, b *avax.UTXO) bool {
-			aID, bID := a.InputID(), b.InputID()
-			return aID.Compare(bID) < 0
-		}),
-	}
-	if diff := cmp.Diff(want, got, opts); diff != "" {
+	// pageSize=1 stresses the boundary behavior so any off-by-one in the cursor
+	// logic will surface here.
+	const pageSize = 1
+	got := getUTXOs(t, sut.Client, snowtest.XChainID, pageSize, addr)
+	if diff := cmp.Diff(want, got, txtest.UTXOCmpOpt()); diff != "" {
 		t.Errorf("paginated UTXOs (-want +got):\n%s", diff)
 	}
 }
