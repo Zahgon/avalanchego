@@ -127,11 +127,8 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		limit = maxLimit
 	}
 
-	// [atomic.SharedMemory.Indexed] iterates inclusively from startKey, so
-	// a naive limit-sized fetch returns the prior page's cursor again and
-	// loops at the boundary. To present clients with the standard
-	// "len(page) < limit => done" contract, fetch one extra UTXO, drop the
-	// prior cursor on the way in, and drop the +1 sentinel on the way out.
+	// [atomic.SharedMemory.Indexed] iterates inclusively from startKey, so we
+	// fetch one extra UTXO to return the next startKey.
 	utxos, nextAddr, nextUTXO, err := s.ctx.SharedMemory.Indexed(
 		sourceChainID,
 		addrs,
