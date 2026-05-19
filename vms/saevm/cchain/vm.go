@@ -80,18 +80,18 @@ func (v *VM) Initialize(
 	// TODO(StephenButtolph): Replace this with Coreth's genesis format.
 	genesis := new(core.Genesis)
 	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
-		return fmt.Errorf("json.Unmarshal(%T): %w", genesis, err)
+		return fmt.Errorf("unmarshalling genesis: %w", err)
 	}
 	chainConfig, _, err := core.SetupGenesisBlock(ethDB, trieDB, genesis)
 	if err != nil {
-		return fmt.Errorf("core.SetupGenesisBlock(...): %w", err)
+		return fmt.Errorf("setting up genesis block: %w", err)
 	}
 
 	v.state, err = state.New(snowCtx, avaDB)
 	if err != nil {
 		return fmt.Errorf("creating cchain state: %w", err)
 	}
-	v.onClose = append(v.onClose, func(ctx context.Context) error {
+	v.onClose = append(v.onClose, func(context.Context) error {
 		return v.state.Close()
 	})
 
@@ -148,7 +148,7 @@ func (v *VM) CreateHandlers(ctx context.Context) (map[string]http.Handler, error
 	}
 	handler, err := rpc.NewHandler(avaxServiceName, service)
 	if err != nil {
-		return nil, fmt.Errorf("rpc.NewHandler(%s, ...): %w", avaxServiceName, err)
+		return nil, fmt.Errorf("creating avax RPC handler: %w", err)
 	}
 
 	m[avaxHTTPExtensionPath] = handler
