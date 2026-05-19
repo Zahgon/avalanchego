@@ -17,6 +17,7 @@ import (
 	"github.com/ava-labs/libevm/libevm/options"
 	"github.com/google/go-cmp/cmp"
 	"github.com/holiman/uint256"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/goleak"
 
@@ -195,11 +196,10 @@ func (s *SUT) balance(tb testing.TB, addr common.Address) uint256.Int {
 	return *state.GetBalance(addr)
 }
 
-// assertBalance asserts that addr's balance at the last-executed state equals
-// want.
+// assertBalance asserts that addr's balance at the last-executed state.
 func (s *SUT) assertBalance(tb testing.TB, addr common.Address, want uint256.Int) {
 	tb.Helper()
-	require.Equalf(tb, want, s.balance(tb, addr), "balance of %s", addr)
+	assert.Equalf(tb, want, s.balance(tb, addr), "balance of %s", addr)
 }
 
 // issueAndExecute submits t through [Client.IssueTx] and drives the consensus
@@ -221,7 +221,7 @@ func (s *SUT) assertTxAccepted(tb testing.TB, want *tx.Tx, wantHeight uint64) {
 	if diff := cmp.Diff(want, got, txtest.CmpOpt()); diff != "" {
 		tb.Errorf("%T.GetTx() (-want +got):\n%s", s.Client, diff)
 	}
-	require.Equalf(tb, wantHeight, gotHeight, "%T.GetTx() block height", s.Client)
+	assert.Equalf(tb, wantHeight, gotHeight, "%T.GetTx() block height", s.Client)
 }
 
 // runConsensusLoop builds a block on top of the last-accepted block, drives it
@@ -265,7 +265,7 @@ func (s *SUT) buildVerify(tb testing.TB, preferenceID ids.ID) *blocks.Block {
 
 	e, err := s.WaitForEvent(ctx)
 	require.NoErrorf(tb, err, "%T.WaitForEvent()", s.VM)
-	require.Equalf(tb, snowcommon.PendingTxs, e, "%T.WaitForEvent() event", s.VM)
+	assert.Equalf(tb, snowcommon.PendingTxs, e, "%T.WaitForEvent() event", s.VM)
 
 	blk, err := s.BuildBlock(ctx, blockCtx)
 	require.NoErrorf(tb, err, "%T.BuildBlock()", s.VM)

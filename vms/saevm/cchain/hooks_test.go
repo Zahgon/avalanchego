@@ -10,6 +10,7 @@ import (
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/trie"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
@@ -111,8 +112,8 @@ func TestAncestorInputIDs(t *testing.T) {
 			}
 
 			got, err := ancestorInputIDs(tt.header, tt.settled, source)
-			require.ErrorIs(t, err, tt.wantErr)
-			require.Equal(t, tt.want, got)
+			require.ErrorIs(t, err, tt.wantErr, "ancestorInputIDs()")
+			assert.Equal(t, tt.want, got, "ancestorInputIDs()")
 		})
 	}
 }
