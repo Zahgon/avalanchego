@@ -5,6 +5,7 @@ package cchain
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"iter"
 	"math/big"
@@ -264,6 +265,8 @@ func (b *builder) PotentialEndOfBlockOps(
 	}
 }
 
+var errMissingBlock = errors.New("missing block")
+
 // ancestorInputIDs returns the set of input IDs of all custom transactions in
 // the block range (h, settled), both exclusive.
 func ancestorInputIDs(h *types.Header, settled common.Hash, source saetypes.BlockSource) (set.Set[ids.ID], error) {
@@ -272,12 +275,12 @@ func ancestorInputIDs(h *types.Header, settled common.Hash, source saetypes.Bloc
 		parentNumber := h.Number.Uint64() - 1
 		p, ok := source(h.ParentHash, parentNumber)
 		if !ok {
-			return nil, fmt.Errorf("missing block: %s (%d)", h.ParentHash, parentNumber)
+			return nil, fmt.Errorf("%w: %s (%d)", errMissingBlock, h.ParentHash, parentNumber)
 		}
 
 		txs, err := tx.ParseSlice(customtypes.BlockExtData(p))
 		if err != nil {
-			return nil, fmt.Errorf("parsing txs in %s (%d): %w", h.ParentHash, parentNumber, err)
+			return nil, fmt.Errorf("parsing txs: %s (%d): %w", h.ParentHash, parentNumber, err)
 		}
 		for _, t := range txs {
 			s.Union(t.InputIDs())
