@@ -27,6 +27,10 @@ import (
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/txpool"
 )
 
+// service is the server-side handler for the avax RPC API.
+//
+// The type is unexported but its methods are exported because gorilla RPC
+// reflects on them to dispatch requests.
 type service struct {
 	ctx    *snow.Context
 	txpool *txpool.Txpool
@@ -227,7 +231,7 @@ func (s *service) IssueTx(_ *http.Request, a *api.FormattedTx, r *api.JSONTxID) 
 
 // GetTxReply is the response returned by [service.GetAtomicTx].
 //
-// It must be exported for gorilla RPC to publicly expose [service.GetAtomicTx].
+// It MUST be exported for gorilla RPC to publicly expose [service.GetAtomicTx].
 type GetTxReply struct {
 	api.FormattedTx
 	Height json.Uint64 `json:"blockHeight"`
