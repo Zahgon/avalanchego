@@ -64,6 +64,8 @@ func newService(
 	}, nil
 }
 
+const maxGetUTXOsLimit = 1024
+
 // terminal IDs are used as a sentinel to indicate the end of pagination.
 var (
 	termAddr   = ids.ShortID(common.HexToAddress("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"))
@@ -121,10 +123,9 @@ func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOs
 		return nil
 	}
 
-	const maxLimit = 1024
 	limit := a.Limit
-	if limit == 0 || limit > maxLimit {
-		limit = maxLimit
+	if limit == 0 || limit > maxGetUTXOsLimit {
+		limit = maxGetUTXOsLimit
 	}
 
 	// [atomic.SharedMemory.Indexed] iterates inclusively from startKey, so we

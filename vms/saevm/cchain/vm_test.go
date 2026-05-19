@@ -334,7 +334,7 @@ func (w *wallet) newExportTx(
 // to this chain from sourceChain.
 func (w *wallet) getUTXOs(tb testing.TB, sourceChain ids.ID) []*avax.UTXO {
 	tb.Helper()
-	return getUTXOs(tb, w.client, sourceChain, 1024, w.sk.Address())
+	return getUTXOs(tb, w.client, sourceChain, maxGetUTXOsLimit, w.sk.Address())
 }
 
 // getUTXOs drains [Client.GetUTXOs] for addrs by walking pages of size limit
