@@ -98,6 +98,7 @@ func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 	genesisBytes, err := json.Marshal(cfg.genesis)
 	require.NoErrorf(tb, err, "json.Marshal(%T)", cfg.genesis)
 
+	// The SAE mempool may push gossip transactions when they are issued.
 	appSender := &enginetest.Sender{
 		SendAppGossipF: func(context.Context, snowcommon.SendConfig, []byte) error {
 			return nil
