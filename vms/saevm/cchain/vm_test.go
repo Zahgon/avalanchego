@@ -66,7 +66,7 @@ type (
 	sutOption = options.Option[sutConfig]
 )
 
-// newSUT initializes a cchain [VM] transitions it to [snow.NormalOp], and
+// newSUT initializes a cchain [VM], transitions it to [snow.NormalOp], and
 // mounts its HTTP handlers behind a local [httptest.Server] at the paths
 // [NewClient] expects.
 func newSUT(tb testing.TB, opts ...sutOption) *SUT {
