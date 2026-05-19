@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/ava-labs/libevm/common"
 	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/api"
@@ -63,11 +64,10 @@ func newService(
 	}, nil
 }
 
-// terminal IDs are the IDs with all 1s used as a sentinel to indicate the end
-// of pagination.
+// terminal IDs are used as a sentinel to indicate the end of pagination.
 var (
-	termAddr   = ids.ShortFromStringOrPanic("QLbz7JHiBTspS962RLKV8GndWFwdYhk6V")
-	termUTXOID = ids.FromStringOrPanic("2wkBET2rRgE8pahuaczxKbmv7ciehqsne57F9gtzf1PVcUJEQG")
+	termAddr   = ids.ShortID(common.HexToAddress("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"))
+	termUTXOID = ids.ID(common.HexToHash("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"))
 )
 
 func (s *service) GetUTXOs(_ *http.Request, a *api.GetUTXOsArgs, r *api.GetUTXOsReply) error {
