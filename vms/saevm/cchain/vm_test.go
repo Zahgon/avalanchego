@@ -60,16 +60,14 @@ type SUT struct {
 
 type (
 	sutConfig struct {
-		// genesis is the C-Chain genesis. Tests configure it via
-		// [options.Func]; see [TestExport] for an example.
 		genesis core.Genesis
 	}
 	sutOption = options.Option[sutConfig]
 )
 
-// newSUT initializes a cchain [VM] with the configured genesis, transitions it
-// to [snow.NormalOp], and mounts its HTTP handlers behind a local
-// [httptest.Server] at the paths [NewClient] expects.
+// newSUT initializes a cchain [VM] transitions it to [snow.NormalOp], and
+// mounts its HTTP handlers behind a local [httptest.Server] at the paths
+// [NewClient] expects.
 func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 	tb.Helper()
 
@@ -80,9 +78,9 @@ func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 		cfg = options.ApplyTo(&sutConfig{
 			genesis: core.Genesis{
 				Config:     saetest.ChainConfig(),
-				Alloc:      types.GenesisAlloc{},
 				Timestamp:  saeparams.TauSeconds,
 				Difficulty: big.NewInt(0), // irrelevant but required to marshal
+				Alloc:      types.GenesisAlloc{},
 			},
 		}, opts...)
 	)
@@ -116,7 +114,10 @@ func newSUT(tb testing.TB, opts ...sutOption) *SUT {
 		appSender,
 	), "%T.Initialize()", vm)
 	tb.Cleanup(func() {
-		require.NoErrorf(tb, vm.Shutdown(context.WithoutCancel(tb.Context())), "%T.Shutdown()", vm)
+		// The context is cancelled before cleanup is called, so we strip the
+		// cancellation.
+		ctx := context.WithoutCancel(tb.Context())
+		require.NoErrorf(tb, vm.Shutdown(ctx), "%T.Shutdown()", vm)
 	})
 	require.NoErrorf(tb, vm.SetState(ctx, snow.NormalOp), "%T.SetState(%s)", vm, snow.NormalOp)
 
