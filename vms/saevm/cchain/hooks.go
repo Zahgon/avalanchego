@@ -208,8 +208,14 @@ func (b *builder) BuildHeader(parent *types.Header) (*types.Header, error) {
 			ParentBeaconRoot: new(common.Hash),
 		},
 		&customtypes.HeaderExtra{
+			// TODO(StephenButtolph): Prior to SAE, ExtDataGasUsed included the
+			// gas cost of the cross-chain transactions. This was used to
+			// advance the ACP-176 fee state. After SAE, the gas cost is
+			// accounted for in the executor with [hook.Op.Gas]. We can choose
+			// to keep populating this field, or just zero it out.
 			ExtDataGasUsed: big.NewInt(0),
-			BlockGasCost:   big.NewInt(0),
+			// BlockGasCost has been set to 0 since the Granite upgrade.
+			BlockGasCost: big.NewInt(0),
 			// TODO(StephenButtolph): Encode the millisecond timestamp.
 			TimeMilliseconds: new(uint64),
 			// TODO(StephenButtolph): Encode the min-delay excess.
@@ -226,9 +232,9 @@ func (b *builder) PotentialEndOfBlockOps(
 ) iter.Seq[*hookTx] {
 	seq := b.potentialTxs()
 	return func(yield func(*hookTx) bool) {
-		// Transactions are verified against the last executed state. We must
-		// guarantee that they don't conflict with any transactions in blocks
-		// between the block we are building and the last executed block.
+		// Transactions are verified against the last executed state. So, we
+		// must also verify that they don't conflict with any transactions in
+		// blocks between the block we are building and the last executed block.
 		inputs, err := ancestorInputIDs(header, settledHash, source)
 		if err != nil {
 			b.ctx.Log.Error("failed to get ancestor input IDs",
@@ -269,8 +275,8 @@ func (b *builder) PotentialEndOfBlockOps(
 
 var errMissingBlock = errors.New("missing block")
 
-// ancestorInputIDs returns the set of input IDs of all custom transactions in
-// the block range (h, settled), both exclusive.
+// ancestorInputIDs returns the set of input IDs of all cross-chain transactions
+// in the block range (h, settled), both exclusive.
 func ancestorInputIDs(h *types.Header, settled common.Hash, source saetypes.BlockSource) (set.Set[ids.ID], error) {
 	var s set.Set[ids.ID]
 	for h.ParentHash != settled {
