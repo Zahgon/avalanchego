@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/snow/consensus/avalanche"
 	"github.com/ava-labs/avalanchego/snow/engine/avalanche/vertex"
 )
@@ -26,16 +24,9 @@ type Parser struct {
 	ParseVtxF    func(context.Context, []byte) (avalanche.Vertex, error)
 }
 
-func (p *Parser) Default(cant bool) {
-	p.CantParseVtx = cant
-}
+func (p *Parser) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (p *Parser) ParseVtx(ctx context.Context, b []byte) (avalanche.Vertex, error) {
-	if p.ParseVtxF != nil {
-		return p.ParseVtxF(ctx, b)
-	}
-	if p.T != nil {
-		require.False(p.T, p.CantParseVtx, errParse)
-	}
-	return nil, errParse
+	_ = "STUB: not implemented"
+	return *new(avalanche.Vertex), nil
 }

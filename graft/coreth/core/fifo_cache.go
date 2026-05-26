@@ -22,15 +22,8 @@ type FIFOCache[K comparable, V any] interface {
 // If a [limit] of 0 is passed as an argument, a no-op cache is returned that
 // does nothing.
 func NewFIFOCache[K comparable, V any](limit int) FIFOCache[K, V] {
-	if limit <= 0 {
-		return &NoOpFIFOCache[K, V]{}
-	}
-
-	c := &BufferFIFOCache[K, V]{
-		m: make(map[K]V, limit),
-	}
-	c.buffer = NewBoundedBuffer(limit, c.remove)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type BufferFIFOCache[K comparable, V any] struct {
@@ -40,34 +33,21 @@ type BufferFIFOCache[K comparable, V any] struct {
 	m      map[K]V
 }
 
-func (f *BufferFIFOCache[K, V]) Put(key K, val V) {
-	f.l.Lock()
-	defer f.l.Unlock()
+func (f *BufferFIFOCache[K, V]) Put(key K, val V) { _ = "STUB: not implemented"; return }
 
-	// Insert will remove the oldest [K] if we are at the [limit] -
-	// remove always returns nil, so it is safe to ignore this error.
-	_ = f.buffer.Insert(key)
-	f.m[key] = val
-}
+// Insert will remove the oldest [K] if we are at the [limit] -
+// remove always returns nil, so it is safe to ignore this error.
 
 func (f *BufferFIFOCache[K, V]) Get(key K) (V, bool) {
-	f.l.RLock()
-	defer f.l.RUnlock()
-
-	v, ok := f.m[key]
-	return v, ok
+	_ = "STUB: not implemented"
+	return *new(V), false
 }
 
 // remove is used as the callback in [BoundedBuffer]. It is assumed that the
 // [WriteLock] is held when this is accessed.
-func (f *BufferFIFOCache[K, V]) remove(key K) error {
-	delete(f.m, key)
-	return nil
-}
+func (f *BufferFIFOCache[K, V]) remove(key K) error { _ = "STUB: not implemented"; return nil }
 
 type NoOpFIFOCache[K comparable, V any] struct{}
 
-func (*NoOpFIFOCache[K, V]) Put(K, V) {}
-func (*NoOpFIFOCache[K, V]) Get(K) (V, bool) {
-	return *new(V), false
-}
+func (*NoOpFIFOCache[K, V]) Put(K, V)        { _ = "STUB: not implemented"; return }
+func (*NoOpFIFOCache[K, V]) Get(K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }

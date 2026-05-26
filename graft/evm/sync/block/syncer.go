@@ -6,12 +6,9 @@ package block
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
 
 	"github.com/ava-labs/avalanchego/graft/evm/sync/client"
 	"github.com/ava-labs/avalanchego/graft/evm/sync/types"
@@ -34,32 +31,15 @@ type BlockSyncer struct {
 }
 
 func NewSyncer(client client.Client, db ethdb.Database, fromHash common.Hash, fromHeight uint64, blocksToFetch uint64) (*BlockSyncer, error) {
-	if blocksToFetch == 0 {
-		return nil, errBlocksToFetchRequired
-	}
-
-	if (fromHash == common.Hash{}) && fromHeight > 0 {
-		return nil, errFromHashRequired
-	}
-
-	return &BlockSyncer{
-		client:        client,
-		db:            db,
-		fromHash:      fromHash,
-		fromHeight:    fromHeight,
-		blocksToFetch: blocksToFetch,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Name returns the human-readable name for this sync task.
-func (*BlockSyncer) Name() string {
-	return "Block Syncer"
-}
+func (*BlockSyncer) Name() string { _ = "STUB: not implemented"; return "" }
 
 // ID returns the stable identifier for this sync task.
-func (*BlockSyncer) ID() string {
-	return "state_block_sync"
-}
+func (*BlockSyncer) ID() string { _ = "STUB: not implemented"; return "" }
 
 // Sync fetches (up to) BlocksToFetch blocks from peers
 // using Client and writes them to disk.
@@ -70,45 +50,14 @@ func (*BlockSyncer) ID() string {
 // any blocks that are locally available.
 // We could also prevent overrequesting blocks, if the number of blocks needed
 // to be fetched isn't a multiple of blocksPerRequest.
-func (s *BlockSyncer) Sync(ctx context.Context) error {
-	nextHash := s.fromHash
-	nextHeight := s.fromHeight
-	blocksToFetch := s.blocksToFetch
+func (s *BlockSyncer) Sync(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	// first, check for blocks already available on disk so we don't
-	// request them from peers.
-	for blocksToFetch > 0 {
-		blk := rawdb.ReadBlock(s.db, nextHash, nextHeight)
-		if blk == nil {
-			// block was not found
-			break
-		}
+// first, check for blocks already available on disk so we don't
+// request them from peers.
 
-		// block exists
-		nextHash = blk.ParentHash()
-		nextHeight--
-		blocksToFetch--
-	}
+// block was not found
 
-	// get any blocks we couldn't find on disk from peers and write
-	// them to disk.
-	batch := s.db.NewBatch()
-	for fetched := uint64(0); fetched < blocksToFetch && (nextHash != common.Hash{}); {
-		log.Info("fetching blocks from peer", "fetched", fetched, "total", blocksToFetch)
-		blocks, err := s.client.GetBlocks(ctx, nextHash, nextHeight, blocksPerRequest)
-		if err != nil {
-			return fmt.Errorf("could not get blocks from peer: err: %w, nextHash: %s, fetched: %d", err, nextHash, fetched)
-		}
-		for _, block := range blocks {
-			rawdb.WriteBlock(batch, block)
-			rawdb.WriteCanonicalHash(batch, block.Hash(), block.NumberU64())
+// block exists
 
-			fetched++
-			nextHash = block.ParentHash()
-			nextHeight--
-		}
-	}
-
-	log.Info("fetched blocks from peer", "total", blocksToFetch)
-	return batch.Write()
-}
+// get any blocks we couldn't find on disk from peers and write
+// them to disk.

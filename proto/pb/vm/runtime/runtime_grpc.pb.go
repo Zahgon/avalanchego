@@ -8,9 +8,8 @@ package manager
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -38,17 +37,13 @@ type runtimeClient struct {
 }
 
 func NewRuntimeClient(cc grpc.ClientConnInterface) RuntimeClient {
-	return &runtimeClient{cc}
+	_ = "STUB: not implemented"
+	return *new(RuntimeClient)
 }
 
 func (c *runtimeClient) Initialize(ctx context.Context, in *InitializeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Runtime_Initialize_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // RuntimeServer is the server API for Runtime service.
@@ -70,45 +65,39 @@ type RuntimeServer interface {
 type UnimplementedRuntimeServer struct{}
 
 func (UnimplementedRuntimeServer) Initialize(context.Context, *InitializeRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Initialize not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedRuntimeServer) mustEmbedUnimplementedRuntimeServer() {}
-func (UnimplementedRuntimeServer) testEmbeddedByValue()                 {}
 
-// UnsafeRuntimeServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to RuntimeServer will
-// result in compilation errors.
+func (UnimplementedRuntimeServer) mustEmbedUnimplementedRuntimeServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedRuntimeServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeRuntimeServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to RuntimeServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeRuntimeServer interface {
 	mustEmbedUnimplementedRuntimeServer()
 }
 
 func RegisterRuntimeServer(s grpc.ServiceRegistrar, srv RuntimeServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedRuntimeServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&Runtime_ServiceDesc, srv)
+	return
 }
 
 func _Runtime_Initialize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InitializeRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(RuntimeServer).Initialize(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Runtime_Initialize_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RuntimeServer).Initialize(ctx, req.(*InitializeRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Runtime_ServiceDesc is the grpc.ServiceDesc for Runtime service.

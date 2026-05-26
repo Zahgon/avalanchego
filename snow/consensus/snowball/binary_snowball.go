@@ -3,15 +3,11 @@
 
 package snowball
 
-import "fmt"
-
 var _ Binary = (*binarySnowball)(nil)
 
 func newBinarySnowball(alphaPreference int, terminationConditions []terminationCondition, choice int) binarySnowball {
-	return binarySnowball{
-		binarySnowflake: newBinarySnowflake(alphaPreference, terminationConditions, choice),
-		preference:      choice,
-	}
+	_ = "STUB: not implemented"
+	return *new(binarySnowball)
 }
 
 // binarySnowball is the implementation of a binary snowball instance
@@ -29,31 +25,14 @@ type binarySnowball struct {
 }
 
 func (sb *binarySnowball) Preference() int {
+	_ = "STUB: not implemented"
 	// It is possible, with low probability, that the snowflake preference is
 	// not equal to the snowball preference when snowflake finalizes. However,
 	// this case is handled for completion. Therefore, if snowflake is
 	// finalized, then our finalized snowflake choice should be preferred.
-	if sb.Finalized() {
-		return sb.binarySnowflake.Preference()
-	}
-	return sb.preference
+	return 0
 }
 
-func (sb *binarySnowball) RecordPoll(count, choice int) {
-	if count >= sb.alphaPreference {
-		sb.preferenceStrength[choice]++
-		if sb.preferenceStrength[choice] > sb.preferenceStrength[1-choice] {
-			sb.preference = choice
-		}
-	}
-	sb.binarySnowflake.RecordPoll(count, choice)
-}
+func (sb *binarySnowball) RecordPoll(count, choice int) { _ = "STUB: not implemented"; return }
 
-func (sb *binarySnowball) String() string {
-	return fmt.Sprintf(
-		"SB(Preference = %d, PreferenceStrength[0] = %d, PreferenceStrength[1] = %d, %s)",
-		sb.preference,
-		sb.preferenceStrength[0],
-		sb.preferenceStrength[1],
-		&sb.binarySnowflake)
-}
+func (sb *binarySnowball) String() string { _ = "STUB: not implemented"; return "" }

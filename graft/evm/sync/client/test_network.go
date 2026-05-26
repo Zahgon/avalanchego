@@ -5,7 +5,6 @@ package client
 
 import (
 	"context"
-	"errors"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
@@ -24,71 +23,35 @@ type testNetwork struct {
 	nodesRequested []ids.NodeID
 }
 
-func (*testNetwork) P2PNetwork() *p2p.Network {
-	panic("P2PNetwork unimplemented")
-}
+func (*testNetwork) P2PNetwork() *p2p.Network { _ = "STUB: not implemented"; return nil }
 
 func (*testNetwork) Sample(context.Context, int) []ids.NodeID {
-	panic("Sample unimplemented")
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (t *testNetwork) SendSyncedAppRequestAny(_ context.Context, _ []byte) ([]byte, ids.NodeID, error) {
-	if len(t.response) == 0 {
-		return nil, ids.EmptyNodeID, errors.New("no tested response to return in testNetwork")
-	}
-
-	response, err := t.processTest()
-	return response, ids.EmptyNodeID, err
+	_ = "STUB: not implemented"
+	return nil, *new(ids.NodeID), nil
 }
 
 func (t *testNetwork) SendSyncedAppRequest(_ context.Context, nodeID ids.NodeID, _ []byte) ([]byte, error) {
-	if len(t.response) == 0 {
-		return nil, errors.New("no tested response to return in testNetwork")
-	}
-
-	t.nodesRequested = append(t.nodesRequested, nodeID)
-
-	return t.processTest()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (t *testNetwork) processTest() ([]byte, error) {
-	t.numCalls++
-
-	if t.callback != nil {
-		t.callback()
-	}
-
-	response := t.response[0]
-	if len(t.response) > 1 {
-		t.response = t.response[1:]
-	} else {
-		t.response = nil
-	}
-
-	var err error
-	if len(t.requestErr) > 0 {
-		err = t.requestErr[0]
-		t.requestErr = t.requestErr[1:]
-	}
-
-	return response, err
-}
+func (t *testNetwork) processTest() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (t *testNetwork) testResponse(times uint8, callback func(), response []byte) {
-	t.response = make([][]byte, times)
-	for i := uint8(0); i < times; i++ {
-		t.response[i] = response
-	}
-	t.callback = callback
-	t.numCalls = 0
+	_ = "STUB: not implemented"
+	return
 }
 
 func (t *testNetwork) testResponses(callback func(), responses ...[]byte) {
-	t.response = responses
-	t.callback = callback
-	t.numCalls = 0
+	_ = "STUB: not implemented"
+	return
 }
 
-func (*testNetwork) RegisterResponse(ids.NodeID, float64) {}
+func (*testNetwork) RegisterResponse(ids.NodeID, float64) { _ = "STUB: not implemented"; return }
 
-func (*testNetwork) RegisterFailure(ids.NodeID) {}
+func (*testNetwork) RegisterFailure(ids.NodeID) { _ = "STUB: not implemented"; return }

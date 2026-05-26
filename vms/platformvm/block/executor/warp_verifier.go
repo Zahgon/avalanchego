@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/snow/validators"
 	"github.com/ava-labs/avalanchego/vms/platformvm/block"
-	"github.com/ava-labs/avalanchego/vms/platformvm/txs/executor"
 )
 
 // VerifyWarpMessages verifies all warp messages in the block. If any of the
@@ -20,17 +19,6 @@ func VerifyWarpMessages(
 	pChainHeight uint64,
 	b block.Block,
 ) error {
-	for _, tx := range b.Txs() {
-		err := executor.VerifyWarpMessages(
-			ctx,
-			networkID,
-			validatorState,
-			pChainHeight,
-			tx.Unsigned,
-		)
-		if err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

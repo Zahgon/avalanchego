@@ -11,17 +11,8 @@ type verifierStats struct {
 	blockValidationFail metrics.Counter
 }
 
-func newVerifierStats() *verifierStats {
-	return &verifierStats{
-		messageParseFail:    metrics.NewRegisteredCounter("warp_backend_message_parse_fail", nil),
-		blockValidationFail: metrics.NewRegisteredCounter("warp_backend_block_validation_fail", nil),
-	}
-}
+func newVerifierStats() *verifierStats { _ = "STUB: not implemented"; return nil }
 
-func (h *verifierStats) IncBlockValidationFail() {
-	h.blockValidationFail.Inc(1)
-}
+func (h *verifierStats) IncBlockValidationFail() { _ = "STUB: not implemented"; return }
 
-func (h *verifierStats) IncMessageParseFail() {
-	h.messageParseFail.Inc(1)
-}
+func (h *verifierStats) IncMessageParseFail() { _ = "STUB: not implemented"; return }

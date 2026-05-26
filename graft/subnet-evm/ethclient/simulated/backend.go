@@ -28,24 +28,17 @@
 package simulated
 
 import (
-	"errors"
-	"math/big"
 	"time"
 
-	"github.com/ava-labs/avalanchego/graft/evm/constants"
 	"github.com/ava-labs/avalanchego/graft/evm/rpc"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/consensus/dummy"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/core"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/eth"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/eth/ethconfig"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/interfaces"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/node"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/params"
 	"github.com/ava-labs/avalanchego/utils/timer/mockable"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 )
 
@@ -53,9 +46,13 @@ var _ eth.PushGossiper = (*fakePushGossiper)(nil)
 
 type fakePushGossiper struct{}
 
-func (*fakePushGossiper) Add(*types.Transaction) {}
+func (*fakePushGossiper) Add(*types.Transaction) {
+	_ = "STUB: not implemented"
 
-// Client exposes the methods provided by the Ethereum RPC client.
+	// Client exposes the methods provided by the Ethereum RPC client.
+	return
+}
+
 type Client interface {
 	ethereum.BlockNumberReader
 	ethereum.ChainReader
@@ -93,142 +90,50 @@ type Backend struct {
 //
 // A simulated backend always uses chainID 1337.
 func NewBackend(alloc types.GenesisAlloc, options ...func(nodeConf *node.Config, ethConf *ethconfig.Config)) *Backend {
-	chainConfig := params.Copy(params.TestChainConfig)
-	chainConfig.ChainID = big.NewInt(1337)
-
-	// Create the default configurations for the outer node shell and the Ethereum
-	// service to mutate with the options afterwards
-	nodeConf := node.DefaultConfig
-
-	ethConf := ethconfig.DefaultConfig
-	ethConf.Genesis = &core.Genesis{
-		Config:   &chainConfig,
-		GasLimit: params.GetExtra(&chainConfig).FeeConfig.GasLimit.Uint64(),
-		Alloc:    alloc,
-	}
-	ethConf.AllowUnfinalizedQueries = true
-	ethConf.Miner.Etherbase = constants.BlackholeAddr
-	ethConf.Miner.TestOnlyAllowDuplicateBlocks = true
-	ethConf.TxPool.NoLocals = true
-
-	for _, option := range options {
-		option(&nodeConf, &ethConf)
-	}
-	// Assemble the Ethereum stack to run the chain with
-	stack, err := node.New(&nodeConf)
-	if err != nil {
-		panic(err) // this should never happen
-	}
-	sim, err := newWithNode(stack, &ethConf, 0)
-	if err != nil {
-		panic(err) // this should never happen
-	}
-	return sim
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Create the default configurations for the outer node shell and the Ethereum
+// service to mutate with the options afterwards
+
+// Assemble the Ethereum stack to run the chain with
+
+// this should never happen
+
+// this should never happen
 
 // newWithNode sets up a simulated backend on an existing node. The provided node
 // must not be started and will be started by this method.
 func newWithNode(stack *node.Node, conf *eth.Config, blockPeriod uint64) (*Backend, error) {
-	chaindb := rawdb.NewMemoryDatabase()
-	clock := &mockable.Clock{}
-	clock.Set(time.Unix(0, 0))
-
-	engine := dummy.NewCoinbaseFaker()
-
-	backend, err := eth.New(
-		stack, conf, &fakePushGossiper{}, chaindb, eth.Settings{}, common.Hash{},
-		engine, clock,
-	)
-	if err != nil {
-		return nil, err
-	}
-	server := rpc.NewServer(0)
-	for _, api := range backend.APIs() {
-		if err := server.RegisterName(api.Namespace, api.Service); err != nil {
-			return nil, err
-		}
-	}
-	return &Backend{
-		eth:    backend,
-		client: simClient{ethclient.NewClient(rpc.DialInProc(server))},
-		clock:  clock,
-		server: server,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Close shuts down the simBackend.
 // The simulated backend can't be used afterwards.
-func (n *Backend) Close() error {
-	if n.client.Client != nil {
-		n.client.Close()
-	}
-	n.server.Stop()
-	return nil
-}
+func (n *Backend) Close() error { _ = "STUB: not implemented"; return nil }
 
 // Commit seals a block and moves the chain forward to a new empty block.
 func (n *Backend) Commit(accept bool) common.Hash {
-	hash, err := n.buildBlock(accept, 10)
-	if err != nil {
-		panic(err)
-	}
-	return hash
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 func (n *Backend) buildBlock(accept bool, gap uint64) (common.Hash, error) {
-	chain := n.eth.BlockChain()
-	parent := chain.CurrentBlock()
-
-	if err := n.eth.TxPool().Sync(); err != nil {
-		return common.Hash{}, err
-	}
-
-	n.clock.Set(time.Unix(int64(parent.Time+gap), 0))
-	block, err := n.eth.Miner().GenerateBlock(nil)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	if err := chain.InsertBlock(block); err != nil {
-		return common.Hash{}, err
-	}
-	if accept {
-		if err := n.acceptAncestors(block); err != nil {
-			return common.Hash{}, err
-		}
-		chain.DrainAcceptorQueue()
-	}
-	return block.Hash(), nil
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
 
-func (n *Backend) acceptAncestors(block *types.Block) error {
-	chain := n.eth.BlockChain()
-	lastAccepted := chain.LastConsensusAcceptedBlock()
+func (n *Backend) acceptAncestors(block *types.Block) error { _ = "STUB: not implemented"; return nil }
 
-	// Accept all ancestors of the block
-	toAccept := []*types.Block{block}
-	for block.ParentHash() != lastAccepted.Hash() {
-		block = chain.GetBlockByHash(block.ParentHash())
-		toAccept = append(toAccept, block)
-		if block.NumberU64() < lastAccepted.NumberU64() {
-			return errors.New("last accepted must be an ancestor of the block to accept")
-		}
-	}
-
-	for i := len(toAccept) - 1; i >= 0; i-- {
-		if err := chain.Accept(toAccept[i]); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// Accept all ancestors of the block
 
 // Rollback removes all pending transactions, reverting to the last committed state.
 func (n *Backend) Rollback() {
+	_ = "STUB: not implemented"
 	// Flush all transactions from the transaction pools
-	maxUint256 := new(big.Int).Sub(new(big.Int).Lsh(common.Big1, 256), common.Big1)
-	original := n.eth.TxPool().GasTip()
-	n.eth.TxPool().SetGasTip(maxUint256)
-	n.eth.TxPool().SetGasTip(original)
+	return
 }
 
 // Fork creates a side-chain that can be used to simulate reorgs.
@@ -243,47 +148,13 @@ func (n *Backend) Rollback() {
 //
 // There is a % chance that the side chain becomes canonical at the same length
 // to simulate live network behavior.
-func (n *Backend) Fork(parentHash common.Hash) error {
-	chain := n.eth.BlockChain()
+func (n *Backend) Fork(parentHash common.Hash) error { _ = "STUB: not implemented"; return nil }
 
-	if chain.CurrentBlock().Hash() == parentHash {
-		return nil
-	}
-
-	parent := chain.GetBlockByHash(parentHash)
-	if parent == nil {
-		return errors.New("parent block not found")
-	}
-
-	ch := make(chan core.NewTxPoolReorgEvent, 1)
-	sub := n.eth.TxPool().SubscribeNewReorgEvent(ch)
-	defer sub.Unsubscribe()
-
-	if err := n.eth.BlockChain().SetPreference(parent); err != nil {
-		return err
-	}
-	for {
-		select {
-		case reorg := <-ch:
-			// Wait for tx pool to reorg, then flush the tx pool
-			if reorg.Head.Hash() == parent.Hash() {
-				n.Rollback()
-				return nil
-			}
-		case <-time.After(2 * time.Second):
-			return errors.New("fork not accepted")
-		}
-	}
-}
+// Wait for tx pool to reorg, then flush the tx pool
 
 // AdjustTime changes the block timestamp and creates a new block.
 // It can only be called on empty blocks.
-func (n *Backend) AdjustTime(adjustment time.Duration) error {
-	_, err := n.buildBlock(false, uint64(adjustment))
-	return err
-}
+func (n *Backend) AdjustTime(adjustment time.Duration) error { _ = "STUB: not implemented"; return nil }
 
 // Client returns a client that accesses the simulated chain.
-func (n *Backend) Client() Client {
-	return n.client
-}
+func (n *Backend) Client() Client { _ = "STUB: not implemented"; return *new(Client) }

@@ -23,5 +23,6 @@ type Request interface {
 
 // RequestToBytes marshals the given request object into bytes
 func RequestToBytes(codec codec.Manager, request Request) ([]byte, error) {
-	return codec.Marshal(Version, &request)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

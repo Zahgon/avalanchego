@@ -6,13 +6,9 @@ package vms
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 
-	"golang.org/x/exp/maps"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
 
@@ -54,82 +50,28 @@ type Manager struct {
 
 // NewManager returns an instance of a VM manager
 func NewManager(log logging.Logger, aliaser ids.Aliaser) *Manager {
-	return &Manager{
-		Aliaser:   aliaser,
-		log:       log,
-		factories: make(map[ids.ID]Factory),
-		versions:  make(map[ids.ID]string),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Return a factory that can create new instances of the vm whose ID is vmID.
 func (m *Manager) GetFactory(vmID ids.ID) (Factory, error) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	if factory, ok := m.factories[vmID]; ok {
-		return factory, nil
-	}
-	return nil, fmt.Errorf("%q was %w", vmID, ErrNotFound)
+	_ = "STUB: not implemented"
+	return *new(Factory), nil
 }
 
 // Map vmID to factory. factory creates new instances of the vm whose
 // ID is vmID.
 func (m *Manager) RegisterFactory(ctx context.Context, vmID ids.ID, factory Factory) error {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	if _, exists := m.factories[vmID]; exists {
-		return fmt.Errorf("%q was already registered as a vm", vmID)
-	}
-	if err := m.Alias(vmID, vmID.String()); err != nil {
-		return err
-	}
-
-	m.factories[vmID] = factory
-
-	vm, err := factory.New(m.log)
-	if err != nil {
-		return err
-	}
-
-	commonVM, ok := vm.(common.VM)
-	if !ok {
-		return nil
-	}
-
-	version, err := commonVM.Version(ctx)
-	if err != nil {
-		// Drop the shutdown error to surface the original error
-		_ = commonVM.Shutdown(ctx)
-		return err
-	}
-
-	m.versions[vmID] = version
-	return commonVM.Shutdown(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Drop the shutdown error to surface the original error
 
 // ListFactories returns all the IDs that have had factories registered.
-func (m *Manager) ListFactories() ([]ids.ID, error) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	return maps.Keys(m.factories), nil
-}
+func (m *Manager) ListFactories() ([]ids.ID, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Versions returns the primary alias of the VM mapped to the reported
 // version of the VM for all the registered VMs that reported versions.
-func (m *Manager) Versions() (map[string]string, error) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	versions := make(map[string]string, len(m.versions))
-	for vmID, version := range m.versions {
-		alias, err := m.PrimaryAlias(vmID)
-		if err != nil {
-			return nil, err
-		}
-		versions[alias] = version
-	}
-	return versions, nil
-}
+func (m *Manager) Versions() (map[string]string, error) { _ = "STUB: not implemented"; return nil, nil }

@@ -5,10 +5,8 @@ package message
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/crypto"
 
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
@@ -30,54 +28,30 @@ type BlockSyncSummary struct {
 }
 
 func NewBlockSyncSummary(c codec.Manager, blockHash common.Hash, blockNumber uint64, blockRoot common.Hash) (*BlockSyncSummary, error) {
+	_ = "STUB: not implemented"
 	// We intentionally do not use the acceptImpl here and leave it for the parser to set.
-	summary := BlockSyncSummary{
-		BlockNumber: blockNumber,
-		BlockHash:   blockHash,
-		BlockRoot:   blockRoot,
-	}
-	bytes, err := c.Marshal(Version, &summary)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal syncable summary: %w", err)
-	}
-
-	summary.bytes = bytes
-	summaryID, err := ids.ToID(crypto.Keccak256(bytes))
-	if err != nil {
-		return nil, fmt.Errorf("failed to compute summary ID: %w", err)
-	}
-	summary.summaryID = summaryID
-
-	return &summary, nil
+	return nil, nil
 }
 
 func (s *BlockSyncSummary) GetBlockHash() common.Hash {
-	return s.BlockHash
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 func (s *BlockSyncSummary) GetBlockRoot() common.Hash {
-	return s.BlockRoot
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
-func (s *BlockSyncSummary) Bytes() []byte {
-	return s.bytes
-}
+func (s *BlockSyncSummary) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (s *BlockSyncSummary) Height() uint64 {
-	return s.BlockNumber
-}
+func (s *BlockSyncSummary) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *BlockSyncSummary) ID() ids.ID {
-	return s.summaryID
-}
+func (s *BlockSyncSummary) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (s *BlockSyncSummary) String() string {
-	return fmt.Sprintf("BlockSyncSummary(BlockHash=%s, BlockNumber=%d, BlockRoot=%s)", s.BlockHash, s.BlockNumber, s.BlockRoot)
-}
+func (s *BlockSyncSummary) String() string { _ = "STUB: not implemented"; return "" }
 
 func (s *BlockSyncSummary) Accept(context.Context) (block.StateSyncMode, error) {
-	if s.acceptImpl == nil {
-		return block.StateSyncSkipped, fmt.Errorf("accept implementation not specified for summary: %s", s)
-	}
-	return s.acceptImpl(s)
+	_ = "STUB: not implemented"
+	return *new(block.StateSyncMode), nil
 }

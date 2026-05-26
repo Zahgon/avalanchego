@@ -14,13 +14,16 @@ var NoOpCalculator Calculator = noOpCalculator{}
 type noOpCalculator struct{}
 
 func (noOpCalculator) CalculateUptime(ids.NodeID) (time.Duration, time.Time, error) {
-	return 0, time.Time{}, nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), *new(time.Time), nil
 }
 
 func (noOpCalculator) CalculateUptimePercent(ids.NodeID) (float64, error) {
+	_ = "STUB: not implemented"
 	return 0, nil
 }
 
 func (noOpCalculator) CalculateUptimePercentFrom(ids.NodeID, time.Time) (float64, error) {
+	_ = "STUB: not implemented"
 	return 0, nil
 }

@@ -5,11 +5,9 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"golang.org/x/exp/slog"
 
-	"github.com/ava-labs/avalanchego/api"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/plugin/evm/config"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/rpc"
@@ -48,37 +46,29 @@ type client struct {
 }
 
 // NewClient returns a Client for interacting with EVM [chain]
-func NewClient(uri, chain string) Client {
-	requestURI := fmt.Sprintf("%s/ext/bc/%s", uri, chain)
-	return NewClientWithURL(requestURI)
-}
+func NewClient(uri, chain string) Client { _ = "STUB: not implemented"; return *new(Client) }
 
 // NewClientWithURL returns a Client for interacting with EVM [chain]
-func NewClientWithURL(url string) Client {
-	return &client{
-		adminRequester: rpc.NewEndpointRequester(
-			url + "/admin",
-		),
-		validatorsRequester: rpc.NewEndpointRequester(
-			url + "/validators",
-		),
-	}
-}
+func NewClientWithURL(url string) Client { _ = "STUB: not implemented"; return *new(Client) }
 
 func (c *client) StartCPUProfiler(ctx context.Context, options ...rpc.Option) error {
-	return c.adminRequester.SendRequest(ctx, "admin.startCPUProfiler", struct{}{}, &api.EmptyReply{}, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *client) StopCPUProfiler(ctx context.Context, options ...rpc.Option) error {
-	return c.adminRequester.SendRequest(ctx, "admin.stopCPUProfiler", struct{}{}, &api.EmptyReply{}, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *client) MemoryProfile(ctx context.Context, options ...rpc.Option) error {
-	return c.adminRequester.SendRequest(ctx, "admin.memoryProfile", struct{}{}, &api.EmptyReply{}, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *client) LockProfile(ctx context.Context, options ...rpc.Option) error {
-	return c.adminRequester.SendRequest(ctx, "admin.lockProfile", struct{}{}, &api.EmptyReply{}, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type SetLogLevelArgs struct {
@@ -87,9 +77,8 @@ type SetLogLevelArgs struct {
 
 // SetLogLevel dynamically sets the log level for the C Chain
 func (c *client) SetLogLevel(ctx context.Context, level slog.Level, options ...rpc.Option) error {
-	return c.adminRequester.SendRequest(ctx, "admin.setLogLevel", &SetLogLevelArgs{
-		Level: level.String(),
-	}, &api.EmptyReply{}, options...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type ConfigReply struct {
@@ -98,9 +87,8 @@ type ConfigReply struct {
 
 // GetVMConfig returns the current config of the VM
 func (c *client) GetVMConfig(ctx context.Context, options ...rpc.Option) (*config.Config, error) {
-	res := &ConfigReply{}
-	err := c.adminRequester.SendRequest(ctx, "admin.getVMConfig", struct{}{}, res, options...)
-	return res.Config, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type GetCurrentValidatorsRequest struct {
@@ -113,9 +101,6 @@ type GetCurrentValidatorsResponse struct {
 
 // GetCurrentValidators returns the current validators
 func (c *client) GetCurrentValidators(ctx context.Context, nodeIDs []ids.NodeID, options ...rpc.Option) ([]CurrentValidator, error) {
-	res := &GetCurrentValidatorsResponse{}
-	err := c.validatorsRequester.SendRequest(ctx, "validators.getCurrentValidators", &GetCurrentValidatorsRequest{
-		NodeIDs: nodeIDs,
-	}, res, options...)
-	return res.Validators, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }

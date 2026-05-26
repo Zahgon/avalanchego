@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -111,47 +111,32 @@ type IFeeManagerTransactorRaw struct {
 
 // NewIFeeManager creates a new instance of IFeeManager, bound to a specific deployed contract.
 func NewIFeeManager(address common.Address, backend bind.ContractBackend) (*IFeeManager, error) {
-	contract, err := bindIFeeManager(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManager{IFeeManagerCaller: IFeeManagerCaller{contract: contract}, IFeeManagerTransactor: IFeeManagerTransactor{contract: contract}, IFeeManagerFilterer: IFeeManagerFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIFeeManagerCaller creates a new read-only instance of IFeeManager, bound to a specific deployed contract.
 func NewIFeeManagerCaller(address common.Address, caller bind.ContractCaller) (*IFeeManagerCaller, error) {
-	contract, err := bindIFeeManager(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManagerCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIFeeManagerTransactor creates a new write-only instance of IFeeManager, bound to a specific deployed contract.
 func NewIFeeManagerTransactor(address common.Address, transactor bind.ContractTransactor) (*IFeeManagerTransactor, error) {
-	contract, err := bindIFeeManager(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManagerTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIFeeManagerFilterer creates a new log filterer instance of IFeeManager, bound to a specific deployed contract.
 func NewIFeeManagerFilterer(address common.Address, filterer bind.ContractFilterer) (*IFeeManagerFilterer, error) {
-	contract, err := bindIFeeManager(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManagerFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindIFeeManager binds a generic wrapper to an already deployed contract.
 func bindIFeeManager(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := IFeeManagerMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -159,18 +144,21 @@ func bindIFeeManager(address common.Address, caller bind.ContractCaller, transac
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IFeeManager *IFeeManagerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IFeeManager.Contract.IFeeManagerCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IFeeManager *IFeeManagerRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IFeeManager.Contract.IFeeManagerTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IFeeManager *IFeeManagerRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IFeeManager.Contract.IFeeManagerTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -178,18 +166,21 @@ func (_IFeeManager *IFeeManagerRaw) Transact(opts *bind.TransactOpts, method str
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IFeeManager *IFeeManagerCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IFeeManager.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IFeeManager *IFeeManagerTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IFeeManager.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IFeeManager *IFeeManagerTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IFeeManager.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -205,34 +196,8 @@ func (_IFeeManager *IFeeManagerCaller) GetFeeConfig(opts *bind.CallOpts) (struct
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	var out []interface{}
-	err := _IFeeManager.contract.Call(opts, &out, "getFeeConfig")
-
-	outstruct := new(struct {
-		GasLimit                 *big.Int
-		TargetBlockRate          *big.Int
-		MinBaseFee               *big.Int
-		TargetGas                *big.Int
-		BaseFeeChangeDenominator *big.Int
-		MinBlockGasCost          *big.Int
-		MaxBlockGasCost          *big.Int
-		BlockGasCostStep         *big.Int
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.GasLimit = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-	outstruct.TargetBlockRate = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
-	outstruct.MinBaseFee = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-	outstruct.TargetGas = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
-	outstruct.BaseFeeChangeDenominator = *abi.ConvertType(out[4], new(*big.Int)).(**big.Int)
-	outstruct.MinBlockGasCost = *abi.ConvertType(out[5], new(*big.Int)).(**big.Int)
-	outstruct.MaxBlockGasCost = *abi.ConvertType(out[6], new(*big.Int)).(**big.Int)
-	outstruct.BlockGasCostStep = *abi.ConvertType(out[7], new(*big.Int)).(**big.Int)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -248,7 +213,8 @@ func (_IFeeManager *IFeeManagerSession) GetFeeConfig() (struct {
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	return _IFeeManager.Contract.GetFeeConfig(&_IFeeManager.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -264,174 +230,176 @@ func (_IFeeManager *IFeeManagerCallerSession) GetFeeConfig() (struct {
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	return _IFeeManager.Contract.GetFeeConfig(&_IFeeManager.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256 blockNumber)
 func (_IFeeManager *IFeeManagerCaller) GetFeeConfigLastChangedAt(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _IFeeManager.contract.Call(opts, &out, "getFeeConfigLastChangedAt")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256 blockNumber)
 func (_IFeeManager *IFeeManagerSession) GetFeeConfigLastChangedAt() (*big.Int, error) {
-	return _IFeeManager.Contract.GetFeeConfigLastChangedAt(&_IFeeManager.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256 blockNumber)
 func (_IFeeManager *IFeeManagerCallerSession) GetFeeConfigLastChangedAt() (*big.Int, error) {
-	return _IFeeManager.Contract.GetFeeConfigLastChangedAt(&_IFeeManager.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IFeeManager *IFeeManagerCaller) ReadAllowList(opts *bind.CallOpts, addr common.Address) (*big.Int, error) {
-	var out []interface{}
-	err := _IFeeManager.contract.Call(opts, &out, "readAllowList", addr)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IFeeManager *IFeeManagerSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _IFeeManager.Contract.ReadAllowList(&_IFeeManager.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IFeeManager *IFeeManagerCallerSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _IFeeManager.Contract.ReadAllowList(&_IFeeManager.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactor) SetAdmin(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.contract.Transact(opts, "setAdmin", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IFeeManager *IFeeManagerSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetAdmin(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactorSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetAdmin(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactor) SetEnabled(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.contract.Transact(opts, "setEnabled", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IFeeManager *IFeeManagerSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetEnabled(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactorSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetEnabled(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_IFeeManager *IFeeManagerTransactor) SetFeeConfig(opts *bind.TransactOpts, gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _IFeeManager.contract.Transact(opts, "setFeeConfig", gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_IFeeManager *IFeeManagerSession) SetFeeConfig(gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetFeeConfig(&_IFeeManager.TransactOpts, gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_IFeeManager *IFeeManagerTransactorSession) SetFeeConfig(gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetFeeConfig(&_IFeeManager.TransactOpts, gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactor) SetManager(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.contract.Transact(opts, "setManager", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IFeeManager *IFeeManagerSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetManager(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactorSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetManager(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactor) SetNone(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.contract.Transact(opts, "setNone", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IFeeManager *IFeeManagerSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetNone(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IFeeManager *IFeeManagerTransactorSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _IFeeManager.Contract.SetNone(&_IFeeManager.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IFeeManagerFeeConfigChangedIterator is returned from FilterFeeConfigChanged and is used to iterate over the raw logs and unpacked data for FeeConfigChanged events raised by the IFeeManager contract.
@@ -451,55 +419,25 @@ type IFeeManagerFeeConfigChangedIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *IFeeManagerFeeConfigChangedIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IFeeManagerFeeConfigChanged)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IFeeManagerFeeConfigChanged)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *IFeeManagerFeeConfigChangedIterator) Error() error {
-	return it.fail
-}
+	_ = "STUB: not implemented"
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IFeeManagerFeeConfigChangedIterator) Close() error {
-	it.sub.Unsubscribe()
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
 	return nil
 }
+
+func (it *IFeeManagerFeeConfigChangedIterator) Close() error { _ = "STUB: not implemented"; return nil }
 
 // IFeeManagerFeeConfigChanged represents a FeeConfigChanged event raised by the IFeeManager contract.
 type IFeeManagerFeeConfigChanged struct {
@@ -513,71 +451,26 @@ type IFeeManagerFeeConfigChanged struct {
 //
 // Solidity: event FeeConfigChanged(address indexed sender, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) oldFeeConfig, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) newFeeConfig)
 func (_IFeeManager *IFeeManagerFilterer) FilterFeeConfigChanged(opts *bind.FilterOpts, sender []common.Address) (*IFeeManagerFeeConfigChangedIterator, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IFeeManager.contract.FilterLogs(opts, "FeeConfigChanged", senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManagerFeeConfigChangedIterator{contract: _IFeeManager.contract, event: "FeeConfigChanged", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchFeeConfigChanged is a free log subscription operation binding the contract event 0x4c98e43adb5962c18f3f0e6dd066e2a2de258d3b4f695b317b77c8f27cd044fc.
 //
 // Solidity: event FeeConfigChanged(address indexed sender, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) oldFeeConfig, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) newFeeConfig)
 func (_IFeeManager *IFeeManagerFilterer) WatchFeeConfigChanged(opts *bind.WatchOpts, sink chan<- *IFeeManagerFeeConfigChanged, sender []common.Address) (event.Subscription, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IFeeManager.contract.WatchLogs(opts, "FeeConfigChanged", senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IFeeManagerFeeConfigChanged)
-				if err := _IFeeManager.contract.UnpackLog(event, "FeeConfigChanged", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseFeeConfigChanged is a log parse operation binding the contract event 0x4c98e43adb5962c18f3f0e6dd066e2a2de258d3b4f695b317b77c8f27cd044fc.
 //
 // Solidity: event FeeConfigChanged(address indexed sender, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) oldFeeConfig, (uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256) newFeeConfig)
 func (_IFeeManager *IFeeManagerFilterer) ParseFeeConfigChanged(log types.Log) (*IFeeManagerFeeConfigChanged, error) {
-	event := new(IFeeManagerFeeConfigChanged)
-	if err := _IFeeManager.contract.UnpackLog(event, "FeeConfigChanged", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IFeeManagerRoleSetIterator is returned from FilterRoleSet and is used to iterate over the raw logs and unpacked data for RoleSet events raised by the IFeeManager contract.
@@ -597,55 +490,25 @@ type IFeeManagerRoleSetIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *IFeeManagerRoleSetIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IFeeManagerRoleSet)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IFeeManagerRoleSet)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *IFeeManagerRoleSetIterator) Error() error {
-	return it.fail
-}
+	_ = "STUB: not implemented"
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IFeeManagerRoleSetIterator) Close() error {
-	it.sub.Unsubscribe()
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
 	return nil
 }
+
+func (it *IFeeManagerRoleSetIterator) Close() error { _ = "STUB: not implemented"; return nil }
 
 // IFeeManagerRoleSet represents a RoleSet event raised by the IFeeManager contract.
 type IFeeManagerRoleSet struct {
@@ -660,85 +523,24 @@ type IFeeManagerRoleSet struct {
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IFeeManager *IFeeManagerFilterer) FilterRoleSet(opts *bind.FilterOpts, role []*big.Int, account []common.Address, sender []common.Address) (*IFeeManagerRoleSetIterator, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IFeeManager.contract.FilterLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IFeeManagerRoleSetIterator{contract: _IFeeManager.contract, event: "RoleSet", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchRoleSet is a free log subscription operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IFeeManager *IFeeManagerFilterer) WatchRoleSet(opts *bind.WatchOpts, sink chan<- *IFeeManagerRoleSet, role []*big.Int, account []common.Address, sender []common.Address) (event.Subscription, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IFeeManager.contract.WatchLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IFeeManagerRoleSet)
-				if err := _IFeeManager.contract.UnpackLog(event, "RoleSet", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseRoleSet is a log parse operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IFeeManager *IFeeManagerFilterer) ParseRoleSet(log types.Log) (*IFeeManagerRoleSet, error) {
-	event := new(IFeeManagerRoleSet)
-	if err := _IFeeManager.contract.UnpackLog(event, "RoleSet", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

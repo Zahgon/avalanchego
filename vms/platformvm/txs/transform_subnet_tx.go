@@ -9,7 +9,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/reward"
 )
@@ -113,58 +112,10 @@ type TransformSubnetTx struct {
 }
 
 func (tx *TransformSubnetTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case tx.Subnet == constants.PrimaryNetworkID:
-		return errCantTransformPrimaryNetwork
-	case tx.AssetID == ids.Empty:
-		return errEmptyAssetID
-	case tx.AssetID == ctx.AVAXAssetID:
-		return errAssetIDCantBeAVAX
-	case tx.InitialSupply == 0:
-		return errInitialSupplyZero
-	case tx.InitialSupply > tx.MaximumSupply:
-		return errInitialSupplyGreaterThanMaxSupply
-	case tx.MinConsumptionRate > tx.MaxConsumptionRate:
-		return errMinConsumptionRateTooLarge
-	case tx.MaxConsumptionRate > reward.PercentDenominator:
-		return errMaxConsumptionRateTooLarge
-	case tx.MinValidatorStake == 0:
-		return errMinValidatorStakeZero
-	case tx.MinValidatorStake > tx.InitialSupply:
-		return errMinValidatorStakeAboveSupply
-	case tx.MinValidatorStake > tx.MaxValidatorStake:
-		return errMinValidatorStakeAboveMax
-	case tx.MaxValidatorStake > tx.MaximumSupply:
-		return errMaxValidatorStakeTooLarge
-	case tx.MinStakeDuration == 0:
-		return errMinStakeDurationZero
-	case tx.MinStakeDuration > tx.MaxStakeDuration:
-		return errMinStakeDurationTooLarge
-	case tx.MinDelegationFee > reward.PercentDenominator:
-		return errMinDelegationFeeTooLarge
-	case tx.MinDelegatorStake == 0:
-		return errMinDelegatorStakeZero
-	case tx.MaxValidatorWeightFactor == 0:
-		return errMaxValidatorWeightFactorZero
-	case tx.UptimeRequirement > reward.PercentDenominator:
-		return errUptimeRequirementTooLarge
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := tx.SubnetAuth.Verify(); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *TransformSubnetTx) Visit(visitor Visitor) error {
-	return visitor.TransformSubnetTx(tx)
-}
+// already passed syntactic verification
+
+func (tx *TransformSubnetTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

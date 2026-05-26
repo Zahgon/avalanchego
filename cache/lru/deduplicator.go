@@ -29,54 +29,13 @@ type Deduplicator[K comparable, V Evictable[K]] struct {
 
 // Deprecated: Remove this once the vertex state no longer uses it.
 func NewDeduplicator[K comparable, V Evictable[K]](size int) *Deduplicator[K, V] {
-	return &Deduplicator[K, V]{
-		entryMap:  make(map[K]*linked.ListElement[V]),
-		entryList: linked.NewList[V](),
-		size:      max(size, 1),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Deduplicate returns either the provided value, or a previously provided value
 // with the same ID that hasn't yet been evicted
-func (d *Deduplicator[_, V]) Deduplicate(value V) V {
-	d.lock.Lock()
-	defer d.lock.Unlock()
-
-	key := value.Key()
-	if e, ok := d.entryMap[key]; !ok {
-		if d.entryList.Len() >= d.size {
-			e = d.entryList.Front()
-			d.entryList.MoveToBack(e)
-
-			delete(d.entryMap, e.Value.Key())
-			e.Value.Evict()
-
-			e.Value = value
-		} else {
-			e = &linked.ListElement[V]{
-				Value: value,
-			}
-			d.entryList.PushBack(e)
-		}
-		d.entryMap[key] = e
-	} else {
-		d.entryList.MoveToBack(e)
-
-		value = e.Value
-	}
-	return value
-}
+func (d *Deduplicator[_, V]) Deduplicate(value V) V { _ = "STUB: not implemented"; return *new(V) }
 
 // Flush removes all entries from the cache
-func (d *Deduplicator[_, _]) Flush() {
-	d.lock.Lock()
-	defer d.lock.Unlock()
-
-	for d.entryList.Len() > 0 {
-		e := d.entryList.Front()
-		d.entryList.Remove(e)
-
-		delete(d.entryMap, e.Value.Key())
-		e.Value.Evict()
-	}
-}
+func (d *Deduplicator[_, _]) Flush() { _ = "STUB: not implemented"; return }

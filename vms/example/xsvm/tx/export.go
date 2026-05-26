@@ -19,6 +19,4 @@ type Export struct {
 	To          ids.ShortID `serialize:"true" json:"to"`
 }
 
-func (e *Export) Visit(v Visitor) error {
-	return v.Export(e)
-}
+func (e *Export) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

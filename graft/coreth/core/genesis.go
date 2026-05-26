@@ -28,31 +28,16 @@
 package core
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
-	"fmt"
 	"math/big"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/params"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/upgrade/ap3"
-	"github.com/ava-labs/avalanchego/graft/evm/firewood"
-	"github.com/ava-labs/avalanchego/graft/evm/triedb/pathdb"
-	"github.com/ava-labs/avalanchego/vms/evm/acp226"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/common/hexutil"
 	"github.com/ava-labs/libevm/common/math"
-	"github.com/ava-labs/libevm/core/rawdb"
-	"github.com/ava-labs/libevm/core/state"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/libevm/stateconf"
-	"github.com/ava-labs/libevm/log"
-	ethparams "github.com/ava-labs/libevm/params"
-	"github.com/ava-labs/libevm/trie"
 	"github.com/ava-labs/libevm/triedb"
-	"github.com/holiman/uint256"
 )
 
 //go:generate go tool gencodec -type Genesis -field-override genesisSpecMarshaling -out gen_genesis.go
@@ -110,9 +95,7 @@ type GenesisMismatchError struct {
 	Stored, New common.Hash
 }
 
-func (e *GenesisMismatchError) Error() string {
-	return fmt.Sprintf("database contains incompatible genesis (have %x, new %x)", e.Stored, e.New)
-}
+func (e *GenesisMismatchError) Error() string { _ = "STUB: not implemented"; return "" }
 
 // SetupGenesisBlock writes or updates the genesis block in db.
 // The block that will be used is:
@@ -132,285 +115,97 @@ func (e *GenesisMismatchError) Error() string {
 func SetupGenesisBlock(
 	db ethdb.Database, triedb *triedb.Database, genesis *Genesis, lastAcceptedHash common.Hash, skipChainConfigCheckCompatible bool,
 ) (*params.ChainConfig, common.Hash, error) {
-	if genesis == nil {
-		return nil, common.Hash{}, ErrNoGenesis
-	}
-	if genesis.Config == nil {
-		return nil, common.Hash{}, errGenesisNoConfig
-	}
-	// Just commit the new block if there is no stored genesis block.
-	stored := rawdb.ReadCanonicalHash(db, 0)
-	if (stored == common.Hash{}) {
-		log.Info("Writing genesis to database")
-		block, err := genesis.Commit(db, triedb)
-		if err != nil {
-			return genesis.Config, common.Hash{}, err
-		}
-		return genesis.Config, block.Hash(), nil
-	}
-	// The genesis block is present(perhaps in ancient database) while the
-	// state database is not initialized yet. It can happen that the node
-	// is initialized with an external ancient store. Commit genesis state
-	// in this case.
-	header := rawdb.ReadHeader(db, stored, 0)
-	if header.Root != types.EmptyRootHash && !triedb.Initialized(header.Root) {
-		// Ensure the stored genesis matches with the given one.
-		hash := genesis.ToBlock().Hash()
-		if hash != stored {
-			return genesis.Config, common.Hash{}, &GenesisMismatchError{stored, hash}
-		}
-		if _, ok := triedb.Backend().(*firewood.TrieDB); ok {
-			// With Firewood's deferred persistence, a crash before the
-			// first persist leaves the trie database empty while LevelDB
-			// already has blocks beyond genesis. In this case, only recommit
-			// genesis state to the trieDB.
-			_, err := genesis.toBlock(db, triedb)
-			return genesis.Config, common.Hash{}, err
-		}
-
-		_, err := genesis.Commit(db, triedb)
-		return genesis.Config, common.Hash{}, err
-	}
-	// Check whether the genesis block is already written.
-	hash := genesis.ToBlock().Hash()
-	if hash != stored {
-		return genesis.Config, common.Hash{}, &GenesisMismatchError{stored, hash}
-	}
-	// Get the existing chain configuration.
-	newcfg := genesis.Config
-	if err := newcfg.CheckConfigForkOrder(); err != nil {
-		return newcfg, common.Hash{}, err
-	}
-	storedcfg := rawdb.ReadChainConfig(db, stored)
-	if storedcfg == nil {
-		log.Warn("Found genesis block without chain config")
-		rawdb.WriteChainConfig(db, stored, newcfg)
-		return newcfg, stored, nil
-	}
-	if err := params.SetEthUpgrades(storedcfg); err != nil {
-		return genesis.Config, common.Hash{}, err
-	}
-	storedData, _ := json.Marshal(storedcfg)
-	// Check config compatibility and write the config. Compatibility errors
-	// are returned to the caller unless we're already at block zero.
-	// we use last accepted block for cfg compatibility check. Note this allows
-	// the node to continue if it previously halted due to attempting to process blocks with
-	// an incorrect chain config.
-	lastBlock := ReadBlockByHash(db, lastAcceptedHash)
-	// this should never happen, but we check anyway
-	// when we start syncing from scratch, the last accepted block
-	// will be genesis block
-	if lastBlock == nil {
-		return newcfg, common.Hash{}, errors.New("missing last accepted block")
-	}
-	height := lastBlock.NumberU64()
-	timestamp := lastBlock.Time()
-	if skipChainConfigCheckCompatible {
-		log.Info("skipping verifying activated network upgrades on chain config")
-	} else {
-		compatErr := storedcfg.CheckCompatible(newcfg, height, timestamp)
-		if compatErr != nil && ((height != 0 && compatErr.RewindToBlock != 0) || (timestamp != 0 && compatErr.RewindToTime != 0)) {
-			return newcfg, stored, compatErr
-		}
-	}
-	// Don't overwrite if the old is identical to the new
-	if newData, _ := json.Marshal(newcfg); !bytes.Equal(storedData, newData) {
-		rawdb.WriteChainConfig(db, stored, newcfg)
-	}
-	return newcfg, stored, nil
+	_ = "STUB: not implemented"
+	return nil, *new(common.Hash), nil
 }
+
+// Just commit the new block if there is no stored genesis block.
+
+// The genesis block is present(perhaps in ancient database) while the
+// state database is not initialized yet. It can happen that the node
+// is initialized with an external ancient store. Commit genesis state
+// in this case.
+
+// Ensure the stored genesis matches with the given one.
+
+// With Firewood's deferred persistence, a crash before the
+// first persist leaves the trie database empty while LevelDB
+// already has blocks beyond genesis. In this case, only recommit
+// genesis state to the trieDB.
+
+// Check whether the genesis block is already written.
+
+// Get the existing chain configuration.
+
+// Check config compatibility and write the config. Compatibility errors
+// are returned to the caller unless we're already at block zero.
+// we use last accepted block for cfg compatibility check. Note this allows
+// the node to continue if it previously halted due to attempting to process blocks with
+// an incorrect chain config.
+
+// this should never happen, but we check anyway
+// when we start syncing from scratch, the last accepted block
+// will be genesis block
+
+// Don't overwrite if the old is identical to the new
 
 // IsVerkle indicates whether the state is already stored in a verkle
 // tree at genesis time.
-func (g *Genesis) IsVerkle() bool {
-	return g.Config.IsVerkle(new(big.Int).SetUint64(g.Number), g.Timestamp)
-}
+func (g *Genesis) IsVerkle() bool { _ = "STUB: not implemented"; return false }
 
 // ToBlock returns the genesis block according to genesis specification.
-func (g *Genesis) ToBlock() *types.Block {
-	db := rawdb.NewMemoryDatabase()
-	block, err := g.toBlock(db, triedb.NewDatabase(db, g.trieConfig()))
-	if err != nil {
-		panic(err)
-	}
-	return block
-}
+func (g *Genesis) ToBlock() *types.Block { _ = "STUB: not implemented"; return nil }
 
-func (g *Genesis) trieConfig() *triedb.Config {
-	if !g.IsVerkle() {
-		return nil
-	}
-	return &triedb.Config{
-		DBOverride: pathdb.Defaults.BackendConstructor,
-		IsVerkle:   true,
-	}
-}
+func (g *Genesis) trieConfig() *triedb.Config { _ = "STUB: not implemented"; return nil }
 
 // TODO: migrate this function to "flush" for more similarity with upstream.
 func (g *Genesis) toBlock(db ethdb.Database, triedb *triedb.Database) (*types.Block, error) {
-	statedb, err := state.New(types.EmptyRootHash, state.NewDatabaseWithNodeDB(db, triedb), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	head := &types.Header{
-		Number:     new(big.Int).SetUint64(g.Number),
-		Nonce:      types.EncodeNonce(g.Nonce),
-		Time:       g.Timestamp,
-		ParentHash: g.ParentHash,
-		Extra:      g.ExtraData,
-		GasLimit:   g.GasLimit,
-		GasUsed:    g.GasUsed,
-		BaseFee:    g.BaseFee,
-		Difficulty: g.Difficulty,
-		MixDigest:  g.Mixhash,
-		Coinbase:   g.Coinbase,
-	}
-
-	// Configure any stateful precompiles that should be enabled in the genesis.
-	blockContext := NewBlockContext(head.Number, head.Time)
-	err = ApplyPrecompileActivations(g.Config, nil, blockContext, statedb)
-	if err != nil {
-		return nil, fmt.Errorf("unable to configure precompiles in genesis block: %v", err)
-	}
-
-	for addr, account := range g.Alloc {
-		statedb.SetBalance(addr, uint256.MustFromBig(account.Balance))
-		statedb.SetCode(addr, account.Code)
-		statedb.SetNonce(addr, account.Nonce)
-		for key, value := range account.Storage {
-			statedb.SetState(addr, key, value)
-		}
-	}
-	root := statedb.IntermediateRoot(false)
-	head.Root = root
-
-	if g.GasLimit == 0 {
-		head.GasLimit = ethparams.GenesisGasLimit
-	}
-	if g.Difficulty == nil {
-		head.Difficulty = ethparams.GenesisDifficulty
-	}
-	if g.ExtraData == nil {
-		head.Extra = []byte{}
-	}
-	if conf := g.Config; conf != nil {
-		num := new(big.Int).SetUint64(g.Number)
-		confExtra := params.GetExtra(conf)
-		if confExtra.IsApricotPhase3(g.Timestamp) {
-			if g.BaseFee != nil {
-				head.BaseFee = g.BaseFee
-			} else {
-				head.BaseFee = big.NewInt(ap3.InitialBaseFee)
-			}
-		}
-		headerExtra := customtypes.GetHeaderExtra(head)
-
-		// When Etna/Cancun is active, `BlockGasCost` and `ExtDataGasUsed` are decoded to 0 if it's nil.
-		// This is because these fields come before the other optional Cancun fields in RLP order.
-		// This only occurs with a serialized and written genesis block, and then reading it back.
-		// While this does not affect anything (because we don't use `ToBlock` to retrieve the genesis block),
-		// it's still confusing and breaking few tests. So we set it here to 0 to make it consistent.
-		if confExtra.IsEtna(g.Timestamp) {
-			if headerExtra.ExtDataGasUsed == nil {
-				headerExtra.ExtDataGasUsed = new(big.Int)
-			}
-			if headerExtra.BlockGasCost == nil {
-				headerExtra.BlockGasCost = new(big.Int)
-			}
-		}
-		if conf.IsCancun(num, g.Timestamp) {
-			// EIP-4788: The parentBeaconBlockRoot of the genesis block is always
-			// the zero hash. This is because the genesis block does not have a parent
-			// by definition.
-			head.ParentBeaconRoot = new(common.Hash)
-			// EIP-4844 fields
-			head.ExcessBlobGas = g.ExcessBlobGas
-			head.BlobGasUsed = g.BlobGasUsed
-			if head.ExcessBlobGas == nil {
-				head.ExcessBlobGas = new(uint64)
-			}
-			if head.BlobGasUsed == nil {
-				head.BlobGasUsed = new(uint64)
-			}
-		}
-		// Granite: set TimeMilliseconds
-		if confExtra.IsGranite(g.Timestamp) {
-			headerExtra.TimeMilliseconds = new(uint64)
-			*headerExtra.TimeMilliseconds = g.Timestamp * 1000
-
-			headerExtra.MinDelayExcess = new(acp226.DelayExcess)
-			*headerExtra.MinDelayExcess = acp226.InitialDelayExcess
-		}
-	}
-
-	// Create the genesis block to use the block hash
-	block := types.NewBlock(head, nil, nil, nil, trie.NewStackTrie(nil))
-	triedbOpt := stateconf.WithTrieDBUpdatePayload(common.Hash{}, block.Hash())
-
-	if _, err := statedb.Commit(0, false, stateconf.WithTrieDBUpdateOpts(triedbOpt)); err != nil {
-		return nil, fmt.Errorf("unable to commit genesis block to statedb: %v", err)
-	}
-	// Commit newly generated states into disk if it's not empty.
-	if root != types.EmptyRootHash {
-		if err := triedb.Commit(root, true); err != nil {
-			return nil, fmt.Errorf("unable to commit genesis block: %v", err)
-		}
-	}
-	return block, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Configure any stateful precompiles that should be enabled in the genesis.
+
+// When Etna/Cancun is active, `BlockGasCost` and `ExtDataGasUsed` are decoded to 0 if it's nil.
+// This is because these fields come before the other optional Cancun fields in RLP order.
+// This only occurs with a serialized and written genesis block, and then reading it back.
+// While this does not affect anything (because we don't use `ToBlock` to retrieve the genesis block),
+// it's still confusing and breaking few tests. So we set it here to 0 to make it consistent.
+
+// EIP-4788: The parentBeaconBlockRoot of the genesis block is always
+// the zero hash. This is because the genesis block does not have a parent
+// by definition.
+
+// EIP-4844 fields
+
+// Granite: set TimeMilliseconds
+
+// Create the genesis block to use the block hash
+
+// Commit newly generated states into disk if it's not empty.
 
 // Commit writes the block and state of a genesis specification to the database.
 // The block is committed as the canonical head block.
 func (g *Genesis) Commit(db ethdb.Database, triedb *triedb.Database) (*types.Block, error) {
-	block, err := g.toBlock(db, triedb)
-	if err != nil {
-		return nil, err
-	}
-	if block.Number().Sign() != 0 {
-		return nil, errors.New("can't commit genesis block with number > 0")
-	}
-	config := g.Config
-	if config == nil {
-		return nil, errGenesisNoConfig
-	}
-	if err := config.CheckConfigForkOrder(); err != nil {
-		return nil, err
-	}
-	rawdb.WriteBlock(db, block)
-	rawdb.WriteReceipts(db, block.Hash(), block.NumberU64(), nil)
-	rawdb.WriteCanonicalHash(db, block.Hash(), block.NumberU64())
-	rawdb.WriteHeadBlockHash(db, block.Hash())
-	rawdb.WriteHeadHeaderHash(db, block.Hash())
-	rawdb.WriteChainConfig(db, block.Hash(), config)
-	return block, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MustCommit writes the genesis block and state to db, panicking on error.
 // The block is committed as the canonical head block.
 func (g *Genesis) MustCommit(db ethdb.Database, triedb *triedb.Database) *types.Block {
-	block, err := g.Commit(db, triedb)
-	if err != nil {
-		panic(err)
-	}
-	return block
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GenesisBlockForTesting creates and writes a block in which addr has the given wei balance.
 func GenesisBlockForTesting(db ethdb.Database, addr common.Address, balance *big.Int) *types.Block {
-	g := Genesis{
-		Config:  params.TestChainConfig,
-		Alloc:   types.GenesisAlloc{addr: {Balance: balance}},
-		BaseFee: big.NewInt(ap3.InitialBaseFee),
-	}
-	return g.MustCommit(db, triedb.NewDatabase(db, triedb.HashDefaults))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ReadBlockByHash reads the block with the given hash from the database.
 func ReadBlockByHash(db ethdb.Reader, hash common.Hash) *types.Block {
-	blockNumber := rawdb.ReadHeaderNumber(db, hash)
-	if blockNumber == nil {
-		return nil
-	}
-	return rawdb.ReadBlock(db, hash, *blockNumber)
+	_ = "STUB: not implemented"
+	return nil
 }

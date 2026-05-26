@@ -4,8 +4,6 @@
 package modules
 
 import (
-	"bytes"
-
 	"github.com/ava-labs/libevm/common"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/precompile/contract"
@@ -25,14 +23,8 @@ type Module struct {
 
 type moduleArray []Module
 
-func (m moduleArray) Len() int {
-	return len(m)
-}
+func (m moduleArray) Len() int { _ = "STUB: not implemented"; return 0 }
 
-func (m moduleArray) Swap(i, j int) {
-	m[i], m[j] = m[j], m[i]
-}
+func (m moduleArray) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
-func (m moduleArray) Less(i, j int) bool {
-	return bytes.Compare(m[i].Address.Bytes(), m[j].Address.Bytes()) < 0
-}
+func (m moduleArray) Less(i, j int) bool { _ = "STUB: not implemented"; return false }

@@ -20,9 +20,4 @@ var (
 	}
 )
 
-func ErrorToRPCError(err error) error {
-	if _, ok := ErrorToErrEnum[err]; ok {
-		return nil
-	}
-	return err
-}
+func ErrorToRPCError(err error) error { _ = "STUB: not implemented"; return nil }

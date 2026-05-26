@@ -28,17 +28,8 @@
 package snapshot
 
 import (
-	"encoding/binary"
-	"errors"
-	"fmt"
-	"time"
-
-	"github.com/ava-labs/avalanchego/vms/evm/sync/customrawdb"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
-	"github.com/ava-labs/libevm/rlp"
 	"github.com/ava-labs/libevm/triedb"
 )
 
@@ -59,87 +50,28 @@ type journalGenerator struct {
 // store. If loading the snapshot from disk is successful, this function also
 // returns a boolean indicating whether or not the snapshot is fully generated.
 func loadSnapshot(diskdb ethdb.KeyValueStore, triedb *triedb.Database, cache int, blockHash, root common.Hash, noBuild bool) (snapshot, bool, error) {
+	_ = "STUB: not implemented"
 	// Retrieve the block hash of the snapshot, failing if no snapshot is present.
-	baseBlockHash, err := customrawdb.ReadSnapshotBlockHash(diskdb)
-	if err != nil {
-		return nil, false, fmt.Errorf("missing or corrupted snapshot, no snapshot block hash: %v", err)
-	}
-	if baseBlockHash != blockHash {
-		return nil, false, fmt.Errorf("block hash stored on disk (%#x) does not match last accepted (%#x)", baseBlockHash, blockHash)
-	}
-	baseRoot := rawdb.ReadSnapshotRoot(diskdb)
-	switch {
-	case baseRoot == (common.Hash{}):
-		return nil, false, errors.New("missing or corrupted snapshot, no snapshot root")
-	case baseRoot != root:
-		return nil, false, fmt.Errorf("root stored on disk (%#x) does not match last accepted (%#x)", baseRoot, root)
-	}
-
-	// Retrieve the disk layer generator. It must exist, no matter the
-	// snapshot is fully generated or not. Otherwise the entire disk
-	// layer is invalid.
-	generatorBlob := rawdb.ReadSnapshotGenerator(diskdb)
-	if len(generatorBlob) == 0 {
-		return nil, false, errors.New("missing snapshot generator")
-	}
-	var generator journalGenerator
-	if err := rlp.DecodeBytes(generatorBlob, &generator); err != nil {
-		return nil, false, fmt.Errorf("failed to decode snapshot generator: %v", err)
-	}
-
-	// Instantiate snapshot as disk layer with last recorded block hash and root
-	snapshot := &diskLayer{
-		diskdb:    diskdb,
-		triedb:    triedb,
-		cache:     newMeteredSnapshotCache(cache * 1024 * 1024),
-		root:      baseRoot,
-		blockHash: baseBlockHash,
-		created:   time.Now(),
-	}
-
-	var wiper chan struct{}
-	// Load the disk layer status from the generator if it's not complete
-	if !generator.Done {
-		// If the generator was still wiping, restart one from scratch (fine for
-		// now as it's rare and the wiper deletes the stuff it touches anyway, so
-		// restarting won't incur a lot of extra database hops.
-		if generator.Wiping {
-			log.Info("Resuming previous snapshot wipe")
-			wiper = WipeSnapshot(diskdb, false)
-		}
-		// Whether or not wiping was in progress, load any generator progress too
-		snapshot.genMarker = generator.Marker
-		if snapshot.genMarker == nil {
-			snapshot.genMarker = []byte{}
-		}
-	}
-
-	// Everything loaded correctly, resume any suspended operations
-	// if the background generation is allowed
-	if !generator.Done && !noBuild {
-		snapshot.genPending = make(chan struct{})
-		snapshot.cancel = make(chan struct{})
-		snapshot.done = make(chan struct{})
-
-		var origin uint64
-		if len(generator.Marker) >= 8 {
-			origin = binary.BigEndian.Uint64(generator.Marker)
-		}
-		go snapshot.generate(&generatorStats{
-			wiping:   wiper,
-			origin:   origin,
-			start:    time.Now(),
-			accounts: generator.Accounts,
-			slots:    generator.Slots,
-			storage:  common.StorageSize(generator.Storage),
-		})
-	}
-
-	return snapshot, generator.Done, nil
+	return *new(snapshot), false, nil
 }
+
+// Retrieve the disk layer generator. It must exist, no matter the
+// snapshot is fully generated or not. Otherwise the entire disk
+// layer is invalid.
+
+// Instantiate snapshot as disk layer with last recorded block hash and root
+
+// Load the disk layer status from the generator if it's not complete
+
+// If the generator was still wiping, restart one from scratch (fine for
+// now as it's rare and the wiper deletes the stuff it touches anyway, so
+// restarting won't incur a lot of extra database hops.
+
+// Whether or not wiping was in progress, load any generator progress too
+
+// Everything loaded correctly, resume any suspended operations
+// if the background generation is allowed
 
 // ResetSnapshotGeneration writes a clean snapshot generator marker to [db]
 // so no re-generation is performed after.
-func ResetSnapshotGeneration(db ethdb.KeyValueWriter) {
-	journalProgress(db, nil, nil)
-}
+func ResetSnapshotGeneration(db ethdb.KeyValueWriter) { _ = "STUB: not implemented"; return }

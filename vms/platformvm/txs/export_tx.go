@@ -5,13 +5,10 @@ package txs
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/platformvm/stakeable"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var (
@@ -35,45 +32,11 @@ type ExportTx struct {
 // InitCtx sets the FxID fields in the inputs and outputs of this
 // [UnsignedExportTx]. Also sets the [ctx] to the given [vm.ctx] so that
 // the addresses can be json marshalled into human readable format
-func (tx *ExportTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	for _, out := range tx.ExportedOutputs {
-		out.FxID = secp256k1fx.ID
-		out.InitCtx(ctx)
-	}
-}
+func (tx *ExportTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // SyntacticVerify this transaction is well-formed
-func (tx *ExportTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case len(tx.ExportedOutputs) == 0:
-		return errNoExportOutputs
-	}
+func (tx *ExportTx) SyntacticVerify(ctx *snow.Context) error { _ = "STUB: not implemented"; return nil }
 
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
+// already passed syntactic verification
 
-	for _, out := range tx.ExportedOutputs {
-		if err := out.Verify(); err != nil {
-			return fmt.Errorf("output failed verification: %w", err)
-		}
-		if _, ok := out.Output().(*stakeable.LockOut); ok {
-			return ErrWrongLocktime
-		}
-	}
-	if !avax.IsSortedTransferableOutputs(tx.ExportedOutputs, Codec) {
-		return errOutputsNotSorted
-	}
-
-	tx.SyntacticallyVerified = true
-	return nil
-}
-
-func (tx *ExportTx) Visit(visitor Visitor) error {
-	return visitor.ExportTx(tx)
-}
+func (tx *ExportTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

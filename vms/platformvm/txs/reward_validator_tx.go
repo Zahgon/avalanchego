@@ -29,28 +29,22 @@ type RewardValidatorTx struct {
 	unsignedBytes []byte // Unsigned byte representation of this data
 }
 
-func (tx *RewardValidatorTx) SetBytes(unsignedBytes []byte) {
-	tx.unsignedBytes = unsignedBytes
-}
+func (tx *RewardValidatorTx) SetBytes(unsignedBytes []byte) { _ = "STUB: not implemented"; return }
 
-func (*RewardValidatorTx) InitCtx(*snow.Context) {}
+func (*RewardValidatorTx) InitCtx(*snow.Context) { _ = "STUB: not implemented"; return }
 
-func (tx *RewardValidatorTx) Bytes() []byte {
-	return tx.unsignedBytes
-}
+func (tx *RewardValidatorTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (*RewardValidatorTx) InputIDs() set.Set[ids.ID] {
-	return nil
-}
+func (*RewardValidatorTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 func (*RewardValidatorTx) Outputs() []*avax.TransferableOutput {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*RewardValidatorTx) SyntacticVerify(*snow.Context) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *RewardValidatorTx) Visit(visitor Visitor) error {
-	return visitor.RewardValidatorTx(tx)
-}
+func (tx *RewardValidatorTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

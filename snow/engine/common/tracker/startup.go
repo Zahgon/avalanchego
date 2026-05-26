@@ -29,44 +29,23 @@ type startup struct {
 }
 
 func NewStartup(peers Peers, startupWeight uint64) Startup {
-	return &startup{
-		Peers:         peers,
-		startupWeight: startupWeight,
-		shouldStart:   peers.ConnectedWeight() >= startupWeight,
-	}
+	_ = "STUB: not implemented"
+	return *new(Startup)
 }
 
 func (s *startup) OnValidatorAdded(nodeID ids.NodeID, pk *bls.PublicKey, txID ids.ID, weight uint64) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	s.Peers.OnValidatorAdded(nodeID, pk, txID, weight)
-	s.shouldStart = s.shouldStart || s.Peers.ConnectedWeight() >= s.startupWeight
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *startup) OnValidatorWeightChanged(nodeID ids.NodeID, oldWeight, newWeight uint64) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	s.Peers.OnValidatorWeightChanged(nodeID, oldWeight, newWeight)
-	s.shouldStart = s.shouldStart || s.Peers.ConnectedWeight() >= s.startupWeight
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *startup) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *version.Application) error {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	if err := s.Peers.Connected(ctx, nodeID, nodeVersion); err != nil {
-		return err
-	}
-
-	s.shouldStart = s.shouldStart || s.Peers.ConnectedWeight() >= s.startupWeight
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (s *startup) ShouldStart() bool {
-	s.lock.RLock()
-	defer s.lock.RUnlock()
-
-	return s.shouldStart
-}
+func (s *startup) ShouldStart() bool { _ = "STUB: not implemented"; return false }

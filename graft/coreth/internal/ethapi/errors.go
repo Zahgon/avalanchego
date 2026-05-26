@@ -27,14 +27,6 @@
 
 package ethapi
 
-import (
-	"fmt"
-
-	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/ava-labs/libevm/core/vm"
-)
-
 // revertError is an API error that encompasses an EVM revert with JSON error
 // code and a binary data blob.
 type revertError struct {
@@ -45,45 +37,38 @@ type revertError struct {
 // ErrorCode returns the JSON error code for a revert.
 // See: https://github.com/ethereum/wiki/wiki/JSON-RPC-Error-Codes-Improvement-Proposal
 func (e *revertError) ErrorCode() int {
-	return 3
+	_ = "STUB: not implemented"
+
+	// ErrorData returns the hex encoded revert reason.
+	return 0
 }
 
-// ErrorData returns the hex encoded revert reason.
 func (e *revertError) ErrorData() interface{} {
-	return e.reason
+	_ = "STUB: not implemented"
+
+	// newRevertError creates a revertError instance with the provided revert data.
+	return nil
 }
 
-// newRevertError creates a revertError instance with the provided revert data.
-func newRevertError(revert []byte) *revertError {
-	err := vm.ErrExecutionReverted
-
-	reason, errUnpack := abi.UnpackRevert(revert)
-	if errUnpack == nil {
-		err = fmt.Errorf("%w: %v", vm.ErrExecutionReverted, reason)
-	}
-	return &revertError{
-		error:  err,
-		reason: hexutil.Encode(revert),
-	}
-}
+func newRevertError(revert []byte) *revertError { _ = "STUB: not implemented"; return nil }
 
 // TxIndexingError is an API error that indicates the transaction indexing is not
 // fully finished yet with JSON error code and a binary data blob.
 type TxIndexingError struct{}
 
 // NewTxIndexingError creates a TxIndexingError instance.
-func NewTxIndexingError() *TxIndexingError { return &TxIndexingError{} }
+func NewTxIndexingError() *TxIndexingError { _ = "STUB: not implemented"; return nil }
 
 // Error implement error interface, returning the error message.
-func (e *TxIndexingError) Error() string {
-	return "transaction indexing is in progress"
-}
+func (e *TxIndexingError) Error() string { _ = "STUB: not implemented"; return "" }
 
 // ErrorCode returns the JSON error code for a revert.
 // See: https://github.com/ethereum/wiki/wiki/JSON-RPC-Error-Codes-Improvement-Proposal
 func (e *TxIndexingError) ErrorCode() int {
-	return -32000 // to be decided
+	_ = "STUB: not implemented"
+	// to be decided
+	return 0
 }
 
 // ErrorData returns the hex encoded revert reason.
-func (e *TxIndexingError) ErrorData() interface{} { return "transaction indexing is in progress" }
+func (e *TxIndexingError) ErrorData() interface{} { _ = "STUB: not implemented"; return nil }

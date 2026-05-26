@@ -7,15 +7,14 @@
 package vm
 
 import (
+	sync "sync"
+
 	_go "github.com/prometheus/client_model/go"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -50,32 +49,27 @@ var (
 	}
 )
 
-func (x State) Enum() *State {
-	p := new(State)
-	*p = x
-	return p
-}
+func (x State) Enum() *State { _ = "STUB: not implemented"; return nil }
 
-func (x State) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x State) String() string { _ = "STUB: not implemented"; return "" }
 
 func (State) Descriptor() protoreflect.EnumDescriptor {
-	return file_vm_vm_proto_enumTypes[0].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (State) Type() protoreflect.EnumType {
-	return &file_vm_vm_proto_enumTypes[0]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x State) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use State.Descriptor instead.
-func (State) EnumDescriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{0}
-}
+func (State) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type Error int32
 
@@ -103,32 +97,27 @@ var (
 	}
 )
 
-func (x Error) Enum() *Error {
-	p := new(Error)
-	*p = x
-	return p
-}
+func (x Error) Enum() *Error { _ = "STUB: not implemented"; return nil }
 
-func (x Error) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x Error) String() string { _ = "STUB: not implemented"; return "" }
 
 func (Error) Descriptor() protoreflect.EnumDescriptor {
-	return file_vm_vm_proto_enumTypes[1].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (Error) Type() protoreflect.EnumType {
-	return &file_vm_vm_proto_enumTypes[1]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x Error) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use Error.Descriptor instead.
-func (Error) EnumDescriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{1}
-}
+func (Error) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type Message int32
 
@@ -152,32 +141,27 @@ var (
 	}
 )
 
-func (x Message) Enum() *Message {
-	p := new(Message)
-	*p = x
-	return p
-}
+func (x Message) Enum() *Message { _ = "STUB: not implemented"; return nil }
 
-func (x Message) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x Message) String() string { _ = "STUB: not implemented"; return "" }
 
 func (Message) Descriptor() protoreflect.EnumDescriptor {
-	return file_vm_vm_proto_enumTypes[2].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (Message) Type() protoreflect.EnumType {
-	return &file_vm_vm_proto_enumTypes[2]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x Message) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use Message.Descriptor instead.
-func (Message) EnumDescriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{2}
-}
+func (Message) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type StateSummaryAcceptResponse_Mode int32
 
@@ -205,30 +189,31 @@ var (
 )
 
 func (x StateSummaryAcceptResponse_Mode) Enum() *StateSummaryAcceptResponse_Mode {
-	p := new(StateSummaryAcceptResponse_Mode)
-	*p = x
-	return p
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (x StateSummaryAcceptResponse_Mode) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x StateSummaryAcceptResponse_Mode) String() string { _ = "STUB: not implemented"; return "" }
 
 func (StateSummaryAcceptResponse_Mode) Descriptor() protoreflect.EnumDescriptor {
-	return file_vm_vm_proto_enumTypes[3].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (StateSummaryAcceptResponse_Mode) Type() protoreflect.EnumType {
-	return &file_vm_vm_proto_enumTypes[3]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x StateSummaryAcceptResponse_Mode) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use StateSummaryAcceptResponse_Mode.Descriptor instead.
 func (StateSummaryAcceptResponse_Mode) EnumDescriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{43, 0}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type InitializeRequest struct {
@@ -257,138 +242,50 @@ type InitializeRequest struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *InitializeRequest) Reset() {
-	*x = InitializeRequest{}
-	mi := &file_vm_vm_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *InitializeRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *InitializeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *InitializeRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*InitializeRequest) ProtoMessage() {}
+func (*InitializeRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *InitializeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use InitializeRequest.ProtoReflect.Descriptor instead.
-func (*InitializeRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{0}
-}
+func (*InitializeRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *InitializeRequest) GetNetworkId() uint32 {
-	if x != nil {
-		return x.NetworkId
-	}
-	return 0
-}
+func (x *InitializeRequest) GetNetworkId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *InitializeRequest) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetPublicKey() []byte {
-	if x != nil {
-		return x.PublicKey
-	}
-	return nil
-}
+func (x *InitializeRequest) GetPublicKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetXChainId() []byte {
-	if x != nil {
-		return x.XChainId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetXChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetCChainId() []byte {
-	if x != nil {
-		return x.CChainId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetCChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetAvaxAssetId() []byte {
-	if x != nil {
-		return x.AvaxAssetId
-	}
-	return nil
-}
+func (x *InitializeRequest) GetAvaxAssetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetChainDataDir() string {
-	if x != nil {
-		return x.ChainDataDir
-	}
-	return ""
-}
+func (x *InitializeRequest) GetChainDataDir() string { _ = "STUB: not implemented"; return "" }
 
-func (x *InitializeRequest) GetGenesisBytes() []byte {
-	if x != nil {
-		return x.GenesisBytes
-	}
-	return nil
-}
+func (x *InitializeRequest) GetGenesisBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetUpgradeBytes() []byte {
-	if x != nil {
-		return x.UpgradeBytes
-	}
-	return nil
-}
+func (x *InitializeRequest) GetUpgradeBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetConfigBytes() []byte {
-	if x != nil {
-		return x.ConfigBytes
-	}
-	return nil
-}
+func (x *InitializeRequest) GetConfigBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *InitializeRequest) GetDbServerAddr() string {
-	if x != nil {
-		return x.DbServerAddr
-	}
-	return ""
-}
+func (x *InitializeRequest) GetDbServerAddr() string { _ = "STUB: not implemented"; return "" }
 
-func (x *InitializeRequest) GetServerAddr() string {
-	if x != nil {
-		return x.ServerAddr
-	}
-	return ""
-}
+func (x *InitializeRequest) GetServerAddr() string { _ = "STUB: not implemented"; return "" }
 
 func (x *InitializeRequest) GetNetworkUpgrades() *NetworkUpgrades {
-	if x != nil {
-		return x.NetworkUpgrades
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -416,159 +313,107 @@ type NetworkUpgrades struct {
 	sizeCache                     protoimpl.SizeCache
 }
 
-func (x *NetworkUpgrades) Reset() {
-	*x = NetworkUpgrades{}
-	mi := &file_vm_vm_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *NetworkUpgrades) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *NetworkUpgrades) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *NetworkUpgrades) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*NetworkUpgrades) ProtoMessage() {}
+func (*NetworkUpgrades) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *NetworkUpgrades) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use NetworkUpgrades.ProtoReflect.Descriptor instead.
-func (*NetworkUpgrades) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{1}
-}
+func (*NetworkUpgrades) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 func (x *NetworkUpgrades) GetApricotPhase_1Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_1Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_2Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_2Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_3Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_3Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_4Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_4Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_4MinPChainHeight() uint64 {
-	if x != nil {
-		return x.ApricotPhase_4MinPChainHeight
-	}
+	_ = "STUB: not implemented"
 	return 0
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_5Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_5Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhasePre_6Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhasePre_6Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhase_6Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhase_6Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetApricotPhasePost_6Time() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ApricotPhasePost_6Time
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetBanffTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.BanffTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetCortinaTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CortinaTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetCortinaXChainStopVertexId() []byte {
-	if x != nil {
-		return x.CortinaXChainStopVertexId
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetDurangoTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.DurangoTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetEtnaTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.EtnaTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetFortunaTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.FortunaTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetGraniteTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.GraniteTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetGraniteEpochDuration() *durationpb.Duration {
-	if x != nil {
-		return x.GraniteEpochDuration
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NetworkUpgrades) GetHeliconTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.HeliconTime
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -583,68 +428,33 @@ type InitializeResponse struct {
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *InitializeResponse) Reset() {
-	*x = InitializeResponse{}
-	mi := &file_vm_vm_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *InitializeResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *InitializeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *InitializeResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*InitializeResponse) ProtoMessage() {}
+func (*InitializeResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *InitializeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use InitializeResponse.ProtoReflect.Descriptor instead.
-func (*InitializeResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{2}
-}
+func (*InitializeResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *InitializeResponse) GetLastAcceptedId() []byte {
-	if x != nil {
-		return x.LastAcceptedId
-	}
-	return nil
-}
+func (x *InitializeResponse) GetLastAcceptedId() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *InitializeResponse) GetLastAcceptedParentId() []byte {
-	if x != nil {
-		return x.LastAcceptedParentId
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *InitializeResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *InitializeResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *InitializeResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *InitializeResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *InitializeResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -655,42 +465,21 @@ type SetStateRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetStateRequest) Reset() {
-	*x = SetStateRequest{}
-	mi := &file_vm_vm_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SetStateRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SetStateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SetStateRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SetStateRequest) ProtoMessage() {}
+func (*SetStateRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SetStateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SetStateRequest.ProtoReflect.Descriptor instead.
-func (*SetStateRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{3}
-}
+func (*SetStateRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SetStateRequest) GetState() State {
-	if x != nil {
-		return x.State
-	}
-	return State_STATE_UNSPECIFIED
-}
+func (x *SetStateRequest) GetState() State { _ = "STUB: not implemented"; return *new(State) }
 
 type SetStateResponse struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
@@ -703,68 +492,30 @@ type SetStateResponse struct {
 	sizeCache            protoimpl.SizeCache
 }
 
-func (x *SetStateResponse) Reset() {
-	*x = SetStateResponse{}
-	mi := &file_vm_vm_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SetStateResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SetStateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SetStateResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SetStateResponse) ProtoMessage() {}
+func (*SetStateResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SetStateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SetStateResponse.ProtoReflect.Descriptor instead.
-func (*SetStateResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{4}
-}
+func (*SetStateResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SetStateResponse) GetLastAcceptedId() []byte {
-	if x != nil {
-		return x.LastAcceptedId
-	}
-	return nil
-}
+func (x *SetStateResponse) GetLastAcceptedId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SetStateResponse) GetLastAcceptedParentId() []byte {
-	if x != nil {
-		return x.LastAcceptedParentId
-	}
-	return nil
-}
+func (x *SetStateResponse) GetLastAcceptedParentId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SetStateResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *SetStateResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SetStateResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *SetStateResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *SetStateResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -775,42 +526,24 @@ type CreateHandlersResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateHandlersResponse) Reset() {
-	*x = CreateHandlersResponse{}
-	mi := &file_vm_vm_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *CreateHandlersResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CreateHandlersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CreateHandlersResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CreateHandlersResponse) ProtoMessage() {}
+func (*CreateHandlersResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CreateHandlersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CreateHandlersResponse.ProtoReflect.Descriptor instead.
 func (*CreateHandlersResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{5}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *CreateHandlersResponse) GetHandlers() []*Handler {
-	if x != nil {
-		return x.Handlers
-	}
-	return nil
-}
+func (x *CreateHandlersResponse) GetHandlers() []*Handler { _ = "STUB: not implemented"; return nil }
 
 type Handler struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
@@ -822,49 +555,23 @@ type Handler struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Handler) Reset() {
-	*x = Handler{}
-	mi := &file_vm_vm_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Handler) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Handler) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Handler) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Handler) ProtoMessage() {}
+func (*Handler) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Handler) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Handler.ProtoReflect.Descriptor instead.
-func (*Handler) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{6}
-}
+func (*Handler) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Handler) GetPrefix() string {
-	if x != nil {
-		return x.Prefix
-	}
-	return ""
-}
+func (x *Handler) GetPrefix() string { _ = "STUB: not implemented"; return "" }
 
-func (x *Handler) GetServerAddr() string {
-	if x != nil {
-		return x.ServerAddr
-	}
-	return ""
-}
+func (x *Handler) GetServerAddr() string { _ = "STUB: not implemented"; return "" }
 
 type NewHTTPHandlerResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -875,42 +582,24 @@ type NewHTTPHandlerResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *NewHTTPHandlerResponse) Reset() {
-	*x = NewHTTPHandlerResponse{}
-	mi := &file_vm_vm_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *NewHTTPHandlerResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *NewHTTPHandlerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *NewHTTPHandlerResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*NewHTTPHandlerResponse) ProtoMessage() {}
+func (*NewHTTPHandlerResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *NewHTTPHandlerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use NewHTTPHandlerResponse.ProtoReflect.Descriptor instead.
 func (*NewHTTPHandlerResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{7}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *NewHTTPHandlerResponse) GetServerAddr() string {
-	if x != nil {
-		return x.ServerAddr
-	}
-	return ""
-}
+func (x *NewHTTPHandlerResponse) GetServerAddr() string { _ = "STUB: not implemented"; return "" }
 
 type WaitForEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -919,41 +608,26 @@ type WaitForEventResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WaitForEventResponse) Reset() {
-	*x = WaitForEventResponse{}
-	mi := &file_vm_vm_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WaitForEventResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WaitForEventResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WaitForEventResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WaitForEventResponse) ProtoMessage() {}
+func (*WaitForEventResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WaitForEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WaitForEventResponse.ProtoReflect.Descriptor instead.
 func (*WaitForEventResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{8}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *WaitForEventResponse) GetMessage() Message {
-	if x != nil {
-		return x.Message
-	}
-	return Message_MESSAGE_UNSPECIFIED
+	_ = "STUB: not implemented"
+	return *new(Message)
 }
 
 type BuildBlockRequest struct {
@@ -963,42 +637,21 @@ type BuildBlockRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BuildBlockRequest) Reset() {
-	*x = BuildBlockRequest{}
-	mi := &file_vm_vm_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BuildBlockRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BuildBlockRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BuildBlockRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BuildBlockRequest) ProtoMessage() {}
+func (*BuildBlockRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BuildBlockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BuildBlockRequest.ProtoReflect.Descriptor instead.
-func (*BuildBlockRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{9}
-}
+func (*BuildBlockRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BuildBlockRequest) GetPChainHeight() uint64 {
-	if x != nil && x.PChainHeight != nil {
-		return *x.PChainHeight
-	}
-	return 0
-}
+func (x *BuildBlockRequest) GetPChainHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Note: The status of a freshly built block is assumed to be Processing.
 type BuildBlockResponse struct {
@@ -1013,77 +666,34 @@ type BuildBlockResponse struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *BuildBlockResponse) Reset() {
-	*x = BuildBlockResponse{}
-	mi := &file_vm_vm_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BuildBlockResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BuildBlockResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BuildBlockResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BuildBlockResponse) ProtoMessage() {}
+func (*BuildBlockResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BuildBlockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BuildBlockResponse.ProtoReflect.Descriptor instead.
-func (*BuildBlockResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{10}
-}
+func (*BuildBlockResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BuildBlockResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *BuildBlockResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BuildBlockResponse) GetParentId() []byte {
-	if x != nil {
-		return x.ParentId
-	}
-	return nil
-}
+func (x *BuildBlockResponse) GetParentId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BuildBlockResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *BuildBlockResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BuildBlockResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *BuildBlockResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 func (x *BuildBlockResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *BuildBlockResponse) GetVerifyWithContext() bool {
-	if x != nil {
-		return x.VerifyWithContext
-	}
-	return false
-}
+func (x *BuildBlockResponse) GetVerifyWithContext() bool { _ = "STUB: not implemented"; return false }
 
 type ParseBlockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1092,42 +702,21 @@ type ParseBlockRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ParseBlockRequest) Reset() {
-	*x = ParseBlockRequest{}
-	mi := &file_vm_vm_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ParseBlockRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ParseBlockRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ParseBlockRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ParseBlockRequest) ProtoMessage() {}
+func (*ParseBlockRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ParseBlockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ParseBlockRequest.ProtoReflect.Descriptor instead.
-func (*ParseBlockRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{11}
-}
+func (*ParseBlockRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ParseBlockRequest) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *ParseBlockRequest) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type ParseBlockResponse struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
@@ -1140,70 +729,32 @@ type ParseBlockResponse struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *ParseBlockResponse) Reset() {
-	*x = ParseBlockResponse{}
-	mi := &file_vm_vm_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ParseBlockResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ParseBlockResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ParseBlockResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ParseBlockResponse) ProtoMessage() {}
+func (*ParseBlockResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ParseBlockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ParseBlockResponse.ProtoReflect.Descriptor instead.
-func (*ParseBlockResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{12}
-}
+func (*ParseBlockResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ParseBlockResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *ParseBlockResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ParseBlockResponse) GetParentId() []byte {
-	if x != nil {
-		return x.ParentId
-	}
-	return nil
-}
+func (x *ParseBlockResponse) GetParentId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ParseBlockResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *ParseBlockResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 func (x *ParseBlockResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *ParseBlockResponse) GetVerifyWithContext() bool {
-	if x != nil {
-		return x.VerifyWithContext
-	}
-	return false
-}
+func (x *ParseBlockResponse) GetVerifyWithContext() bool { _ = "STUB: not implemented"; return false }
 
 type GetBlockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1212,42 +763,21 @@ type GetBlockRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBlockRequest) Reset() {
-	*x = GetBlockRequest{}
-	mi := &file_vm_vm_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetBlockRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetBlockRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetBlockRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetBlockRequest) ProtoMessage() {}
+func (*GetBlockRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetBlockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetBlockRequest.ProtoReflect.Descriptor instead.
-func (*GetBlockRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{13}
-}
+func (*GetBlockRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetBlockRequest) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *GetBlockRequest) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetBlockResponse struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -1262,77 +792,34 @@ type GetBlockResponse struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *GetBlockResponse) Reset() {
-	*x = GetBlockResponse{}
-	mi := &file_vm_vm_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetBlockResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetBlockResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetBlockResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetBlockResponse) ProtoMessage() {}
+func (*GetBlockResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetBlockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetBlockResponse.ProtoReflect.Descriptor instead.
-func (*GetBlockResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{14}
-}
+func (*GetBlockResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetBlockResponse) GetParentId() []byte {
-	if x != nil {
-		return x.ParentId
-	}
-	return nil
-}
+func (x *GetBlockResponse) GetParentId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetBlockResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *GetBlockResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetBlockResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetBlockResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 func (x *GetBlockResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *GetBlockResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *GetBlockResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
-func (x *GetBlockResponse) GetVerifyWithContext() bool {
-	if x != nil {
-		return x.VerifyWithContext
-	}
-	return false
-}
+func (x *GetBlockResponse) GetVerifyWithContext() bool { _ = "STUB: not implemented"; return false }
 
 type SetPreferenceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1341,42 +828,24 @@ type SetPreferenceRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetPreferenceRequest) Reset() {
-	*x = SetPreferenceRequest{}
-	mi := &file_vm_vm_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SetPreferenceRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SetPreferenceRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SetPreferenceRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SetPreferenceRequest) ProtoMessage() {}
+func (*SetPreferenceRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SetPreferenceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SetPreferenceRequest.ProtoReflect.Descriptor instead.
 func (*SetPreferenceRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{15}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *SetPreferenceRequest) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *SetPreferenceRequest) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type BlockVerifyRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1388,49 +857,23 @@ type BlockVerifyRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockVerifyRequest) Reset() {
-	*x = BlockVerifyRequest{}
-	mi := &file_vm_vm_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockVerifyRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockVerifyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockVerifyRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockVerifyRequest) ProtoMessage() {}
+func (*BlockVerifyRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockVerifyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockVerifyRequest.ProtoReflect.Descriptor instead.
-func (*BlockVerifyRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{16}
-}
+func (*BlockVerifyRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BlockVerifyRequest) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *BlockVerifyRequest) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BlockVerifyRequest) GetPChainHeight() uint64 {
-	if x != nil && x.PChainHeight != nil {
-		return *x.PChainHeight
-	}
-	return 0
-}
+func (x *BlockVerifyRequest) GetPChainHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type BlockVerifyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1439,40 +882,25 @@ type BlockVerifyResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockVerifyResponse) Reset() {
-	*x = BlockVerifyResponse{}
-	mi := &file_vm_vm_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockVerifyResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockVerifyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockVerifyResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockVerifyResponse) ProtoMessage() {}
+func (*BlockVerifyResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockVerifyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockVerifyResponse.ProtoReflect.Descriptor instead.
 func (*BlockVerifyResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{17}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *BlockVerifyResponse) GetTimestamp() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Timestamp
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -1483,42 +911,21 @@ type BlockAcceptRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockAcceptRequest) Reset() {
-	*x = BlockAcceptRequest{}
-	mi := &file_vm_vm_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockAcceptRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockAcceptRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockAcceptRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockAcceptRequest) ProtoMessage() {}
+func (*BlockAcceptRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockAcceptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockAcceptRequest.ProtoReflect.Descriptor instead.
-func (*BlockAcceptRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{18}
-}
+func (*BlockAcceptRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BlockAcceptRequest) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *BlockAcceptRequest) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type BlockRejectRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1527,42 +934,21 @@ type BlockRejectRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockRejectRequest) Reset() {
-	*x = BlockRejectRequest{}
-	mi := &file_vm_vm_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockRejectRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockRejectRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockRejectRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockRejectRequest) ProtoMessage() {}
+func (*BlockRejectRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockRejectRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockRejectRequest.ProtoReflect.Descriptor instead.
-func (*BlockRejectRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{19}
-}
+func (*BlockRejectRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BlockRejectRequest) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *BlockRejectRequest) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type HealthResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1571,42 +957,21 @@ type HealthResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HealthResponse) Reset() {
-	*x = HealthResponse{}
-	mi := &file_vm_vm_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *HealthResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *HealthResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *HealthResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*HealthResponse) ProtoMessage() {}
+func (*HealthResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *HealthResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use HealthResponse.ProtoReflect.Descriptor instead.
-func (*HealthResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{20}
-}
+func (*HealthResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *HealthResponse) GetDetails() []byte {
-	if x != nil {
-		return x.Details
-	}
-	return nil
-}
+func (x *HealthResponse) GetDetails() []byte { _ = "STUB: not implemented"; return nil }
 
 type VersionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1615,42 +980,21 @@ type VersionResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *VersionResponse) Reset() {
-	*x = VersionResponse{}
-	mi := &file_vm_vm_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *VersionResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *VersionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *VersionResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*VersionResponse) ProtoMessage() {}
+func (*VersionResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *VersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use VersionResponse.ProtoReflect.Descriptor instead.
-func (*VersionResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{21}
-}
+func (*VersionResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *VersionResponse) GetVersion() string {
-	if x != nil {
-		return x.Version
-	}
-	return ""
-}
+func (x *VersionResponse) GetVersion() string { _ = "STUB: not implemented"; return "" }
 
 type AppRequestMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1666,63 +1010,27 @@ type AppRequestMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppRequestMsg) Reset() {
-	*x = AppRequestMsg{}
-	mi := &file_vm_vm_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppRequestMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppRequestMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppRequestMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppRequestMsg) ProtoMessage() {}
+func (*AppRequestMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppRequestMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppRequestMsg.ProtoReflect.Descriptor instead.
-func (*AppRequestMsg) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{22}
-}
+func (*AppRequestMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppRequestMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *AppRequestMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppRequestMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppRequestMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppRequestMsg) GetDeadline() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Deadline
-	}
-	return nil
-}
+func (x *AppRequestMsg) GetDeadline() *timestamppb.Timestamp { _ = "STUB: not implemented"; return nil }
 
-func (x *AppRequestMsg) GetRequest() []byte {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
+func (x *AppRequestMsg) GetRequest() []byte { _ = "STUB: not implemented"; return nil }
 
 type AppRequestFailedMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1738,63 +1046,30 @@ type AppRequestFailedMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppRequestFailedMsg) Reset() {
-	*x = AppRequestFailedMsg{}
-	mi := &file_vm_vm_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppRequestFailedMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppRequestFailedMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppRequestFailedMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppRequestFailedMsg) ProtoMessage() {}
+func (*AppRequestFailedMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppRequestFailedMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppRequestFailedMsg.ProtoReflect.Descriptor instead.
 func (*AppRequestFailedMsg) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{23}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *AppRequestFailedMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *AppRequestFailedMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppRequestFailedMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppRequestFailedMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppRequestFailedMsg) GetErrorCode() int32 {
-	if x != nil {
-		return x.ErrorCode
-	}
-	return 0
-}
+func (x *AppRequestFailedMsg) GetErrorCode() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppRequestFailedMsg) GetErrorMessage() string {
-	if x != nil {
-		return x.ErrorMessage
-	}
-	return ""
-}
+func (x *AppRequestFailedMsg) GetErrorMessage() string { _ = "STUB: not implemented"; return "" }
 
 type AppResponseMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1808,56 +1083,25 @@ type AppResponseMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppResponseMsg) Reset() {
-	*x = AppResponseMsg{}
-	mi := &file_vm_vm_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppResponseMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppResponseMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppResponseMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppResponseMsg) ProtoMessage() {}
+func (*AppResponseMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppResponseMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppResponseMsg.ProtoReflect.Descriptor instead.
-func (*AppResponseMsg) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{24}
-}
+func (*AppResponseMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppResponseMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *AppResponseMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppResponseMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppResponseMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppResponseMsg) GetResponse() []byte {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
+func (x *AppResponseMsg) GetResponse() []byte { _ = "STUB: not implemented"; return nil }
 
 type AppGossipMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -1869,49 +1113,23 @@ type AppGossipMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppGossipMsg) Reset() {
-	*x = AppGossipMsg{}
-	mi := &file_vm_vm_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppGossipMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppGossipMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppGossipMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppGossipMsg) ProtoMessage() {}
+func (*AppGossipMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppGossipMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppGossipMsg.ProtoReflect.Descriptor instead.
-func (*AppGossipMsg) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{25}
-}
+func (*AppGossipMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppGossipMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *AppGossipMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppGossipMsg) GetMsg() []byte {
-	if x != nil {
-		return x.Msg
-	}
-	return nil
-}
+func (x *AppGossipMsg) GetMsg() []byte { _ = "STUB: not implemented"; return nil }
 
 type ConnectedRequest struct {
 	state  protoimpl.MessageState `protogen:"open.v1"`
@@ -1926,70 +1144,29 @@ type ConnectedRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ConnectedRequest) Reset() {
-	*x = ConnectedRequest{}
-	mi := &file_vm_vm_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ConnectedRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ConnectedRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ConnectedRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ConnectedRequest) ProtoMessage() {}
+func (*ConnectedRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ConnectedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ConnectedRequest.ProtoReflect.Descriptor instead.
-func (*ConnectedRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{26}
-}
+func (*ConnectedRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ConnectedRequest) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *ConnectedRequest) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ConnectedRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
+func (x *ConnectedRequest) GetName() string { _ = "STUB: not implemented"; return "" }
 
-func (x *ConnectedRequest) GetMajor() uint32 {
-	if x != nil {
-		return x.Major
-	}
-	return 0
-}
+func (x *ConnectedRequest) GetMajor() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ConnectedRequest) GetMinor() uint32 {
-	if x != nil {
-		return x.Minor
-	}
-	return 0
-}
+func (x *ConnectedRequest) GetMinor() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ConnectedRequest) GetPatch() uint32 {
-	if x != nil {
-		return x.Patch
-	}
-	return 0
-}
+func (x *ConnectedRequest) GetPatch() uint32 { _ = "STUB: not implemented"; return 0 }
 
 type DisconnectedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1998,42 +1175,24 @@ type DisconnectedRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DisconnectedRequest) Reset() {
-	*x = DisconnectedRequest{}
-	mi := &file_vm_vm_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *DisconnectedRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *DisconnectedRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *DisconnectedRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*DisconnectedRequest) ProtoMessage() {}
+func (*DisconnectedRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *DisconnectedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use DisconnectedRequest.ProtoReflect.Descriptor instead.
 func (*DisconnectedRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{27}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *DisconnectedRequest) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *DisconnectedRequest) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetAncestorsRequest struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
@@ -2045,63 +1204,30 @@ type GetAncestorsRequest struct {
 	sizeCache             protoimpl.SizeCache
 }
 
-func (x *GetAncestorsRequest) Reset() {
-	*x = GetAncestorsRequest{}
-	mi := &file_vm_vm_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAncestorsRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAncestorsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAncestorsRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAncestorsRequest) ProtoMessage() {}
+func (*GetAncestorsRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAncestorsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAncestorsRequest.ProtoReflect.Descriptor instead.
 func (*GetAncestorsRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{28}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetAncestorsRequest) GetBlkId() []byte {
-	if x != nil {
-		return x.BlkId
-	}
-	return nil
-}
+func (x *GetAncestorsRequest) GetBlkId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetAncestorsRequest) GetMaxBlocksNum() int32 {
-	if x != nil {
-		return x.MaxBlocksNum
-	}
-	return 0
-}
+func (x *GetAncestorsRequest) GetMaxBlocksNum() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAncestorsRequest) GetMaxBlocksSize() int32 {
-	if x != nil {
-		return x.MaxBlocksSize
-	}
-	return 0
-}
+func (x *GetAncestorsRequest) GetMaxBlocksSize() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAncestorsRequest) GetMaxBlocksRetrivalTime() int64 {
-	if x != nil {
-		return x.MaxBlocksRetrivalTime
-	}
-	return 0
-}
+func (x *GetAncestorsRequest) GetMaxBlocksRetrivalTime() int64 { _ = "STUB: not implemented"; return 0 }
 
 type GetAncestorsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2110,42 +1236,24 @@ type GetAncestorsResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAncestorsResponse) Reset() {
-	*x = GetAncestorsResponse{}
-	mi := &file_vm_vm_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAncestorsResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAncestorsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAncestorsResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAncestorsResponse) ProtoMessage() {}
+func (*GetAncestorsResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAncestorsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAncestorsResponse.ProtoReflect.Descriptor instead.
 func (*GetAncestorsResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{29}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetAncestorsResponse) GetBlksBytes() [][]byte {
-	if x != nil {
-		return x.BlksBytes
-	}
-	return nil
-}
+func (x *GetAncestorsResponse) GetBlksBytes() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type BatchedParseBlockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2154,42 +1262,24 @@ type BatchedParseBlockRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BatchedParseBlockRequest) Reset() {
-	*x = BatchedParseBlockRequest{}
-	mi := &file_vm_vm_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BatchedParseBlockRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BatchedParseBlockRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BatchedParseBlockRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BatchedParseBlockRequest) ProtoMessage() {}
+func (*BatchedParseBlockRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BatchedParseBlockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BatchedParseBlockRequest.ProtoReflect.Descriptor instead.
 func (*BatchedParseBlockRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{30}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *BatchedParseBlockRequest) GetRequest() [][]byte {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
+func (x *BatchedParseBlockRequest) GetRequest() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type BatchedParseBlockResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2198,40 +1288,25 @@ type BatchedParseBlockResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BatchedParseBlockResponse) Reset() {
-	*x = BatchedParseBlockResponse{}
-	mi := &file_vm_vm_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BatchedParseBlockResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BatchedParseBlockResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BatchedParseBlockResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BatchedParseBlockResponse) ProtoMessage() {}
+func (*BatchedParseBlockResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BatchedParseBlockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BatchedParseBlockResponse.ProtoReflect.Descriptor instead.
 func (*BatchedParseBlockResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{31}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *BatchedParseBlockResponse) GetResponse() []*ParseBlockResponse {
-	if x != nil {
-		return x.Response
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -2242,42 +1317,24 @@ type GetBlockIDAtHeightRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBlockIDAtHeightRequest) Reset() {
-	*x = GetBlockIDAtHeightRequest{}
-	mi := &file_vm_vm_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetBlockIDAtHeightRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetBlockIDAtHeightRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetBlockIDAtHeightRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetBlockIDAtHeightRequest) ProtoMessage() {}
+func (*GetBlockIDAtHeightRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetBlockIDAtHeightRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetBlockIDAtHeightRequest.ProtoReflect.Descriptor instead.
 func (*GetBlockIDAtHeightRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{32}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetBlockIDAtHeightRequest) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetBlockIDAtHeightRequest) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type GetBlockIDAtHeightResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2287,49 +1344,26 @@ type GetBlockIDAtHeightResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetBlockIDAtHeightResponse) Reset() {
-	*x = GetBlockIDAtHeightResponse{}
-	mi := &file_vm_vm_proto_msgTypes[33]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetBlockIDAtHeightResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetBlockIDAtHeightResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetBlockIDAtHeightResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetBlockIDAtHeightResponse) ProtoMessage() {}
+func (*GetBlockIDAtHeightResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetBlockIDAtHeightResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[33]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetBlockIDAtHeightResponse.ProtoReflect.Descriptor instead.
 func (*GetBlockIDAtHeightResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{33}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetBlockIDAtHeightResponse) GetBlkId() []byte {
-	if x != nil {
-		return x.BlkId
-	}
-	return nil
-}
+func (x *GetBlockIDAtHeightResponse) GetBlkId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetBlockIDAtHeightResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *GetBlockIDAtHeightResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type GatherResponse struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
@@ -2338,40 +1372,22 @@ type GatherResponse struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *GatherResponse) Reset() {
-	*x = GatherResponse{}
-	mi := &file_vm_vm_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GatherResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GatherResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GatherResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GatherResponse) ProtoMessage() {}
+func (*GatherResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GatherResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[34]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GatherResponse.ProtoReflect.Descriptor instead.
-func (*GatherResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{34}
-}
+func (*GatherResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 func (x *GatherResponse) GetMetricFamilies() []*_go.MetricFamily {
-	if x != nil {
-		return x.MetricFamilies
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -2383,49 +1399,26 @@ type StateSyncEnabledResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StateSyncEnabledResponse) Reset() {
-	*x = StateSyncEnabledResponse{}
-	mi := &file_vm_vm_proto_msgTypes[35]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StateSyncEnabledResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StateSyncEnabledResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StateSyncEnabledResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StateSyncEnabledResponse) ProtoMessage() {}
+func (*StateSyncEnabledResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StateSyncEnabledResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[35]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StateSyncEnabledResponse.ProtoReflect.Descriptor instead.
 func (*StateSyncEnabledResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{35}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *StateSyncEnabledResponse) GetEnabled() bool {
-	if x != nil {
-		return x.Enabled
-	}
-	return false
-}
+func (x *StateSyncEnabledResponse) GetEnabled() bool { _ = "STUB: not implemented"; return false }
 
-func (x *StateSyncEnabledResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *StateSyncEnabledResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type GetOngoingSyncStateSummaryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2437,62 +1430,38 @@ type GetOngoingSyncStateSummaryResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetOngoingSyncStateSummaryResponse) Reset() {
-	*x = GetOngoingSyncStateSummaryResponse{}
-	mi := &file_vm_vm_proto_msgTypes[36]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetOngoingSyncStateSummaryResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetOngoingSyncStateSummaryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetOngoingSyncStateSummaryResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetOngoingSyncStateSummaryResponse) ProtoMessage() {}
+func (*GetOngoingSyncStateSummaryResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetOngoingSyncStateSummaryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[36]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetOngoingSyncStateSummaryResponse.ProtoReflect.Descriptor instead.
 func (*GetOngoingSyncStateSummaryResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{36}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetOngoingSyncStateSummaryResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *GetOngoingSyncStateSummaryResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *GetOngoingSyncStateSummaryResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
+	_ = "STUB: not implemented"
 	return 0
 }
 
 func (x *GetOngoingSyncStateSummaryResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *GetOngoingSyncStateSummaryResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
+	_ = "STUB: not implemented"
+	return *new(Error)
 }
 
 type GetLastStateSummaryResponse struct {
@@ -2505,63 +1474,30 @@ type GetLastStateSummaryResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetLastStateSummaryResponse) Reset() {
-	*x = GetLastStateSummaryResponse{}
-	mi := &file_vm_vm_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetLastStateSummaryResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetLastStateSummaryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetLastStateSummaryResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetLastStateSummaryResponse) ProtoMessage() {}
+func (*GetLastStateSummaryResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetLastStateSummaryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetLastStateSummaryResponse.ProtoReflect.Descriptor instead.
 func (*GetLastStateSummaryResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{37}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetLastStateSummaryResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *GetLastStateSummaryResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetLastStateSummaryResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetLastStateSummaryResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetLastStateSummaryResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *GetLastStateSummaryResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetLastStateSummaryResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *GetLastStateSummaryResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type ParseStateSummaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2570,42 +1506,24 @@ type ParseStateSummaryRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ParseStateSummaryRequest) Reset() {
-	*x = ParseStateSummaryRequest{}
-	mi := &file_vm_vm_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ParseStateSummaryRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ParseStateSummaryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ParseStateSummaryRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ParseStateSummaryRequest) ProtoMessage() {}
+func (*ParseStateSummaryRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ParseStateSummaryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ParseStateSummaryRequest.ProtoReflect.Descriptor instead.
 func (*ParseStateSummaryRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{38}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *ParseStateSummaryRequest) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *ParseStateSummaryRequest) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type ParseStateSummaryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2616,56 +1534,28 @@ type ParseStateSummaryResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ParseStateSummaryResponse) Reset() {
-	*x = ParseStateSummaryResponse{}
-	mi := &file_vm_vm_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ParseStateSummaryResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ParseStateSummaryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ParseStateSummaryResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ParseStateSummaryResponse) ProtoMessage() {}
+func (*ParseStateSummaryResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ParseStateSummaryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ParseStateSummaryResponse.ProtoReflect.Descriptor instead.
 func (*ParseStateSummaryResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{39}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *ParseStateSummaryResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *ParseStateSummaryResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ParseStateSummaryResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *ParseStateSummaryResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ParseStateSummaryResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *ParseStateSummaryResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type GetStateSummaryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2674,42 +1564,24 @@ type GetStateSummaryRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetStateSummaryRequest) Reset() {
-	*x = GetStateSummaryRequest{}
-	mi := &file_vm_vm_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetStateSummaryRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetStateSummaryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetStateSummaryRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetStateSummaryRequest) ProtoMessage() {}
+func (*GetStateSummaryRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetStateSummaryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetStateSummaryRequest.ProtoReflect.Descriptor instead.
 func (*GetStateSummaryRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{40}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetStateSummaryRequest) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetStateSummaryRequest) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type GetStateSummaryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2720,56 +1592,28 @@ type GetStateSummaryResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetStateSummaryResponse) Reset() {
-	*x = GetStateSummaryResponse{}
-	mi := &file_vm_vm_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetStateSummaryResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetStateSummaryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetStateSummaryResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetStateSummaryResponse) ProtoMessage() {}
+func (*GetStateSummaryResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetStateSummaryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetStateSummaryResponse.ProtoReflect.Descriptor instead.
 func (*GetStateSummaryResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{41}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetStateSummaryResponse) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *GetStateSummaryResponse) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetStateSummaryResponse) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *GetStateSummaryResponse) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetStateSummaryResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *GetStateSummaryResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type StateSummaryAcceptRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2778,42 +1622,24 @@ type StateSummaryAcceptRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StateSummaryAcceptRequest) Reset() {
-	*x = StateSummaryAcceptRequest{}
-	mi := &file_vm_vm_proto_msgTypes[42]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StateSummaryAcceptRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StateSummaryAcceptRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StateSummaryAcceptRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StateSummaryAcceptRequest) ProtoMessage() {}
+func (*StateSummaryAcceptRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StateSummaryAcceptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[42]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StateSummaryAcceptRequest.ProtoReflect.Descriptor instead.
 func (*StateSummaryAcceptRequest) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{42}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *StateSummaryAcceptRequest) GetBytes() []byte {
-	if x != nil {
-		return x.Bytes
-	}
-	return nil
-}
+func (x *StateSummaryAcceptRequest) GetBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type StateSummaryAcceptResponse struct {
 	state         protoimpl.MessageState          `protogen:"open.v1"`
@@ -2823,49 +1649,29 @@ type StateSummaryAcceptResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StateSummaryAcceptResponse) Reset() {
-	*x = StateSummaryAcceptResponse{}
-	mi := &file_vm_vm_proto_msgTypes[43]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StateSummaryAcceptResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StateSummaryAcceptResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StateSummaryAcceptResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StateSummaryAcceptResponse) ProtoMessage() {}
+func (*StateSummaryAcceptResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StateSummaryAcceptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_vm_vm_proto_msgTypes[43]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StateSummaryAcceptResponse.ProtoReflect.Descriptor instead.
 func (*StateSummaryAcceptResponse) Descriptor() ([]byte, []int) {
-	return file_vm_vm_proto_rawDescGZIP(), []int{43}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *StateSummaryAcceptResponse) GetMode() StateSummaryAcceptResponse_Mode {
-	if x != nil {
-		return x.Mode
-	}
-	return StateSummaryAcceptResponse_MODE_UNSPECIFIED
+	_ = "STUB: not implemented"
+	return *new(StateSummaryAcceptResponse_Mode)
 }
 
-func (x *StateSummaryAcceptResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *StateSummaryAcceptResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 var File_vm_vm_proto protoreflect.FileDescriptor
 
@@ -3123,12 +1929,7 @@ var (
 	file_vm_vm_proto_rawDescData []byte
 )
 
-func file_vm_vm_proto_rawDescGZIP() []byte {
-	file_vm_vm_proto_rawDescOnce.Do(func() {
-		file_vm_vm_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_vm_vm_proto_rawDesc), len(file_vm_vm_proto_rawDesc)))
-	})
-	return file_vm_vm_proto_rawDescData
-}
+func file_vm_vm_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_vm_vm_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_vm_vm_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
@@ -3294,29 +2095,5 @@ var file_vm_vm_proto_depIdxs = []int32{
 	0,  // [0:38] is the sub-list for field type_name
 }
 
-func init() { file_vm_vm_proto_init() }
-func file_vm_vm_proto_init() {
-	if File_vm_vm_proto != nil {
-		return
-	}
-	file_vm_vm_proto_msgTypes[9].OneofWrappers = []any{}
-	file_vm_vm_proto_msgTypes[16].OneofWrappers = []any{}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_vm_vm_proto_rawDesc), len(file_vm_vm_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   44,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_vm_vm_proto_goTypes,
-		DependencyIndexes: file_vm_vm_proto_depIdxs,
-		EnumInfos:         file_vm_vm_proto_enumTypes,
-		MessageInfos:      file_vm_vm_proto_msgTypes,
-	}.Build()
-	File_vm_vm_proto = out.File
-	file_vm_vm_proto_goTypes = nil
-	file_vm_vm_proto_depIdxs = nil
-}
+func init()                  { file_vm_vm_proto_init() }
+func file_vm_vm_proto_init() { _ = "STUB: not implemented"; return }

@@ -4,10 +4,7 @@
 package atomic
 
 import (
-	"bytes"
-
 	"github.com/ava-labs/avalanchego/database"
-	"github.com/ava-labs/avalanchego/database/prefixdb"
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -46,20 +43,11 @@ type prefixes struct {
 }
 
 func (p *prefixes) getValueDB(myChainID, peerChainID ids.ID, db database.Database) database.Database {
-	if bytes.Compare(myChainID[:], peerChainID[:]) == -1 {
-		return prefixdb.New(p.smallerValuePrefix, db)
-	}
-	return prefixdb.New(p.largerValuePrefix, db)
+	_ = "STUB: not implemented"
+	return *new(database.Database)
 }
 
 func (p *prefixes) getValueAndIndexDB(myChainID, peerChainID ids.ID, db database.Database) (database.Database, database.Database) {
-	var valueDB, indexDB database.Database
-	if bytes.Compare(myChainID[:], peerChainID[:]) == -1 {
-		valueDB = prefixdb.New(p.smallerValuePrefix, db)
-		indexDB = prefixdb.New(p.smallerIndexPrefix, db)
-	} else {
-		valueDB = prefixdb.New(p.largerValuePrefix, db)
-		indexDB = prefixdb.New(p.largerIndexPrefix, db)
-	}
-	return valueDB, indexDB
+	_ = "STUB: not implemented"
+	return *new(database.Database), *new(database.Database)
 }

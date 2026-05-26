@@ -12,7 +12,6 @@ import (
 	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/perms"
 	"github.com/ava-labs/avalanchego/utils/set"
-	"github.com/ava-labs/avalanchego/vms/platformvm"
 	"github.com/ava-labs/avalanchego/wallet/subnet/primary"
 )
 
@@ -45,19 +44,8 @@ func main() {
 }
 
 func getCurrentValidators(ctx context.Context, uri string) (set.Set[ids.NodeID], error) {
-	client := platformvm.NewClient(uri)
-	currentValidators, err := client.GetCurrentValidators(
-		ctx,
-		constants.PrimaryNetworkID,
-		nil, // fetch all validators
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	var nodeIDs set.Set[ids.NodeID]
-	for _, validator := range currentValidators {
-		nodeIDs.Add(validator.NodeID)
-	}
-	return nodeIDs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// fetch all validators

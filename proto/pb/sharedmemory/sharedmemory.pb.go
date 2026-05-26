@@ -7,11 +7,10 @@
 package sharedmemory
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -29,49 +28,23 @@ type BatchPut struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BatchPut) Reset() {
-	*x = BatchPut{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BatchPut) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BatchPut) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BatchPut) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BatchPut) ProtoMessage() {}
+func (*BatchPut) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BatchPut) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BatchPut.ProtoReflect.Descriptor instead.
-func (*BatchPut) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{0}
-}
+func (*BatchPut) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BatchPut) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *BatchPut) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BatchPut) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *BatchPut) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 type BatchDelete struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -80,42 +53,21 @@ type BatchDelete struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BatchDelete) Reset() {
-	*x = BatchDelete{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BatchDelete) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BatchDelete) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BatchDelete) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BatchDelete) ProtoMessage() {}
+func (*BatchDelete) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BatchDelete) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BatchDelete.ProtoReflect.Descriptor instead.
-func (*BatchDelete) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{1}
-}
+func (*BatchDelete) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BatchDelete) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *BatchDelete) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type Batch struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -125,49 +77,23 @@ type Batch struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Batch) Reset() {
-	*x = Batch{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Batch) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Batch) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Batch) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Batch) ProtoMessage() {}
+func (*Batch) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Batch) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Batch.ProtoReflect.Descriptor instead.
-func (*Batch) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{2}
-}
+func (*Batch) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Batch) GetPuts() []*BatchPut {
-	if x != nil {
-		return x.Puts
-	}
-	return nil
-}
+func (x *Batch) GetPuts() []*BatchPut { _ = "STUB: not implemented"; return nil }
 
-func (x *Batch) GetDeletes() []*BatchDelete {
-	if x != nil {
-		return x.Deletes
-	}
-	return nil
-}
+func (x *Batch) GetDeletes() []*BatchDelete { _ = "STUB: not implemented"; return nil }
 
 type AtomicRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
@@ -178,56 +104,25 @@ type AtomicRequest struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *AtomicRequest) Reset() {
-	*x = AtomicRequest{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AtomicRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AtomicRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AtomicRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AtomicRequest) ProtoMessage() {}
+func (*AtomicRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AtomicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AtomicRequest.ProtoReflect.Descriptor instead.
-func (*AtomicRequest) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{3}
-}
+func (*AtomicRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AtomicRequest) GetRemoveRequests() [][]byte {
-	if x != nil {
-		return x.RemoveRequests
-	}
-	return nil
-}
+func (x *AtomicRequest) GetRemoveRequests() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AtomicRequest) GetPutRequests() []*Element {
-	if x != nil {
-		return x.PutRequests
-	}
-	return nil
-}
+func (x *AtomicRequest) GetPutRequests() []*Element { _ = "STUB: not implemented"; return nil }
 
-func (x *AtomicRequest) GetPeerChainId() []byte {
-	if x != nil {
-		return x.PeerChainId
-	}
-	return nil
-}
+func (x *AtomicRequest) GetPeerChainId() []byte { _ = "STUB: not implemented"; return nil }
 
 type Element struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -238,56 +133,25 @@ type Element struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Element) Reset() {
-	*x = Element{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Element) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Element) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Element) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Element) ProtoMessage() {}
+func (*Element) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Element) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Element.ProtoReflect.Descriptor instead.
-func (*Element) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{4}
-}
+func (*Element) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Element) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *Element) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Element) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *Element) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Element) GetTraits() [][]byte {
-	if x != nil {
-		return x.Traits
-	}
-	return nil
-}
+func (x *Element) GetTraits() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -297,49 +161,23 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetRequest) Reset() {
-	*x = GetRequest{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
-func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{5}
-}
+func (*GetRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetRequest) GetPeerChainId() []byte {
-	if x != nil {
-		return x.PeerChainId
-	}
-	return nil
-}
+func (x *GetRequest) GetPeerChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetRequest) GetKeys() [][]byte {
-	if x != nil {
-		return x.Keys
-	}
-	return nil
-}
+func (x *GetRequest) GetKeys() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -348,42 +186,21 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetResponse) Reset() {
-	*x = GetResponse{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
-func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{6}
-}
+func (*GetResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetResponse) GetValues() [][]byte {
-	if x != nil {
-		return x.Values
-	}
-	return nil
-}
+func (x *GetResponse) GetValues() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type IndexedRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -396,70 +213,29 @@ type IndexedRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IndexedRequest) Reset() {
-	*x = IndexedRequest{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IndexedRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IndexedRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IndexedRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IndexedRequest) ProtoMessage() {}
+func (*IndexedRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IndexedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IndexedRequest.ProtoReflect.Descriptor instead.
-func (*IndexedRequest) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{7}
-}
+func (*IndexedRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *IndexedRequest) GetPeerChainId() []byte {
-	if x != nil {
-		return x.PeerChainId
-	}
-	return nil
-}
+func (x *IndexedRequest) GetPeerChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedRequest) GetTraits() [][]byte {
-	if x != nil {
-		return x.Traits
-	}
-	return nil
-}
+func (x *IndexedRequest) GetTraits() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedRequest) GetStartTrait() []byte {
-	if x != nil {
-		return x.StartTrait
-	}
-	return nil
-}
+func (x *IndexedRequest) GetStartTrait() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedRequest) GetStartKey() []byte {
-	if x != nil {
-		return x.StartKey
-	}
-	return nil
-}
+func (x *IndexedRequest) GetStartKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
+func (x *IndexedRequest) GetLimit() int32 { _ = "STUB: not implemented"; return 0 }
 
 type IndexedResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -470,56 +246,25 @@ type IndexedResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IndexedResponse) Reset() {
-	*x = IndexedResponse{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IndexedResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IndexedResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IndexedResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IndexedResponse) ProtoMessage() {}
+func (*IndexedResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IndexedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IndexedResponse.ProtoReflect.Descriptor instead.
-func (*IndexedResponse) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{8}
-}
+func (*IndexedResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *IndexedResponse) GetValues() [][]byte {
-	if x != nil {
-		return x.Values
-	}
-	return nil
-}
+func (x *IndexedResponse) GetValues() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedResponse) GetLastTrait() []byte {
-	if x != nil {
-		return x.LastTrait
-	}
-	return nil
-}
+func (x *IndexedResponse) GetLastTrait() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *IndexedResponse) GetLastKey() []byte {
-	if x != nil {
-		return x.LastKey
-	}
-	return nil
-}
+func (x *IndexedResponse) GetLastKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type ApplyRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -529,49 +274,23 @@ type ApplyRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ApplyRequest) Reset() {
-	*x = ApplyRequest{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ApplyRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ApplyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ApplyRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ApplyRequest) ProtoMessage() {}
+func (*ApplyRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ApplyRequest.ProtoReflect.Descriptor instead.
-func (*ApplyRequest) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{9}
-}
+func (*ApplyRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ApplyRequest) GetRequests() []*AtomicRequest {
-	if x != nil {
-		return x.Requests
-	}
-	return nil
-}
+func (x *ApplyRequest) GetRequests() []*AtomicRequest { _ = "STUB: not implemented"; return nil }
 
-func (x *ApplyRequest) GetBatches() []*Batch {
-	if x != nil {
-		return x.Batches
-	}
-	return nil
-}
+func (x *ApplyRequest) GetBatches() []*Batch { _ = "STUB: not implemented"; return nil }
 
 type ApplyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -579,35 +298,19 @@ type ApplyResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ApplyResponse) Reset() {
-	*x = ApplyResponse{}
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ApplyResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ApplyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ApplyResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ApplyResponse) ProtoMessage() {}
+func (*ApplyResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sharedmemory_sharedmemory_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ApplyResponse.ProtoReflect.Descriptor instead.
-func (*ApplyResponse) Descriptor() ([]byte, []int) {
-	return file_sharedmemory_sharedmemory_proto_rawDescGZIP(), []int{10}
-}
+func (*ApplyResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 var File_sharedmemory_sharedmemory_proto protoreflect.FileDescriptor
 
@@ -663,10 +366,8 @@ var (
 )
 
 func file_sharedmemory_sharedmemory_proto_rawDescGZIP() []byte {
-	file_sharedmemory_sharedmemory_proto_rawDescOnce.Do(func() {
-		file_sharedmemory_sharedmemory_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_sharedmemory_sharedmemory_proto_rawDesc), len(file_sharedmemory_sharedmemory_proto_rawDesc)))
-	})
-	return file_sharedmemory_sharedmemory_proto_rawDescData
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var file_sharedmemory_sharedmemory_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
@@ -702,26 +403,5 @@ var file_sharedmemory_sharedmemory_proto_depIdxs = []int32{
 	0,  // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_sharedmemory_sharedmemory_proto_init() }
-func file_sharedmemory_sharedmemory_proto_init() {
-	if File_sharedmemory_sharedmemory_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sharedmemory_sharedmemory_proto_rawDesc), len(file_sharedmemory_sharedmemory_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   11,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_sharedmemory_sharedmemory_proto_goTypes,
-		DependencyIndexes: file_sharedmemory_sharedmemory_proto_depIdxs,
-		MessageInfos:      file_sharedmemory_sharedmemory_proto_msgTypes,
-	}.Build()
-	File_sharedmemory_sharedmemory_proto = out.File
-	file_sharedmemory_sharedmemory_proto_goTypes = nil
-	file_sharedmemory_sharedmemory_proto_depIdxs = nil
-}
+func init()                                      { file_sharedmemory_sharedmemory_proto_init() }
+func file_sharedmemory_sharedmemory_proto_init() { _ = "STUB: not implemented"; return }

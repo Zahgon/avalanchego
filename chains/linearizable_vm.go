@@ -41,29 +41,13 @@ type initializeOnLinearizeVM struct {
 }
 
 func (vm *initializeOnLinearizeVM) WaitForEvent(ctx context.Context) (common.Message, error) {
-	select {
-	case <-vm.waitForLinearize:
-		return vm.vmToInitialize.WaitForEvent(ctx)
-	case <-ctx.Done():
-		return 0, ctx.Err()
-	}
+	_ = "STUB: not implemented"
+	return *new(common.Message), nil
 }
 
 func (vm *initializeOnLinearizeVM) Linearize(ctx context.Context, stopVertexID ids.ID) error {
-	vm.vmToLinearize.stopVertexID = stopVertexID
-	defer vm.linearizeOnce.Do(func() {
-		close(vm.waitForLinearize)
-	})
-	return vm.vmToInitialize.Initialize(
-		ctx,
-		vm.ctx,
-		vm.db,
-		vm.genesisBytes,
-		vm.upgradeBytes,
-		vm.configBytes,
-		vm.fxs,
-		vm.appSender,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // linearizeOnInitializeVM transforms the proposervm's call to Initialize into a
@@ -74,9 +58,8 @@ type linearizeOnInitializeVM struct {
 }
 
 func NewLinearizeOnInitializeVM(vm vertex.LinearizableVMWithEngine) *linearizeOnInitializeVM {
-	return &linearizeOnInitializeVM{
-		LinearizableVMWithEngine: vm,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *linearizeOnInitializeVM) Initialize(
@@ -89,5 +72,6 @@ func (vm *linearizeOnInitializeVM) Initialize(
 	_ []*common.Fx,
 	_ common.AppSender,
 ) error {
-	return vm.Linearize(ctx, vm.stopVertexID)
+	_ = "STUB: not implemented"
+	return nil
 }

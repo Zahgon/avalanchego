@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -58,19 +58,8 @@ var WarpTestBin = WarpTestMetaData.Bin
 
 // DeployWarpTest deploys a new Ethereum contract, binding an instance of WarpTest to it.
 func DeployWarpTest(auth *bind.TransactOpts, backend bind.ContractBackend, warpPrecompile common.Address) (common.Address, *types.Transaction, *WarpTest, error) {
-	parsed, err := WarpTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(WarpTestBin), backend, warpPrecompile)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &WarpTest{WarpTestCaller: WarpTestCaller{contract: contract}, WarpTestTransactor: WarpTestTransactor{contract: contract}, WarpTestFilterer: WarpTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // WarpTest is an auto generated Go binding around an Ethereum contract.
@@ -134,47 +123,32 @@ type WarpTestTransactorRaw struct {
 
 // NewWarpTest creates a new instance of WarpTest, bound to a specific deployed contract.
 func NewWarpTest(address common.Address, backend bind.ContractBackend) (*WarpTest, error) {
-	contract, err := bindWarpTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &WarpTest{WarpTestCaller: WarpTestCaller{contract: contract}, WarpTestTransactor: WarpTestTransactor{contract: contract}, WarpTestFilterer: WarpTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewWarpTestCaller creates a new read-only instance of WarpTest, bound to a specific deployed contract.
 func NewWarpTestCaller(address common.Address, caller bind.ContractCaller) (*WarpTestCaller, error) {
-	contract, err := bindWarpTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &WarpTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewWarpTestTransactor creates a new write-only instance of WarpTest, bound to a specific deployed contract.
 func NewWarpTestTransactor(address common.Address, transactor bind.ContractTransactor) (*WarpTestTransactor, error) {
-	contract, err := bindWarpTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &WarpTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewWarpTestFilterer creates a new log filterer instance of WarpTest, bound to a specific deployed contract.
 func NewWarpTestFilterer(address common.Address, filterer bind.ContractFilterer) (*WarpTestFilterer, error) {
-	contract, err := bindWarpTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &WarpTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindWarpTest binds a generic wrapper to an already deployed contract.
 func bindWarpTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := WarpTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -182,18 +156,21 @@ func bindWarpTest(address common.Address, caller bind.ContractCaller, transactor
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_WarpTest *WarpTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _WarpTest.Contract.WarpTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_WarpTest *WarpTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _WarpTest.Contract.WarpTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_WarpTest *WarpTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _WarpTest.Contract.WarpTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -201,49 +178,45 @@ func (_WarpTest *WarpTestRaw) Transact(opts *bind.TransactOpts, method string, p
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_WarpTest *WarpTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _WarpTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_WarpTest *WarpTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _WarpTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_WarpTest *WarpTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _WarpTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32)
 func (_WarpTest *WarpTestCaller) GetBlockchainID(opts *bind.CallOpts) ([32]byte, error) {
-	var out []interface{}
-	err := _WarpTest.contract.Call(opts, &out, "getBlockchainID")
-
-	if err != nil {
-		return *new([32]byte), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32)
 func (_WarpTest *WarpTestSession) GetBlockchainID() ([32]byte, error) {
-	return _WarpTest.Contract.GetBlockchainID(&_WarpTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32)
 func (_WarpTest *WarpTestCallerSession) GetBlockchainID() ([32]byte, error) {
-	return _WarpTest.Contract.GetBlockchainID(&_WarpTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -253,22 +226,8 @@ func (_WarpTest *WarpTestCaller) GetVerifiedWarpBlockHash(opts *bind.CallOpts, i
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	var out []interface{}
-	err := _WarpTest.contract.Call(opts, &out, "getVerifiedWarpBlockHash", index)
-
-	outstruct := new(struct {
-		WarpBlockHash WarpBlockHash
-		Valid         bool
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.WarpBlockHash = *abi.ConvertType(out[0], new(WarpBlockHash)).(*WarpBlockHash)
-	outstruct.Valid = *abi.ConvertType(out[1], new(bool)).(*bool)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -278,7 +237,8 @@ func (_WarpTest *WarpTestSession) GetVerifiedWarpBlockHash(index uint32) (struct
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	return _WarpTest.Contract.GetVerifiedWarpBlockHash(&_WarpTest.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -288,7 +248,8 @@ func (_WarpTest *WarpTestCallerSession) GetVerifiedWarpBlockHash(index uint32) (
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	return _WarpTest.Contract.GetVerifiedWarpBlockHash(&_WarpTest.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -298,22 +259,8 @@ func (_WarpTest *WarpTestCaller) GetVerifiedWarpMessage(opts *bind.CallOpts, ind
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	var out []interface{}
-	err := _WarpTest.contract.Call(opts, &out, "getVerifiedWarpMessage", index)
-
-	outstruct := new(struct {
-		Message WarpMessage
-		Valid   bool
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.Message = *abi.ConvertType(out[0], new(WarpMessage)).(*WarpMessage)
-	outstruct.Valid = *abi.ConvertType(out[1], new(bool)).(*bool)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -323,7 +270,8 @@ func (_WarpTest *WarpTestSession) GetVerifiedWarpMessage(index uint32) (struct {
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	return _WarpTest.Contract.GetVerifiedWarpMessage(&_WarpTest.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -333,26 +281,30 @@ func (_WarpTest *WarpTestCallerSession) GetVerifiedWarpMessage(index uint32) (st
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	return _WarpTest.Contract.GetVerifiedWarpMessage(&_WarpTest.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_WarpTest *WarpTestTransactor) SendWarpMessage(opts *bind.TransactOpts, payload []byte) (*types.Transaction, error) {
-	return _WarpTest.contract.Transact(opts, "sendWarpMessage", payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_WarpTest *WarpTestSession) SendWarpMessage(payload []byte) (*types.Transaction, error) {
-	return _WarpTest.Contract.SendWarpMessage(&_WarpTest.TransactOpts, payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_WarpTest *WarpTestTransactorSession) SendWarpMessage(payload []byte) (*types.Transaction, error) {
-	return _WarpTest.Contract.SendWarpMessage(&_WarpTest.TransactOpts, payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

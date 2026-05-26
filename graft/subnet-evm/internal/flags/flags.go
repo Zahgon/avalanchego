@@ -29,17 +29,9 @@ package flags
 
 import (
 	"encoding"
-	"errors"
 	"flag"
-	"fmt"
 	"math/big"
-	"os"
-	"os/user"
-	"path/filepath"
-	"strings"
-	"syscall"
 
-	"github.com/ava-labs/libevm/common/math"
 	"github.com/urfave/cli/v2"
 )
 
@@ -48,14 +40,9 @@ import (
 // the argument is parsed
 type DirectoryString string
 
-func (s *DirectoryString) String() string {
-	return string(*s)
-}
+func (s *DirectoryString) String() string { _ = "STUB: not implemented"; return "" }
 
-func (s *DirectoryString) Set(value string) error {
-	*s = DirectoryString(expandPath(value))
-	return nil
-}
+func (s *DirectoryString) Set(value string) error { _ = "STUB: not implemented"; return nil }
 
 var (
 	_ cli.Flag              = (*DirectoryFlag)(nil)
@@ -86,52 +73,43 @@ type DirectoryFlag struct {
 
 // For cli.Flag:
 
-func (f *DirectoryFlag) Names() []string { return append([]string{f.Name}, f.Aliases...) }
-func (f *DirectoryFlag) IsSet() bool     { return f.HasBeenSet }
-func (f *DirectoryFlag) String() string  { return cli.FlagStringer(f) }
+func (f *DirectoryFlag) Names() []string { _ = "STUB: not implemented"; return nil }
+func (f *DirectoryFlag) IsSet() bool     { _ = "STUB: not implemented"; return false }
+func (f *DirectoryFlag) String() string  { _ = "STUB: not implemented"; return "" }
 
 // Apply called by cli library, grabs variable from environment (if in env)
 // and adds variable to flag set for parsing.
-func (f *DirectoryFlag) Apply(set *flag.FlagSet) error {
-	for _, envVar := range f.EnvVars {
-		envVar = strings.TrimSpace(envVar)
-		if value, found := syscall.Getenv(envVar); found {
-			f.Value.Set(value)
-			f.HasBeenSet = true
-			break
-		}
-	}
-	eachName(f, func(name string) {
-		set.Var(&f.Value, f.Name, f.Usage)
-	})
-	return nil
-}
+func (f *DirectoryFlag) Apply(set *flag.FlagSet) error { _ = "STUB: not implemented"; return nil }
 
 // For cli.RequiredFlag:
 
-func (f *DirectoryFlag) IsRequired() bool { return f.Required }
+func (f *DirectoryFlag) IsRequired() bool {
+	_ = "STUB: not implemented"
 
-// For cli.VisibleFlag:
-
-func (f *DirectoryFlag) IsVisible() bool { return !f.Hidden }
-
-// For cli.CategorizableFlag:
-
-func (f *DirectoryFlag) GetCategory() string { return f.Category }
-
-// For cli.DocGenerationFlag:
-
-func (f *DirectoryFlag) TakesValue() bool     { return true }
-func (f *DirectoryFlag) GetUsage() string     { return f.Usage }
-func (f *DirectoryFlag) GetValue() string     { return f.Value.String() }
-func (f *DirectoryFlag) GetEnvVars() []string { return f.EnvVars }
-
-func (f *DirectoryFlag) GetDefaultText() string {
-	if f.DefaultText != "" {
-		return f.DefaultText
-	}
-	return f.GetValue()
+	// For cli.VisibleFlag:
+	return false
 }
+
+func (f *DirectoryFlag) IsVisible() bool {
+	_ = "STUB: not implemented"
+
+	// For cli.CategorizableFlag:
+	return false
+}
+
+func (f *DirectoryFlag) GetCategory() string {
+	_ = "STUB: not implemented"
+
+	// For cli.DocGenerationFlag:
+	return ""
+}
+
+func (f *DirectoryFlag) TakesValue() bool     { _ = "STUB: not implemented"; return false }
+func (f *DirectoryFlag) GetUsage() string     { _ = "STUB: not implemented"; return "" }
+func (f *DirectoryFlag) GetValue() string     { _ = "STUB: not implemented"; return "" }
+func (f *DirectoryFlag) GetEnvVars() []string { _ = "STUB: not implemented"; return nil }
+
+func (f *DirectoryFlag) GetDefaultText() string { _ = "STUB: not implemented"; return "" }
 
 type TextMarshaler interface {
 	encoding.TextMarshaler
@@ -143,17 +121,9 @@ type textMarshalerVal struct {
 	v TextMarshaler
 }
 
-func (v textMarshalerVal) String() string {
-	if v.v == nil {
-		return ""
-	}
-	text, _ := v.v.MarshalText()
-	return string(text)
-}
+func (v textMarshalerVal) String() string { _ = "STUB: not implemented"; return "" }
 
-func (v textMarshalerVal) Set(s string) error {
-	return v.v.UnmarshalText([]byte(s))
-}
+func (v textMarshalerVal) Set(s string) error { _ = "STUB: not implemented"; return nil }
 
 var (
 	_ cli.Flag              = (*TextMarshalerFlag)(nil)
@@ -183,67 +153,47 @@ type TextMarshalerFlag struct {
 
 // For cli.Flag:
 
-func (f *TextMarshalerFlag) Names() []string { return append([]string{f.Name}, f.Aliases...) }
-func (f *TextMarshalerFlag) IsSet() bool     { return f.HasBeenSet }
-func (f *TextMarshalerFlag) String() string  { return cli.FlagStringer(f) }
+func (f *TextMarshalerFlag) Names() []string { _ = "STUB: not implemented"; return nil }
+func (f *TextMarshalerFlag) IsSet() bool     { _ = "STUB: not implemented"; return false }
+func (f *TextMarshalerFlag) String() string  { _ = "STUB: not implemented"; return "" }
 
-func (f *TextMarshalerFlag) Apply(set *flag.FlagSet) error {
-	for _, envVar := range f.EnvVars {
-		envVar = strings.TrimSpace(envVar)
-		if value, found := syscall.Getenv(envVar); found {
-			if err := f.Value.UnmarshalText([]byte(value)); err != nil {
-				return fmt.Errorf("could not parse %q from environment variable %q for flag %s: %s", value, envVar, f.Name, err)
-			}
-			f.HasBeenSet = true
-			break
-		}
-	}
-	eachName(f, func(name string) {
-		set.Var(textMarshalerVal{f.Value}, f.Name, f.Usage)
-	})
-	return nil
-}
+func (f *TextMarshalerFlag) Apply(set *flag.FlagSet) error { _ = "STUB: not implemented"; return nil }
 
 // For cli.RequiredFlag:
 
-func (f *TextMarshalerFlag) IsRequired() bool { return f.Required }
+func (f *TextMarshalerFlag) IsRequired() bool {
+	_ = "STUB: not implemented"
 
-// For cli.VisibleFlag:
-
-func (f *TextMarshalerFlag) IsVisible() bool { return !f.Hidden }
-
-// For cli.CategorizableFlag:
-
-func (f *TextMarshalerFlag) GetCategory() string { return f.Category }
-
-// For cli.DocGenerationFlag:
-
-func (f *TextMarshalerFlag) TakesValue() bool     { return true }
-func (f *TextMarshalerFlag) GetUsage() string     { return f.Usage }
-func (f *TextMarshalerFlag) GetEnvVars() []string { return f.EnvVars }
-
-func (f *TextMarshalerFlag) GetValue() string {
-	t, err := f.Value.MarshalText()
-	if err != nil {
-		return "(ERR: " + err.Error() + ")"
-	}
-	return string(t)
+	// For cli.VisibleFlag:
+	return false
 }
 
-func (f *TextMarshalerFlag) GetDefaultText() string {
-	if f.DefaultText != "" {
-		return f.DefaultText
-	}
-	return f.GetValue()
+func (f *TextMarshalerFlag) IsVisible() bool {
+	_ = "STUB: not implemented"
+
+	// For cli.CategorizableFlag:
+	return false
 }
+
+func (f *TextMarshalerFlag) GetCategory() string {
+	_ = "STUB: not implemented"
+
+	// For cli.DocGenerationFlag:
+	return ""
+}
+
+func (f *TextMarshalerFlag) TakesValue() bool     { _ = "STUB: not implemented"; return false }
+func (f *TextMarshalerFlag) GetUsage() string     { _ = "STUB: not implemented"; return "" }
+func (f *TextMarshalerFlag) GetEnvVars() []string { _ = "STUB: not implemented"; return nil }
+
+func (f *TextMarshalerFlag) GetValue() string { _ = "STUB: not implemented"; return "" }
+
+func (f *TextMarshalerFlag) GetDefaultText() string { _ = "STUB: not implemented"; return "" }
 
 // GlobalTextMarshaler returns the value of a TextMarshalerFlag from the global flag set.
 func GlobalTextMarshaler(ctx *cli.Context, name string) TextMarshaler {
-	val := ctx.Generic(name)
-	if val == nil {
-		return nil
-	}
-	return val.(textMarshalerVal).v
+	_ = "STUB: not implemented"
+	return *new(TextMarshaler)
 }
 
 var (
@@ -276,85 +226,55 @@ type BigFlag struct {
 
 // For cli.Flag:
 
-func (f *BigFlag) Names() []string { return append([]string{f.Name}, f.Aliases...) }
-func (f *BigFlag) IsSet() bool     { return f.HasBeenSet }
-func (f *BigFlag) String() string  { return cli.FlagStringer(f) }
+func (f *BigFlag) Names() []string { _ = "STUB: not implemented"; return nil }
+func (f *BigFlag) IsSet() bool     { _ = "STUB: not implemented"; return false }
+func (f *BigFlag) String() string  { _ = "STUB: not implemented"; return "" }
 
 func (f *BigFlag) Apply(set *flag.FlagSet) error {
+	_ = "STUB: not implemented"
 	// Set default value so that environment wont be able to overwrite it
-	if f.Value != nil {
-		f.defaultValue = new(big.Int).Set(f.Value)
-	}
-	for _, envVar := range f.EnvVars {
-		envVar = strings.TrimSpace(envVar)
-		if value, found := syscall.Getenv(envVar); found {
-			if _, ok := f.Value.SetString(value, 10); !ok {
-				return fmt.Errorf("could not parse %q from environment variable %q for flag %s", value, envVar, f.Name)
-			}
-			f.HasBeenSet = true
-			break
-		}
-	}
-	eachName(f, func(name string) {
-		f.Value = new(big.Int)
-		set.Var((*bigValue)(f.Value), f.Name, f.Usage)
-	})
 	return nil
 }
 
 // For cli.RequiredFlag:
 
-func (f *BigFlag) IsRequired() bool { return f.Required }
+func (f *BigFlag) IsRequired() bool {
+	_ = "STUB: not implemented"
 
-// For cli.VisibleFlag:
-
-func (f *BigFlag) IsVisible() bool { return !f.Hidden }
-
-// For cli.CategorizableFlag:
-
-func (f *BigFlag) GetCategory() string { return f.Category }
-
-// For cli.DocGenerationFlag:
-
-func (f *BigFlag) TakesValue() bool     { return true }
-func (f *BigFlag) GetUsage() string     { return f.Usage }
-func (f *BigFlag) GetValue() string     { return f.Value.String() }
-func (f *BigFlag) GetEnvVars() []string { return f.EnvVars }
-
-func (f *BigFlag) GetDefaultText() string {
-	if f.DefaultText != "" {
-		return f.DefaultText
-	}
-	return f.defaultValue.String()
+	// For cli.VisibleFlag:
+	return false
 }
+
+func (f *BigFlag) IsVisible() bool {
+	_ = "STUB: not implemented"
+
+	// For cli.CategorizableFlag:
+	return false
+}
+
+func (f *BigFlag) GetCategory() string {
+	_ = "STUB: not implemented"
+
+	// For cli.DocGenerationFlag:
+	return ""
+}
+
+func (f *BigFlag) TakesValue() bool     { _ = "STUB: not implemented"; return false }
+func (f *BigFlag) GetUsage() string     { _ = "STUB: not implemented"; return "" }
+func (f *BigFlag) GetValue() string     { _ = "STUB: not implemented"; return "" }
+func (f *BigFlag) GetEnvVars() []string { _ = "STUB: not implemented"; return nil }
+
+func (f *BigFlag) GetDefaultText() string { _ = "STUB: not implemented"; return "" }
 
 // bigValue turns *big.Int into a flag.Value
 type bigValue big.Int
 
-func (b *bigValue) String() string {
-	if b == nil {
-		return ""
-	}
-	return (*big.Int)(b).String()
-}
+func (b *bigValue) String() string { _ = "STUB: not implemented"; return "" }
 
-func (b *bigValue) Set(s string) error {
-	intVal, ok := math.ParseBig256(s)
-	if !ok {
-		return errors.New("invalid integer syntax")
-	}
-	*b = (bigValue)(*intVal)
-	return nil
-}
+func (b *bigValue) Set(s string) error { _ = "STUB: not implemented"; return nil }
 
 // GlobalBig returns the value of a BigFlag from the global flag set.
-func GlobalBig(ctx *cli.Context, name string) *big.Int {
-	val := ctx.Generic(name)
-	if val == nil {
-		return nil
-	}
-	return (*big.Int)(val.(*bigValue))
-}
+func GlobalBig(ctx *cli.Context, name string) *big.Int { _ = "STUB: not implemented"; return nil }
 
 // Expands a file path
 // 1. replace tilde with users home dir
@@ -362,31 +282,11 @@ func GlobalBig(ctx *cli.Context, name string) *big.Int {
 // 3. cleans the path, e.g. /a/b/../c -> /a/c
 // Note, it has limitations, e.g. ~someuser/tmp will not be expanded
 func expandPath(p string) string {
+	_ = "STUB: not implemented"
 	// Named pipes are not file paths on windows, ignore
-	if strings.HasPrefix(p, `\\.\pipe`) {
-		return p
-	}
-	if strings.HasPrefix(p, "~/") || strings.HasPrefix(p, "~\\") {
-		if home := HomeDir(); home != "" {
-			p = home + p[1:]
-		}
-	}
-	return filepath.Clean(os.ExpandEnv(p))
-}
-
-func HomeDir() string {
-	if home := os.Getenv("HOME"); home != "" {
-		return home
-	}
-	if usr, err := user.Current(); err == nil {
-		return usr.HomeDir
-	}
 	return ""
 }
 
-func eachName(f cli.Flag, fn func(string)) {
-	for _, name := range f.Names() {
-		name = strings.Trim(name, " ")
-		fn(name)
-	}
-}
+func HomeDir() string { _ = "STUB: not implemented"; return "" }
+
+func eachName(f cli.Flag, fn func(string)) { _ = "STUB: not implemented"; return }

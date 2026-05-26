@@ -23,86 +23,19 @@ type Timer struct {
 }
 
 // NewTimer creates a new timer object
-func NewTimer(handler func()) *Timer {
-	timer := &Timer{
-		handler: handler,
-		timeout: make(chan struct{}, 1),
-	}
-	timer.wg.Add(1)
-
-	return timer
-}
+func NewTimer(handler func()) *Timer { _ = "STUB: not implemented"; return nil }
 
 // SetTimeoutIn will set the timer to fire the handler in [duration]
-func (t *Timer) SetTimeoutIn(duration time.Duration) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	t.duration = duration
-	t.shouldExecute = true
-	t.reset()
-}
+func (t *Timer) SetTimeoutIn(duration time.Duration) { _ = "STUB: not implemented"; return }
 
 // Cancel the currently scheduled event
-func (t *Timer) Cancel() {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	t.shouldExecute = false
-	t.reset()
-}
+func (t *Timer) Cancel() { _ = "STUB: not implemented"; return }
 
 // Stop this timer from executing any more.
-func (t *Timer) Stop() {
-	t.lock.Lock()
-	if !t.finished {
-		defer t.wg.Wait()
-	}
-	defer t.lock.Unlock()
+func (t *Timer) Stop() { _ = "STUB: not implemented"; return }
 
-	t.finished = true
-	t.reset()
-}
+func (t *Timer) Dispatch() { _ = "STUB: not implemented"; return }
 
-func (t *Timer) Dispatch() {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-	defer t.wg.Done()
+// t.finished needs to be thread safe
 
-	timer := time.NewTimer(0)
-	cleared := false
-	reset := false
-	for !t.finished { // t.finished needs to be thread safe
-		if !reset && !timer.Stop() && !cleared {
-			<-timer.C
-		}
-
-		if cleared && t.shouldExecute {
-			t.lock.Unlock()
-			t.handler()
-		} else {
-			t.lock.Unlock()
-		}
-
-		cleared = false
-		reset = false
-		select {
-		case <-t.timeout:
-			t.lock.Lock()
-			if t.shouldExecute {
-				timer.Reset(t.duration)
-			}
-			reset = true
-		case <-timer.C:
-			t.lock.Lock()
-			cleared = true
-		}
-	}
-}
-
-func (t *Timer) reset() {
-	select {
-	case t.timeout <- struct{}{}:
-	default:
-	}
-}
+func (t *Timer) reset() { _ = "STUB: not implemented"; return }

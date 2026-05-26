@@ -20,32 +20,15 @@ func NewEpoch(
 	parentTimestamp time.Time,
 	childTimestamp time.Time,
 ) block.Epoch {
-	if !upgrades.IsGraniteActivated(childTimestamp) {
-		return block.Epoch{}
-	}
-
-	if parentEpoch == (block.Epoch{}) {
-		// If the parent was not assigned an epoch, then the child is the first
-		// block of the initial epoch.
-		return block.Epoch{
-			PChainHeight: parentPChainHeight,
-			Number:       1,
-			StartTime:    parentTimestamp.Unix(),
-		}
-	}
-
-	epochEndTime := time.Unix(parentEpoch.StartTime, 0).Add(upgrades.GraniteEpochDuration)
-	if parentTimestamp.Before(epochEndTime) {
-		// If the parent was issued before the end of its epoch, then it did not
-		// seal the epoch.
-		return parentEpoch
-	}
-
-	// The parent sealed the epoch, so the child is the first block of the new
-	// epoch.
-	return block.Epoch{
-		PChainHeight: parentPChainHeight,
-		Number:       parentEpoch.Number + 1,
-		StartTime:    parentTimestamp.Unix(),
-	}
+	_ = "STUB: not implemented"
+	return *new(block.Epoch)
 }
+
+// If the parent was not assigned an epoch, then the child is the first
+// block of the initial epoch.
+
+// If the parent was issued before the end of its epoch, then it did not
+// seal the epoch.
+
+// The parent sealed the epoch, so the child is the first block of the new
+// epoch.

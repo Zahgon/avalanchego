@@ -28,14 +28,10 @@
 package rpc
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
-	"fmt"
 	"io"
 	"reflect"
-	"strings"
 	"sync"
 	"time"
 )
@@ -79,73 +75,35 @@ type jsonrpcMessage struct {
 	Result  json.RawMessage `json:"result,omitempty"`
 }
 
-func (msg *jsonrpcMessage) isNotification() bool {
-	return msg.hasValidVersion() && msg.ID == nil && msg.Method != ""
-}
+func (msg *jsonrpcMessage) isNotification() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) isCall() bool {
-	return msg.hasValidVersion() && msg.hasValidID() && msg.Method != ""
-}
+func (msg *jsonrpcMessage) isCall() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) isResponse() bool {
-	return msg.hasValidVersion() && msg.hasValidID() && msg.Method == "" && msg.Params == nil && (msg.Result != nil || msg.Error != nil)
-}
+func (msg *jsonrpcMessage) isResponse() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) hasValidID() bool {
-	return len(msg.ID) > 0 && msg.ID[0] != '{' && msg.ID[0] != '['
-}
+func (msg *jsonrpcMessage) hasValidID() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) hasValidVersion() bool {
-	return msg.Version == vsn
-}
+func (msg *jsonrpcMessage) hasValidVersion() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) isSubscribe() bool {
-	return strings.HasSuffix(msg.Method, subscribeMethodSuffix)
-}
+func (msg *jsonrpcMessage) isSubscribe() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) isUnsubscribe() bool {
-	return strings.HasSuffix(msg.Method, unsubscribeMethodSuffix)
-}
+func (msg *jsonrpcMessage) isUnsubscribe() bool { _ = "STUB: not implemented"; return false }
 
-func (msg *jsonrpcMessage) namespace() string {
-	before, _, _ := strings.Cut(msg.Method, serviceMethodSeparator)
-	return before
-}
+func (msg *jsonrpcMessage) namespace() string { _ = "STUB: not implemented"; return "" }
 
-func (msg *jsonrpcMessage) String() string {
-	b, _ := json.Marshal(msg)
-	return string(b)
-}
+func (msg *jsonrpcMessage) String() string { _ = "STUB: not implemented"; return "" }
 
 func (msg *jsonrpcMessage) errorResponse(err error) *jsonrpcMessage {
-	resp := errorMessage(err)
-	resp.ID = msg.ID
-	return resp
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (msg *jsonrpcMessage) response(result interface{}) *jsonrpcMessage {
-	enc, err := json.Marshal(result)
-	if err != nil {
-		return msg.errorResponse(&internalServerError{errcodeMarshalError, err.Error()})
-	}
-	return &jsonrpcMessage{Version: vsn, ID: msg.ID, Result: enc}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func errorMessage(err error) *jsonrpcMessage {
-	msg := &jsonrpcMessage{Version: vsn, ID: null, Error: &jsonError{
-		Code:    errcodeDefault,
-		Message: err.Error(),
-	}}
-	ec, ok := err.(Error)
-	if ok {
-		msg.Error.Code = ec.ErrorCode()
-	}
-	de, ok := err.(DataError)
-	if ok {
-		msg.Error.Data = de.ErrorData()
-	}
-	return msg
-}
+func errorMessage(err error) *jsonrpcMessage { _ = "STUB: not implemented"; return nil }
 
 type jsonError struct {
 	Code    int         `json:"code"`
@@ -153,22 +111,17 @@ type jsonError struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
-func (err *jsonError) Error() string {
-	if err.Message == "" {
-		return fmt.Sprintf("json-rpc error %d", err.Code)
-	}
-	return err.Message
-}
+func (err *jsonError) Error() string { _ = "STUB: not implemented"; return "" }
 
-func (err *jsonError) ErrorCode() int {
-	return err.Code
-}
+func (err *jsonError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
 func (err *jsonError) ErrorData() interface{} {
-	return err.Data
+	_ = "STUB: not implemented"
+
+	// Conn is a subset of the methods of net.Conn which are sufficient for ServerCodec.
+	return nil
 }
 
-// Conn is a subset of the methods of net.Conn which are sufficient for ServerCodec.
 type Conn interface {
 	io.ReadWriteCloser
 	SetWriteDeadline(time.Time) error
@@ -206,182 +159,91 @@ type decodeFunc = func(v interface{}) error
 // implements ConnRemoteAddr, log messages will use it to include the remote address of
 // the connection.
 func NewFuncCodec(conn deadlineCloser, encode encodeFunc, decode decodeFunc) ServerCodec {
-	codec := &jsonCodec{
-		closeCh: make(chan interface{}),
-		encode:  encode,
-		decode:  decode,
-		conn:    conn,
-	}
-	if ra, ok := conn.(ConnRemoteAddr); ok {
-		codec.remote = ra.RemoteAddr()
-	}
-	return codec
+	_ = "STUB: not implemented"
+	return *new(ServerCodec)
 }
 
 // NewCodec creates a codec on the given connection. If conn implements ConnRemoteAddr, log
 // messages will use it to include the remote address of the connection.
-func NewCodec(conn Conn) ServerCodec {
-	enc := json.NewEncoder(conn)
-	dec := json.NewDecoder(conn)
-	dec.UseNumber()
-
-	encode := func(v interface{}, isErrorResponse bool) error {
-		return enc.Encode(v)
-	}
-	return NewFuncCodec(conn, encode, dec.Decode)
-}
+func NewCodec(conn Conn) ServerCodec { _ = "STUB: not implemented"; return *new(ServerCodec) }
 
 func (c *jsonCodec) peerInfo() PeerInfo {
+	_ = "STUB: not implemented"
 	// This returns "ipc" because all other built-in transports have a separate codec type.
-	return PeerInfo{Transport: "ipc", RemoteAddr: c.remote}
+	return *new(PeerInfo)
 }
 
-func (c *jsonCodec) remoteAddr() string {
-	return c.remote
-}
+func (c *jsonCodec) remoteAddr() string { _ = "STUB: not implemented"; return "" }
 
 func (c *jsonCodec) readBatch() (messages []*jsonrpcMessage, batch bool, err error) {
+	_ = "STUB: not implemented"
 	// Decode the next JSON object in the input stream.
 	// This verifies basic syntax, etc.
-	var rawmsg json.RawMessage
-	if err := c.decode(&rawmsg); err != nil {
-		return nil, false, err
-	}
-	messages, batch = parseMessage(rawmsg)
-	for i, msg := range messages {
-		if msg == nil {
-			// Message is JSON 'null'. Replace with zero value so it
-			// will be treated like any other invalid message.
-			messages[i] = new(jsonrpcMessage)
-		}
-	}
-	return messages, batch, nil
+	return nil, false, nil
 }
 
+// Message is JSON 'null'. Replace with zero value so it
+// will be treated like any other invalid message.
+
 func (c *jsonCodec) writeJSON(ctx context.Context, val interface{}, isErrorResponse bool) error {
-	return c.writeJSONSkipDeadline(ctx, val, isErrorResponse, false)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *jsonCodec) writeJSONSkipDeadline(ctx context.Context, v interface{}, isErrorResponse bool, skip bool) error {
-	c.encMu.Lock()
-	defer c.encMu.Unlock()
-
-	deadline := time.Now().Add(defaultWriteTimeout)
-	if !skip {
-		deadlineCtx, ok := ctx.Deadline()
-		if ok {
-			deadline = deadlineCtx
-		}
-	}
-	c.conn.SetWriteDeadline(deadline)
-	return c.encode(v, isErrorResponse)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *jsonCodec) close() {
-	c.closer.Do(func() {
-		close(c.closeCh)
-		c.conn.Close()
-	})
-}
+func (c *jsonCodec) close() { _ = "STUB: not implemented"; return }
 
 // Closed returns a channel which will be closed when Close is called
 func (c *jsonCodec) closed() <-chan interface{} {
-	return c.closeCh
+	_ = "STUB: not implemented"
+
+	// parseMessage parses raw bytes as a (batch of) JSON-RPC message(s). There are no error
+	// checks in this function because the raw message has already been syntax-checked when it
+	// is called. Any non-JSON-RPC messages in the input return the zero value of
+	// jsonrpcMessage.
+	return nil
 }
 
-// parseMessage parses raw bytes as a (batch of) JSON-RPC message(s). There are no error
-// checks in this function because the raw message has already been syntax-checked when it
-// is called. Any non-JSON-RPC messages in the input return the zero value of
-// jsonrpcMessage.
 func parseMessage(raw json.RawMessage) ([]*jsonrpcMessage, bool) {
-	if !isBatch(raw) {
-		msgs := []*jsonrpcMessage{{}}
-		json.Unmarshal(raw, &msgs[0])
-		return msgs, false
-	}
-	dec := json.NewDecoder(bytes.NewReader(raw))
-	dec.Token() // skip '['
-	var msgs []*jsonrpcMessage
-	for dec.More() {
-		msgs = append(msgs, new(jsonrpcMessage))
-		dec.Decode(&msgs[len(msgs)-1])
-	}
-	return msgs, true
+	_ = "STUB: not implemented"
+	return nil, false
 }
+
+// skip '['
 
 // isBatch returns true when the first non-whitespace characters is '['
-func isBatch(raw json.RawMessage) bool {
-	for _, c := range raw {
-		// skip insignificant whitespace (http://www.ietf.org/rfc/rfc4627.txt)
-		if c == 0x20 || c == 0x09 || c == 0x0a || c == 0x0d {
-			continue
-		}
-		return c == '['
-	}
-	return false
-}
+func isBatch(raw json.RawMessage) bool { _ = "STUB: not implemented"; return false }
+
+// skip insignificant whitespace (http://www.ietf.org/rfc/rfc4627.txt)
 
 // parsePositionalArguments tries to parse the given args to an array of values with the
 // given types. It returns the parsed values or an error when the args could not be
 // parsed. Missing optional arguments are returned as reflect.Zero values.
 func parsePositionalArguments(rawArgs json.RawMessage, types []reflect.Type) ([]reflect.Value, error) {
-	dec := json.NewDecoder(bytes.NewReader(rawArgs))
-	var args []reflect.Value
-	tok, err := dec.Token()
-	switch {
-	case err == io.EOF || tok == nil && err == nil:
-		// "params" is optional and may be empty. Also allow "params":null even though it's
-		// not in the spec because our own client used to send it.
-	case err != nil:
-		return nil, err
-	case tok == json.Delim('['):
-		// Read argument array.
-		if args, err = parseArgumentArray(dec, types); err != nil {
-			return nil, err
-		}
-	default:
-		return nil, errors.New("non-array args")
-	}
-	// Set any missing args to nil.
-	for i := len(args); i < len(types); i++ {
-		if types[i].Kind() != reflect.Ptr {
-			return nil, fmt.Errorf("missing value for required argument %d", i)
-		}
-		args = append(args, reflect.Zero(types[i]))
-	}
-	return args, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// "params" is optional and may be empty. Also allow "params":null even though it's
+// not in the spec because our own client used to send it.
+
+// Read argument array.
+
+// Set any missing args to nil.
+
 func parseArgumentArray(dec *json.Decoder, types []reflect.Type) ([]reflect.Value, error) {
-	args := make([]reflect.Value, 0, len(types))
-	for i := 0; dec.More(); i++ {
-		if i >= len(types) {
-			return args, fmt.Errorf("too many arguments, want at most %d", len(types))
-		}
-		argval := reflect.New(types[i])
-		if err := dec.Decode(argval.Interface()); err != nil {
-			return args, fmt.Errorf("invalid argument %d: %v", i, err)
-		}
-		if argval.IsNil() && types[i].Kind() != reflect.Ptr {
-			return args, fmt.Errorf("missing value for required argument %d", i)
-		}
-		args = append(args, argval.Elem())
-	}
-	// Read end of args array.
-	_, err := dec.Token()
-	return args, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Read end of args array.
 
 // parseSubscriptionName extracts the subscription name from an encoded argument array.
 func parseSubscriptionName(rawArgs json.RawMessage) (string, error) {
-	dec := json.NewDecoder(bytes.NewReader(rawArgs))
-	if tok, _ := dec.Token(); tok != json.Delim('[') {
-		return "", errors.New("non-array args")
-	}
-	v, _ := dec.Token()
-	method, ok := v.(string)
-	if !ok {
-		return "", errors.New("expected subscription name as first argument")
-	}
-	return method, nil
+	_ = "STUB: not implemented"
+	return "", nil
 }

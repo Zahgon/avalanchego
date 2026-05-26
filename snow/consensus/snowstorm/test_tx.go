@@ -24,13 +24,10 @@ type TestTx struct {
 }
 
 func (t *TestTx) MissingDependencies() (set.Set[ids.ID], error) {
-	return t.DependenciesV, t.DependenciesErrV
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (t *TestTx) Verify(context.Context) error {
-	return t.VerifyV
-}
+func (t *TestTx) Verify(context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (t *TestTx) Bytes() []byte {
-	return t.BytesV
-}
+func (t *TestTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }

@@ -6,23 +6,17 @@ package builder
 import (
 	"context"
 	"errors"
-	"fmt"
-	"math"
 	"time"
-
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/set"
-	"github.com/ava-labs/avalanchego/utils/timer/mockable"
 	"github.com/ava-labs/avalanchego/utils/units"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/platformvm/block"
 	"github.com/ava-labs/avalanchego/vms/platformvm/state"
-	"github.com/ava-labs/avalanchego/vms/platformvm/status"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs/fee"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs/mempool"
@@ -87,186 +81,50 @@ func New(
 	txExecutorBackend *txexecutor.Backend,
 	blkManager blockexecutor.Manager,
 ) Builder {
-	return &builder{
-		Mempool:           mempool,
-		txExecutorBackend: txExecutorBackend,
-		blkManager:        blkManager,
-	}
+	_ = "STUB: not implemented"
+	return *new(Builder)
 }
 
 func (b *builder) WaitForEvent(ctx context.Context) (common.Message, error) {
+	_ = "STUB: not implemented"
 	// We shouldn't call durationToSleep until the chain is marked as no longer
 	// bootstrapping.
-	if !b.txExecutorBackend.Bootstrapped.Get() {
-		<-ctx.Done()
-		return 0, ctx.Err()
-	}
-
-	for {
-		if err := ctx.Err(); err != nil {
-			return 0, err
-		}
-
-		duration, err := b.durationToSleep()
-		if err != nil {
-			b.txExecutorBackend.Ctx.Log.Error("block builder failed to calculate next staker change time",
-				zap.Error(err),
-			)
-			return 0, err
-		}
-		if duration <= 0 {
-			b.txExecutorBackend.Ctx.Log.Debug("Skipping block build wait, next staker change is ready")
-			// The next staker change is ready to be performed.
-			return common.PendingTxs, nil
-		}
-
-		b.txExecutorBackend.Ctx.Log.Debug("Will wait until a transaction comes", zap.Duration("maxWait", duration))
-
-		// Wait for a transaction in the mempool until there is a next staker
-		// change ready to be performed.
-		newCtx, cancel := context.WithTimeout(ctx, duration)
-		msg, err := b.Mempool.WaitForEvent(newCtx)
-		cancel()
-
-		switch {
-		case err == nil:
-			b.txExecutorBackend.Ctx.Log.Debug("New transaction received", zap.Stringer("msg", msg))
-			return msg, nil
-		case errors.Is(err, context.DeadlineExceeded):
-			continue // Recheck the staker change time before returning
-		default:
-			// Error could have been due to the parent context being cancelled
-			// or another unexpected error.
-			return 0, err
-		}
-	}
+	return *new(common.Message), nil
 }
 
+// The next staker change is ready to be performed.
+
+// Wait for a transaction in the mempool until there is a next staker
+// change ready to be performed.
+
+// Recheck the staker change time before returning
+
+// Error could have been due to the parent context being cancelled
+// or another unexpected error.
+
 func (b *builder) durationToSleep() (time.Duration, error) {
+	_ = "STUB: not implemented"
 	// Grabbing the lock here enforces that this function is not called mid-way
 	// through modifying of the state.
-	b.txExecutorBackend.Ctx.Lock.Lock()
-	defer b.txExecutorBackend.Ctx.Lock.Unlock()
-
-	preferredID := b.blkManager.Preferred()
-	preferredState, ok := b.blkManager.GetState(preferredID)
-	if !ok {
-		return 0, fmt.Errorf("%w: %s", errMissingPreferredState, preferredID)
-	}
-
-	now := b.txExecutorBackend.Clk.Time()
-	maxTimeToAwake := now.Add(maxTimeToSleep)
-	nextStakerChangeTime, err := state.GetNextStakerChangeTime(
-		b.txExecutorBackend.Config.ValidatorFeeConfig,
-		preferredState,
-		maxTimeToAwake,
-	)
-	if err != nil {
-		return 0, fmt.Errorf("%w of %s: %w", errCalculatingNextStakerTime, preferredID, err)
-	}
-
-	return nextStakerChangeTime.Sub(now), nil
+	return *new(time.Duration), nil
 }
 
 func (b *builder) BuildBlock(ctx context.Context) (snowman.Block, error) {
-	return b.BuildBlockWithContext(
-		ctx,
-		&smblock.Context{
-			PChainHeight: 0,
-		},
-	)
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (b *builder) BuildBlockWithContext(
 	ctx context.Context,
 	blockContext *smblock.Context,
 ) (snowman.Block, error) {
-	b.txExecutorBackend.Ctx.Log.Debug("starting to attempt to build a block")
-
-	// Get the block to build on top of and retrieve the new block's context.
-	preferredID := b.blkManager.Preferred()
-	preferred, err := b.blkManager.GetBlock(preferredID)
-	if err != nil {
-		return nil, err
-	}
-	nextHeight := preferred.Height() + 1
-	preferredState, ok := b.blkManager.GetState(preferredID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", state.ErrMissingParentState, preferredID)
-	}
-
-	timestamp, timeWasCapped, err := state.NextBlockTime(
-		b.txExecutorBackend.Config.ValidatorFeeConfig,
-		preferredState,
-		b.txExecutorBackend.Clk,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("could not calculate next staker change time: %w", err)
-	}
-
-	statelessBlk, err := buildBlock(
-		ctx,
-		b,
-		preferredID,
-		nextHeight,
-		timestamp,
-		timeWasCapped,
-		preferredState,
-		blockContext.PChainHeight,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return b.blkManager.NewBlock(statelessBlk), nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
-func (b *builder) PackAllBlockTxs() ([]*txs.Tx, error) {
-	preferredID := b.blkManager.Preferred()
-	preferredState, ok := b.blkManager.GetState(preferredID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", errMissingPreferredState, preferredID)
-	}
+// Get the block to build on top of and retrieve the new block's context.
 
-	timestamp, _, err := state.NextBlockTime(
-		b.txExecutorBackend.Config.ValidatorFeeConfig,
-		preferredState,
-		b.txExecutorBackend.Clk,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("could not calculate next staker change time: %w", err)
-	}
-
-	recommendedPChainHeight, err := b.txExecutorBackend.Ctx.ValidatorState.GetMinimumHeight(context.TODO())
-	if err != nil {
-		return nil, err
-	}
-
-	if !b.txExecutorBackend.Config.UpgradeConfig.IsEtnaActivated(timestamp) {
-		return packDurangoBlockTxs(
-			context.TODO(),
-			preferredID,
-			preferredState,
-			b.Mempool,
-			b.txExecutorBackend,
-			b.blkManager,
-			timestamp,
-			recommendedPChainHeight,
-			math.MaxInt,
-		)
-	}
-	return packEtnaBlockTxs(
-		context.TODO(),
-		preferredID,
-		preferredState,
-		b.Mempool,
-		b.txExecutorBackend,
-		b.blkManager,
-		timestamp,
-		recommendedPChainHeight,
-		math.MaxUint64,
-	)
-}
+func (b *builder) PackAllBlockTxs() ([]*txs.Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // [timestamp] is min(max(now, parent timestamp), next staker change time)
 func buildBlock(
@@ -279,78 +137,19 @@ func buildBlock(
 	parentState state.Chain,
 	pChainHeight uint64,
 ) (block.Block, error) {
-	var (
-		blockTxs []*txs.Tx
-		err      error
-	)
-	if builder.txExecutorBackend.Config.UpgradeConfig.IsEtnaActivated(timestamp) {
-		blockTxs, err = packEtnaBlockTxs(
-			ctx,
-			parentID,
-			parentState,
-			builder.Mempool,
-			builder.txExecutorBackend,
-			builder.blkManager,
-			timestamp,
-			pChainHeight,
-			0, // minCapacity is 0 as we want to honor the capacity in state.
-		)
-	} else {
-		blockTxs, err = packDurangoBlockTxs(
-			ctx,
-			parentID,
-			parentState,
-			builder.Mempool,
-			builder.txExecutorBackend,
-			builder.blkManager,
-			timestamp,
-			pChainHeight,
-			targetBlockSize,
-		)
-	}
-	if err != nil {
-		builder.txExecutorBackend.Ctx.Log.Warn("failed to pack block transactions",
-			zap.Error(err),
-		)
-		return nil, fmt.Errorf("failed to pack block txs: %w", err)
-	}
-
-	// Try rewarding stakers whose staking period ends at the new chain time.
-	// This is done first to prioritize advancing the timestamp as quickly as
-	// possible.
-	stakerTxID, shouldReward, err := getNextStakerToReward(timestamp, parentState)
-	if err != nil {
-		return nil, fmt.Errorf("could not find next staker to reward: %w", err)
-	}
-	if shouldReward {
-		rewardValidatorTx, err := NewRewardValidatorTx(builder.txExecutorBackend.Ctx, stakerTxID)
-		if err != nil {
-			return nil, fmt.Errorf("could not build tx to reward staker: %w", err)
-		}
-
-		return block.NewBanffProposalBlock(
-			timestamp,
-			parentID,
-			height,
-			rewardValidatorTx,
-			blockTxs,
-		)
-	}
-
-	// If there is no reason to build a block, don't.
-	if len(blockTxs) == 0 && !forceAdvanceTime {
-		builder.txExecutorBackend.Ctx.Log.Debug("no pending txs to issue into a block")
-		return nil, ErrNoPendingBlocks
-	}
-
-	// Issue a block with as many transactions as possible.
-	return block.NewBanffStandardBlock(
-		timestamp,
-		parentID,
-		height,
-		blockTxs,
-	)
+	_ = "STUB: not implemented"
+	return *new(block.Block), nil
 }
+
+// minCapacity is 0 as we want to honor the capacity in state.
+
+// Try rewarding stakers whose staking period ends at the new chain time.
+// This is done first to prioritize advancing the timestamp as quickly as
+// possible.
+
+// If there is no reason to build a block, don't.
+
+// Issue a block with as many transactions as possible.
 
 func packDurangoBlockTxs(
 	ctx context.Context,
@@ -363,57 +162,8 @@ func packDurangoBlockTxs(
 	pChainHeight uint64,
 	remainingSize int,
 ) ([]*txs.Tx, error) {
-	isAddingStakerAfterDeletionAllowed := state.StakerAdditionAfterDeletionLegality(
-		backend.Config.UpgradeConfig.IsHeliconActivated(timestamp),
-	)
-	stateDiff, err := state.NewDiffOn(parentState, isAddingStakerAfterDeletionAllowed)
-	if err != nil {
-		return nil, err
-	}
-
-	if _, err := txexecutor.AdvanceTimeTo(backend, stateDiff, timestamp); err != nil {
-		return nil, err
-	}
-
-	var (
-		blockTxs      []*txs.Tx
-		inputs        set.Set[ids.ID]
-		feeCalculator = state.PickFeeCalculator(backend.Config, stateDiff)
-	)
-	for {
-		tx, exists := mempool.Peek()
-		if !exists {
-			break
-		}
-		txSize := len(tx.Bytes())
-		if txSize > remainingSize {
-			break
-		}
-
-		shouldAdd, err := executeTx(
-			ctx,
-			parentID,
-			stateDiff,
-			mempool,
-			backend,
-			manager,
-			pChainHeight,
-			&inputs,
-			feeCalculator,
-			tx,
-		)
-		if err != nil {
-			return nil, err
-		}
-		if !shouldAdd {
-			continue
-		}
-
-		remainingSize -= txSize
-		blockTxs = append(blockTxs, tx)
-	}
-
-	return blockTxs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func packEtnaBlockTxs(
@@ -427,96 +177,8 @@ func packEtnaBlockTxs(
 	pChainHeight uint64,
 	minCapacity gas.Gas,
 ) ([]*txs.Tx, error) {
-	isAddingStakerAfterDeletionAllowed := state.StakerAdditionAfterDeletionLegality(
-		backend.Config.UpgradeConfig.IsHeliconActivated(timestamp),
-	)
-	stateDiff, err := state.NewDiffOn(parentState, isAddingStakerAfterDeletionAllowed)
-	if err != nil {
-		return nil, err
-	}
-
-	if _, err := txexecutor.AdvanceTimeTo(backend, stateDiff, timestamp); err != nil {
-		return nil, err
-	}
-
-	feeState := stateDiff.GetFeeState()
-	capacity := max(feeState.Capacity, minCapacity)
-
-	var (
-		blockTxs        []*txs.Tx
-		inputs          set.Set[ids.ID]
-		blockComplexity gas.Dimensions
-		feeCalculator   = state.PickFeeCalculator(backend.Config, stateDiff)
-	)
-
-	backend.Ctx.Log.Debug("starting to pack block txs",
-		zap.Stringer("parentID", parentID),
-		zap.Time("blockTimestamp", timestamp),
-		zap.Uint64("capacity", uint64(capacity)),
-		zap.Int("mempoolLen", mempool.Len()),
-	)
-	for {
-		currentBlockGas, err := blockComplexity.ToGas(backend.Config.DynamicFeeConfig.Weights)
-		if err != nil {
-			return nil, err
-		}
-
-		tx, exists := mempool.Peek()
-		if !exists {
-			backend.Ctx.Log.Debug("mempool is empty",
-				zap.Uint64("capacity", uint64(capacity)),
-				zap.Uint64("blockGas", uint64(currentBlockGas)),
-				zap.Int("blockLen", len(blockTxs)),
-			)
-			break
-		}
-
-		txComplexity, err := fee.TxComplexity(tx.Unsigned)
-		if err != nil {
-			return nil, err
-		}
-		newBlockComplexity, err := blockComplexity.Add(&txComplexity)
-		if err != nil {
-			return nil, err
-		}
-		newBlockGas, err := newBlockComplexity.ToGas(backend.Config.DynamicFeeConfig.Weights)
-		if err != nil {
-			return nil, err
-		}
-		if newBlockGas > capacity {
-			backend.Ctx.Log.Debug("block is full",
-				zap.Uint64("nextBlockGas", uint64(newBlockGas)),
-				zap.Uint64("capacity", uint64(capacity)),
-				zap.Uint64("blockGas", uint64(currentBlockGas)),
-				zap.Int("blockLen", len(blockTxs)),
-			)
-			break
-		}
-
-		shouldAdd, err := executeTx(
-			ctx,
-			parentID,
-			stateDiff,
-			mempool,
-			backend,
-			manager,
-			pChainHeight,
-			&inputs,
-			feeCalculator,
-			tx,
-		)
-		if err != nil {
-			return nil, err
-		}
-		if !shouldAdd {
-			continue
-		}
-
-		blockComplexity = newBlockComplexity
-		blockTxs = append(blockTxs, tx)
-	}
-
-	return blockTxs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func executeTx(
@@ -531,81 +193,15 @@ func executeTx(
 	feeCalculator fee.Calculator,
 	tx *txs.Tx,
 ) (bool, error) {
-	mempool.Remove(tx.ID())
+	_ = "STUB: not implemented"
+	return false,
 
-	// Invariant: [tx] has already been syntactically verified.
-
-	txID := tx.ID()
-	err := txexecutor.VerifyWarpMessages(
-		ctx,
-		backend.Ctx.NetworkID,
-		backend.Ctx.ValidatorState,
-		pChainHeight,
-		tx.Unsigned,
-	)
-	if err != nil {
-		backend.Ctx.Log.Debug("transaction failed warp verification",
-			zap.Stringer("txID", txID),
-			zap.Error(err),
-		)
-
-		mempool.MarkDropped(txID, err)
-		return false, nil
-	}
-
-	isAddingStakerAfterDeletionAllowed := state.StakerAdditionAfterDeletionLegality(
-		backend.Config.UpgradeConfig.IsHeliconActivated(stateDiff.GetTimestamp()),
-	)
-	txDiff, err := state.NewDiffOn(stateDiff, isAddingStakerAfterDeletionAllowed)
-	if err != nil {
-		return false, err
-	}
-
-	txInputs, _, _, err := txexecutor.StandardTx(
-		backend,
-		feeCalculator,
-		tx,
-		txDiff,
-	)
-	if err != nil {
-		backend.Ctx.Log.Debug("transaction failed execution",
-			zap.Stringer("txID", txID),
-			zap.Error(err),
-		)
-
-		mempool.MarkDropped(txID, err)
-		return false, nil
-	}
-
-	if inputs.Overlaps(txInputs) {
-		// This log is a warn because the mempool should not have allowed this
-		// transaction to be included.
-		backend.Ctx.Log.Warn("transaction conflicts with prior transaction",
-			zap.Stringer("txID", txID),
-			zap.Error(err),
-		)
-
-		mempool.MarkDropped(txID, blockexecutor.ErrConflictingBlockTxs)
-		return false, nil
-	}
-	if err := manager.VerifyUniqueInputs(parentID, txInputs); err != nil {
-		backend.Ctx.Log.Debug("transaction conflicts with ancestor's import transaction",
-			zap.Stringer("txID", txID),
-			zap.Error(err),
-		)
-
-		mempool.MarkDropped(txID, err)
-		return false, nil
-	}
-	inputs.Union(txInputs)
-
-	backend.Ctx.Log.Debug("successfully executed transaction",
-		zap.Stringer("txID", txID),
-		zap.Error(err),
-	)
-	txDiff.AddTx(tx, status.Committed)
-	return true, txDiff.Apply(stateDiff)
+		// Invariant: [tx] has already been syntactically verified.
+		nil
 }
+
+// This log is a warn because the mempool should not have allowed this
+// transaction to be included.
 
 // getNextStakerToReward returns the next staker txID to remove from the staking
 // set with a RewardValidatorTx rather than an AdvanceTimeTx. [chainTimestamp]
@@ -619,34 +215,15 @@ func getNextStakerToReward(
 	chainTimestamp time.Time,
 	preferredState state.Chain,
 ) (ids.ID, bool, error) {
-	if !chainTimestamp.Before(mockable.MaxTime) {
-		return ids.Empty, false, ErrEndOfTime
-	}
-
-	currentStakerIterator, err := preferredState.GetCurrentStakerIterator()
-	if err != nil {
-		return ids.Empty, false, err
-	}
-	defer currentStakerIterator.Release()
-
-	for currentStakerIterator.Next() {
-		currentStaker := currentStakerIterator.Value()
-		priority := currentStaker.Priority
-		// If the staker is a permissionless staker (not a permissioned subnet
-		// validator), it's the next staker we will want to remove with a
-		// RewardValidatorTx rather than an AdvanceTimeTx.
-		if priority != txs.SubnetPermissionedValidatorCurrentPriority {
-			return currentStaker.TxID, chainTimestamp.Equal(currentStaker.EndTime), nil
-		}
-	}
-	return ids.Empty, false, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), false, nil
 }
 
+// If the staker is a permissionless staker (not a permissioned subnet
+// validator), it's the next staker we will want to remove with a
+// RewardValidatorTx rather than an AdvanceTimeTx.
+
 func NewRewardValidatorTx(ctx *snow.Context, txID ids.ID) (*txs.Tx, error) {
-	utx := &txs.RewardValidatorTx{TxID: txID}
-	tx, err := txs.NewSigned(utx, txs.Codec, nil)
-	if err != nil {
-		return nil, err
-	}
-	return tx, tx.SyntacticVerify(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

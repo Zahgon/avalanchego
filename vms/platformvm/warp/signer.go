@@ -27,11 +27,8 @@ type Signer interface {
 }
 
 func NewSigner(sk bls.Signer, networkID uint32, chainID ids.ID) Signer {
-	return &signer{
-		sk:        sk,
-		networkID: networkID,
-		chainID:   chainID,
-	}
+	_ = "STUB: not implemented"
+	return *new(Signer)
 }
 
 type signer struct {
@@ -41,17 +38,6 @@ type signer struct {
 }
 
 func (s *signer) Sign(msg *UnsignedMessage) ([]byte, error) {
-	if msg.SourceChainID != s.chainID {
-		return nil, ErrWrongSourceChainID
-	}
-	if msg.NetworkID != s.networkID {
-		return nil, ErrWrongNetworkID
-	}
-
-	msgBytes := msg.Bytes()
-	sig, err := s.sk.Sign(msgBytes)
-	if err != nil {
-		return nil, err
-	}
-	return bls.SignatureToBytes(sig), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -7,11 +7,10 @@
 package proposervm
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -28,34 +27,21 @@ type GetProposedHeightRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetProposedHeightRequest) Reset() {
-	*x = GetProposedHeightRequest{}
-	mi := &file_proposervm_service_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetProposedHeightRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetProposedHeightRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetProposedHeightRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetProposedHeightRequest) ProtoMessage() {}
+func (*GetProposedHeightRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetProposedHeightRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proposervm_service_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetProposedHeightRequest.ProtoReflect.Descriptor instead.
 func (*GetProposedHeightRequest) Descriptor() ([]byte, []int) {
-	return file_proposervm_service_proto_rawDescGZIP(), []int{0}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Response containing the current proposed P-chain block height.
@@ -68,42 +54,24 @@ type GetProposedHeightReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetProposedHeightReply) Reset() {
-	*x = GetProposedHeightReply{}
-	mi := &file_proposervm_service_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetProposedHeightReply) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetProposedHeightReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetProposedHeightReply) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetProposedHeightReply) ProtoMessage() {}
+func (*GetProposedHeightReply) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetProposedHeightReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proposervm_service_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetProposedHeightReply.ProtoReflect.Descriptor instead.
 func (*GetProposedHeightReply) Descriptor() ([]byte, []int) {
-	return file_proposervm_service_proto_rawDescGZIP(), []int{1}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetProposedHeightReply) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetProposedHeightReply) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Request to get the current epoch.
 type GetCurrentEpochRequest struct {
@@ -112,34 +80,21 @@ type GetCurrentEpochRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentEpochRequest) Reset() {
-	*x = GetCurrentEpochRequest{}
-	mi := &file_proposervm_service_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetCurrentEpochRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetCurrentEpochRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetCurrentEpochRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetCurrentEpochRequest) ProtoMessage() {}
+func (*GetCurrentEpochRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetCurrentEpochRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proposervm_service_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetCurrentEpochRequest.ProtoReflect.Descriptor instead.
 func (*GetCurrentEpochRequest) Descriptor() ([]byte, []int) {
-	return file_proposervm_service_proto_rawDescGZIP(), []int{2}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Response containing the current epoch.
@@ -155,56 +110,28 @@ type GetCurrentEpochReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentEpochReply) Reset() {
-	*x = GetCurrentEpochReply{}
-	mi := &file_proposervm_service_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetCurrentEpochReply) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetCurrentEpochReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetCurrentEpochReply) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetCurrentEpochReply) ProtoMessage() {}
+func (*GetCurrentEpochReply) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetCurrentEpochReply) ProtoReflect() protoreflect.Message {
-	mi := &file_proposervm_service_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetCurrentEpochReply.ProtoReflect.Descriptor instead.
 func (*GetCurrentEpochReply) Descriptor() ([]byte, []int) {
-	return file_proposervm_service_proto_rawDescGZIP(), []int{3}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetCurrentEpochReply) GetNumber() uint64 {
-	if x != nil {
-		return x.Number
-	}
-	return 0
-}
+func (x *GetCurrentEpochReply) GetNumber() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetCurrentEpochReply) GetPChainHeight() uint64 {
-	if x != nil {
-		return x.PChainHeight
-	}
-	return 0
-}
+func (x *GetCurrentEpochReply) GetPChainHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetCurrentEpochReply) GetStartTime() int64 {
-	if x != nil {
-		return x.StartTime
-	}
-	return 0
-}
+func (x *GetCurrentEpochReply) GetStartTime() int64 { _ = "STUB: not implemented"; return 0 }
 
 var File_proposervm_service_proto protoreflect.FileDescriptor
 
@@ -231,12 +158,7 @@ var (
 	file_proposervm_service_proto_rawDescData []byte
 )
 
-func file_proposervm_service_proto_rawDescGZIP() []byte {
-	file_proposervm_service_proto_rawDescOnce.Do(func() {
-		file_proposervm_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_proposervm_service_proto_rawDesc), len(file_proposervm_service_proto_rawDesc)))
-	})
-	return file_proposervm_service_proto_rawDescData
-}
+func file_proposervm_service_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_proposervm_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proposervm_service_proto_goTypes = []any{
@@ -257,26 +179,5 @@ var file_proposervm_service_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_proposervm_service_proto_init() }
-func file_proposervm_service_proto_init() {
-	if File_proposervm_service_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proposervm_service_proto_rawDesc), len(file_proposervm_service_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   4,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_proposervm_service_proto_goTypes,
-		DependencyIndexes: file_proposervm_service_proto_depIdxs,
-		MessageInfos:      file_proposervm_service_proto_msgTypes,
-	}.Build()
-	File_proposervm_service_proto = out.File
-	file_proposervm_service_proto_goTypes = nil
-	file_proposervm_service_proto_depIdxs = nil
-}
+func init()                               { file_proposervm_service_proto_init() }
+func file_proposervm_service_proto_init() { _ = "STUB: not implemented"; return }

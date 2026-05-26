@@ -14,12 +14,7 @@ package log
 
 import (
 	"context"
-	"fmt"
 	"math"
-	"os"
-	"runtime"
-	"strings"
-	"time"
 
 	"golang.org/x/exp/slog"
 )
@@ -53,90 +48,21 @@ const (
 // LvlFromString returns the appropriate Lvl from a string name.
 // Useful for parsing command line args and configuration files.
 func LvlFromString(lvlString string) (slog.Level, error) {
-	switch strings.ToLower(lvlString) {
-	case "trace", "trce":
-		return LevelTrace, nil
-	case "debug", "dbug":
-		return LevelDebug, nil
-	case "info":
-		return LevelInfo, nil
-	case "warn":
-		return LevelWarn, nil
-	case "error", "eror":
-		return LevelError, nil
-	case "crit":
-		return LevelCrit, nil
-	default:
-		return LvlDebug, fmt.Errorf("unknown level: %v", lvlString)
-	}
+	_ = "STUB: not implemented"
+	return *new(slog.Level), nil
 }
 
 // convert from old Geth verbosity level constants
 // to levels defined by slog
-func FromLegacyLevel(lvl int) slog.Level {
-	switch lvl {
-	case legacyLevelCrit:
-		return LevelCrit
-	case legacyLevelError:
-		return slog.LevelError
-	case legacyLevelWarn:
-		return slog.LevelWarn
-	case legacyLevelInfo:
-		return slog.LevelInfo
-	case legacyLevelDebug:
-		return slog.LevelDebug
-	case legacyLevelTrace:
-		return LevelTrace
-	default:
-		break
-	}
+func FromLegacyLevel(lvl int) slog.Level { _ = "STUB: not implemented"; return *new(slog.Level) }
 
-	// TODO: should we allow use of custom levels or force them to match existing max/min if they fall outside the range as I am doing here?
-	if lvl > legacyLevelTrace {
-		return LevelTrace
-	}
-	return LevelCrit
-}
+// TODO: should we allow use of custom levels or force them to match existing max/min if they fall outside the range as I am doing here?
 
 // LevelAlignedString returns a 5-character string containing the name of a Lvl.
-func LevelAlignedString(l slog.Level) string {
-	switch l {
-	case LevelTrace:
-		return "TRACE"
-	case slog.LevelDebug:
-		return "DEBUG"
-	case slog.LevelInfo:
-		return "INFO"
-	case slog.LevelWarn:
-		return "WARN"
-	case slog.LevelError:
-		return "ERROR"
-	case LevelCrit:
-		return "CRIT"
-	default:
-		return "unknown level"
-	}
-}
+func LevelAlignedString(l slog.Level) string { _ = "STUB: not implemented"; return "" }
 
 // LevelString returns a string containing the name of a Lvl.
-func LevelString(l slog.Level) string {
-	switch l {
-	case LevelTrace:
-		return "trace"
-	case slog.LevelDebug:
-		return "debug"
-	case slog.LevelInfo:
-		return "info"
-	case slog.LevelWarn:
-		return "warn"
-	case slog.LevelError:
-		return "error"
-	case LevelCrit:
-		return "crit"
-	default:
-		return "unknown"
-	}
-}
+func LevelString(l slog.Level) string { _ = "STUB: not implemented"; return "" }
 
 // A Logger writes key/value pairs to a Handler
 type Logger interface {
@@ -179,67 +105,39 @@ type logger struct {
 }
 
 // NewLogger returns a logger with the specified handler set
-func NewLogger(h slog.Handler) Logger {
-	return &logger{
-		slog.New(h),
-	}
-}
+func NewLogger(h slog.Handler) Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
 // write logs a message at the specified level:
 func (l *logger) Write(level slog.Level, msg string, attrs ...any) {
-	if !l.inner.Enabled(context.Background(), level) {
-		return
-	}
-
-	var pcs [1]uintptr
-	runtime.Callers(3, pcs[:])
-
-	if len(attrs)%2 != 0 {
-		attrs = append(attrs, nil, errorKey, "Normalized odd number of arguments by adding nil")
-	}
-	r := slog.NewRecord(time.Now(), level, msg, pcs[0])
-	r.Add(attrs...)
-	l.inner.Handler().Handle(context.Background(), r)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (l *logger) Log(level slog.Level, msg string, attrs ...any) {
-	l.Write(level, msg, attrs...)
-}
+func (l *logger) Log(level slog.Level, msg string, attrs ...any) { _ = "STUB: not implemented"; return }
 
-func (l *logger) With(ctx ...interface{}) Logger {
-	return &logger{l.inner.With(ctx...)}
-}
+func (l *logger) With(ctx ...interface{}) Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
 func (l *logger) New(ctx ...interface{}) Logger {
-	return l.With(ctx...)
+	_ = "STUB: not implemented"
+	return *
+
+	// Enabled reports whether l emits log records at the given context and level.
+	new(Logger)
 }
 
-// Enabled reports whether l emits log records at the given context and level.
 func (l *logger) Enabled(ctx context.Context, level slog.Level) bool {
-	return l.inner.Enabled(ctx, level)
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (l *logger) Trace(msg string, ctx ...interface{}) {
-	l.Write(LevelTrace, msg, ctx...)
-}
+func (l *logger) Trace(msg string, ctx ...interface{}) { _ = "STUB: not implemented"; return }
 
-func (l *logger) Debug(msg string, ctx ...interface{}) {
-	l.Write(slog.LevelDebug, msg, ctx...)
-}
+func (l *logger) Debug(msg string, ctx ...interface{}) { _ = "STUB: not implemented"; return }
 
-func (l *logger) Info(msg string, ctx ...interface{}) {
-	l.Write(slog.LevelInfo, msg, ctx...)
-}
+func (l *logger) Info(msg string, ctx ...interface{}) { _ = "STUB: not implemented"; return }
 
-func (l *logger) Warn(msg string, ctx ...any) {
-	l.Write(slog.LevelWarn, msg, ctx...)
-}
+func (l *logger) Warn(msg string, ctx ...any) { _ = "STUB: not implemented"; return }
 
-func (l *logger) Error(msg string, ctx ...interface{}) {
-	l.Write(slog.LevelError, msg, ctx...)
-}
+func (l *logger) Error(msg string, ctx ...interface{}) { _ = "STUB: not implemented"; return }
 
-func (l *logger) Crit(msg string, ctx ...interface{}) {
-	l.Write(LevelCrit, msg, ctx...)
-	os.Exit(1)
-}
+func (l *logger) Crit(msg string, ctx ...interface{}) { _ = "STUB: not implemented"; return }

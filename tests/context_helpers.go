@@ -16,18 +16,18 @@ const DefaultTimeout = 2 * time.Minute
 
 // Helper simplifying use of a timed context by canceling the context with the test context.
 func ContextWithTimeout(tc TestContext, duration time.Duration) context.Context {
-	parent := tc.GetDefaultContextParent()
-	ctx, cancel := context.WithTimeout(parent, duration)
-	tc.DeferCleanup(cancel)
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Helper simplifying use of a timed context configured with the default timeout.
 func DefaultContext(tc TestContext) context.Context {
-	return ContextWithTimeout(tc, DefaultTimeout)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Helper simplifying use via an option of a timed context configured with the default timeout.
 func WithDefaultContext(tc TestContext) common.Option {
-	return common.WithContext(DefaultContext(tc))
+	_ = "STUB: not implemented"
+	return *new(common.Option)
 }

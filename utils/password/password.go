@@ -6,8 +6,6 @@ package password
 import (
 	"errors"
 	"fmt"
-
-	"github.com/nbutton23/zxcvbn-go"
 )
 
 // Strength is the strength of a password
@@ -59,23 +57,13 @@ var (
 // SufficientlyStrong returns true if [password] has strength greater than or
 // equal to [minimumStrength]
 func SufficientlyStrong(password string, minimumStrength Strength) bool {
-	if len(password) > maxCheckedPassLen {
-		password = password[:maxCheckedPassLen]
-	}
-	return zxcvbn.PasswordStrength(password, nil).Score >= int(minimumStrength)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // IsValid returns nil if [password] is a reasonable length and has strength
 // greater than or equal to [minimumStrength]
 func IsValid(password string, minimumStrength Strength) error {
-	switch {
-	case len(password) == 0:
-		return ErrEmptyPassword
-	case len(password) > maxPassLen:
-		return ErrPassMaxLength
-	case !SufficientlyStrong(password, minimumStrength):
-		return ErrWeakPassword
-	default:
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

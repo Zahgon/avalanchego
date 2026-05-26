@@ -19,26 +19,6 @@ type batch struct {
 	database.BatchOps
 }
 
-func (c *batch) Write() error {
-	batch := c.db.db.NewBatch()
-	for _, op := range c.Ops {
-		key, _ := newDBKeyFromUser(op.Key, c.height)
-		var value []byte
-		if !op.Delete {
-			value = newDBValue(op.Value)
-		}
-		if err := batch.Put(key, value); err != nil {
-			return err
-		}
-	}
+func (c *batch) Write() error { _ = "STUB: not implemented"; return nil }
 
-	if err := database.PutUInt64(batch, heightKey, c.height); err != nil {
-		return err
-	}
-
-	return batch.Write()
-}
-
-func (c *batch) Inner() database.Batch {
-	return c
-}
+func (c *batch) Inner() database.Batch { _ = "STUB: not implemented"; return *new(database.Batch) }

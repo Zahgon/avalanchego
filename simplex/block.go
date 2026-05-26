@@ -8,14 +8,12 @@ package simplex
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/ava-labs/simplex"
 
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/utils/tree"
 )
 
@@ -46,18 +44,8 @@ type Block struct {
 }
 
 func newBlock(metadata simplex.ProtocolMetadata, blacklist simplex.Blacklist, vmBlock snowman.Block, blockTracker *blockTracker) (*Block, error) {
-	block := &Block{
-		metadata:     metadata,
-		vmBlock:      vmBlock,
-		blockTracker: blockTracker,
-		blacklist:    blacklist,
-	}
-	bytes, err := block.Bytes()
-	if err != nil {
-		return nil, fmt.Errorf("failed to serialize block: %w", err)
-	}
-	block.digest = computeDigest(bytes)
-	return block, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // CanotoSimplexBlock is the Canoto representation of a block
@@ -71,62 +59,34 @@ type canotoSimplexBlock struct {
 
 // BlockHeader returns the block header for the block.
 func (b *Block) BlockHeader() simplex.BlockHeader {
-	return simplex.BlockHeader{
-		ProtocolMetadata: b.metadata,
-		Digest:           b.digest,
-	}
+	_ = "STUB: not implemented"
+	return *new(simplex.BlockHeader)
 }
 
 // Bytes returns the serialized bytes of the block.
-func (b *Block) Bytes() ([]byte, error) {
-	cBlock := &canotoSimplexBlock{
-		Metadata:   b.metadata.Bytes(),
-		InnerBlock: b.vmBlock.Bytes(),
-		Blacklist:  b.blacklist.Bytes(),
-	}
-
-	return cBlock.MarshalCanoto(), nil
-}
+func (b *Block) Bytes() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (b *Block) Blacklist() simplex.Blacklist {
-	return b.blacklist
+	_ = "STUB: not implemented"
+	return *
+
+	// Verify verifies the block.
+	new(simplex.Blacklist)
 }
 
-// Verify verifies the block.
 func (b *Block) Verify(ctx context.Context) (simplex.VerifiedBlock, error) {
+	_ = "STUB: not implemented"
 	// we should not verify the genesis block
-	if b.metadata.Seq == 0 {
-		return nil, errGenesisVerification
-	}
-
-	if err := b.verifyParentMatchesPrevBlock(); err != nil {
-		return nil, err
-	}
-
-	if err := b.blockTracker.verifyAndTrackBlock(ctx, b); err != nil {
-		return nil, fmt.Errorf("failed to verify block: %w", err)
-	}
-
-	return b, nil
+	return *new(simplex.VerifiedBlock), nil
 }
 
 // verifyParentMatchesPrevBlock verifies that the previous block referenced in the current block's metadata
 // matches the parent of the current block's vmBlock.
-func (b *Block) verifyParentMatchesPrevBlock() error {
-	prevBlock, ok := b.blockTracker.getBlockByDigest(b.metadata.Prev)
-	if !ok {
-		return fmt.Errorf("%w: %s", errDigestNotFound, b.metadata.Prev)
-	}
-
-	if b.vmBlock.Parent() != prevBlock.vmBlock.ID() {
-		return fmt.Errorf("%w: parentID %s, prevID %s", errMismatchedPrevDigest, b.vmBlock.Parent(), prevBlock.vmBlock.ID())
-	}
-
-	return nil
-}
+func (b *Block) verifyParentMatchesPrevBlock() error { _ = "STUB: not implemented"; return nil }
 
 func computeDigest(bytes []byte) simplex.Digest {
-	return hashing.ComputeHash256Array(bytes)
+	_ = "STUB: not implemented"
+	return *new(simplex.Digest)
 }
 
 type blockDeserializer struct {
@@ -135,29 +95,8 @@ type blockDeserializer struct {
 }
 
 func (d *blockDeserializer) DeserializeBlock(ctx context.Context, bytes []byte) (simplex.Block, error) {
-	var canotoBlock canotoSimplexBlock
-
-	if err := canotoBlock.UnmarshalCanoto(bytes); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal block: %w", err)
-	}
-
-	md, err := simplex.ProtocolMetadataFromBytes(canotoBlock.Metadata)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedToParseMetadata, err)
-	}
-
-	vmblock, err := d.parser.ParseBlock(ctx, canotoBlock.InnerBlock)
-	if err != nil {
-		return nil, err
-	}
-
-	var blacklist simplex.Blacklist
-	err = blacklist.FromBytes(canotoBlock.Blacklist)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedToParseBlacklist, err)
-	}
-
-	return newBlock(*md, blacklist, vmblock, d.blockTracker)
+	_ = "STUB: not implemented"
+	return *new(simplex.Block), nil
 }
 
 // blockTracker is used to ensure that blocks are properly rejected, if competing blocks are accepted.
@@ -173,13 +112,7 @@ type blockTracker struct {
 	vm block.ChainVM
 }
 
-func newBlockTracker(vm block.ChainVM) *blockTracker {
-	return &blockTracker{
-		tree:                  tree.New(),
-		simplexDigestsToBlock: make(map[simplex.Digest]*Block),
-		vm:                    vm,
-	}
-}
+func newBlockTracker(vm block.ChainVM) *blockTracker { _ = "STUB: not implemented"; return nil }
 
 // init sets the latest block in the tracker.
 // This should only be called once, with the genesis or latest block.
@@ -188,56 +121,27 @@ func (bt *blockTracker) init(latestBlock *Block) {
 }
 
 func (bt *blockTracker) getBlockByDigest(digest simplex.Digest) (*Block, bool) {
-	bt.lock.Lock()
-	defer bt.lock.Unlock()
-
-	block, exists := bt.simplexDigestsToBlock[digest]
-	return block, exists
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 // verifyAndTrackBlock verifies the block, sets it as the VM's preference, and tracks it in the block tracker.
 // If the block is already verified, it does nothing.
 func (bt *blockTracker) verifyAndTrackBlock(ctx context.Context, block *Block) error {
-	bt.lock.Lock()
-	defer bt.lock.Unlock()
-
-	// check if the block is already verified
-	if _, exists := bt.tree.Get(block.vmBlock); exists {
-		bt.simplexDigestsToBlock[block.digest] = block
-		return nil
-	}
-
-	if err := block.vmBlock.Verify(ctx); err != nil {
-		return fmt.Errorf("failed to verify block: %w", err)
-	}
-
-	if err := bt.vm.SetPreference(ctx, block.vmBlock.ID()); err != nil {
-		return fmt.Errorf("failed to set preference: %w", err)
-	}
-
-	// track the block
-	bt.simplexDigestsToBlock[block.digest] = block
-	bt.tree.Add(block.vmBlock)
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// check if the block is already verified
+
+// track the block
+
 // indexBlock calls accept on the block with the given digest, and reject on competing blocks.
 func (bt *blockTracker) indexBlock(ctx context.Context, digest simplex.Digest) error {
-	bt.lock.Lock()
-	defer bt.lock.Unlock()
-
-	bd, exists := bt.simplexDigestsToBlock[digest]
-	if !exists {
-		return fmt.Errorf("%w: %s", errDigestNotFound, digest)
-	}
-
-	// removes all digests with a lower seq
-	for d, block := range bt.simplexDigestsToBlock {
-		if block.metadata.Seq < bd.metadata.Seq {
-			delete(bt.simplexDigestsToBlock, d)
-		}
-	}
-
-	// notify the VM that we are accepting this block, and reject all competing blocks
-	return bt.tree.Accept(ctx, bd.vmBlock)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// removes all digests with a lower seq
+
+// notify the VM that we are accepting this block, and reject all competing blocks

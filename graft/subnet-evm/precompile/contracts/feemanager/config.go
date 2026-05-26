@@ -25,59 +25,31 @@ type Config struct {
 // FeeManager with the given [admins], [enableds] and [managers] as members of the
 // allowlist with [initialConfig] as initial fee config if specified.
 func NewConfig(blockTimestamp *uint64, admins []common.Address, enableds []common.Address, managers []common.Address, initialConfig *commontype.FeeConfig) *Config {
-	return &Config{
-		AllowListConfig: allowlist.AllowListConfig{
-			AdminAddresses:   admins,
-			EnabledAddresses: enableds,
-			ManagerAddresses: managers,
-		},
-		Upgrade:          precompileconfig.Upgrade{BlockTimestamp: blockTimestamp},
-		InitialFeeConfig: initialConfig,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewDisableConfig returns config for a network upgrade at [blockTimestamp]
 // that disables FeeManager.
-func NewDisableConfig(blockTimestamp *uint64) *Config {
-	return &Config{
-		Upgrade: precompileconfig.Upgrade{
-			BlockTimestamp: blockTimestamp,
-			Disable:        true,
-		},
-	}
-}
+func NewDisableConfig(blockTimestamp *uint64) *Config { _ = "STUB: not implemented"; return nil }
 
 // Key returns the key for the FeeManager precompileconfig.
 // This should be the same key as used in the precompile module.
-func (*Config) Key() string { return ConfigKey }
+func (*Config) Key() string {
+	_ = "STUB: not implemented"
 
-// Equal returns true if [cfg] is a [*FeeManagerConfig] and it has been configured identical to [c].
+	// Equal returns true if [cfg] is a [*FeeManagerConfig] and it has been configured identical to [c].
+	return ""
+}
+
 func (c *Config) Equal(cfg precompileconfig.Config) bool {
+	_ = "STUB: not implemented"
 	// typecast before comparison
-	other, ok := (cfg).(*Config)
-	if !ok {
-		return false
-	}
-	eq := c.Upgrade.Equal(&other.Upgrade) && c.AllowListConfig.Equal(&other.AllowListConfig)
-	if !eq {
-		return false
-	}
-
-	if c.InitialFeeConfig == nil {
-		return other.InitialFeeConfig == nil
-	}
-
-	return c.InitialFeeConfig.Equal(other.InitialFeeConfig)
+	return false
 }
 
 // Verify tries to verify Config and returns an error accordingly.
 func (c *Config) Verify(chainConfig precompileconfig.ChainConfig) error {
-	if err := c.AllowListConfig.Verify(chainConfig, c.Upgrade); err != nil {
-		return err
-	}
-	if c.InitialFeeConfig == nil {
-		return nil
-	}
-
-	return c.InitialFeeConfig.Verify()
+	_ = "STUB: not implemented"
+	return nil
 }

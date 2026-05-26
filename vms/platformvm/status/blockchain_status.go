@@ -35,52 +35,11 @@ var (
 
 type BlockchainStatus uint32
 
-func (s BlockchainStatus) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + s.String() + `"`), s.Verify()
-}
+func (s BlockchainStatus) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (s *BlockchainStatus) UnmarshalJSON(b []byte) error {
-	switch string(b) {
-	case `"Unknown"`:
-		*s = UnknownChain
-	case `"Created"`:
-		*s = Created
-	case `"Preferred"`:
-		*s = Preferred
-	case `"Validating"`:
-		*s = Validating
-	case `"Syncing"`:
-		*s = Syncing
-	case "null":
-	default:
-		return errUnknownBlockchainStatus
-	}
-	return nil
-}
+func (s *BlockchainStatus) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Verify that this is a valid status.
-func (s BlockchainStatus) Verify() error {
-	switch s {
-	case UnknownChain, Created, Preferred, Validating, Syncing:
-		return nil
-	default:
-		return errUnknownBlockchainStatus
-	}
-}
+func (s BlockchainStatus) Verify() error { _ = "STUB: not implemented"; return nil }
 
-func (s BlockchainStatus) String() string {
-	switch s {
-	case UnknownChain:
-		return "Unknown"
-	case Created:
-		return "Created"
-	case Preferred:
-		return "Preferred"
-	case Validating:
-		return "Validating"
-	case Syncing:
-		return "Syncing"
-	default:
-		return "Invalid blockchain status"
-	}
-}
+func (s BlockchainStatus) String() string { _ = "STUB: not implemented"; return "" }

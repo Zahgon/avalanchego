@@ -5,17 +5,12 @@ package peer
 
 import (
 	"crypto"
-	"crypto/rand"
 	"errors"
-	"fmt"
-	"net"
 	"net/netip"
 	"time"
 
 	"github.com/ava-labs/avalanchego/staking"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var (
@@ -33,39 +28,11 @@ type UnsignedIP struct {
 
 // Sign this IP with the provided signer and return the signed IP.
 func (ip *UnsignedIP) Sign(tlsSigner crypto.Signer, blsSigner bls.Signer) (*SignedIP, error) {
-	ipBytes := ip.bytes()
-	tlsSignature, err := tlsSigner.Sign(
-		rand.Reader,
-		hashing.ComputeHash256(ipBytes),
-		crypto.SHA256,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	blsSignature, err := blsSigner.SignProofOfPossession(ipBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	return &SignedIP{
-		UnsignedIP:        *ip,
-		TLSSignature:      tlsSignature,
-		BLSSignature:      blsSignature,
-		BLSSignatureBytes: bls.SignatureToBytes(blsSignature),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (ip *UnsignedIP) bytes() []byte {
-	p := wrappers.Packer{
-		Bytes: make([]byte, net.IPv6len+wrappers.ShortLen+wrappers.LongLen),
-	}
-	addrBytes := ip.AddrPort.Addr().As16()
-	p.PackFixedBytes(addrBytes[:])
-	p.PackShort(ip.AddrPort.Port())
-	p.PackLong(ip.Timestamp)
-	return p.Bytes
-}
+func (ip *UnsignedIP) bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // SignedIP is a wrapper of an UnsignedIP with the signature from a signer.
 type SignedIP struct {
@@ -82,17 +49,6 @@ func (ip *SignedIP) Verify(
 	cert *staking.Certificate,
 	maxTimestamp time.Time,
 ) error {
-	maxUnixTimestamp := uint64(maxTimestamp.Unix())
-	if ip.Timestamp > maxUnixTimestamp {
-		return fmt.Errorf("%w: timestamp %d > maxTimestamp %d", errTimestampTooFarInFuture, ip.Timestamp, maxUnixTimestamp)
-	}
-
-	if err := staking.CheckSignature(
-		cert,
-		ip.UnsignedIP.bytes(),
-		ip.TLSSignature,
-	); err != nil {
-		return fmt.Errorf("%w: %w", errInvalidTLSSignature, err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

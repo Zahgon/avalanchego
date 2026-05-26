@@ -11,9 +11,6 @@ import (
 )
 
 func ConvertToAtomicOps(tx *atomic.Tx) (map[ids.ID]*avalancheatomic.Requests, error) {
-	id, reqs, err := tx.AtomicOps()
-	if err != nil {
-		return nil, err
-	}
-	return map[ids.ID]*avalancheatomic.Requests{id: reqs}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

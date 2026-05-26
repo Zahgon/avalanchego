@@ -23,42 +23,17 @@ type OperationTx struct {
 	Ops []*Operation `serialize:"true" json:"operations"`
 }
 
-func (t *OperationTx) InitCtx(ctx *snow.Context) {
-	for _, op := range t.Ops {
-		op.Op.InitCtx(ctx)
-	}
-	t.BaseTx.InitCtx(ctx)
-}
+func (t *OperationTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // Operations track which ops this transaction is performing. The returned array
 // should not be modified.
-func (t *OperationTx) Operations() []*Operation {
-	return t.Ops
-}
+func (t *OperationTx) Operations() []*Operation { _ = "STUB: not implemented"; return nil }
 
-func (t *OperationTx) InputUTXOs() []*avax.UTXOID {
-	utxos := t.BaseTx.InputUTXOs()
-	for _, op := range t.Ops {
-		utxos = append(utxos, op.UTXOIDs...)
-	}
-	return utxos
-}
+func (t *OperationTx) InputUTXOs() []*avax.UTXOID { _ = "STUB: not implemented"; return nil }
 
-func (t *OperationTx) InputIDs() set.Set[ids.ID] {
-	inputs := t.BaseTx.InputIDs()
-	for _, op := range t.Ops {
-		for _, utxo := range op.UTXOIDs {
-			inputs.Add(utxo.InputID())
-		}
-	}
-	return inputs
-}
+func (t *OperationTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // NumCredentials returns the number of expected credentials
-func (t *OperationTx) NumCredentials() int {
-	return t.BaseTx.NumCredentials() + len(t.Ops)
-}
+func (t *OperationTx) NumCredentials() int { _ = "STUB: not implemented"; return 0 }
 
-func (t *OperationTx) Visit(v Visitor) error {
-	return v.OperationTx(t)
-}
+func (t *OperationTx) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

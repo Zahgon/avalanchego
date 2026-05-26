@@ -15,12 +15,14 @@ var TxAllowListPrecompile contract.StatefulPrecompiledContract = allowlist.Creat
 
 // GetTxAllowListStatus returns the role of [address] for the tx allow list.
 func GetTxAllowListStatus(stateDB contract.StateReader, address common.Address) allowlist.Role {
-	return allowlist.GetAllowListStatus(stateDB, ContractAddress, address)
+	_ = "STUB: not implemented"
+	return *new(allowlist.Role)
 }
 
 // SetTxAllowListStatus sets the permissions of [address] to [role] for the
 // tx allow list.
 // assumes [role] has already been verified as valid.
 func SetTxAllowListStatus(stateDB contract.StateDB, address common.Address, role allowlist.Role) {
-	allowlist.SetAllowListRole(stateDB, ContractAddress, address, role)
+	_ = "STUB: not implemented"
+	return
 }

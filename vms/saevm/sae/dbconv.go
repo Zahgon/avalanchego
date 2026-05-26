@@ -7,14 +7,12 @@ package sae
 // every required import has something to do with a database!
 
 import (
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
 
 	"github.com/ava-labs/avalanchego/database"
-
-	evmdb "github.com/ava-labs/avalanchego/vms/evm/database"
 )
 
 func newEthDB(db database.Database) ethdb.Database {
-	return rawdb.NewDatabase(evmdb.New(db))
+	_ = "STUB: not implemented"
+	return *new(ethdb.Database)
 }

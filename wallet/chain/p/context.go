@@ -7,7 +7,6 @@ import (
 	"context"
 
 	"github.com/ava-labs/avalanchego/api/info"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/platformvm"
 	"github.com/ava-labs/avalanchego/wallet/chain/p/builder"
 )
@@ -19,9 +18,8 @@ import (
 const gasPriceMultiplier = 2
 
 func NewContextFromURI(ctx context.Context, uri string) (*builder.Context, error) {
-	infoClient := info.NewClient(uri)
-	chainClient := platformvm.NewClient(uri)
-	return NewContextFromClients(ctx, infoClient, chainClient)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewContextFromClients(
@@ -29,30 +27,6 @@ func NewContextFromClients(
 	infoClient *info.Client,
 	chainClient *platformvm.Client,
 ) (*builder.Context, error) {
-	networkID, err := infoClient.GetNetworkID(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	avaxAssetID, err := chainClient.GetStakingAssetID(ctx, constants.PrimaryNetworkID)
-	if err != nil {
-		return nil, err
-	}
-
-	dynamicFeeConfig, err := chainClient.GetFeeConfig(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	_, gasPrice, _, err := chainClient.GetFeeState(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &builder.Context{
-		NetworkID:         networkID,
-		AVAXAssetID:       avaxAssetID,
-		ComplexityWeights: dynamicFeeConfig.Weights,
-		GasPrice:          gasPriceMultiplier * gasPrice,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

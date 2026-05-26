@@ -22,39 +22,28 @@ type Config struct {
 // NewConfig returns a config for a network upgrade at [blockTimestamp] that enables
 // TxAllowList with the given [admins], [enableds] and [managers] as members of the allowlist.
 func NewConfig(blockTimestamp *uint64, admins []common.Address, enableds []common.Address, managers []common.Address) *Config {
-	return &Config{
-		AllowListConfig: allowlist.AllowListConfig{
-			AdminAddresses:   admins,
-			EnabledAddresses: enableds,
-			ManagerAddresses: managers,
-		},
-		Upgrade: precompileconfig.Upgrade{BlockTimestamp: blockTimestamp},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewDisableConfig returns config for a network upgrade at [blockTimestamp]
 // that disables TxAllowList.
-func NewDisableConfig(blockTimestamp *uint64) *Config {
-	return &Config{
-		Upgrade: precompileconfig.Upgrade{
-			BlockTimestamp: blockTimestamp,
-			Disable:        true,
-		},
-	}
+func NewDisableConfig(blockTimestamp *uint64) *Config { _ = "STUB: not implemented"; return nil }
+
+func (*Config) Key() string {
+	_ = "STUB: not implemented"
+
+	// Equal returns true if [cfg] is a [*TxAllowListConfig] and it has been configured identical to [c].
+	return ""
 }
 
-func (*Config) Key() string { return ConfigKey }
-
-// Equal returns true if [cfg] is a [*TxAllowListConfig] and it has been configured identical to [c].
 func (c *Config) Equal(cfg precompileconfig.Config) bool {
+	_ = "STUB: not implemented"
 	// typecast before comparison
-	other, ok := (cfg).(*Config)
-	if !ok {
-		return false
-	}
-	return c.Upgrade.Equal(&other.Upgrade) && c.AllowListConfig.Equal(&other.AllowListConfig)
+	return false
 }
 
 func (c *Config) Verify(chainConfig precompileconfig.ChainConfig) error {
-	return c.AllowListConfig.Verify(chainConfig, c.Upgrade)
+	_ = "STUB: not implemented"
+	return nil
 }

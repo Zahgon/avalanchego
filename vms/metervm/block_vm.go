@@ -5,7 +5,6 @@ package metervm
 
 import (
 	"context"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 
@@ -40,18 +39,8 @@ func NewBlockVM(
 	vm block.ChainVM,
 	reg prometheus.Registerer,
 ) block.ChainVM {
-	buildBlockVM, _ := vm.(block.BuildBlockWithContextChainVM)
-	setPreferenceVM, _ := vm.(block.SetPreferenceWithContextChainVM)
-	batchedVM, _ := vm.(block.BatchedChainVM)
-	ssVM, _ := vm.(block.StateSyncableVM)
-	return &blockVM{
-		ChainVM:         vm,
-		buildBlockVM:    buildBlockVM,
-		setPreferenceVM: setPreferenceVM,
-		batchedVM:       batchedVM,
-		ssVM:            ssVM,
-		registry:        reg,
-	}
+	_ = "STUB: not implemented"
+	return *new(block.ChainVM)
 }
 
 func (vm *blockVM) Initialize(
@@ -64,82 +53,36 @@ func (vm *blockVM) Initialize(
 	fxs []*common.Fx,
 	appSender common.AppSender,
 ) error {
-	err := vm.blockMetrics.Initialize(
-		vm.buildBlockVM != nil,
-		vm.setPreferenceVM != nil,
-		vm.batchedVM != nil,
-		vm.ssVM != nil,
-		vm.registry,
-	)
-	if err != nil {
-		return err
-	}
-
-	return vm.ChainVM.Initialize(ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *blockVM) BuildBlock(ctx context.Context) (snowman.Block, error) {
-	start := time.Now()
-	blk, err := vm.ChainVM.BuildBlock(ctx)
-	duration := float64(time.Since(start))
-	if err != nil {
-		vm.blockMetrics.buildBlockErr.Observe(duration)
-		return nil, err
-	}
-	vm.blockMetrics.buildBlock.Observe(duration)
-	return &meterBlock{
-		Block: blk,
-		vm:    vm,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) ParseBlock(ctx context.Context, b []byte) (snowman.Block, error) {
-	start := time.Now()
-	blk, err := vm.ChainVM.ParseBlock(ctx, b)
-	duration := float64(time.Since(start))
-	if err != nil {
-		vm.blockMetrics.parseBlockErr.Observe(duration)
-		return nil, err
-	}
-	vm.blockMetrics.parseBlock.Observe(duration)
-	return &meterBlock{
-		Block: blk,
-		vm:    vm,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) GetBlock(ctx context.Context, id ids.ID) (snowman.Block, error) {
-	start := time.Now()
-	blk, err := vm.ChainVM.GetBlock(ctx, id)
-	duration := float64(time.Since(start))
-	if err != nil {
-		vm.blockMetrics.getBlockErr.Observe(duration)
-		return nil, err
-	}
-	vm.blockMetrics.getBlock.Observe(duration)
-	return &meterBlock{
-		Block: blk,
-		vm:    vm,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) SetPreference(ctx context.Context, id ids.ID) error {
-	start := time.Now()
-	err := vm.ChainVM.SetPreference(ctx, id)
-	vm.blockMetrics.setPreference.Observe(float64(time.Since(start)))
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *blockVM) LastAccepted(ctx context.Context) (ids.ID, error) {
-	start := time.Now()
-	lastAcceptedID, err := vm.ChainVM.LastAccepted(ctx)
-	vm.blockMetrics.lastAccepted.Observe(float64(time.Since(start)))
-	return lastAcceptedID, err
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (vm *blockVM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	start := time.Now()
-	blockID, err := vm.ChainVM.GetBlockIDAtHeight(ctx, height)
-	vm.blockMetrics.getBlockIDAtHeight.Observe(float64(time.Since(start)))
-	return blockID, err
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

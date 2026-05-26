@@ -10,7 +10,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/commontype"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/plugin/evm/customtypes"
 )
 
 // BaseFee takes the previous header and the timestamp of its child block and
@@ -23,15 +22,11 @@ func BaseFee(
 	parent *types.Header,
 	timeMS uint64,
 ) (*big.Int, error) {
-	timestamp := timeMS / 1000
-	switch {
-	case config.IsSubnetEVM(timestamp):
-		return baseFeeFromWindow(config, feeConfig, parent, timestamp)
-	default:
-		// Prior to SubnetEVM the expected base fee is nil.
-		return nil, nil
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Prior to SubnetEVM the expected base fee is nil.
 
 // EstimateNextBaseFee attempts to estimate the base fee of a block built at
 // `timestamp` on top of `parent`.
@@ -47,7 +42,6 @@ func EstimateNextBaseFee(
 	parent *types.Header,
 	timeMS uint64,
 ) (*big.Int, error) {
-	parentMS := customtypes.HeaderTimeMilliseconds(parent)
-	timeMS = max(timeMS, parentMS)
-	return BaseFee(config, feeConfig, parent, timeMS)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

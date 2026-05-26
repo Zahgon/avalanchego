@@ -11,7 +11,6 @@ package metricsmock
 
 import (
 	http "net/http"
-	reflect "reflect"
 
 	block "github.com/ava-labs/avalanchego/vms/avm/block"
 	txs "github.com/ava-labs/avalanchego/vms/avm/txs"
@@ -32,103 +31,74 @@ type MetricsMockRecorder struct {
 }
 
 // NewMetrics creates a new mock instance.
-func NewMetrics(ctrl *gomock.Controller) *Metrics {
-	mock := &Metrics{ctrl: ctrl}
-	mock.recorder = &MetricsMockRecorder{mock}
-	return mock
-}
+func NewMetrics(ctrl *gomock.Controller) *Metrics { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Metrics) EXPECT() *MetricsMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AfterRequest mocks base method.
+	return nil
 }
 
-// AfterRequest mocks base method.
-func (m *Metrics) AfterRequest(i *rpc.RequestInfo) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AfterRequest", i)
-}
+func (m *Metrics) AfterRequest(i *rpc.RequestInfo) { _ = "STUB: not implemented"; return }
 
 // AfterRequest indicates an expected call of AfterRequest.
 func (mr *MetricsMockRecorder) AfterRequest(i any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AfterRequest", reflect.TypeOf((*Metrics)(nil).AfterRequest), i)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // IncTxRefreshHits mocks base method.
-func (m *Metrics) IncTxRefreshHits() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "IncTxRefreshHits")
-}
+func (m *Metrics) IncTxRefreshHits() { _ = "STUB: not implemented"; return }
 
 // IncTxRefreshHits indicates an expected call of IncTxRefreshHits.
 func (mr *MetricsMockRecorder) IncTxRefreshHits() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncTxRefreshHits", reflect.TypeOf((*Metrics)(nil).IncTxRefreshHits))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // IncTxRefreshMisses mocks base method.
-func (m *Metrics) IncTxRefreshMisses() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "IncTxRefreshMisses")
-}
+func (m *Metrics) IncTxRefreshMisses() { _ = "STUB: not implemented"; return }
 
 // IncTxRefreshMisses indicates an expected call of IncTxRefreshMisses.
 func (mr *MetricsMockRecorder) IncTxRefreshMisses() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncTxRefreshMisses", reflect.TypeOf((*Metrics)(nil).IncTxRefreshMisses))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // IncTxRefreshes mocks base method.
-func (m *Metrics) IncTxRefreshes() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "IncTxRefreshes")
-}
+func (m *Metrics) IncTxRefreshes() { _ = "STUB: not implemented"; return }
 
 // IncTxRefreshes indicates an expected call of IncTxRefreshes.
-func (mr *MetricsMockRecorder) IncTxRefreshes() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncTxRefreshes", reflect.TypeOf((*Metrics)(nil).IncTxRefreshes))
-}
+func (mr *MetricsMockRecorder) IncTxRefreshes() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // InterceptRequest mocks base method.
 func (m *Metrics) InterceptRequest(i *rpc.RequestInfo) *http.Request {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InterceptRequest", i)
-	ret0, _ := ret[0].(*http.Request)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // InterceptRequest indicates an expected call of InterceptRequest.
 func (mr *MetricsMockRecorder) InterceptRequest(i any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InterceptRequest", reflect.TypeOf((*Metrics)(nil).InterceptRequest), i)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MarkBlockAccepted mocks base method.
-func (m *Metrics) MarkBlockAccepted(b block.Block) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MarkBlockAccepted", b)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Metrics) MarkBlockAccepted(b block.Block) error { _ = "STUB: not implemented"; return nil }
 
 // MarkBlockAccepted indicates an expected call of MarkBlockAccepted.
 func (mr *MetricsMockRecorder) MarkBlockAccepted(b any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MarkBlockAccepted", reflect.TypeOf((*Metrics)(nil).MarkBlockAccepted), b)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MarkTxAccepted mocks base method.
-func (m *Metrics) MarkTxAccepted(tx *txs.Tx) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "MarkTxAccepted", tx)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Metrics) MarkTxAccepted(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 // MarkTxAccepted indicates an expected call of MarkTxAccepted.
 func (mr *MetricsMockRecorder) MarkTxAccepted(tx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MarkTxAccepted", reflect.TypeOf((*Metrics)(nil).MarkTxAccepted), tx)
+	_ = "STUB: not implemented"
+	return nil
 }

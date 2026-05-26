@@ -37,32 +37,12 @@ type canotoData_Context struct {
 }
 
 // CanotoSpec returns the specification of this canoto message.
-func (*Context) CanotoSpec(...reflect.Type) *canoto.Spec {
-	var zero Context
-	s := &canoto.Spec{
-		Name: "Context",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber: canoto__Context__PChainHeight,
-				Name:        "PChainHeight",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.PChainHeight),
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
-}
+func (*Context) CanotoSpec(...reflect.Type) *canoto.Spec { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *Context) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *Context) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -71,38 +51,8 @@ func (c *Context) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *Context) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = Context{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__Context__PChainHeight:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.PChainHeight); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.PChainHeight) {
-				return canoto.ErrZeroValue
-			}
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
 
@@ -114,20 +64,16 @@ func (c *Context) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
 func (c *Context) ValidCanoto() bool {
-	return true
+	_ = "STUB: not implemented"
+
+	// CalculateCanotoCache populates size and OneOf caches based on the current
+	// values in the struct.
+	//
+	// It is not safe to copy this struct concurrently.
+	return false
 }
 
-// CalculateCanotoCache populates size and OneOf caches based on the current
-// values in the struct.
-//
-// It is not safe to copy this struct concurrently.
-func (c *Context) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.PChainHeight) {
-		size += uint64(len(canoto__Context__PChainHeight__tag)) + canoto.SizeUint(c.PChainHeight)
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *Context) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -136,23 +82,14 @@ func (c *Context) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *Context) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *Context) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *Context) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *Context) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -164,9 +101,6 @@ func (c *Context) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *Context) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.PChainHeight) {
-		canoto.Append(&w, canoto__Context__PChainHeight__tag)
-		canoto.AppendUint(&w, c.PChainHeight)
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }

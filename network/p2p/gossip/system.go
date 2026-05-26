@@ -4,16 +4,13 @@
 package gossip
 
 import (
-	"context"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
-	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/units"
 )
 
 const defaultRequestPeriod = time.Second
@@ -41,40 +38,7 @@ type SystemConfig struct {
 	RegossipPeriod         time.Duration // Defaults to 30 seconds
 }
 
-func (c *SystemConfig) setDefaults() {
-	if c.Log == nil {
-		c.Log = logging.NoLog{}
-	}
-	if c.Registry == nil {
-		c.Registry = prometheus.NewRegistry()
-	}
-	if c.TargetMessageSize <= 0 {
-		c.TargetMessageSize = 20 * units.KiB
-	}
-	if c.ThrottlingPeriod <= 0 {
-		c.ThrottlingPeriod = time.Hour
-	}
-	if c.RequestPeriod <= 0 {
-		c.RequestPeriod = defaultRequestPeriod
-	}
-	if c.PushGossipParams == (BranchingFactor{}) {
-		c.PushGossipParams = BranchingFactor{
-			StakePercentage: .9,
-			Validators:      100,
-		}
-	}
-	if c.PushRegossipParams == (BranchingFactor{}) {
-		c.PushRegossipParams = BranchingFactor{
-			Validators: 10,
-		}
-	}
-	if c.DiscardedPushCacheSize <= 0 {
-		c.DiscardedPushCacheSize = 16_384
-	}
-	if c.RegossipPeriod <= 0 {
-		c.RegossipPeriod = 30 * time.Second
-	}
-}
+func (c *SystemConfig) setDefaults() { _ = "STUB: not implemented"; return }
 
 // SystemSet is the backend interface required to construct a gossip system.
 type SystemSet[T Gossipable] interface {
@@ -98,88 +62,9 @@ func NewSystem[T Gossipable](
 	*PushGossiper[T],
 	error,
 ) {
-	c.setDefaults()
-
-	metrics, err := NewMetrics(c.Registry, c.Namespace)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-
-	handler := NewHandler(
-		c.Log,
-		marshaller,
-		set,
-		metrics,
-		c.TargetMessageSize,
-	)
-
-	requestsPerPeerPerPeriod := float64(c.ThrottlingPeriod / c.RequestPeriod)
-	throttledHandler, err := p2p.NewDynamicThrottlerHandler(
-		c.Log,
-		handler,
-		validatorPeers,
-		c.ThrottlingPeriod,
-		requestsPerPeerPerPeriod,
-		c.Registry,
-		c.Namespace,
-	)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	validatorOnlyHandler := p2p.NewValidatorHandler(
-		throttledHandler,
-		validatorPeers,
-		c.Log,
-	)
-
-	// Pull requests are filtered by validators and are throttled to prevent
-	// spamming. Push messages are not filtered.
-	type (
-		appRequester interface {
-			AppRequest(context.Context, ids.NodeID, time.Time, []byte) ([]byte, *common.AppError)
-		}
-		appGossiper interface {
-			AppGossip(context.Context, ids.NodeID, []byte)
-		}
-	)
-	gossipHandler := struct {
-		appRequester
-		appGossiper
-	}{
-		appRequester: validatorOnlyHandler,
-		appGossiper:  handler,
-	}
-
-	client := network.NewClient(c.HandlerID, validatorPeers)
-	const pollSize = 1
-	pullGossiper := NewPullGossiper[T](
-		c.Log,
-		marshaller,
-		set,
-		client,
-		metrics,
-		pollSize,
-	)
-	pullGossiperWhenValidator := &ValidatorGossiper{
-		Gossiper:   pullGossiper,
-		NodeID:     nodeID,
-		Validators: validatorPeers,
-	}
-
-	pushGossiper, err := NewPushGossiper(
-		marshaller,
-		set,
-		validatorPeers,
-		client,
-		metrics,
-		c.PushGossipParams,
-		c.PushRegossipParams,
-		c.DiscardedPushCacheSize,
-		c.TargetMessageSize,
-		c.RegossipPeriod,
-	)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	return gossipHandler, pullGossiperWhenValidator, pushGossiper, nil
+	_ = "STUB: not implemented"
+	return *new(p2p.Handler), nil, nil, nil
 }
+
+// Pull requests are filtered by validators and are throttled to prevent
+// spamming. Push messages are not filtered.

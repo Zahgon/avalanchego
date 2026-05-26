@@ -7,11 +7,10 @@
 package aliasreader
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -28,42 +27,21 @@ type ID struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ID) Reset() {
-	*x = ID{}
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ID) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ID) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ID) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ID) ProtoMessage() {}
+func (*ID) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ID) ProtoReflect() protoreflect.Message {
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ID.ProtoReflect.Descriptor instead.
-func (*ID) Descriptor() ([]byte, []int) {
-	return file_aliasreader_aliasreader_proto_rawDescGZIP(), []int{0}
-}
+func (*ID) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ID) GetId() []byte {
-	if x != nil {
-		return x.Id
-	}
-	return nil
-}
+func (x *ID) GetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type Alias struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -72,42 +50,21 @@ type Alias struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Alias) Reset() {
-	*x = Alias{}
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Alias) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Alias) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Alias) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Alias) ProtoMessage() {}
+func (*Alias) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Alias) ProtoReflect() protoreflect.Message {
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Alias.ProtoReflect.Descriptor instead.
-func (*Alias) Descriptor() ([]byte, []int) {
-	return file_aliasreader_aliasreader_proto_rawDescGZIP(), []int{1}
-}
+func (*Alias) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Alias) GetAlias() string {
-	if x != nil {
-		return x.Alias
-	}
-	return ""
-}
+func (x *Alias) GetAlias() string { _ = "STUB: not implemented"; return "" }
 
 type AliasList struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -116,42 +73,21 @@ type AliasList struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AliasList) Reset() {
-	*x = AliasList{}
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AliasList) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AliasList) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AliasList) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AliasList) ProtoMessage() {}
+func (*AliasList) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AliasList) ProtoReflect() protoreflect.Message {
-	mi := &file_aliasreader_aliasreader_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AliasList.ProtoReflect.Descriptor instead.
-func (*AliasList) Descriptor() ([]byte, []int) {
-	return file_aliasreader_aliasreader_proto_rawDescGZIP(), []int{2}
-}
+func (*AliasList) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AliasList) GetAliases() []string {
-	if x != nil {
-		return x.Aliases
-	}
-	return nil
-}
+func (x *AliasList) GetAliases() []string { _ = "STUB: not implemented"; return nil }
 
 var File_aliasreader_aliasreader_proto protoreflect.FileDescriptor
 
@@ -174,12 +110,7 @@ var (
 	file_aliasreader_aliasreader_proto_rawDescData []byte
 )
 
-func file_aliasreader_aliasreader_proto_rawDescGZIP() []byte {
-	file_aliasreader_aliasreader_proto_rawDescOnce.Do(func() {
-		file_aliasreader_aliasreader_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_aliasreader_aliasreader_proto_rawDesc), len(file_aliasreader_aliasreader_proto_rawDesc)))
-	})
-	return file_aliasreader_aliasreader_proto_rawDescData
-}
+func file_aliasreader_aliasreader_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_aliasreader_aliasreader_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_aliasreader_aliasreader_proto_goTypes = []any{
@@ -201,26 +132,5 @@ var file_aliasreader_aliasreader_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_aliasreader_aliasreader_proto_init() }
-func file_aliasreader_aliasreader_proto_init() {
-	if File_aliasreader_aliasreader_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_aliasreader_aliasreader_proto_rawDesc), len(file_aliasreader_aliasreader_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   3,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_aliasreader_aliasreader_proto_goTypes,
-		DependencyIndexes: file_aliasreader_aliasreader_proto_depIdxs,
-		MessageInfos:      file_aliasreader_aliasreader_proto_msgTypes,
-	}.Build()
-	File_aliasreader_aliasreader_proto = out.File
-	file_aliasreader_aliasreader_proto_goTypes = nil
-	file_aliasreader_aliasreader_proto_depIdxs = nil
-}
+func init()                                    { file_aliasreader_aliasreader_proto_init() }
+func file_aliasreader_aliasreader_proto_init() { _ = "STUB: not implemented"; return }

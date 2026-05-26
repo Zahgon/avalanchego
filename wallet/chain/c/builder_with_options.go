@@ -29,28 +29,23 @@ type builderWithOptions struct {
 //   - [options] will be provided to the builder in addition to the options
 //     provided in the method calls.
 func NewBuilderWithOptions(builder Builder, options ...common.Option) Builder {
-	return &builderWithOptions{
-		Builder: builder,
-		options: options,
-	}
+	_ = "STUB: not implemented"
+	return *new(Builder)
 }
 
 func (b *builderWithOptions) GetBalance(
 	options ...common.Option,
 ) (*big.Int, error) {
-	return b.Builder.GetBalance(
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) GetImportableBalance(
 	chainID ids.ID,
 	options ...common.Option,
 ) (uint64, error) {
-	return b.Builder.GetImportableBalance(
-		chainID,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (b *builderWithOptions) NewImportTx(
@@ -59,12 +54,8 @@ func (b *builderWithOptions) NewImportTx(
 	baseFee *big.Int,
 	options ...common.Option,
 ) (*atomic.UnsignedImportTx, error) {
-	return b.Builder.NewImportTx(
-		chainID,
-		to,
-		baseFee,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewExportTx(
@@ -73,10 +64,6 @@ func (b *builderWithOptions) NewExportTx(
 	baseFee *big.Int,
 	options ...common.Option,
 ) (*atomic.UnsignedExportTx, error) {
-	return b.Builder.NewExportTx(
-		chainID,
-		outputs,
-		baseFee,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

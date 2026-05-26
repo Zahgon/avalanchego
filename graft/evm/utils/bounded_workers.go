@@ -19,51 +19,24 @@ type BoundedWorkers struct {
 
 // NewBoundedWorkers returns an instance of [BoundedWorkers] that
 // will spawn up to count goroutines.
-func NewBoundedWorkers(count int) *BoundedWorkers {
-	return &BoundedWorkers{
-		workerSpawner: make(chan struct{}, count),
-		work:          make(chan func()),
-	}
-}
+func NewBoundedWorkers(count int) *BoundedWorkers { _ = "STUB: not implemented"; return nil }
 
 // startWorker creates a new goroutine to execute [f] immediately and then keeps the goroutine
 // alive to continue executing new work.
-func (b *BoundedWorkers) startWorker(f func()) {
-	b.workerCount.Add(1)
-	b.outstandingWorkers.Add(1)
-
-	go func() {
-		defer b.outstandingWorkers.Done()
-
-		if f != nil {
-			f()
-		}
-		for f := range b.work {
-			f()
-		}
-	}()
-}
+func (b *BoundedWorkers) startWorker(f func()) { _ = "STUB: not implemented"; return }
 
 // Execute the given function on an existing goroutine waiting for more work, a new goroutine,
 // or return if the context is canceled.
 //
 // Execute must not be called after Wait, otherwise it might panic.
 func (b *BoundedWorkers) Execute(f func()) {
+	_ = "STUB: not implemented"
 	// Ensure we feed idle workers first
-	select {
-	case b.work <- f:
-		return
-	default:
-	}
-
-	// Fallback to waiting for an idle worker or allocating
-	// a new worker (if we aren't yet at max concurrency)
-	select {
-	case b.work <- f:
-	case b.workerSpawner <- struct{}{}:
-		b.startWorker(f)
-	}
+	return
 }
+
+// Fallback to waiting for an idle worker or allocating
+// a new worker (if we aren't yet at max concurrency)
 
 // Wait returns after all enqueued work finishes and all goroutines to exit.
 // Wait returns the number of workers that were spawned during the run.
@@ -72,10 +45,4 @@ func (b *BoundedWorkers) Execute(f func()) {
 //
 // It is safe to call Wait multiple times but not safe to call [Execute]
 // after [Wait] has been called.
-func (b *BoundedWorkers) Wait() int {
-	b.workClose.Do(func() {
-		close(b.work)
-	})
-	b.outstandingWorkers.Wait()
-	return int(b.workerCount.Load())
-}
+func (b *BoundedWorkers) Wait() int { _ = "STUB: not implemented"; return 0 }

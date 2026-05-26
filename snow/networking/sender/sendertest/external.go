@@ -31,9 +31,7 @@ type External struct {
 }
 
 // Default set the default callable value to [cant]
-func (s *External) Default(cant bool) {
-	s.CantSend = cant
-}
+func (s *External) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (s *External) Send(
 	msg *message.OutboundMessage,
@@ -41,14 +39,6 @@ func (s *External) Send(
 	subnetID ids.ID,
 	allower subnets.Allower,
 ) set.Set[ids.NodeID] {
-	if s.SendF != nil {
-		return s.SendF(msg, config, subnetID, allower)
-	}
-	if s.CantSend {
-		if s.TB != nil {
-			s.TB.Helper()
-			s.TB.Fatal(errSend)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

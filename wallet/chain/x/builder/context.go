@@ -6,8 +6,6 @@ package builder
 import (
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/logging"
 )
 
 const Alias = "X"
@@ -25,14 +23,6 @@ func NewSnowContext(
 	blockchainID ids.ID,
 	avaxAssetID ids.ID,
 ) (*snow.Context, error) {
-	lookup := ids.NewAliaser()
-	return &snow.Context{
-		NetworkID:   networkID,
-		SubnetID:    constants.PrimaryNetworkID,
-		ChainID:     blockchainID,
-		XChainID:    blockchainID,
-		AVAXAssetID: avaxAssetID,
-		Log:         logging.NoLog{},
-		BCLookup:    lookup,
-	}, lookup.Alias(blockchainID, Alias)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

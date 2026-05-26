@@ -28,18 +28,11 @@
 package rpc
 
 import (
-	"container/list"
 	"context"
-	crand "crypto/rand"
-	"encoding/binary"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"math/rand"
 	"reflect"
-	"strings"
 	"sync"
-	"time"
 )
 
 var (
@@ -65,47 +58,24 @@ type ID string
 
 // NewID returns a new, random ID.
 func NewID() ID {
-	return globalGen()
+	_ = "STUB: not implemented"
+
+	// randomIDGenerator returns a function generates a random IDs.
+	return *new(ID)
 }
 
-// randomIDGenerator returns a function generates a random IDs.
-func randomIDGenerator() func() ID {
-	var buf = make([]byte, 8)
-	var seed int64
-	if _, err := crand.Read(buf); err == nil {
-		seed = int64(binary.BigEndian.Uint64(buf))
-	} else {
-		seed = int64(time.Now().Nanosecond())
-	}
+func randomIDGenerator() func() ID { _ = "STUB: not implemented"; return nil }
 
-	var (
-		mu  sync.Mutex
-		rng = rand.New(rand.NewSource(seed))
-	)
-	return func() ID {
-		mu.Lock()
-		defer mu.Unlock()
-		id := make([]byte, 16)
-		rng.Read(id)
-		return encodeID(id)
-	}
-}
+func encodeID(b []byte) ID { _ = "STUB: not implemented"; return *new(ID) }
 
-func encodeID(b []byte) ID {
-	id := hex.EncodeToString(b)
-	id = strings.TrimLeft(id, "0")
-	if id == "" {
-		id = "0" // ID's are RPC quantities, no leading zero's and 0 is 0x0.
-	}
-	return ID("0x" + id)
-}
+// ID's are RPC quantities, no leading zero's and 0 is 0x0.
 
 type notifierKey struct{}
 
 // NotifierFromContext returns the Notifier value stored in ctx, if any.
 func NotifierFromContext(ctx context.Context) (*Notifier, bool) {
-	n, ok := ctx.Value(notifierKey{}).(*Notifier)
-	return n, ok
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 // Notifier is tied to a RPC connection that supports subscriptions.
@@ -125,79 +95,26 @@ type Notifier struct {
 // RPC connection. By default subscriptions are inactive and notifications
 // are dropped until the subscription is marked as active. This is done
 // by the RPC server after the subscription ID is send to the client.
-func (n *Notifier) CreateSubscription() *Subscription {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-
-	if n.sub != nil {
-		panic("can't create multiple subscriptions with Notifier")
-	} else if n.callReturned {
-		panic("can't create subscription after subscribe call has returned")
-	}
-	n.sub = &Subscription{ID: n.h.idgen(), namespace: n.namespace, err: make(chan error, 1)}
-	return n.sub
-}
+func (n *Notifier) CreateSubscription() *Subscription { _ = "STUB: not implemented"; return nil }
 
 // Notify sends a notification to the client with the given data as payload.
 // If an error occurs the RPC connection is closed and the error is returned.
-func (n *Notifier) Notify(id ID, data any) error {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-
-	if n.sub == nil {
-		panic("can't Notify before subscription is created")
-	} else if n.sub.ID != id {
-		panic("Notify with wrong ID")
-	}
-	if n.activated {
-		return n.send(n.sub, data)
-	}
-	n.buffer = append(n.buffer, data)
-	return nil
-}
+func (n *Notifier) Notify(id ID, data any) error { _ = "STUB: not implemented"; return nil }
 
 // Closed returns a channel that is closed when the RPC connection is closed.
 // Deprecated: use subscription error channel
-func (n *Notifier) Closed() <-chan interface{} {
-	return n.h.conn.closed()
-}
+func (n *Notifier) Closed() <-chan interface{} { _ = "STUB: not implemented"; return nil }
 
 // takeSubscription returns the subscription (if one has been created). No subscription can
 // be created after this call.
-func (n *Notifier) takeSubscription() *Subscription {
-	n.mu.Lock()
-	defer n.mu.Unlock()
-	n.callReturned = true
-	return n.sub
-}
+func (n *Notifier) takeSubscription() *Subscription { _ = "STUB: not implemented"; return nil }
 
 // activate is called after the subscription ID was sent to client. Notifications are
 // buffered before activation. This prevents notifications being sent to the client before
 // the subscription ID is sent to the client.
-func (n *Notifier) activate() error {
-	n.mu.Lock()
-	defer n.mu.Unlock()
+func (n *Notifier) activate() error { _ = "STUB: not implemented"; return nil }
 
-	for _, data := range n.buffer {
-		if err := n.send(n.sub, data); err != nil {
-			return err
-		}
-	}
-	n.activated = true
-	return nil
-}
-
-func (n *Notifier) send(sub *Subscription, data any) error {
-	msg := jsonrpcSubscriptionNotification{
-		Version: vsn,
-		Method:  n.namespace + notificationMethodSuffix,
-		Params: subscriptionResultEnc{
-			ID:     string(sub.ID),
-			Result: data,
-		},
-	}
-	return n.h.conn.writeJSON(context.Background(), &msg, false)
-}
+func (n *Notifier) send(sub *Subscription, data any) error { _ = "STUB: not implemented"; return nil }
 
 // A Subscription is created by a notifier and tied to that notifier. The client can use
 // this subscription to wait for an unsubscribe request for the client, see Err().
@@ -209,16 +126,21 @@ type Subscription struct {
 
 // Err returns a channel that is closed when the client send an unsubscribe request.
 func (s *Subscription) Err() <-chan error {
-	return s.err
+	_ = "STUB: not implemented"
+
+	// MarshalJSON marshals a subscription as its ID.
+	return nil
 }
 
-// MarshalJSON marshals a subscription as its ID.
 func (s *Subscription) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.ID)
+	_ = "STUB: not implemented"
+	return nil,
+
+		// ClientSubscription is a subscription established through the Client's Subscribe or
+		// EthSubscribe methods.
+		nil
 }
 
-// ClientSubscription is a subscription established through the Client's Subscribe or
-// EthSubscribe methods.
 type ClientSubscription struct {
 	client    *Client
 	etype     reflect.Type
@@ -246,18 +168,8 @@ type ClientSubscription struct {
 var errUnsubscribed = errors.New("unsubscribed")
 
 func newClientSubscription(c *Client, namespace string, channel reflect.Value) *ClientSubscription {
-	sub := &ClientSubscription{
-		client:      c,
-		namespace:   namespace,
-		etype:       channel.Type().Elem(),
-		channel:     channel,
-		in:          make(chan json.RawMessage),
-		quit:        make(chan error),
-		forwardDone: make(chan struct{}),
-		unsubDone:   make(chan struct{}),
-		err:         make(chan error, 1),
-	}
-	return sub
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Err returns the subscription error channel. The intended use of Err is to schedule
@@ -269,124 +181,61 @@ func newClientSubscription(c *Client, namespace string, channel reflect.Value) *
 //
 // The error channel is closed when Unsubscribe is called on the subscription.
 func (sub *ClientSubscription) Err() <-chan error {
-	return sub.err
+	_ = "STUB: not implemented"
+
+	// Unsubscribe unsubscribes the notification and closes the error channel.
+	// It can safely be called more than once.
+	return nil
 }
 
-// Unsubscribe unsubscribes the notification and closes the error channel.
-// It can safely be called more than once.
-func (sub *ClientSubscription) Unsubscribe() {
-	sub.errOnce.Do(func() {
-		select {
-		case sub.quit <- errUnsubscribed:
-			<-sub.unsubDone
-		case <-sub.unsubDone:
-		}
-		close(sub.err)
-	})
-}
+func (sub *ClientSubscription) Unsubscribe() { _ = "STUB: not implemented"; return }
 
 // deliver is called by the client's message dispatcher to send a notification value.
 func (sub *ClientSubscription) deliver(result json.RawMessage) (ok bool) {
-	select {
-	case sub.in <- result:
-		return true
-	case <-sub.forwardDone:
-		return false
-	}
+	_ = "STUB: not implemented"
+	return false
 }
 
 // close is called by the client's message dispatcher when the connection is closed.
-func (sub *ClientSubscription) close(err error) {
-	select {
-	case sub.quit <- err:
-	case <-sub.forwardDone:
-	}
-}
+func (sub *ClientSubscription) close(err error) { _ = "STUB: not implemented"; return }
 
 // run is the forwarding loop of the subscription. It runs in its own goroutine and
 // is launched by the client's handler after the subscription has been created.
-func (sub *ClientSubscription) run() {
-	defer close(sub.unsubDone)
+func (sub *ClientSubscription) run() { _ = "STUB: not implemented"; return }
 
-	unsubscribe, err := sub.forward()
+// The client's dispatch loop won't be able to execute the unsubscribe call if it is
+// blocked in sub.deliver() or sub.close(). Closing forwardDone unblocks them.
 
-	// The client's dispatch loop won't be able to execute the unsubscribe call if it is
-	// blocked in sub.deliver() or sub.close(). Closing forwardDone unblocks them.
-	close(sub.forwardDone)
+// Call the unsubscribe method on the server.
 
-	// Call the unsubscribe method on the server.
-	if unsubscribe {
-		sub.requestUnsubscribe()
-	}
+// Send the error.
 
-	// Send the error.
-	if err != nil {
-		if err == ErrClientQuit {
-			// ErrClientQuit gets here when Client.Close is called. This is reported as a
-			// nil error because it's not an error, but we can't close sub.err here.
-			err = nil
-		}
-		sub.err <- err
-	}
-}
+// ErrClientQuit gets here when Client.Close is called. This is reported as a
+// nil error because it's not an error, but we can't close sub.err here.
 
 // forward is the forwarding loop. It takes in RPC notifications and sends them
 // on the subscription channel.
 func (sub *ClientSubscription) forward() (unsubscribeServer bool, err error) {
-	cases := []reflect.SelectCase{
-		{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(sub.quit)},
-		{Dir: reflect.SelectRecv, Chan: reflect.ValueOf(sub.in)},
-		{Dir: reflect.SelectSend, Chan: sub.channel},
-	}
-	buffer := list.New()
-
-	for {
-		var chosen int
-		var recv reflect.Value
-		if buffer.Len() == 0 {
-			// Idle, omit send case.
-			chosen, recv, _ = reflect.Select(cases[:2])
-		} else {
-			// Non-empty buffer, send the first queued item.
-			cases[2].Send = reflect.ValueOf(buffer.Front().Value)
-			chosen, recv, _ = reflect.Select(cases)
-		}
-
-		switch chosen {
-		case 0: // <-sub.quit
-			if !recv.IsNil() {
-				err = recv.Interface().(error)
-			}
-			if err == errUnsubscribed {
-				// Exiting because Unsubscribe was called, unsubscribe on server.
-				return true, nil
-			}
-			return false, err
-
-		case 1: // <-sub.in
-			val, err := sub.unmarshal(recv.Interface().(json.RawMessage))
-			if err != nil {
-				return true, err
-			}
-			if buffer.Len() == maxClientSubscriptionBuffer {
-				return true, ErrSubscriptionQueueOverflow
-			}
-			buffer.PushBack(val)
-
-		case 2: // sub.channel<-
-			cases[2].Send = reflect.Value{} // Don't hold onto the value.
-			buffer.Remove(buffer.Front())
-		}
-	}
+	_ = "STUB: not implemented"
+	return false, nil
 }
+
+// Idle, omit send case.
+
+// Non-empty buffer, send the first queued item.
+
+// <-sub.quit
+
+// Exiting because Unsubscribe was called, unsubscribe on server.
+
+// <-sub.in
+
+// sub.channel<-
+// Don't hold onto the value.
 
 func (sub *ClientSubscription) unmarshal(result json.RawMessage) (interface{}, error) {
-	val := reflect.New(sub.etype)
-	err := json.Unmarshal(result, val.Interface())
-	return val.Elem().Interface(), err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (sub *ClientSubscription) requestUnsubscribe() error {
-	var result interface{}
-	return sub.client.Call(&result, sub.namespace+unsubscribeMethodSuffix, sub.subid)
-}
+func (sub *ClientSubscription) requestUnsubscribe() error { _ = "STUB: not implemented"; return nil }

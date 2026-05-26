@@ -14,8 +14,6 @@ const (
 type TraceLevel int
 
 func getTracerIfEnabled(level, minLevel TraceLevel, tracer trace.Tracer) trace.Tracer {
-	if level <= minLevel {
-		return tracer
-	}
-	return trace.Noop
+	_ = "STUB: not implemented"
+	return *new(trace.Tracer)
 }

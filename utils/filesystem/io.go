@@ -5,7 +5,6 @@ package filesystem
 
 import (
 	"io/fs"
-	"os"
 )
 
 var _ Reader = reader{}
@@ -21,10 +20,13 @@ type reader struct{}
 
 // NewReader returns an instance of Reader
 func NewReader() Reader {
-	return reader{}
+	_ = "STUB: not implemented"
+
+	// This is just a wrapper around os.ReadDir to make testing easier.
+	return *new(Reader)
 }
 
-// This is just a wrapper around os.ReadDir to make testing easier.
 func (reader) ReadDir(dirname string) ([]fs.DirEntry, error) {
-	return os.ReadDir(dirname)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

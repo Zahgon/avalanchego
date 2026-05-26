@@ -7,7 +7,6 @@ import (
 	"context"
 
 	"github.com/ava-labs/avalanchego/snow/consensus/avalanche"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 // Parser parses bytes into a vertex.
@@ -18,16 +17,6 @@ type Parser interface {
 
 // Parse parses the provided vertex bytes into a stateless vertex
 func Parse(bytes []byte) (StatelessVertex, error) {
-	vtx := innerStatelessVertex{}
-	version, err := Codec.Unmarshal(bytes, &vtx)
-	if err != nil {
-		return nil, err
-	}
-	vtx.Version = version
-
-	return statelessVertex{
-		innerStatelessVertex: vtx,
-		id:                   hashing.ComputeHash256Array(bytes),
-		bytes:                bytes,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(StatelessVertex), nil
 }

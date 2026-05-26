@@ -38,19 +38,13 @@ type txSigner struct {
 }
 
 func New(kc keychain.Keychain, backend Backend) Signer {
-	return &txSigner{
-		kc:      kc,
-		backend: backend,
-	}
+	_ = "STUB: not implemented"
+	return *new(Signer)
 }
 
 func (s *txSigner) Sign(ctx stdcontext.Context, tx *txs.Tx) error {
-	return tx.Unsigned.Visit(&visitor{
-		kc:      s.kc,
-		backend: s.backend,
-		ctx:     ctx,
-		tx:      tx,
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func SignUnsigned(
@@ -58,6 +52,6 @@ func SignUnsigned(
 	signer Signer,
 	utx txs.UnsignedTx,
 ) (*txs.Tx, error) {
-	tx := &txs.Tx{Unsigned: utx}
-	return tx, signer.Sign(ctx, tx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

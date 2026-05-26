@@ -15,27 +15,12 @@ type verifierStats struct {
 	uptimeValidationFail metrics.Counter
 }
 
-func newVerifierStats() *verifierStats {
-	return &verifierStats{
-		messageParseFail:            metrics.NewRegisteredCounter("warp_backend_message_parse_fail", nil),
-		addressedCallValidationFail: metrics.NewRegisteredCounter("warp_backend_addressed_call_validation_fail", nil),
-		blockValidationFail:         metrics.NewRegisteredCounter("warp_backend_block_validation_fail", nil),
-		uptimeValidationFail:        metrics.NewRegisteredCounter("warp_backend_uptime_validation_fail", nil),
-	}
-}
+func newVerifierStats() *verifierStats { _ = "STUB: not implemented"; return nil }
 
-func (h *verifierStats) IncAddressedCallValidationFail() {
-	h.addressedCallValidationFail.Inc(1)
-}
+func (h *verifierStats) IncAddressedCallValidationFail() { _ = "STUB: not implemented"; return }
 
-func (h *verifierStats) IncBlockValidationFail() {
-	h.blockValidationFail.Inc(1)
-}
+func (h *verifierStats) IncBlockValidationFail() { _ = "STUB: not implemented"; return }
 
-func (h *verifierStats) IncMessageParseFail() {
-	h.messageParseFail.Inc(1)
-}
+func (h *verifierStats) IncMessageParseFail() { _ = "STUB: not implemented"; return }
 
-func (h *verifierStats) IncUptimeValidationFail() {
-	h.uptimeValidationFail.Inc(1)
-}
+func (h *verifierStats) IncUptimeValidationFail() { _ = "STUB: not implemented"; return }

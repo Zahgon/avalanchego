@@ -6,8 +6,6 @@ package hashing
 import (
 	"crypto/sha256"
 	"errors"
-	"fmt"
-	"io"
 
 	// This file generates addresses from public keys with ripemd160. Though ripemd160 is not
 	// generally recommended for use, the small size of the public key input is considered harder to
@@ -35,67 +33,40 @@ type Hash160 = [ripemd160.Size]byte
 // ComputeHash256Array computes a cryptographically strong 256 bit hash of the
 // input byte slice.
 func ComputeHash256Array(buf []byte) Hash256 {
-	return sha256.Sum256(buf)
+	_ = "STUB: not implemented"
+	return *
+
+	// ComputeHash256 computes a cryptographically strong 256 bit hash of the input
+	// byte slice.
+	new(Hash256)
 }
 
-// ComputeHash256 computes a cryptographically strong 256 bit hash of the input
-// byte slice.
-func ComputeHash256(buf []byte) []byte {
-	arr := ComputeHash256Array(buf)
-	return arr[:]
-}
+func ComputeHash256(buf []byte) []byte { _ = "STUB: not implemented"; return nil }
 
 // ComputeHash160Array computes a cryptographically strong 160 bit hash of the
 // input byte slice.
-func ComputeHash160Array(buf []byte) Hash160 {
-	h, err := ToHash160(ComputeHash160(buf))
-	if err != nil {
-		panic(err)
-	}
-	return h
-}
+func ComputeHash160Array(buf []byte) Hash160 { _ = "STUB: not implemented"; return *new(Hash160) }
 
 // ComputeHash160 computes a cryptographically strong 160 bit hash of the input
 // byte slice.
 func ComputeHash160(buf []byte) []byte {
+	_ = "STUB: not implemented"
 	// See the comment on the ripemd160 import as to why the risk of use is
 	// considered acceptable.
-	ripe := ripemd160.New() //nolint:gosec
-	_, err := io.Writer(ripe).Write(buf)
-	if err != nil {
-		panic(err)
-	}
-	return ripe.Sum(nil)
+	return nil
 }
+
+//nolint:gosec
 
 // Checksum creates a checksum of [length] bytes from the 256 bit hash of the
 // byte slice.
 //
 // Returns: the lower [length] bytes of the hash
 // Panics if length > 32.
-func Checksum(bytes []byte, length int) []byte {
-	hash := ComputeHash256Array(bytes)
-	return hash[len(hash)-length:]
-}
+func Checksum(bytes []byte, length int) []byte { _ = "STUB: not implemented"; return nil }
 
-func ToHash256(bytes []byte) (Hash256, error) {
-	hash := Hash256{}
-	if bytesLen := len(bytes); bytesLen != HashLen {
-		return hash, fmt.Errorf("%w: expected 32 bytes but got %d", ErrInvalidHashLen, bytesLen)
-	}
-	copy(hash[:], bytes)
-	return hash, nil
-}
+func ToHash256(bytes []byte) (Hash256, error) { _ = "STUB: not implemented"; return *new(Hash256), nil }
 
-func ToHash160(bytes []byte) (Hash160, error) {
-	hash := Hash160{}
-	if bytesLen := len(bytes); bytesLen != ripemd160.Size {
-		return hash, fmt.Errorf("%w: expected 20 bytes but got %d", ErrInvalidHashLen, bytesLen)
-	}
-	copy(hash[:], bytes)
-	return hash, nil
-}
+func ToHash160(bytes []byte) (Hash160, error) { _ = "STUB: not implemented"; return *new(Hash160), nil }
 
-func PubkeyBytesToAddress(key []byte) []byte {
-	return ComputeHash160(ComputeHash256(key))
-}
+func PubkeyBytesToAddress(key []byte) []byte { _ = "STUB: not implemented"; return nil }

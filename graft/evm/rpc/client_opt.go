@@ -54,76 +54,55 @@ type clientConfig struct {
 	batchResponseLimit int
 }
 
-func (cfg *clientConfig) initHeaders() {
-	if cfg.httpHeaders == nil {
-		cfg.httpHeaders = make(http.Header)
-	}
-}
+func (cfg *clientConfig) initHeaders() { _ = "STUB: not implemented"; return }
 
-func (cfg *clientConfig) setHeader(key, value string) {
-	cfg.initHeaders()
-	cfg.httpHeaders.Set(key, value)
-}
+func (cfg *clientConfig) setHeader(key, value string) { _ = "STUB: not implemented"; return }
 
 type optionFunc func(*clientConfig)
 
 func (fn optionFunc) applyOption(opt *clientConfig) {
-	fn(opt)
+	_ = "STUB: not implemented"
+
+	// WithWebsocketDialer configures the websocket.Dialer used by the RPC client.
+	return
 }
 
-// WithWebsocketDialer configures the websocket.Dialer used by the RPC client.
 func WithWebsocketDialer(dialer websocket.Dialer) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.wsDialer = &dialer
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithWebsocketMessageSizeLimit configures the websocket message size limit used by the RPC
 // client. Passing a limit of 0 means no limit.
 func WithWebsocketMessageSizeLimit(messageSizeLimit int64) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.wsMessageSizeLimit = &messageSizeLimit
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithHeader configures HTTP headers set by the RPC client. Headers set using this option
 // will be used for both HTTP and WebSocket connections.
 func WithHeader(key, value string) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.initHeaders()
-		cfg.httpHeaders.Set(key, value)
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithHeaders configures HTTP headers set by the RPC client. Headers set using this
 // option will be used for both HTTP and WebSocket connections.
 func WithHeaders(headers http.Header) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.initHeaders()
-		for k, vs := range headers {
-			cfg.httpHeaders[k] = vs
-		}
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithHTTPClient configures the http.Client used by the RPC client.
 func WithHTTPClient(c *http.Client) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.httpClient = c
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithHTTPAuth configures HTTP request authentication. The given provider will be called
 // whenever a request is made. Note that only one authentication provider can be active at
 // any time.
-func WithHTTPAuth(a HTTPAuth) ClientOption {
-	if a == nil {
-		panic("nil auth")
-	}
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.httpAuth = a
-	})
-}
+func WithHTTPAuth(a HTTPAuth) ClientOption { _ = "STUB: not implemented"; return *new(ClientOption) }
 
 // A HTTPAuth function is called by the client whenever a HTTP request is sent.
 // The function must be safe for concurrent use.
@@ -137,9 +116,8 @@ type HTTPAuth func(h http.Header) error
 // Note: this option applies when processing incoming batch requests. It does not affect
 // batch requests sent by the client.
 func WithBatchItemLimit(limit int) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.batchItemLimit = limit
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }
 
 // WithBatchResponseSizeLimit changes the maximum number of response bytes that can be
@@ -149,7 +127,6 @@ func WithBatchItemLimit(limit int) ClientOption {
 // Note: this option applies when processing incoming batch requests. It does not affect
 // batch requests sent by the client.
 func WithBatchResponseSizeLimit(sizeLimit int) ClientOption {
-	return optionFunc(func(cfg *clientConfig) {
-		cfg.batchResponseLimit = sizeLimit
-	})
+	_ = "STUB: not implemented"
+	return *new(ClientOption)
 }

@@ -15,37 +15,14 @@ type Options struct {
 	queryParams url.Values
 }
 
-func NewOptions(ops []Option) *Options {
-	o := &Options{
-		headers:     http.Header{},
-		queryParams: url.Values{},
-	}
-	o.applyOptions(ops)
-	return o
-}
+func NewOptions(ops []Option) *Options { _ = "STUB: not implemented"; return nil }
 
-func (o *Options) applyOptions(ops []Option) {
-	for _, op := range ops {
-		op(o)
-	}
-}
+func (o *Options) applyOptions(ops []Option) { _ = "STUB: not implemented"; return }
 
-func (o *Options) Headers() http.Header {
-	return o.headers
-}
+func (o *Options) Headers() http.Header { _ = "STUB: not implemented"; return *new(http.Header) }
 
-func (o *Options) QueryParams() url.Values {
-	return o.queryParams
-}
+func (o *Options) QueryParams() url.Values { _ = "STUB: not implemented"; return *new(url.Values) }
 
-func WithHeader(key, val string) Option {
-	return func(o *Options) {
-		o.headers.Set(key, val)
-	}
-}
+func WithHeader(key, val string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithQueryParam(key, val string) Option {
-	return func(o *Options) {
-		o.queryParams.Set(key, val)
-	}
-}
+func WithQueryParam(key, val string) Option { _ = "STUB: not implemented"; return *new(Option) }

@@ -21,32 +21,19 @@ var _ Averager = (*maturedAverager)(nil)
 // `averager`. It returns zero from [Averager.Read] until at least `halfLife` duration has
 // passed since the first [Averager.Observe] call.
 func NewMaturedAverager(halfLife time.Duration, averager Averager) Averager {
-	return &maturedAverager{
-		Averager: averager,
-		halfLife: halfLife,
-	}
+	_ = "STUB: not implemented"
+	return *new(Averager)
 }
 
 func (a *maturedAverager) Observe(value float64, currentTime time.Time) {
-	if !a.hasObserved {
-		a.startTime = currentTime
-		a.hasObserved = true
-	}
-	a.lastObserved = currentTime
-	a.Averager.Observe(value, currentTime)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (a *maturedAverager) Read() float64 {
+	_ = "STUB: not implemented"
 	// If we haven't observed anything yet, return zero
-	if !a.hasObserved {
-		return 0
-	}
-
-	// Check if enough time has passed since the first observation
-	elapsed := a.lastObserved.Sub(a.startTime)
-	if elapsed < a.halfLife {
-		return 0
-	}
-
-	return a.Averager.Read()
+	return 0
 }
+
+// Check if enough time has passed since the first observation

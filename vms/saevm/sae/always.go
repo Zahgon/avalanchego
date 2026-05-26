@@ -5,11 +5,6 @@ package sae
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-
-	"github.com/ava-labs/libevm/core"
-	"github.com/ava-labs/libevm/triedb"
 
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/snow"
@@ -32,10 +27,8 @@ type SinceGenesis[T hook.Transaction] struct {
 
 // NewSinceGenesis constructs a new [SinceGenesis].
 func NewSinceGenesis[T hook.Transaction](hooks hook.PointsG[T], c Config) *SinceGenesis[T] {
-	return &SinceGenesis[T]{
-		hooks:  hooks,
-		config: c,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize initializes the VM.
@@ -51,30 +44,12 @@ func (vm *SinceGenesis[_]) Initialize(
 	fxs []*common.Fx,
 	appSender common.AppSender,
 ) error {
-	db := newEthDB(avaDB)
-	tdb := triedb.NewDatabase(db, vm.config.DBConfig.TrieDBConfig)
-
-	genesis := new(core.Genesis)
-	if err := json.Unmarshal(genesisBytes, genesis); err != nil {
-		return fmt.Errorf("json.Unmarshal(%T): %v", genesis, err)
-	}
-	config, _, err := core.SetupGenesisBlock(db, tdb, genesis)
-	if err != nil {
-		return fmt.Errorf("core.SetupGenesisBlock(...): %v", err)
-	}
-
-	inner, err := NewVM(ctx, vm.hooks, vm.config, snowCtx, config, db, genesis.ToBlock(), appSender)
-	if err != nil {
-		return err
-	}
-	vm.VM = inner
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Shutdown gracefully closes the VM.
 func (vm *SinceGenesis[_]) Shutdown(ctx context.Context) error {
-	if vm.VM == nil {
-		return nil
-	}
-	return vm.VM.Shutdown(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

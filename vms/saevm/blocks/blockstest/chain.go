@@ -5,8 +5,6 @@ package blockstest
 
 import (
 	"errors"
-	"fmt"
-	"slices"
 	"sync"
 	"testing"
 
@@ -33,11 +31,8 @@ type ChainBuilder struct {
 // NewChainBuilder returns a new ChainBuilder starting from the provided block,
 // which MUST NOT be nil.
 func NewChainBuilder(genesis *blocks.Block, defaultOpts ...ChainOption) *ChainBuilder {
-	c := &ChainBuilder{
-		chain: []*blocks.Block{genesis},
-	}
-	c.SetDefaultOptions(defaultOpts...)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // A ChainOption configures [ChainBuilder.NewBlock].
@@ -45,9 +40,7 @@ type ChainOption = options.Option[chainOptions]
 
 // SetDefaultOptions sets the default options upon which all
 // additional options passed to [ChainBuilder.NewBlock] are appended.
-func (cb *ChainBuilder) SetDefaultOptions(opts ...ChainOption) {
-	cb.defaultOpts = opts
-}
+func (cb *ChainBuilder) SetDefaultOptions(opts ...ChainOption) { _ = "STUB: not implemented"; return }
 
 type chainOptions struct {
 	eth []EthBlockOption
@@ -57,54 +50,33 @@ type chainOptions struct {
 // WithEthBlockOptions wraps the options that [ChainBuilder.NewBlock] propagates
 // to [NewEthBlock].
 func WithEthBlockOptions(opts ...EthBlockOption) ChainOption {
-	return options.Func[chainOptions](func(co *chainOptions) {
-		co.eth = append(co.eth, opts...)
-	})
+	_ = "STUB: not implemented"
+	return *new(ChainOption)
 }
 
 // WithBlockOptions wraps the options that [ChainBuilder.NewBlock] propagates to
 // [NewBlock].
 func WithBlockOptions(opts ...BlockOption) ChainOption {
-	return options.Func[chainOptions](func(co *chainOptions) {
-		co.sae = append(co.sae, opts...)
-	})
+	_ = "STUB: not implemented"
+	return *new(ChainOption)
 }
 
 // NewBlock constructs a new block and appends it to the chain.
 func (cb *ChainBuilder) NewBlock(tb testing.TB, txs []*types.Transaction, opts ...ChainOption) *blocks.Block {
-	tb.Helper()
-
-	allOpts := new(chainOptions)
-	options.ApplyTo(allOpts, cb.defaultOpts...)
-	options.ApplyTo(allOpts, opts...)
-
-	last := cb.Last()
-	eth := NewEthBlock(tb, last.EthBlock(), txs, allOpts.eth...)
-	b := NewBlock(tb, eth, last, nil, allOpts.sae...)
-
-	cb.chain = append(cb.chain, b)
-	cb.blocksByHash.Store(b.Hash(), b)
-	cb.acceptedBlocks.Send(b)
-
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Last returns the last block to be built by the builder, which MAY be the
 // genesis block passed to the constructor.
-func (cb *ChainBuilder) Last() *blocks.Block {
-	return cb.chain[len(cb.chain)-1]
-}
+func (cb *ChainBuilder) Last() *blocks.Block { _ = "STUB: not implemented"; return nil }
 
 // AllBlocks returns all blocks, including the genesis passed to
 // [NewChainBuilder].
-func (cb *ChainBuilder) AllBlocks() []*blocks.Block {
-	return slices.Clone(cb.chain)
-}
+func (cb *ChainBuilder) AllBlocks() []*blocks.Block { _ = "STUB: not implemented"; return nil }
 
 // AllExceptGenesis returns all blocks created with [ChainBuilder.NewBlock].
-func (cb *ChainBuilder) AllExceptGenesis() []*blocks.Block {
-	return slices.Clone(cb.chain[1:])
-}
+func (cb *ChainBuilder) AllExceptGenesis() []*blocks.Block { _ = "STUB: not implemented"; return nil }
 
 var _ blocks.Source = (*ChainBuilder)(nil).GetBlock
 
@@ -112,12 +84,8 @@ var _ blocks.Source = (*ChainBuilder)(nil).GetBlock
 // indicating if it was found. If either argument does not match, it returns
 // `nil, false`.
 func (cb *ChainBuilder) GetBlock(h common.Hash, num uint64) (*blocks.Block, bool) {
-	ifc, _ := cb.blocksByHash.Load(h)
-	b, ok := ifc.(*blocks.Block)
-	if !ok || b.NumberU64() != num {
-		return nil, false
-	}
-	return b, true
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 // ErrBlockNotFound is returned by [ChainBuilder.ResolveBlockNumber] and
@@ -128,39 +96,27 @@ var ErrBlockNotFound = errors.New("block not found")
 // SubscribeAcceptedBlocks subscribes to accepted block events fired by
 // [ChainBuilder.NewBlock].
 func (cb *ChainBuilder) SubscribeAcceptedBlocks(ch chan<- *blocks.Block) event.Subscription {
-	return cb.acceptedBlocks.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // LastAcceptedBlock returns the last block in the chain.
 func (cb *ChainBuilder) LastAcceptedBlock() *blocks.Block {
-	return cb.Last()
+	_ = "STUB: not implemented"
+
+	// ResolveBlockNumber resolves special block number aliases to concrete numbers.
+	return nil
 }
 
-// ResolveBlockNumber resolves special block number aliases to concrete numbers.
 func (cb *ChainBuilder) ResolveBlockNumber(bn rpc.BlockNumber) (uint64, error) {
-	head := cb.LastAcceptedBlock().NumberU64()
-	switch bn {
-	case rpc.EarliestBlockNumber:
-		return 0, nil
-	case rpc.FinalizedBlockNumber, rpc.SafeBlockNumber, rpc.LatestBlockNumber, rpc.PendingBlockNumber:
-		return head, nil
-	default:
-		if bn < 0 {
-			return 0, fmt.Errorf("%s block unsupported", bn)
-		}
-		n := uint64(bn) //#nosec G115 -- Non-negative checked above
-		if n > head {
-			return 0, fmt.Errorf("%w: %d", ErrBlockNotFound, n)
-		}
-		return n, nil
-	}
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+//#nosec G115 -- Non-negative checked above
 
 // BlockByNumber returns the accepted block at the specified height.
 func (cb *ChainBuilder) BlockByNumber(bn rpc.BlockNumber) (*types.Block, error) {
-	n, err := cb.ResolveBlockNumber(bn)
-	if err != nil {
-		return nil, err
-	}
-	return cb.chain[n].EthBlock(), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

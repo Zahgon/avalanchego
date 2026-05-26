@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 )
@@ -31,44 +30,33 @@ type AddSubnetValidatorTx struct {
 }
 
 func (tx *AddSubnetValidatorTx) NodeID() ids.NodeID {
-	return tx.SubnetValidator.NodeID
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID)
 }
 
 func (*AddSubnetValidatorTx) PublicKey() (*bls.PublicKey, bool, error) {
+	_ = "STUB: not implemented"
 	return nil, false, nil
 }
 
 func (*AddSubnetValidatorTx) PendingPriority() Priority {
-	return SubnetPermissionedValidatorPendingPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 func (*AddSubnetValidatorTx) CurrentPriority() Priority {
-	return SubnetPermissionedValidatorCurrentPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 // SyntacticVerify returns nil iff [tx] is valid
 func (tx *AddSubnetValidatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case tx.Subnet == constants.PrimaryNetworkID:
-		return errAddPrimaryNetworkValidator
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := verify.All(&tx.Validator, tx.SubnetAuth); err != nil {
-		return err
-	}
-
-	// cache that this is valid
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *AddSubnetValidatorTx) Visit(visitor Visitor) error {
-	return visitor.AddSubnetValidatorTx(tx)
-}
+// already passed syntactic verification
+
+// cache that this is valid
+
+func (tx *AddSubnetValidatorTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

@@ -19,34 +19,13 @@ type LockOut struct {
 	avax.TransferableOut `serialize:"true" json:"output"`
 }
 
-func (s *LockOut) Addresses() [][]byte {
-	if addressable, ok := s.TransferableOut.(avax.Addressable); ok {
-		return addressable.Addresses()
-	}
-	return nil
-}
+func (s *LockOut) Addresses() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (s *LockOut) Verify() error {
-	if s.Locktime == 0 {
-		return errInvalidLocktime
-	}
-	if _, nested := s.TransferableOut.(*LockOut); nested {
-		return errNestedStakeableLocks
-	}
-	return s.TransferableOut.Verify()
-}
+func (s *LockOut) Verify() error { _ = "STUB: not implemented"; return nil }
 
 type LockIn struct {
 	Locktime            uint64 `serialize:"true" json:"locktime"`
 	avax.TransferableIn `serialize:"true" json:"input"`
 }
 
-func (s *LockIn) Verify() error {
-	if s.Locktime == 0 {
-		return errInvalidLocktime
-	}
-	if _, nested := s.TransferableIn.(*LockIn); nested {
-		return errNestedStakeableLocks
-	}
-	return s.TransferableIn.Verify()
-}
+func (s *LockIn) Verify() error { _ = "STUB: not implemented"; return nil }

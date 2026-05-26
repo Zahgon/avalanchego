@@ -4,7 +4,6 @@
 package block
 
 import (
-	"errors"
 	"math"
 
 	"github.com/ava-labs/avalanchego/codec"
@@ -53,36 +52,21 @@ func init() {
 // RegisterApricotTypes registers the type information for blocks that were
 // valid during the Apricot series of upgrades.
 func RegisterApricotTypes(targetCodec linearcodec.Codec) error {
-	return errors.Join(
-		targetCodec.RegisterType(&ApricotProposalBlock{}),
-		targetCodec.RegisterType(&ApricotAbortBlock{}),
-		targetCodec.RegisterType(&ApricotCommitBlock{}),
-		targetCodec.RegisterType(&ApricotStandardBlock{}),
-		targetCodec.RegisterType(&ApricotAtomicBlock{}),
-		txs.RegisterApricotTypes(targetCodec),
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterBanffTypes registers the type information for blocks that were valid
 // during the Banff series of upgrades.
-func RegisterBanffTypes(targetCodec linearcodec.Codec) error {
-	return errors.Join(
-		txs.RegisterBanffTypes(targetCodec),
-		targetCodec.RegisterType(&BanffProposalBlock{}),
-		targetCodec.RegisterType(&BanffAbortBlock{}),
-		targetCodec.RegisterType(&BanffCommitBlock{}),
-		targetCodec.RegisterType(&BanffStandardBlock{}),
-	)
-}
+func RegisterBanffTypes(targetCodec linearcodec.Codec) error { _ = "STUB: not implemented"; return nil }
 
 // RegisterDurangoTypes registers the type information for blocks that were
 // valid during the Durango series of upgrades.
 func RegisterDurangoTypes(targetCodec linearcodec.Codec) error {
-	return txs.RegisterDurangoTypes(targetCodec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterEtnaTypes registers the type information for blocks that were valid
 // during the Etna series of upgrades.
-func RegisterEtnaTypes(targetCodec linearcodec.Codec) error {
-	return txs.RegisterEtnaTypes(targetCodec)
-}
+func RegisterEtnaTypes(targetCodec linearcodec.Codec) error { _ = "STUB: not implemented"; return nil }

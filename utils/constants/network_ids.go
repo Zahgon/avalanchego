@@ -5,9 +5,6 @@ package constants
 
 import (
 	"errors"
-	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -95,36 +92,11 @@ var (
 )
 
 // GetHRP returns the Human-Readable-Part of bech32 addresses for a networkID
-func GetHRP(networkID uint32) string {
-	if hrp, ok := NetworkIDToHRP[networkID]; ok {
-		return hrp
-	}
-	return FallbackHRP
-}
+func GetHRP(networkID uint32) string { _ = "STUB: not implemented"; return "" }
 
 // NetworkName returns a human readable name for the network with
 // ID [networkID]
-func NetworkName(networkID uint32) string {
-	if name, exists := NetworkIDToNetworkName[networkID]; exists {
-		return name
-	}
-	return fmt.Sprintf("network-%d", networkID)
-}
+func NetworkName(networkID uint32) string { _ = "STUB: not implemented"; return "" }
 
 // NetworkID returns the ID of the network with name [networkName]
-func NetworkID(networkName string) (uint32, error) {
-	networkName = strings.ToLower(networkName)
-	if id, exists := NetworkNameToNetworkID[networkName]; exists {
-		return id, nil
-	}
-
-	idStr := networkName
-	if strings.HasPrefix(networkName, ValidNetworkPrefix) {
-		idStr = networkName[len(ValidNetworkPrefix):]
-	}
-	id, err := strconv.ParseUint(idStr, 10, 32)
-	if err != nil {
-		return 0, fmt.Errorf("%w: %q", ErrParseNetworkName, networkName)
-	}
-	return uint32(id), nil
-}
+func NetworkID(networkName string) (uint32, error) { _ = "STUB: not implemented"; return 0, nil }

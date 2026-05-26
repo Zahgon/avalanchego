@@ -10,8 +10,6 @@
 package precompileconfig
 
 import (
-	reflect "reflect"
-
 	precompileconfig "github.com/ava-labs/avalanchego/graft/evm/precompileconfig"
 	commontype "github.com/ava-labs/avalanchego/graft/subnet-evm/commontype"
 	predicate "github.com/ava-labs/avalanchego/vms/evm/predicate"
@@ -33,43 +31,39 @@ type MockPredicaterMockRecorder struct {
 
 // NewMockPredicater creates a new mock instance.
 func NewMockPredicater(ctrl *gomock.Controller) *MockPredicater {
-	mock := &MockPredicater{ctrl: ctrl}
-	mock.recorder = &MockPredicaterMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockPredicater) EXPECT() *MockPredicaterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// PredicateGas mocks base method.
+	return nil
 }
 
-// PredicateGas mocks base method.
 func (m *MockPredicater) PredicateGas(pred predicate.Predicate, rules precompileconfig.Rules) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PredicateGas", pred, rules)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // PredicateGas indicates an expected call of PredicateGas.
 func (mr *MockPredicaterMockRecorder) PredicateGas(pred, rules any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PredicateGas", reflect.TypeOf((*MockPredicater)(nil).PredicateGas), pred, rules)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyPredicate mocks base method.
 func (m *MockPredicater) VerifyPredicate(predicateContext *precompileconfig.PredicateContext, pred predicate.Predicate) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyPredicate", predicateContext, pred)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyPredicate indicates an expected call of VerifyPredicate.
 func (mr *MockPredicaterMockRecorder) VerifyPredicate(predicateContext, pred any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyPredicate", reflect.TypeOf((*MockPredicater)(nil).VerifyPredicate), predicateContext, pred)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockConfig is a mock of Config interface.
@@ -85,85 +79,49 @@ type MockConfigMockRecorder struct {
 }
 
 // NewMockConfig creates a new mock instance.
-func NewMockConfig(ctrl *gomock.Controller) *MockConfig {
-	mock := &MockConfig{ctrl: ctrl}
-	mock.recorder = &MockConfigMockRecorder{mock}
-	return mock
-}
+func NewMockConfig(ctrl *gomock.Controller) *MockConfig { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockConfig) EXPECT() *MockConfigMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Equal mocks base method.
+	return nil
 }
 
-// Equal mocks base method.
-func (m *MockConfig) Equal(arg0 Config) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Equal", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockConfig) Equal(arg0 Config) bool { _ = "STUB: not implemented"; return false }
 
 // Equal indicates an expected call of Equal.
 func (mr *MockConfigMockRecorder) Equal(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Equal", reflect.TypeOf((*MockConfig)(nil).Equal), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // IsDisabled mocks base method.
-func (m *MockConfig) IsDisabled() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsDisabled")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockConfig) IsDisabled() bool { _ = "STUB: not implemented"; return false }
 
 // IsDisabled indicates an expected call of IsDisabled.
-func (mr *MockConfigMockRecorder) IsDisabled() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsDisabled", reflect.TypeOf((*MockConfig)(nil).IsDisabled))
-}
+func (mr *MockConfigMockRecorder) IsDisabled() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Key mocks base method.
-func (m *MockConfig) Key() string {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Key")
-	ret0, _ := ret[0].(string)
-	return ret0
-}
+func (m *MockConfig) Key() string { _ = "STUB: not implemented"; return "" }
 
 // Key indicates an expected call of Key.
-func (mr *MockConfigMockRecorder) Key() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Key", reflect.TypeOf((*MockConfig)(nil).Key))
-}
+func (mr *MockConfigMockRecorder) Key() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Timestamp mocks base method.
-func (m *MockConfig) Timestamp() *uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Timestamp")
-	ret0, _ := ret[0].(*uint64)
-	return ret0
-}
+func (m *MockConfig) Timestamp() *uint64 { _ = "STUB: not implemented"; return nil }
 
 // Timestamp indicates an expected call of Timestamp.
-func (mr *MockConfigMockRecorder) Timestamp() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Timestamp", reflect.TypeOf((*MockConfig)(nil).Timestamp))
-}
+func (mr *MockConfigMockRecorder) Timestamp() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Verify mocks base method.
-func (m *MockConfig) Verify(arg0 ChainConfig) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockConfig) Verify(arg0 ChainConfig) error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
 func (mr *MockConfigMockRecorder) Verify(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*MockConfig)(nil).Verify), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockChainConfig is a mock of ChainConfig interface.
@@ -180,56 +138,45 @@ type MockChainConfigMockRecorder struct {
 
 // NewMockChainConfig creates a new mock instance.
 func NewMockChainConfig(ctrl *gomock.Controller) *MockChainConfig {
-	mock := &MockChainConfig{ctrl: ctrl}
-	mock.recorder = &MockChainConfigMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockChainConfig) EXPECT() *MockChainConfigMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AllowedFeeRecipients mocks base method.
+	return nil
 }
 
-// AllowedFeeRecipients mocks base method.
-func (m *MockChainConfig) AllowedFeeRecipients() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AllowedFeeRecipients")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockChainConfig) AllowedFeeRecipients() bool { _ = "STUB: not implemented"; return false }
 
 // AllowedFeeRecipients indicates an expected call of AllowedFeeRecipients.
 func (mr *MockChainConfigMockRecorder) AllowedFeeRecipients() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AllowedFeeRecipients", reflect.TypeOf((*MockChainConfig)(nil).AllowedFeeRecipients))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetFeeConfig mocks base method.
 func (m *MockChainConfig) GetFeeConfig() commontype.FeeConfig {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetFeeConfig")
-	ret0, _ := ret[0].(commontype.FeeConfig)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(commontype.FeeConfig)
 }
 
 // GetFeeConfig indicates an expected call of GetFeeConfig.
 func (mr *MockChainConfigMockRecorder) GetFeeConfig() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFeeConfig", reflect.TypeOf((*MockChainConfig)(nil).GetFeeConfig))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // IsDurango mocks base method.
-func (m *MockChainConfig) IsDurango(time uint64) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "IsDurango", time)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockChainConfig) IsDurango(time uint64) bool { _ = "STUB: not implemented"; return false }
 
 // IsDurango indicates an expected call of IsDurango.
 func (mr *MockChainConfigMockRecorder) IsDurango(time any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IsDurango", reflect.TypeOf((*MockChainConfig)(nil).IsDurango), time)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockAccepter is a mock of Accepter interface.
@@ -245,27 +192,23 @@ type MockAccepterMockRecorder struct {
 }
 
 // NewMockAccepter creates a new mock instance.
-func NewMockAccepter(ctrl *gomock.Controller) *MockAccepter {
-	mock := &MockAccepter{ctrl: ctrl}
-	mock.recorder = &MockAccepterMockRecorder{mock}
-	return mock
-}
+func NewMockAccepter(ctrl *gomock.Controller) *MockAccepter { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccepter) EXPECT() *MockAccepterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Accept mocks base method.
+	return nil
 }
 
-// Accept mocks base method.
 func (m *MockAccepter) Accept(acceptCtx *AcceptContext, blockHash common.Hash, blockNumber uint64, txHash common.Hash, logIndex int, topics []common.Hash, logData []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Accept", acceptCtx, blockHash, blockNumber, txHash, logIndex, topics, logData)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Accept indicates an expected call of Accept.
 func (mr *MockAccepterMockRecorder) Accept(acceptCtx, blockHash, blockNumber, txHash, logIndex, topics, logData any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Accept", reflect.TypeOf((*MockAccepter)(nil).Accept), acceptCtx, blockHash, blockNumber, txHash, logIndex, topics, logData)
+	_ = "STUB: not implemented"
+	return nil
 }

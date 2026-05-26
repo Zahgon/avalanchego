@@ -18,30 +18,10 @@ type requests struct {
 }
 
 func (r *requests) GetPeers(context.Context) set.Set[ids.NodeID] {
-	numPending := r.outstanding.Len()
-	if numPending >= r.maxOutstanding {
-		return nil
-	}
-
-	numToSend := min(
-		r.maxOutstanding-numPending,
-		r.pendingSend.Len(),
-	)
-	nodeIDs := set.NewSet[ids.NodeID](numToSend)
-	for i := 0; i < numToSend; i++ {
-		nodeID, _ := r.pendingSend.Pop()
-		nodeIDs.Add(nodeID)
-	}
-	r.outstanding.Union(nodeIDs)
-	return nodeIDs
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (r *requests) recordResponse(nodeID ids.NodeID) bool {
-	wasOutstanding := r.outstanding.Contains(nodeID)
-	r.outstanding.Remove(nodeID)
-	return wasOutstanding
-}
+func (r *requests) recordResponse(nodeID ids.NodeID) bool { _ = "STUB: not implemented"; return false }
 
-func (r *requests) finished() bool {
-	return r.pendingSend.Len() == 0 && r.outstanding.Len() == 0
-}
+func (r *requests) finished() bool { _ = "STUB: not implemented"; return false }

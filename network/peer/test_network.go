@@ -14,21 +14,15 @@ var TestNetwork Network = testNetwork{}
 
 type testNetwork struct{}
 
-func (testNetwork) Connected(ids.NodeID) {}
+func (testNetwork) Connected(ids.NodeID) { _ = "STUB: not implemented"; return }
 
-func (testNetwork) AllowConnection(ids.NodeID) bool {
-	return true
-}
+func (testNetwork) AllowConnection(ids.NodeID) bool { _ = "STUB: not implemented"; return false }
 
-func (testNetwork) Track([]*ips.ClaimedIPPort) error {
-	return nil
-}
+func (testNetwork) Track([]*ips.ClaimedIPPort) error { _ = "STUB: not implemented"; return nil }
 
-func (testNetwork) Disconnected(ids.NodeID) {}
+func (testNetwork) Disconnected(ids.NodeID) { _ = "STUB: not implemented"; return }
 
-func (testNetwork) KnownPeers() ([]byte, []byte) {
-	return bloom.EmptyFilter.Marshal(), nil
-}
+func (testNetwork) KnownPeers() ([]byte, []byte) { _ = "STUB: not implemented"; return nil, nil }
 
 func (testNetwork) Peers(
 	ids.NodeID,
@@ -37,5 +31,6 @@ func (testNetwork) Peers(
 	*bloom.ReadFilter,
 	[]byte,
 ) []*ips.ClaimedIPPort {
+	_ = "STUB: not implemented"
 	return nil
 }

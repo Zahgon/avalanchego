@@ -36,14 +36,6 @@ package blobpool
 // The slotter also creates a shelf for 0-blob transactions. Whilst those are not
 // allowed in the current protocol, having an empty shelf is not a relevant use
 // of resources, but it makes stress testing with junk transactions simpler.
-func newSlotter() func() (uint32, bool) {
-	slotsize := uint32(txAvgSize)
-	slotsize -= uint32(blobSize) // underflows, it's ok, will overflow back in the first return
+func newSlotter() func() (uint32, bool) { _ = "STUB: not implemented"; return nil }
 
-	return func() (size uint32, done bool) {
-		slotsize += blobSize
-		finished := slotsize > maxBlobsPerTransaction*blobSize+txMaxSize
-
-		return slotsize, finished
-	}
-}
+// underflows, it's ok, will overflow back in the first return

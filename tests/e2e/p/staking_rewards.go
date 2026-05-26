@@ -6,7 +6,6 @@ package p
 import (
 	"time"
 
-	"github.com/mitchellh/mapstructure"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
@@ -320,19 +319,6 @@ var _ = ginkgo.Describe("[Staking Rewards]", func() {
 // to a circular dependency issue, a map-based equivalent is used for which
 // manual unmarshaling is required.
 func getRewardConfig(tc tests.TestContext, client *admin.Client) reward.Config {
-	require := require.New(tc)
-
-	rawNodeConfigMap, err := client.GetConfig(tc.DefaultContext())
-	require.NoError(err)
-	nodeConfigMap, ok := rawNodeConfigMap.(map[string]interface{})
-	require.True(ok)
-	stakingConfigMap, ok := nodeConfigMap["stakingConfig"].(map[string]interface{})
-	require.True(ok)
-
-	var rewardConfig reward.Config
-	require.NoError(mapstructure.Decode(
-		stakingConfigMap["rewardConfig"],
-		&rewardConfig,
-	))
-	return rewardConfig
+	_ = "STUB: not implemented"
+	return *new(reward.Config)
 }

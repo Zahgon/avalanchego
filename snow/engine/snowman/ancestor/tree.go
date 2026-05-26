@@ -66,67 +66,26 @@ type tree struct {
 	parentToChildren map[ids.ID]set.Set[ids.ID]
 }
 
-func NewTree() Tree {
-	return &tree{
-		childToParent:    make(map[ids.ID]ids.ID),
-		parentToChildren: make(map[ids.ID]set.Set[ids.ID]),
-	}
-}
+func NewTree() Tree { _ = "STUB: not implemented"; return *new(Tree) }
 
-func (t *tree) Add(blkID ids.ID, parentID ids.ID) {
-	t.childToParent[blkID] = parentID
+func (t *tree) Add(blkID ids.ID, parentID ids.ID) { _ = "STUB: not implemented"; return }
 
-	children := t.parentToChildren[parentID]
-	children.Add(blkID)
-	t.parentToChildren[parentID] = children
-}
+func (t *tree) Has(blkID ids.ID) bool { _ = "STUB: not implemented"; return false }
 
-func (t *tree) Has(blkID ids.ID) bool {
-	_, ok := t.childToParent[blkID]
-	return ok
-}
+func (t *tree) GetAncestor(blkID ids.ID) ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (t *tree) GetAncestor(blkID ids.ID) ids.ID {
-	for {
-		parentID, ok := t.childToParent[blkID]
-		// this is the furthest parent available, break loop and return blkID
-		if !ok {
-			return blkID
-		}
-		// continue to loop with parentID
-		blkID = parentID
-	}
-}
+// this is the furthest parent available, break loop and return blkID
 
-func (t *tree) Remove(blkID ids.ID) {
-	parent, ok := t.childToParent[blkID]
-	if !ok {
-		return
-	}
-	delete(t.childToParent, blkID)
-	// remove blkID from children
-	children := t.parentToChildren[parent]
-	children.Remove(blkID)
-	// this parent has no more children, remove it from map
-	if children.Len() == 0 {
-		delete(t.parentToChildren, parent)
-	}
-}
+// continue to loop with parentID
 
-func (t *tree) RemoveDescendants(blkID ids.ID) {
-	childrenList := []ids.ID{blkID}
-	for len(childrenList) > 0 {
-		newChildrenSize := len(childrenList) - 1
-		childID := childrenList[newChildrenSize]
-		childrenList = childrenList[:newChildrenSize]
-		t.Remove(childID)
-		// get children of child
-		for grandChildID := range t.parentToChildren[childID] {
-			childrenList = append(childrenList, grandChildID)
-		}
-	}
-}
+func (t *tree) Remove(blkID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (t *tree) Len() int {
-	return len(t.childToParent)
-}
+// remove blkID from children
+
+// this parent has no more children, remove it from map
+
+func (t *tree) RemoveDescendants(blkID ids.ID) { _ = "STUB: not implemented"; return }
+
+// get children of child
+
+func (t *tree) Len() int { _ = "STUB: not implemented"; return 0 }

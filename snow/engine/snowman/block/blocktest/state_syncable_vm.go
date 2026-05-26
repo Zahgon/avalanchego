@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
 
@@ -40,51 +38,26 @@ type StateSyncableVM struct {
 }
 
 func (vm *StateSyncableVM) StateSyncEnabled(ctx context.Context) (bool, error) {
-	if vm.StateSyncEnabledF != nil {
-		return vm.StateSyncEnabledF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantStateSyncEnabled, errStateSyncEnabled)
-	}
-	return false, errStateSyncEnabled
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (vm *StateSyncableVM) GetOngoingSyncStateSummary(ctx context.Context) (block.StateSummary, error) {
-	if vm.GetOngoingSyncStateSummaryF != nil {
-		return vm.GetOngoingSyncStateSummaryF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantStateSyncGetOngoingSummary, errStateSyncGetOngoingSummary)
-	}
-	return nil, errStateSyncGetOngoingSummary
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 func (vm *StateSyncableVM) GetLastStateSummary(ctx context.Context) (block.StateSummary, error) {
-	if vm.GetLastStateSummaryF != nil {
-		return vm.GetLastStateSummaryF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetLastStateSummary, errGetLastStateSummary)
-	}
-	return nil, errGetLastStateSummary
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 func (vm *StateSyncableVM) ParseStateSummary(ctx context.Context, summaryBytes []byte) (block.StateSummary, error) {
-	if vm.ParseStateSummaryF != nil {
-		return vm.ParseStateSummaryF(ctx, summaryBytes)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantParseStateSummary, errParseStateSummary)
-	}
-	return nil, errParseStateSummary
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 func (vm *StateSyncableVM) GetStateSummary(ctx context.Context, summaryHeight uint64) (block.StateSummary, error) {
-	if vm.GetStateSummaryF != nil {
-		return vm.GetStateSummaryF(ctx, summaryHeight)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetStateSummary, errGetStateSummary)
-	}
-	return nil, errGetStateSummary
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }

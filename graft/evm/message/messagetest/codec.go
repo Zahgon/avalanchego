@@ -14,18 +14,6 @@ import (
 // The callback receives the codec manager and the corresponding leafs request type.
 // The test case name is set automatically via t.Run.
 func ForEachCodec(t *testing.T, fn func(codec.Manager, message.LeafsRequestType)) {
-	t.Helper()
-	type codecEntry struct {
-		codec       codec.Manager
-		leafReqType message.LeafsRequestType
-	}
-	codecs := map[string]codecEntry{
-		"coreth":     {message.CorethCodec, message.CorethLeafsRequestType},
-		"subnet-evm": {message.SubnetEVMCodec, message.SubnetEVMLeafsRequestType},
-	}
-	for name, entry := range codecs {
-		t.Run(name, func(*testing.T) {
-			fn(entry.codec, entry.leafReqType)
-		})
-	}
+	_ = "STUB: not implemented"
+	return
 }

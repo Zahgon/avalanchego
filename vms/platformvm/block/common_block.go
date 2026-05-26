@@ -5,7 +5,6 @@ package block
 
 import (
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 // CommonBlock contains fields and methods common to all blocks in this VM.
@@ -20,23 +19,12 @@ type CommonBlock struct {
 	bytes   []byte
 }
 
-func (b *CommonBlock) initialize(bytes []byte) {
-	b.BlockID = hashing.ComputeHash256Array(bytes)
-	b.bytes = bytes
-}
+func (b *CommonBlock) initialize(bytes []byte) { _ = "STUB: not implemented"; return }
 
-func (b *CommonBlock) ID() ids.ID {
-	return b.BlockID
-}
+func (b *CommonBlock) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *CommonBlock) Parent() ids.ID {
-	return b.PrntID
-}
+func (b *CommonBlock) Parent() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *CommonBlock) Bytes() []byte {
-	return b.bytes
-}
+func (b *CommonBlock) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *CommonBlock) Height() uint64 {
-	return b.Hght
-}
+func (b *CommonBlock) Height() uint64 { _ = "STUB: not implemented"; return 0 }

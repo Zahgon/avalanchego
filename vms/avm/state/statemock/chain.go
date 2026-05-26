@@ -10,7 +10,6 @@
 package statemock
 
 import (
-	reflect "reflect"
 	time "time"
 
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -33,173 +32,113 @@ type ChainMockRecorder struct {
 }
 
 // NewChain creates a new mock instance.
-func NewChain(ctrl *gomock.Controller) *Chain {
-	mock := &Chain{ctrl: ctrl}
-	mock.recorder = &ChainMockRecorder{mock}
-	return mock
-}
+func NewChain(ctrl *gomock.Controller) *Chain { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Chain) EXPECT() *ChainMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AddBlock mocks base method.
+	return nil
 }
 
-// AddBlock mocks base method.
-func (m *Chain) AddBlock(block block.Block) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddBlock", block)
-}
+func (m *Chain) AddBlock(block block.Block) { _ = "STUB: not implemented"; return }
 
 // AddBlock indicates an expected call of AddBlock.
 func (mr *ChainMockRecorder) AddBlock(block any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddBlock", reflect.TypeOf((*Chain)(nil).AddBlock), block)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddTx mocks base method.
-func (m *Chain) AddTx(tx *txs.Tx) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddTx", tx)
-}
+func (m *Chain) AddTx(tx *txs.Tx) { _ = "STUB: not implemented"; return }
 
 // AddTx indicates an expected call of AddTx.
-func (mr *ChainMockRecorder) AddTx(tx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTx", reflect.TypeOf((*Chain)(nil).AddTx), tx)
-}
+func (mr *ChainMockRecorder) AddTx(tx any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // AddUTXO mocks base method.
-func (m *Chain) AddUTXO(utxo *avax.UTXO) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddUTXO", utxo)
-}
+func (m *Chain) AddUTXO(utxo *avax.UTXO) { _ = "STUB: not implemented"; return }
 
 // AddUTXO indicates an expected call of AddUTXO.
-func (mr *ChainMockRecorder) AddUTXO(utxo any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUTXO", reflect.TypeOf((*Chain)(nil).AddUTXO), utxo)
-}
+func (mr *ChainMockRecorder) AddUTXO(utxo any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // DeleteUTXO mocks base method.
-func (m *Chain) DeleteUTXO(utxoID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteUTXO", utxoID)
-}
+func (m *Chain) DeleteUTXO(utxoID ids.ID) { _ = "STUB: not implemented"; return }
 
 // DeleteUTXO indicates an expected call of DeleteUTXO.
 func (mr *ChainMockRecorder) DeleteUTXO(utxoID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUTXO", reflect.TypeOf((*Chain)(nil).DeleteUTXO), utxoID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlock mocks base method.
 func (m *Chain) GetBlock(blkID ids.ID) (block.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlock", blkID)
-	ret0, _ := ret[0].(block.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.Block), nil
 }
 
 // GetBlock indicates an expected call of GetBlock.
 func (mr *ChainMockRecorder) GetBlock(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*Chain)(nil).GetBlock), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlockIDAtHeight mocks base method.
 func (m *Chain) GetBlockIDAtHeight(height uint64) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlockIDAtHeight", height)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // GetBlockIDAtHeight indicates an expected call of GetBlockIDAtHeight.
 func (mr *ChainMockRecorder) GetBlockIDAtHeight(height any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockIDAtHeight", reflect.TypeOf((*Chain)(nil).GetBlockIDAtHeight), height)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLastAccepted mocks base method.
-func (m *Chain) GetLastAccepted() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLastAccepted")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Chain) GetLastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // GetLastAccepted indicates an expected call of GetLastAccepted.
-func (mr *ChainMockRecorder) GetLastAccepted() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLastAccepted", reflect.TypeOf((*Chain)(nil).GetLastAccepted))
-}
+func (mr *ChainMockRecorder) GetLastAccepted() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetTimestamp mocks base method.
-func (m *Chain) GetTimestamp() time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTimestamp")
-	ret0, _ := ret[0].(time.Time)
-	return ret0
-}
+func (m *Chain) GetTimestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // GetTimestamp indicates an expected call of GetTimestamp.
-func (mr *ChainMockRecorder) GetTimestamp() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTimestamp", reflect.TypeOf((*Chain)(nil).GetTimestamp))
-}
+func (mr *ChainMockRecorder) GetTimestamp() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetTx mocks base method.
-func (m *Chain) GetTx(txID ids.ID) (*txs.Tx, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTx", txID)
-	ret0, _ := ret[0].(*txs.Tx)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
+func (m *Chain) GetTx(txID ids.ID) (*txs.Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // GetTx indicates an expected call of GetTx.
-func (mr *ChainMockRecorder) GetTx(txID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTx", reflect.TypeOf((*Chain)(nil).GetTx), txID)
-}
+func (mr *ChainMockRecorder) GetTx(txID any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetUTXO mocks base method.
 func (m *Chain) GetUTXO(utxoID ids.ID) (*avax.UTXO, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUTXO", utxoID)
-	ret0, _ := ret[0].(*avax.UTXO)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetUTXO indicates an expected call of GetUTXO.
 func (mr *ChainMockRecorder) GetUTXO(utxoID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUTXO", reflect.TypeOf((*Chain)(nil).GetUTXO), utxoID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetLastAccepted mocks base method.
-func (m *Chain) SetLastAccepted(blkID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetLastAccepted", blkID)
-}
+func (m *Chain) SetLastAccepted(blkID ids.ID) { _ = "STUB: not implemented"; return }
 
 // SetLastAccepted indicates an expected call of SetLastAccepted.
 func (mr *ChainMockRecorder) SetLastAccepted(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetLastAccepted", reflect.TypeOf((*Chain)(nil).SetLastAccepted), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetTimestamp mocks base method.
-func (m *Chain) SetTimestamp(t time.Time) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetTimestamp", t)
-}
+func (m *Chain) SetTimestamp(t time.Time) { _ = "STUB: not implemented"; return }
 
 // SetTimestamp indicates an expected call of SetTimestamp.
 func (mr *ChainMockRecorder) SetTimestamp(t any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTimestamp", reflect.TypeOf((*Chain)(nil).SetTimestamp), t)
+	_ = "STUB: not implemented"
+	return nil
 }

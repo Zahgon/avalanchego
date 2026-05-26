@@ -5,12 +5,11 @@
 package xsvmconnect
 
 import (
-	connect "connectrpc.com/connect"
 	context "context"
-	errors "errors"
-	xsvm "github.com/ava-labs/avalanchego/connectproto/pb/xsvm"
 	http "net/http"
-	strings "strings"
+
+	connect "connectrpc.com/connect"
+	xsvm "github.com/ava-labs/avalanchego/connectproto/pb/xsvm"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -53,22 +52,8 @@ type PingClient interface {
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewPingClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PingClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	pingMethods := xsvm.File_xsvm_service_proto.Services().ByName("Ping").Methods()
-	return &pingClient{
-		ping: connect.NewClient[xsvm.PingRequest, xsvm.PingReply](
-			httpClient,
-			baseURL+PingPingProcedure,
-			connect.WithSchema(pingMethods.ByName("Ping")),
-			connect.WithClientOptions(opts...),
-		),
-		streamPing: connect.NewClient[xsvm.StreamPingRequest, xsvm.StreamPingReply](
-			httpClient,
-			baseURL+PingStreamPingProcedure,
-			connect.WithSchema(pingMethods.ByName("StreamPing")),
-			connect.WithClientOptions(opts...),
-		),
-	}
+	_ = "STUB: not implemented"
+	return *new(PingClient)
 }
 
 // pingClient implements PingClient.
@@ -79,12 +64,14 @@ type pingClient struct {
 
 // Ping calls xsvm.Ping.Ping.
 func (c *pingClient) Ping(ctx context.Context, req *connect.Request[xsvm.PingRequest]) (*connect.Response[xsvm.PingReply], error) {
-	return c.ping.CallUnary(ctx, req)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // StreamPing calls xsvm.Ping.StreamPing.
 func (c *pingClient) StreamPing(ctx context.Context) *connect.BidiStreamForClient[xsvm.StreamPingRequest, xsvm.StreamPingReply] {
-	return c.streamPing.CallBidiStream(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PingHandler is an implementation of the xsvm.Ping service.
@@ -99,38 +86,19 @@ type PingHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewPingHandler(svc PingHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	pingMethods := xsvm.File_xsvm_service_proto.Services().ByName("Ping").Methods()
-	pingPingHandler := connect.NewUnaryHandler(
-		PingPingProcedure,
-		svc.Ping,
-		connect.WithSchema(pingMethods.ByName("Ping")),
-		connect.WithHandlerOptions(opts...),
-	)
-	pingStreamPingHandler := connect.NewBidiStreamHandler(
-		PingStreamPingProcedure,
-		svc.StreamPing,
-		connect.WithSchema(pingMethods.ByName("StreamPing")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/xsvm.Ping/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case PingPingProcedure:
-			pingPingHandler.ServeHTTP(w, r)
-		case PingStreamPingProcedure:
-			pingStreamPingHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
+	_ = "STUB: not implemented"
+	return "", *new(http.Handler)
 }
 
 // UnimplementedPingHandler returns CodeUnimplemented from all methods.
 type UnimplementedPingHandler struct{}
 
 func (UnimplementedPingHandler) Ping(context.Context, *connect.Request[xsvm.PingRequest]) (*connect.Response[xsvm.PingReply], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("xsvm.Ping.Ping is not implemented"))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (UnimplementedPingHandler) StreamPing(context.Context, *connect.BidiStream[xsvm.StreamPingRequest, xsvm.StreamPingReply]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("xsvm.Ping.StreamPing is not implemented"))
+	_ = "STUB: not implemented"
+	return nil
 }

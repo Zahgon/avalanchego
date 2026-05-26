@@ -4,8 +4,6 @@
 package syncer
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
@@ -49,34 +47,14 @@ func NewConfig(
 	stateSyncerIDs []ids.NodeID,
 	vm block.ChainVM,
 ) (Config, error) {
+	_ = "STUB: not implemented"
 	// Initialize the beacons that will be used if stateSyncerIDs is empty.
-	stateSyncBeacons := beacons
-
-	// If the user has manually provided state syncer IDs, then override the
-	// state sync beacons to them.
-	if len(stateSyncerIDs) != 0 {
-		stateSyncBeacons = validators.NewManager()
-		for _, peerID := range stateSyncerIDs {
-			// Invariant: We never use the TxID or BLS keys populated here.
-			if err := stateSyncBeacons.AddStaker(ctx.SubnetID, peerID, nil, ids.Empty, 1); err != nil {
-				return Config{}, err
-			}
-		}
-		stateSyncingWeight, err := stateSyncBeacons.TotalWeight(ctx.SubnetID)
-		if err != nil {
-			return Config{}, fmt.Errorf("failed to calculate total weight of state sync beacons for subnet %s: %w", ctx.SubnetID, err)
-		}
-		sampleK = int(min(uint64(sampleK), stateSyncingWeight))
-		alpha = stateSyncingWeight/2 + 1 // must be > 50%
-	}
-	return Config{
-		AllGetsServer:    snowGetHandler,
-		Ctx:              ctx,
-		StartupTracker:   startupTracker,
-		Sender:           sender,
-		SampleK:          sampleK,
-		Alpha:            alpha,
-		StateSyncBeacons: stateSyncBeacons,
-		VM:               vm,
-	}, nil
+	return *new(Config), nil
 }
+
+// If the user has manually provided state syncer IDs, then override the
+// state sync beacons to them.
+
+// Invariant: We never use the TxID or BLS keys populated here.
+
+// must be > 50%

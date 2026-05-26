@@ -28,95 +28,25 @@ var (
 type Role common.Hash
 
 // IsNoRole returns true if [r] indicates no specific role.
-func (r Role) IsNoRole() bool {
-	switch r {
-	case NoRole:
-		return true
-	default:
-		return false
-	}
-}
+func (r Role) IsNoRole() bool { _ = "STUB: not implemented"; return false }
 
 // IsAdmin returns true if [r] indicates the permission to modify the allow list.
-func (r Role) IsAdmin() bool {
-	switch r {
-	case AdminRole:
-		return true
-	default:
-		return false
-	}
-}
+func (r Role) IsAdmin() bool { _ = "STUB: not implemented"; return false }
 
 // IsEnabled returns true if [r] indicates that it has permission to access the resource.
-func (r Role) IsEnabled() bool {
-	switch r {
-	case AdminRole, EnabledRole, ManagerRole:
-		return true
-	default:
-		return false
-	}
-}
+func (r Role) IsEnabled() bool { _ = "STUB: not implemented"; return false }
 
-func (r Role) CanModify(from, target Role) bool {
-	switch r {
-	case AdminRole:
-		return true
-	case ManagerRole:
-		return (from == EnabledRole || from == NoRole) && (target == EnabledRole || target == NoRole)
-	default:
-		return false
-	}
-}
+func (r Role) CanModify(from, target Role) bool { _ = "STUB: not implemented"; return false }
 
-func (r Role) Bytes() []byte {
-	return common.Hash(r).Bytes()
-}
+func (r Role) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (r Role) Big() *big.Int {
-	return common.Hash(r).Big()
-}
+func (r Role) Big() *big.Int { _ = "STUB: not implemented"; return nil }
 
-func (r Role) Hash() common.Hash {
-	return common.Hash(r)
-}
+func (r Role) Hash() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
-func (r Role) GetSetterFunctionName() (string, error) {
-	switch r {
-	case AdminRole:
-		return "setAdmin", nil
-	case ManagerRole:
-		return "setManager", nil
-	case EnabledRole:
-		return "setEnabled", nil
-	case NoRole:
-		return "setNone", nil
-	default:
-		return "", ErrInvalidRole
-	}
-}
+func (r Role) GetSetterFunctionName() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // String returns a string representation of [r].
-func (r Role) String() string {
-	switch r {
-	case NoRole:
-		return "NoRole"
-	case EnabledRole:
-		return "EnabledRole"
-	case ManagerRole:
-		return "ManagerRole"
-	case AdminRole:
-		return "AdminRole"
-	default:
-		return "UnknownRole"
-	}
-}
+func (r Role) String() string { _ = "STUB: not implemented"; return "" }
 
-func FromBig(b *big.Int) (Role, error) {
-	role := Role(common.BigToHash(b))
-	switch role {
-	case NoRole, EnabledRole, ManagerRole, AdminRole:
-		return role, nil
-	default:
-		return Role{}, ErrInvalidRole
-	}
-}
+func FromBig(b *big.Int) (Role, error) { _ = "STUB: not implemented"; return *new(Role), nil }

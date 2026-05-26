@@ -21,25 +21,10 @@ type DisableL1ValidatorTx struct {
 }
 
 func (tx *DisableL1ValidatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified:
-		// already passed syntactic verification
-		return nil
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := tx.DisableAuth.Verify(); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *DisableL1ValidatorTx) Visit(visitor Visitor) error {
-	return visitor.DisableL1ValidatorTx(tx)
-}
+// already passed syntactic verification
+
+func (tx *DisableL1ValidatorTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

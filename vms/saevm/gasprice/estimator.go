@@ -8,23 +8,17 @@ package gasprice
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"math/big"
-	"slices"
 	"sync"
 	"time"
 
-	"github.com/ava-labs/libevm/common/math"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
-	"github.com/ava-labs/libevm/params"
 	"github.com/ava-labs/libevm/rpc"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
-	"github.com/ava-labs/avalanchego/vms/saevm/intmath"
 )
 
 // Backend that the [Estimator] depends on for chain data.
@@ -64,21 +58,12 @@ type Config struct {
 }
 
 // DefaultConfig returns a [Config] with all fields set to their default values.
-func DefaultConfig() Config {
-	return Config{
-		Now:             time.Now,
-		MinSuggestedTip: big.NewInt(1 * params.Wei),
-		// SuggestedTipPercentile is chosen to be a value that is lower than the median of the tips in the recent blocks.
-		// This is to prevent suggesting a tip that could cause a self-induced fee spiral.
-		SuggestedTipPercentile:  40,
-		MaxSuggestedTip:         big.NewInt(150 * params.Wei),
-		SuggestedTipMaxBlocks:   20,
-		SuggestedTipMaxDuration: time.Minute,
-		// Chosen to be larger than the fee lookback window that MetaMask uses (20k blocks).
-		HistoryMaxBlocksFromHead: 25_000,
-		HistoryMaxBlocks:         2048,
-	}
-}
+func DefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
+
+// SuggestedTipPercentile is chosen to be a value that is lower than the median of the tips in the recent blocks.
+// This is to prevent suggesting a tip that could cause a self-induced fee spiral.
+
+// Chosen to be larger than the fee lookback window that MetaMask uses (20k blocks).
 
 var (
 	errNilNow             = errors.New("config Now must be non-nil")
@@ -89,21 +74,7 @@ var (
 )
 
 // validate returns an error if the config is invalid.
-func (c *Config) validate() error {
-	switch {
-	case c.Now == nil:
-		return errNilNow
-	case c.MinSuggestedTip == nil:
-		return errNilMinSuggestedTip
-	case c.MaxSuggestedTip == nil:
-		return errNilMaxSuggestedTip
-	case c.SuggestedTipPercentile == 0 || c.SuggestedTipPercentile > 100:
-		return errBadTipPercentile
-	case c.MinSuggestedTip.Cmp(c.MaxSuggestedTip) > 0:
-		return errMinTipExceedsMax
-	}
-	return nil
-}
+func (c *Config) validate() error { _ = "STUB: not implemented"; return nil }
 
 type last struct {
 	lock   sync.RWMutex
@@ -125,106 +96,40 @@ type Estimator struct {
 
 // NewEstimator creates an Estimator for gas tips and fee history.
 func NewEstimator(backend Backend, log logging.Logger, c Config) (*Estimator, error) {
-	if err := c.validate(); err != nil {
-		return nil, err
-	}
-
-	// New blocks are cached in the background upon acceptance to avoid slow
-	// responses after long periods of no requests to the estimator. This
-	// allows us to avoid parallelizing reads inside individual API calls.
-	events := make(chan *blocks.Block, 1)
-	sub := backend.SubscribeAcceptedBlocks(events)
-	// Additional slots in the cache allows processing queries for previous
-	// blocks while new blocks are added concurrently.
-	const extraSlots = 5
-	size := max(c.SuggestedTipMaxBlocks, c.HistoryMaxBlocksFromHead+c.HistoryMaxBlocks) + extraSlots
-	cache := newBlockCache(log, backend, int(size)) //#nosec G115 -- Overflow would require misconfiguration
-	go func() {
-		defer sub.Unsubscribe() // `Unsubscribe` can fire twice on Close(), but it's safe to call multiple times.
-		for {
-			select {
-			case e := <-events:
-				cache.cacheBlock(e.EthBlock())
-			case err := <-sub.Err():
-				if err != nil {
-					log.Warn("Accepted-block subscription failed", zap.Error(err))
-				}
-				return
-			}
-		}
-	}()
-
-	return &Estimator{
-		backend: backend,
-		c:       c,
-		last: last{
-			price: c.MinSuggestedTip,
-		},
-		acceptedBlocks: sub,
-		blockCache:     cache,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// New blocks are cached in the background upon acceptance to avoid slow
+// responses after long periods of no requests to the estimator. This
+// allows us to avoid parallelizing reads inside individual API calls.
+
+// Additional slots in the cache allows processing queries for previous
+// blocks while new blocks are added concurrently.
+
+//#nosec G115 -- Overflow would require misconfiguration
+
+// `Unsubscribe` can fire twice on Close(), but it's safe to call multiple times.
 
 // SuggestGasTipCap recommends a priority-fee (tip) for new transactions based on
 // tips from recently accepted transactions.
 func (e *Estimator) SuggestGasTipCap(ctx context.Context) (tip *big.Int, _ error) {
-	defer func() {
-		// Tip is modified by callers of this function, so we must ensure that
-		// it is copied.
-		if tip != nil {
-			tip = new(big.Int).Set(tip)
-		}
-	}()
+	_ = "STUB: not implemented"
 
-	lastAcceptedNumber := e.backend.LastAcceptedBlock().NumberU64()
-
-	e.last.lock.RLock()
-	lastNumber, lastPrice := e.last.number, e.last.price
-	e.last.lock.RUnlock()
-	if lastAcceptedNumber <= lastNumber {
-		return lastPrice, nil
-	}
-
-	e.last.lock.Lock()
-	defer e.last.lock.Unlock()
-
-	// A different goroutine might have beaten us when upgrading to a write lock.
-	lastNumber, lastPrice = e.last.number, e.last.price
-	if lastAcceptedNumber <= lastNumber {
-		return lastPrice, nil
-	}
-
-	var (
-		newest     = lastAcceptedNumber
-		tooOld     = intmath.BoundedSubtract(newest, e.c.SuggestedTipMaxBlocks, 0)
-		recentUnix = uint64(e.c.Now().Add(-e.c.SuggestedTipMaxDuration).Unix()) //#nosec G115 -- Known non-negative
-		tips       []transaction
-	)
-	for n := newest; n > tooOld; n-- {
-		// getBlock does not return an error if the context is cancelled.
-		// We don't want to early return from `SuggestGasTipCap` if the context is cancelled.
-		// Instead we continue to fetch the blocks and cache them.
-		b := e.blockCache.getBlock(n)
-		if b == nil || b.timestamp < recentUnix {
-			break
-		}
-		tips = append(tips, b.txs...)
-	}
-
-	price := lastPrice
-	if n := len(tips); n > 0 {
-		slices.SortFunc(tips, transaction.Compare)
-
-		i := (n - 1) * int(e.c.SuggestedTipPercentile) / 100 //#nosec G115 -- Known to be between (0, 100]
-		price = tips[i].tip
-		price = math.BigMax(price, e.c.MinSuggestedTip)
-		price = math.BigMin(price, e.c.MaxSuggestedTip)
-	}
-
-	e.last.number = lastAcceptedNumber
-	e.last.price = price
-	return price, nil
+	// Tip is modified by callers of this function, so we must ensure that
+	// it is copied.
+	return nil, nil
 }
+
+// A different goroutine might have beaten us when upgrading to a write lock.
+
+//#nosec G115 -- Known non-negative
+
+// getBlock does not return an error if the context is cancelled.
+// We don't want to early return from `SuggestGasTipCap` if the context is cancelled.
+// Instead we continue to fetch the blocks and cache them.
+
+//#nosec G115 -- Known to be between (0, 100]
 
 var (
 	errHistoryDepthExhausted = errors.New("requested block is too far behind accepted head")
@@ -256,94 +161,21 @@ func (e *Estimator) FeeHistory(
 	portionFull []float64,
 	_ error,
 ) {
-	if err := validatePercentiles(rewardPercentiles); err != nil {
-		return nil, nil, nil, nil, err
-	}
-	last, err := e.backend.ResolveBlockNumber(lastBlock)
-	if err != nil {
-		return nil, nil, nil, nil, err
-	}
-	lastAccepted := e.backend.LastAcceptedBlock()
-	lastAcceptedNumber := lastAccepted.NumberU64()
-	if minLast := intmath.BoundedSubtract(lastAcceptedNumber, e.c.HistoryMaxBlocksFromHead, 0); last < minLast {
-		return nil, nil, nil, nil, fmt.Errorf("%w: block %d requested, accepted head is %d (max depth %d)",
-			errHistoryDepthExhausted,
-			last,
-			lastAcceptedNumber,
-			e.c.HistoryMaxBlocksFromHead,
-		)
-	}
-	blocks = min(
-		blocks,               // requested value
-		e.c.HistoryMaxBlocks, // DoS protection
-		last+1,               // Underflow protection for "first" calculation
-	)
-	if blocks == 0 {
-		return big.NewInt(0), nil, nil, nil, nil
-	}
-
-	first := last + 1 - blocks
-	var reward [][]*big.Int
-	if len(rewardPercentiles) != 0 {
-		reward = make([][]*big.Int, 0, blocks)
-	}
-	var (
-		baseFee      = make([]*big.Int, 0, blocks+1)
-		gasUsedRatio = make([]float64, 0, blocks)
-	)
-	for n := first; n <= last; n++ {
-		if err := ctx.Err(); err != nil {
-			return nil, nil, nil, nil, err
-		}
-		b := e.blockCache.getBlock(n)
-		if b == nil {
-			return nil, nil, nil, nil, fmt.Errorf("%w: %d", errMissingBlock, n)
-		}
-
-		if len(rewardPercentiles) != 0 {
-			reward = append(reward, b.tipPercentiles(rewardPercentiles))
-		}
-		baseFee = append(baseFee, b.baseFee)
-		gasUsedRatio = append(gasUsedRatio, float64(b.gasUsed)/float64(b.gasLimit))
-	}
-	if last == lastAcceptedNumber {
-		bounds := lastAccepted.WorstCaseBounds()
-		if bounds == nil {
-			baseFee = append(baseFee, lastAccepted.EthBlock().BaseFee())
-		} else {
-			baseFee = append(baseFee, bounds.LatestEndTime.BaseFee().ToBig())
-		}
-	} else if b := e.blockCache.getBlock(last + 1); b != nil {
-		baseFee = append(baseFee, b.baseFee)
-	} else {
-		return nil, nil, nil, nil, fmt.Errorf("%w: %d", errMissingBlock, last+1)
-	}
-	return new(big.Int).SetUint64(first), reward, baseFee, gasUsedRatio, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil, nil, nil
 }
+
+// requested value
+// DoS protection
+// Underflow protection for "first" calculation
 
 var _ io.Closer = (*Estimator)(nil)
 
 // Close releases allocated resources.
-func (e *Estimator) Close() error {
-	e.acceptedBlocks.Unsubscribe()
-	return nil
-}
+func (e *Estimator) Close() error { _ = "STUB: not implemented"; return nil }
 
 const maxPercentiles = 100
 
 var errBadPercentile = errors.New("percentile out of range or misordered")
 
-func validatePercentiles(percentiles []float64) error {
-	if len(percentiles) > maxPercentiles {
-		return fmt.Errorf("%w: requested %d percentiles, max %d", errBadPercentile, len(percentiles), maxPercentiles)
-	}
-	for i, p := range percentiles {
-		if p < 0 || p > 100 {
-			return fmt.Errorf("%w: value %f at index %d", errBadPercentile, p, i)
-		}
-		if i > 0 && p <= percentiles[i-1] {
-			return fmt.Errorf("%w: index %d (%f) must be greater than index %d (%f)", errBadPercentile, i, p, i-1, percentiles[i-1])
-		}
-	}
-	return nil
-}
+func validatePercentiles(percentiles []float64) error { _ = "STUB: not implemented"; return nil }

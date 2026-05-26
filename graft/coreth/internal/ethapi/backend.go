@@ -112,37 +112,4 @@ type Backend interface {
 	ServiceFilter(ctx context.Context, session *bloombits.MatcherSession)
 }
 
-func GetAPIs(apiBackend Backend) []rpc.API {
-	nonceLock := new(AddrLocker)
-	return []rpc.API{
-		{
-			Namespace: "eth",
-			Service:   NewEthereumAPI(apiBackend),
-			Name:      "internal-eth",
-		}, {
-			Namespace: "eth",
-			Service:   NewBlockChainAPI(apiBackend),
-			Name:      "internal-blockchain",
-		}, {
-			Namespace: "eth",
-			Service:   NewTransactionAPI(apiBackend, nonceLock),
-			Name:      "internal-transaction",
-		}, {
-			Namespace: "txpool",
-			Service:   NewTxPoolAPI(apiBackend),
-			Name:      "internal-tx-pool",
-		}, {
-			Namespace: "debug",
-			Service:   NewDebugAPI(apiBackend),
-			Name:      "internal-debug",
-		}, {
-			Namespace: "eth",
-			Service:   NewEthereumAccountAPI(apiBackend.AccountManager()),
-			Name:      "internal-account",
-		}, {
-			Namespace: "personal",
-			Service:   NewPersonalAccountAPI(apiBackend, nonceLock),
-			Name:      "internal-personal",
-		},
-	}
-}
+func GetAPIs(apiBackend Backend) []rpc.API { _ = "STUB: not implemented"; return nil }

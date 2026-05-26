@@ -35,15 +35,13 @@ import (
 // WithBlockGasLimit configures the simulated backend to target a specific gas limit
 // when producing blocks.
 func WithBlockGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.Genesis.GasLimit = gaslimit
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithCallGasLimit configures the simulated backend to cap eth_calls to a specific
 // gas limit when running client operations.
 func WithCallGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.RPCGasCap = gaslimit
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

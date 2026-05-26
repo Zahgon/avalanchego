@@ -28,7 +28,6 @@
 package tracers
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -46,75 +45,30 @@ type stateTracker struct {
 
 // newStateTracker initializes the tracker with provided state limits and
 // the number of the first state that will be used.
-func newStateTracker(limit int, oldest uint64) *stateTracker {
-	lock := new(sync.RWMutex)
-	return &stateTracker{
-		limit:  limit,
-		oldest: oldest,
-		used:   make([]bool, limit),
-		cond:   sync.NewCond(lock),
-		lock:   lock,
-	}
-}
+func newStateTracker(limit int, oldest uint64) *stateTracker { _ = "STUB: not implemented"; return nil }
 
 // releaseState marks the state specified by the number as released and caches
 // the corresponding release functions internally.
 func (t *stateTracker) releaseState(number uint64, release StateReleaseFunc) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	// Set the state as used, the corresponding flag is indexed by
-	// the distance between the specified state and the oldest state
-	// which is still using for trace.
-	t.used[int(number-t.oldest)] = true
-
-	// If the oldest state is used up, update the oldest marker by moving
-	// it to the next state which is not used up.
-	if number == t.oldest {
-		var count int
-		for _, used := range t.used {
-			if !used {
-				break
-			}
-			count += 1
-		}
-		t.oldest += uint64(count)
-		copy(t.used, t.used[count:])
-
-		// Clean up the array tail since they are useless now.
-		for i := t.limit - count; i < t.limit; i++ {
-			t.used[i] = false
-		}
-		// Fire the signal to all waiters that oldest marker is updated.
-		t.cond.Broadcast()
-	}
-	t.releases = append(t.releases, release)
+	_ = "STUB: not implemented"
+	return
 }
+
+// Set the state as used, the corresponding flag is indexed by
+// the distance between the specified state and the oldest state
+// which is still using for trace.
+
+// If the oldest state is used up, update the oldest marker by moving
+// it to the next state which is not used up.
+
+// Clean up the array tail since they are useless now.
+
+// Fire the signal to all waiters that oldest marker is updated.
 
 // callReleases invokes all cached release functions.
-func (t *stateTracker) callReleases() {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	for _, release := range t.releases {
-		release()
-	}
-	t.releases = t.releases[:0]
-}
+func (t *stateTracker) callReleases() { _ = "STUB: not implemented"; return }
 
 // wait blocks until the accumulated trace states are less than the limit.
-func (t *stateTracker) wait(number uint64) error {
-	t.lock.Lock()
-	defer t.lock.Unlock()
+func (t *stateTracker) wait(number uint64) error { _ = "STUB: not implemented"; return nil }
 
-	for {
-		if number < t.oldest {
-			return fmt.Errorf("invalid state number %d head %d", number, t.oldest)
-		}
-		if number < t.oldest+uint64(t.limit) {
-			// number is now within limit, wait over
-			return nil
-		}
-		t.cond.Wait()
-	}
-}
+// number is now within limit, wait over

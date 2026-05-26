@@ -5,8 +5,6 @@ package choices
 
 import (
 	"errors"
-
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var errUnknownStatus = errors.New("unknown status")
@@ -25,78 +23,20 @@ const (
 	Accepted
 )
 
-func (s Status) MarshalJSON() ([]byte, error) {
-	if err := s.Valid(); err != nil {
-		return nil, err
-	}
-	return []byte(`"` + s.String() + `"`), nil
-}
+func (s Status) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (s *Status) UnmarshalJSON(b []byte) error {
-	switch string(b) {
-	case "null":
-	case `"Unknown"`:
-		*s = Unknown
-	case `"Processing"`:
-		*s = Processing
-	case `"Rejected"`:
-		*s = Rejected
-	case `"Accepted"`:
-		*s = Accepted
-	default:
-		return errUnknownStatus
-	}
-	return nil
-}
+func (s *Status) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Fetched returns true if the status has been set.
-func (s Status) Fetched() bool {
-	switch s {
-	case Processing:
-		return true
-	default:
-		return s.Decided()
-	}
-}
+func (s Status) Fetched() bool { _ = "STUB: not implemented"; return false }
 
 // Decided returns true if the status is Rejected or Accepted.
-func (s Status) Decided() bool {
-	switch s {
-	case Rejected, Accepted:
-		return true
-	default:
-		return false
-	}
-}
+func (s Status) Decided() bool { _ = "STUB: not implemented"; return false }
 
 // Valid returns nil if the status is a valid status.
-func (s Status) Valid() error {
-	switch s {
-	case Unknown, Processing, Rejected, Accepted:
-		return nil
-	default:
-		return errUnknownStatus
-	}
-}
+func (s Status) Valid() error { _ = "STUB: not implemented"; return nil }
 
-func (s Status) String() string {
-	switch s {
-	case Unknown:
-		return "Unknown"
-	case Processing:
-		return "Processing"
-	case Rejected:
-		return "Rejected"
-	case Accepted:
-		return "Accepted"
-	default:
-		return "Invalid status"
-	}
-}
+func (s Status) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bytes returns the byte repr. of this status
-func (s Status) Bytes() []byte {
-	p := wrappers.Packer{Bytes: make([]byte, 4)}
-	p.PackInt(uint32(s))
-	return p.Bytes
-}
+func (s Status) Bytes() []byte { _ = "STUB: not implemented"; return nil }

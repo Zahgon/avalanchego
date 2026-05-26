@@ -11,7 +11,6 @@ package blockmock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	snowman "github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	block "github.com/ava-labs/avalanchego/snow/engine/snowman/block"
@@ -32,27 +31,25 @@ type BuildBlockWithContextChainVMMockRecorder struct {
 
 // NewBuildBlockWithContextChainVM creates a new mock instance.
 func NewBuildBlockWithContextChainVM(ctrl *gomock.Controller) *BuildBlockWithContextChainVM {
-	mock := &BuildBlockWithContextChainVM{ctrl: ctrl}
-	mock.recorder = &BuildBlockWithContextChainVMMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *BuildBlockWithContextChainVM) EXPECT() *BuildBlockWithContextChainVMMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// BuildBlockWithContext mocks base method.
+	return nil
 }
 
-// BuildBlockWithContext mocks base method.
 func (m *BuildBlockWithContextChainVM) BuildBlockWithContext(ctx context.Context, blockCtx *block.Context) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BuildBlockWithContext", ctx, blockCtx)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // BuildBlockWithContext indicates an expected call of BuildBlockWithContext.
 func (mr *BuildBlockWithContextChainVMMockRecorder) BuildBlockWithContext(ctx, blockCtx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BuildBlockWithContext", reflect.TypeOf((*BuildBlockWithContextChainVM)(nil).BuildBlockWithContext), ctx, blockCtx)
+	_ = "STUB: not implemented"
+	return nil
 }

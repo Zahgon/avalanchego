@@ -10,7 +10,6 @@
 package statemock
 
 import (
-	reflect "reflect"
 	time "time"
 
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -34,185 +33,107 @@ type DiffMockRecorder struct {
 }
 
 // NewDiff creates a new mock instance.
-func NewDiff(ctrl *gomock.Controller) *Diff {
-	mock := &Diff{ctrl: ctrl}
-	mock.recorder = &DiffMockRecorder{mock}
-	return mock
-}
+func NewDiff(ctrl *gomock.Controller) *Diff { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Diff) EXPECT() *DiffMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AddBlock mocks base method.
+	return nil
 }
 
-// AddBlock mocks base method.
-func (m *Diff) AddBlock(block block.Block) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddBlock", block)
-}
+func (m *Diff) AddBlock(block block.Block) { _ = "STUB: not implemented"; return }
 
 // AddBlock indicates an expected call of AddBlock.
-func (mr *DiffMockRecorder) AddBlock(block any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddBlock", reflect.TypeOf((*Diff)(nil).AddBlock), block)
-}
+func (mr *DiffMockRecorder) AddBlock(block any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // AddTx mocks base method.
-func (m *Diff) AddTx(tx *txs.Tx) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddTx", tx)
-}
+func (m *Diff) AddTx(tx *txs.Tx) { _ = "STUB: not implemented"; return }
 
 // AddTx indicates an expected call of AddTx.
-func (mr *DiffMockRecorder) AddTx(tx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddTx", reflect.TypeOf((*Diff)(nil).AddTx), tx)
-}
+func (mr *DiffMockRecorder) AddTx(tx any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // AddUTXO mocks base method.
-func (m *Diff) AddUTXO(utxo *avax.UTXO) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddUTXO", utxo)
-}
+func (m *Diff) AddUTXO(utxo *avax.UTXO) { _ = "STUB: not implemented"; return }
 
 // AddUTXO indicates an expected call of AddUTXO.
-func (mr *DiffMockRecorder) AddUTXO(utxo any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUTXO", reflect.TypeOf((*Diff)(nil).AddUTXO), utxo)
-}
+func (mr *DiffMockRecorder) AddUTXO(utxo any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Apply mocks base method.
-func (m *Diff) Apply(arg0 state.Chain) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Apply", arg0)
-}
+func (m *Diff) Apply(arg0 state.Chain) { _ = "STUB: not implemented"; return }
 
 // Apply indicates an expected call of Apply.
-func (mr *DiffMockRecorder) Apply(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*Diff)(nil).Apply), arg0)
-}
+func (mr *DiffMockRecorder) Apply(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // DeleteUTXO mocks base method.
-func (m *Diff) DeleteUTXO(utxoID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "DeleteUTXO", utxoID)
-}
+func (m *Diff) DeleteUTXO(utxoID ids.ID) { _ = "STUB: not implemented"; return }
 
 // DeleteUTXO indicates an expected call of DeleteUTXO.
 func (mr *DiffMockRecorder) DeleteUTXO(utxoID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUTXO", reflect.TypeOf((*Diff)(nil).DeleteUTXO), utxoID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlock mocks base method.
 func (m *Diff) GetBlock(blkID ids.ID) (block.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlock", blkID)
-	ret0, _ := ret[0].(block.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.Block), nil
 }
 
 // GetBlock indicates an expected call of GetBlock.
-func (mr *DiffMockRecorder) GetBlock(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*Diff)(nil).GetBlock), blkID)
-}
+func (mr *DiffMockRecorder) GetBlock(blkID any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetBlockIDAtHeight mocks base method.
 func (m *Diff) GetBlockIDAtHeight(height uint64) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlockIDAtHeight", height)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // GetBlockIDAtHeight indicates an expected call of GetBlockIDAtHeight.
 func (mr *DiffMockRecorder) GetBlockIDAtHeight(height any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockIDAtHeight", reflect.TypeOf((*Diff)(nil).GetBlockIDAtHeight), height)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLastAccepted mocks base method.
-func (m *Diff) GetLastAccepted() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLastAccepted")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Diff) GetLastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // GetLastAccepted indicates an expected call of GetLastAccepted.
-func (mr *DiffMockRecorder) GetLastAccepted() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLastAccepted", reflect.TypeOf((*Diff)(nil).GetLastAccepted))
-}
+func (mr *DiffMockRecorder) GetLastAccepted() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetTimestamp mocks base method.
-func (m *Diff) GetTimestamp() time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTimestamp")
-	ret0, _ := ret[0].(time.Time)
-	return ret0
-}
+func (m *Diff) GetTimestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // GetTimestamp indicates an expected call of GetTimestamp.
-func (mr *DiffMockRecorder) GetTimestamp() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTimestamp", reflect.TypeOf((*Diff)(nil).GetTimestamp))
-}
+func (mr *DiffMockRecorder) GetTimestamp() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetTx mocks base method.
-func (m *Diff) GetTx(txID ids.ID) (*txs.Tx, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetTx", txID)
-	ret0, _ := ret[0].(*txs.Tx)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
+func (m *Diff) GetTx(txID ids.ID) (*txs.Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // GetTx indicates an expected call of GetTx.
-func (mr *DiffMockRecorder) GetTx(txID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTx", reflect.TypeOf((*Diff)(nil).GetTx), txID)
-}
+func (mr *DiffMockRecorder) GetTx(txID any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // GetUTXO mocks base method.
 func (m *Diff) GetUTXO(utxoID ids.ID) (*avax.UTXO, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetUTXO", utxoID)
-	ret0, _ := ret[0].(*avax.UTXO)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetUTXO indicates an expected call of GetUTXO.
-func (mr *DiffMockRecorder) GetUTXO(utxoID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetUTXO", reflect.TypeOf((*Diff)(nil).GetUTXO), utxoID)
-}
+func (mr *DiffMockRecorder) GetUTXO(utxoID any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // SetLastAccepted mocks base method.
-func (m *Diff) SetLastAccepted(blkID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetLastAccepted", blkID)
-}
+func (m *Diff) SetLastAccepted(blkID ids.ID) { _ = "STUB: not implemented"; return }
 
 // SetLastAccepted indicates an expected call of SetLastAccepted.
 func (mr *DiffMockRecorder) SetLastAccepted(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetLastAccepted", reflect.TypeOf((*Diff)(nil).SetLastAccepted), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetTimestamp mocks base method.
-func (m *Diff) SetTimestamp(t time.Time) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetTimestamp", t)
-}
+func (m *Diff) SetTimestamp(t time.Time) { _ = "STUB: not implemented"; return }
 
 // SetTimestamp indicates an expected call of SetTimestamp.
-func (mr *DiffMockRecorder) SetTimestamp(t any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetTimestamp", reflect.TypeOf((*Diff)(nil).SetTimestamp), t)
-}
+func (mr *DiffMockRecorder) SetTimestamp(t any) *gomock.Call { _ = "STUB: not implemented"; return nil }

@@ -8,9 +8,8 @@ package http
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -42,27 +41,18 @@ type hTTPClient struct {
 }
 
 func NewHTTPClient(cc grpc.ClientConnInterface) HTTPClient {
-	return &hTTPClient{cc}
+	_ = "STUB: not implemented"
+	return *new(HTTPClient)
 }
 
 func (c *hTTPClient) Handle(ctx context.Context, in *HTTPRequest, opts ...grpc.CallOption) (*HTTPResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HTTPResponse)
-	err := c.cc.Invoke(ctx, HTTP_Handle_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *hTTPClient) HandleSimple(ctx context.Context, in *HandleSimpleHTTPRequest, opts ...grpc.CallOption) (*HandleSimpleHTTPResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HandleSimpleHTTPResponse)
-	err := c.cc.Invoke(ctx, HTTP_HandleSimple_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // HTTPServer is the server API for HTTP service.
@@ -88,66 +78,49 @@ type HTTPServer interface {
 type UnimplementedHTTPServer struct{}
 
 func (UnimplementedHTTPServer) Handle(context.Context, *HTTPRequest) (*HTTPResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Handle not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedHTTPServer) HandleSimple(context.Context, *HandleSimpleHTTPRequest) (*HandleSimpleHTTPResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HandleSimple not implemented")
-}
-func (UnimplementedHTTPServer) mustEmbedUnimplementedHTTPServer() {}
-func (UnimplementedHTTPServer) testEmbeddedByValue()              {}
 
-// UnsafeHTTPServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HTTPServer will
-// result in compilation errors.
+func (UnimplementedHTTPServer) HandleSimple(context.Context, *HandleSimpleHTTPRequest) (*HandleSimpleHTTPResponse, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedHTTPServer) mustEmbedUnimplementedHTTPServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedHTTPServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeHTTPServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to HTTPServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeHTTPServer interface {
 	mustEmbedUnimplementedHTTPServer()
 }
 
 func RegisterHTTPServer(s grpc.ServiceRegistrar, srv HTTPServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedHTTPServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&HTTP_ServiceDesc, srv)
+	return
 }
 
 func _HTTP_Handle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HTTPRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HTTPServer).Handle(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: HTTP_Handle_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HTTPServer).Handle(ctx, req.(*HTTPRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _HTTP_HandleSimple_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HandleSimpleHTTPRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(HTTPServer).HandleSimple(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: HTTP_HandleSimple_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HTTPServer).HandleSimple(ctx, req.(*HandleSimpleHTTPRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // HTTP_ServiceDesc is the grpc.ServiceDesc for HTTP service.

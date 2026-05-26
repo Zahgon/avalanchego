@@ -5,9 +5,6 @@ package secp256k1fx
 
 import (
 	"errors"
-
-	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/math"
 )
 
 const (
@@ -26,19 +23,7 @@ type Input struct {
 	SigIndices []uint32 `serialize:"true" json:"signatureIndices"`
 }
 
-func (in *Input) Cost() (uint64, error) {
-	numSigs := uint64(len(in.SigIndices))
-	return math.Mul(numSigs, CostPerSignature)
-}
+func (in *Input) Cost() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // Verify this input is syntactically valid
-func (in *Input) Verify() error {
-	switch {
-	case in == nil:
-		return ErrNilInput
-	case !utils.IsSortedAndUniqueOrdered(in.SigIndices):
-		return ErrInputIndicesNotSortedUnique
-	default:
-		return nil
-	}
-}
+func (in *Input) Verify() error { _ = "STUB: not implemented"; return nil }

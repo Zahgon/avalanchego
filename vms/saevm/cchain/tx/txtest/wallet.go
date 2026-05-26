@@ -6,8 +6,6 @@ package txtest
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	// Imported for [secp256k1fx.Credential] comment resolution.
 	_ "github.com/ava-labs/avalanchego/vms/secp256k1fx"
 
@@ -22,12 +20,6 @@ type Signature = [secp256k1.SignatureLen]byte
 
 // Sign signs u with s and returns the signature.
 func Sign(tb testing.TB, u tx.Unsigned, s keychain.Signer) Signature {
-	tb.Helper()
-
-	b, err := tx.UnsignedBytes(u)
-	require.NoErrorf(tb, err, "tx.UnsignedBytes(%T)", u)
-	sig, err := s.Sign(b)
-	require.NoErrorf(tb, err, "%T.Sign(%T)", s, u)
-	require.Lenf(tb, sig, len(Signature{}), "len(%T.Sign(%T))", s, u)
-	return Signature(sig)
+	_ = "STUB: not implemented"
+	return *new(Signature)
 }

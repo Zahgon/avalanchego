@@ -19,18 +19,9 @@ type Server struct {
 }
 
 // NewServer returns an http.Handler instance managed remotely
-func NewServer(writer io.Writer) *Server {
-	return &Server{writer: writer}
-}
+func NewServer(writer io.Writer) *Server { _ = "STUB: not implemented"; return nil }
 
 func (s *Server) Write(_ context.Context, req *writerpb.WriteRequest) (*writerpb.WriteResponse, error) {
-	n, err := s.writer.Write(req.Payload)
-	resp := &writerpb.WriteResponse{
-		Written: int32(n),
-	}
-	if err != nil {
-		errStr := err.Error()
-		resp.Error = &errStr
-	}
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

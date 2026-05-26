@@ -7,8 +7,6 @@
 
 package database
 
-import "slices"
-
 // Batch is a write-only database that commits changes to its host database
 // when Write is called. A batch cannot be used concurrently.
 type Batch interface {
@@ -52,43 +50,12 @@ type BatchOps struct {
 	size int
 }
 
-func (b *BatchOps) Put(key, value []byte) error {
-	b.Ops = append(b.Ops, BatchOp{
-		Key:   slices.Clone(key),
-		Value: slices.Clone(value),
-	})
-	b.size += len(key) + len(value)
-	return nil
-}
+func (b *BatchOps) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b *BatchOps) Delete(key []byte) error {
-	b.Ops = append(b.Ops, BatchOp{
-		Key:    slices.Clone(key),
-		Delete: true,
-	})
-	b.size += len(key)
-	return nil
-}
+func (b *BatchOps) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b *BatchOps) Size() int {
-	return b.size
-}
+func (b *BatchOps) Size() int { _ = "STUB: not implemented"; return 0 }
 
-func (b *BatchOps) Reset() {
-	clear(b.Ops)
-	b.Ops = b.Ops[:0]
-	b.size = 0
-}
+func (b *BatchOps) Reset() { _ = "STUB: not implemented"; return }
 
-func (b *BatchOps) Replay(w KeyValueWriterDeleter) error {
-	for _, op := range b.Ops {
-		if op.Delete {
-			if err := w.Delete(op.Key); err != nil {
-				return err
-			}
-		} else if err := w.Put(op.Key, op.Value); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (b *BatchOps) Replay(w KeyValueWriterDeleter) error { _ = "STUB: not implemented"; return nil }

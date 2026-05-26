@@ -6,20 +6,14 @@ package main
 import (
 	"context"
 	"crypto/ecdsa"
-	"crypto/rand"
 	"fmt"
-	"math/big"
-	"time"
 
-	"github.com/antithesishq/antithesis-sdk-go/assert"
 	"github.com/antithesishq/antithesis-sdk-go/lifecycle"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/crypto"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/tests"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/tests/utils"
@@ -29,8 +23,6 @@ import (
 	"github.com/ava-labs/avalanchego/utils/logging"
 
 	ago_tests "github.com/ava-labs/avalanchego/tests"
-	timerpkg "github.com/ava-labs/avalanchego/utils/timer"
-	ethparams "github.com/ava-labs/libevm/params"
 )
 
 const NumKeys = 5
@@ -119,109 +111,30 @@ type workload struct {
 // newTestContext returns a test context that ensures that log output and assertions are
 // associated with this worker.
 func (w *workload) newTestContext(ctx context.Context) *ago_tests.SimpleTestContext {
-	return antithesis.NewInstrumentedTestContextWithArgs(
-		ctx,
-		w.log,
-		map[string]any{
-			"worker": w.id,
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (w *workload) run(ctx context.Context) {
-	timer := timerpkg.StoppedTimer()
+func (w *workload) run(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	tc := w.newTestContext(ctx)
-	// Any assertion failure from this test context will result in process exit due to the
-	// panic being rethrown. This ensures that failures in test setup are fatal.
-	defer tc.RecoverAndRethrow()
-	require := require.New(tc)
-
-	balance, err := w.client.BalanceAt(ctx, crypto.PubkeyToAddress(w.key.PublicKey), nil)
-	require.NoError(err, "failed to fetch balance")
-	assert.Reachable("worker starting", map[string]any{
-		"worker":  w.id,
-		"balance": balance,
-	})
-
-	for {
-		w.executeTest(ctx)
-
-		val, err := rand.Int(rand.Reader, big.NewInt(int64(time.Second)))
-		require.NoError(err, "failed to read randomness")
-
-		timer.Reset(time.Duration(val.Int64()))
-		select {
-		case <-ctx.Done():
-			return
-		case <-timer.C:
-		}
-	}
-}
+// Any assertion failure from this test context will result in process exit due to the
+// panic being rethrown. This ensures that failures in test setup are fatal.
 
 func (w *workload) executeTest(ctx context.Context) {
+	_ = "STUB: not implemented"
 	// TODO(marun) What should this value be?
-	txAmount := uint64(10000)
-	// TODO(marun) Exercise a wider variety of transactions
-	recipientEthAddress := crypto.PubkeyToAddress(w.key.PublicKey)
-	err := transferFunds(ctx, w.client, w.key, recipientEthAddress, txAmount, w.log)
-	if err != nil {
-		// Log the error and continue since the problem may be
-		// transient. require.NoError is only for errors that should stop
-		// execution.
-		w.log.Info("failed to transfer funds",
-			zap.Error(err),
-		)
-	}
+	return
 }
 
-func getChainURI(nodeURI string, blockchainID string) string {
-	return fmt.Sprintf("%s/ext/bc/%s/rpc", nodeURI, blockchainID)
-}
+// TODO(marun) Exercise a wider variety of transactions
+
+// Log the error and continue since the problem may be
+// transient. require.NoError is only for errors that should stop
+// execution.
+
+func getChainURI(nodeURI string, blockchainID string) string { _ = "STUB: not implemented"; return "" }
 
 func transferFunds(ctx context.Context, client ethclient.Client, key *ecdsa.PrivateKey, recipientAddress common.Address, txAmount uint64, log logging.Logger) error {
-	chainID, err := client.ChainID(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to fetch chainID: %w", err)
-	}
-	acceptedNonce, err := client.AcceptedNonceAt(ctx, crypto.PubkeyToAddress(key.PublicKey))
-	if err != nil {
-		return fmt.Errorf("failed to fetch accepted nonce: %w", err)
-	}
-	gasTipCap, err := client.SuggestGasTipCap(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to fetch suggested gas tip: %w", err)
-	}
-	gasFeeCap, err := client.EstimateBaseFee(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to fetch estimated base fee: %w", err)
-	}
-	signer := types.LatestSignerForChainID(chainID)
-
-	tx, err := types.SignNewTx(key, signer, &types.DynamicFeeTx{
-		ChainID:   chainID,
-		Nonce:     acceptedNonce,
-		GasTipCap: gasTipCap,
-		GasFeeCap: gasFeeCap,
-		Gas:       ethparams.TxGas,
-		To:        &recipientAddress,
-		Value:     big.NewInt(int64(txAmount)),
-	})
-	if err != nil {
-		return fmt.Errorf("failed to format transaction: %w", err)
-	}
-
-	log.Info("sending transaction", zap.Stringer("txID", tx.Hash()), zap.Uint64("nonce", acceptedNonce))
-	err = client.SendTransaction(ctx, tx)
-	if err != nil {
-		return fmt.Errorf("failed to send transaction: %w", err)
-	}
-
-	log.Info("waiting for acceptance of transaction", zap.Stringer("txID", tx.Hash()))
-	if _, err := bind.WaitMined(ctx, client, tx); err != nil {
-		return fmt.Errorf("failed to wait for receipt: %w", err)
-	}
-	log.Info("confirmed acceptance of transaction", zap.Stringer("txID", tx.Hash()))
-
+	_ = "STUB: not implemented"
 	return nil
 }

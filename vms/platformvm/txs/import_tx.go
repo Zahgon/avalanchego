@@ -5,14 +5,11 @@ package txs
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var (
@@ -35,57 +32,16 @@ type ImportTx struct {
 // InitCtx sets the FxID fields in the inputs and outputs of this
 // [ImportTx]. Also sets the [ctx] to the given [vm.ctx] so that
 // the addresses can be json marshalled into human readable format
-func (tx *ImportTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	for _, in := range tx.ImportedInputs {
-		in.FxID = secp256k1fx.ID
-	}
-}
+func (tx *ImportTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InputUTXOs returns the UTXOIDs of the imported funds
-func (tx *ImportTx) InputUTXOs() set.Set[ids.ID] {
-	set := set.NewSet[ids.ID](len(tx.ImportedInputs))
-	for _, in := range tx.ImportedInputs {
-		set.Add(in.InputID())
-	}
-	return set
-}
+func (tx *ImportTx) InputUTXOs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
-func (tx *ImportTx) InputIDs() set.Set[ids.ID] {
-	inputs := tx.BaseTx.InputIDs()
-	atomicInputs := tx.InputUTXOs()
-	inputs.Union(atomicInputs)
-	return inputs
-}
+func (tx *ImportTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // SyntacticVerify this transaction is well-formed
-func (tx *ImportTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case len(tx.ImportedInputs) == 0:
-		return errNoImportInputs
-	}
+func (tx *ImportTx) SyntacticVerify(ctx *snow.Context) error { _ = "STUB: not implemented"; return nil }
 
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
+// already passed syntactic verification
 
-	for _, in := range tx.ImportedInputs {
-		if err := in.Verify(); err != nil {
-			return fmt.Errorf("input failed verification: %w", err)
-		}
-	}
-	if !utils.IsSortedAndUnique(tx.ImportedInputs) {
-		return errInputsNotSortedUnique
-	}
-
-	tx.SyntacticallyVerified = true
-	return nil
-}
-
-func (tx *ImportTx) Visit(visitor Visitor) error {
-	return visitor.ImportTx(tx)
-}
+func (tx *ImportTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

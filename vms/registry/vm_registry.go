@@ -31,27 +31,11 @@ type vmRegistry struct {
 
 // NewVMRegistry returns a VMRegistry
 func NewVMRegistry(config VMRegistryConfig) VMRegistry {
-	return &vmRegistry{
-		config: config,
-	}
+	_ = "STUB: not implemented"
+	return *new(VMRegistry)
 }
 
 func (r *vmRegistry) Reload(ctx context.Context) ([]ids.ID, map[ids.ID]error, error) {
-	_, unregisteredVMs, err := r.config.VMGetter.Get()
-	if err != nil {
-		return nil, nil, err
-	}
-
-	registeredVms := make([]ids.ID, 0, len(unregisteredVMs))
-	failedVMs := make(map[ids.ID]error)
-
-	for vmID, factory := range unregisteredVMs {
-		if err := r.config.VMManager.RegisterFactory(ctx, vmID, factory); err != nil {
-			failedVMs[vmID] = err
-			continue
-		}
-
-		registeredVms = append(registeredVms, vmID)
-	}
-	return registeredVms, failedVMs, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }

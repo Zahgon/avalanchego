@@ -4,13 +4,10 @@
 package ids
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/staking"
 	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 const (
@@ -28,65 +25,32 @@ var (
 
 type NodeID ShortID
 
-func (id NodeID) String() string {
-	return ShortID(id).PrefixedString(NodeIDPrefix)
-}
+func (id NodeID) String() string { _ = "STUB: not implemented"; return "" }
 
-func (id NodeID) Bytes() []byte {
-	return id[:]
-}
+func (id NodeID) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (id NodeID) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + id.String() + `"`), nil
-}
+func (id NodeID) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (id NodeID) MarshalText() ([]byte, error) {
-	return []byte(id.String()), nil
-}
+func (id NodeID) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (id *NodeID) UnmarshalJSON(b []byte) error {
-	str := string(b)
-	if str == nullStr { // If "null", do nothing
-		return nil
-	} else if len(str) <= 2+len(NodeIDPrefix) {
-		return fmt.Errorf("%w: expected to be > %d", errShortNodeID, 2+len(NodeIDPrefix))
-	}
+func (id *NodeID) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
-	lastIndex := len(str) - 1
-	if str[0] != '"' || str[lastIndex] != '"' {
-		return errMissingQuotes
-	}
+// If "null", do nothing
 
-	var err error
-	*id, err = NodeIDFromString(str[1:lastIndex])
-	return err
-}
+func (id *NodeID) UnmarshalText(text []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (id *NodeID) UnmarshalText(text []byte) error {
-	return id.UnmarshalJSON(text)
-}
-
-func (id NodeID) Compare(other NodeID) int {
-	return bytes.Compare(id[:], other[:])
-}
+func (id NodeID) Compare(other NodeID) int { _ = "STUB: not implemented"; return 0 }
 
 // ToNodeID attempt to convert a byte slice into a node id
-func ToNodeID(bytes []byte) (NodeID, error) {
-	nodeID, err := ToShortID(bytes)
-	return NodeID(nodeID), err
-}
+func ToNodeID(bytes []byte) (NodeID, error) { _ = "STUB: not implemented"; return *new(NodeID), nil }
 
 func NodeIDFromCert(cert *staking.Certificate) NodeID {
-	return hashing.ComputeHash160Array(
-		hashing.ComputeHash256(cert.Raw),
-	)
+	_ = "STUB: not implemented"
+	return *new(NodeID)
 }
 
 // NodeIDFromString is the inverse of NodeID.String()
 func NodeIDFromString(nodeIDStr string) (NodeID, error) {
-	asShort, err := ShortFromPrefixedString(nodeIDStr, NodeIDPrefix)
-	if err != nil {
-		return NodeID{}, err
-	}
-	return NodeID(asShort), nil
+	_ = "STUB: not implemented"
+	return *new(NodeID), nil
 }

@@ -3,19 +3,11 @@
 
 package snowball
 
-import (
-	"fmt"
-	"slices"
-)
-
 var _ Unary = (*unarySnowflake)(nil)
 
 func newUnarySnowflake(alphaPreference int, terminationConditions []terminationCondition) unarySnowflake {
-	return unarySnowflake{
-		alphaPreference:       alphaPreference,
-		terminationConditions: terminationConditions,
-		confidence:            make([]int, len(terminationConditions)),
-	}
+	_ = "STUB: not implemented"
+	return *new(unarySnowflake)
 }
 
 // unarySnowflake is the implementation of a unary snowflake instance
@@ -43,52 +35,21 @@ type unarySnowflake struct {
 	finalized bool
 }
 
-func (sf *unarySnowflake) RecordPoll(count int) {
-	for i, terminationCondition := range sf.terminationConditions {
-		// If I did not reach this alpha threshold, I did not
-		// reach any more alpha thresholds.
-		// Clear the remaining confidence counters.
-		if count < terminationCondition.alphaConfidence {
-			clear(sf.confidence[i:])
-			return
-		}
+func (sf *unarySnowflake) RecordPoll(count int) { _ = "STUB: not implemented"; return }
 
-		// I reached this alpha threshold, increment the confidence counter
-		// and check if I can finalize.
-		sf.confidence[i]++
-		if sf.confidence[i] >= terminationCondition.beta {
-			sf.finalized = true
-			return
-		}
-	}
-}
+// If I did not reach this alpha threshold, I did not
+// reach any more alpha thresholds.
+// Clear the remaining confidence counters.
 
-func (sf *unarySnowflake) RecordUnsuccessfulPoll() {
-	clear(sf.confidence)
-}
+// I reached this alpha threshold, increment the confidence counter
+// and check if I can finalize.
 
-func (sf *unarySnowflake) Finalized() bool {
-	return sf.finalized
-}
+func (sf *unarySnowflake) RecordUnsuccessfulPoll() { _ = "STUB: not implemented"; return }
 
-func (sf *unarySnowflake) Extend(choice int) Binary {
-	return &binarySnowflake{
-		binarySlush:           binarySlush{preference: choice},
-		confidence:            slices.Clone(sf.confidence),
-		alphaPreference:       sf.alphaPreference,
-		terminationConditions: sf.terminationConditions,
-		finalized:             sf.finalized,
-	}
-}
+func (sf *unarySnowflake) Finalized() bool { _ = "STUB: not implemented"; return false }
 
-func (sf *unarySnowflake) Clone() Unary {
-	newSnowflake := *sf
-	newSnowflake.confidence = slices.Clone(sf.confidence)
-	return &newSnowflake
-}
+func (sf *unarySnowflake) Extend(choice int) Binary { _ = "STUB: not implemented"; return *new(Binary) }
 
-func (sf *unarySnowflake) String() string {
-	return fmt.Sprintf("SF(Confidence = %v, Finalized = %v)",
-		sf.confidence,
-		sf.finalized)
-}
+func (sf *unarySnowflake) Clone() Unary { _ = "STUB: not implemented"; return *new(Unary) }
+
+func (sf *unarySnowflake) String() string { _ = "STUB: not implemented"; return "" }

@@ -4,10 +4,7 @@
 package archivedb
 
 import (
-	"encoding/binary"
 	"errors"
-
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var (
@@ -43,15 +40,8 @@ var (
 // - The database key
 // - The database key prefix, which is independent of the height
 func newDBKeyFromUser(key []byte, height uint64) ([]byte, []byte) {
-	keyLen := len(key)
-	dbKeyMaxSize := binary.MaxVarintLen64 + keyLen + wrappers.LongLen
-	dbKey := make([]byte, dbKeyMaxSize)
-	offset := binary.PutUvarint(dbKey, uint64(keyLen))
-	offset += copy(dbKey[offset:], key)
-	prefixOffset := offset
-	binary.BigEndian.PutUint64(dbKey[offset:], ^height)
-	offset += wrappers.LongLen
-	return dbKey[:offset], dbKey[:prefixOffset]
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // parseDBKeyFromUser takes a database formatted key and returns the user key
@@ -60,19 +50,8 @@ func newDBKeyFromUser(key []byte, height uint64) ([]byte, []byte) {
 // Note: An error should only be returned from this function if the database has
 // been corrupted.
 func parseDBKeyFromUser(dbKey []byte) ([]byte, uint64, error) {
-	keyLen, offset := binary.Uvarint(dbKey)
-	if offset <= 0 {
-		return nil, 0, ErrParsingKeyLength
-	}
-
-	heightIndex := uint64(offset) + keyLen
-	if uint64(len(dbKey)) != heightIndex+wrappers.LongLen {
-		return nil, 0, ErrIncorrectKeyLength
-	}
-
-	key := dbKey[offset:heightIndex]
-	height := ^binary.BigEndian.Uint64(dbKey[heightIndex:])
-	return key, height, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // newDBKeyFromMetadata converts a metadata key into a database formatted key.
@@ -85,11 +64,4 @@ func parseDBKeyFromUser(dbKey []byte) ([]byte, uint64, error) {
 //	 |----------------|-------------|
 //	 |       foo      |    4:foo    |
 //	 |       fo       |    3:fo     |
-func newDBKeyFromMetadata(key []byte) []byte {
-	keyLen := len(key)
-	dbKeyMaxSize := binary.MaxVarintLen64 + keyLen
-	dbKey := make([]byte, dbKeyMaxSize)
-	offset := binary.PutUvarint(dbKey, uint64(keyLen)+1)
-	offset += copy(dbKey[offset:], key)
-	return dbKey[:offset]
-}
+func newDBKeyFromMetadata(key []byte) []byte { _ = "STUB: not implemented"; return nil }

@@ -17,5 +17,6 @@ var _ acp118.Verifier = (*acp118Verifier)(nil)
 type acp118Verifier struct{}
 
 func (acp118Verifier) Verify(context.Context, *warp.UnsignedMessage, []byte) *common.AppError {
+	_ = "STUB: not implemented"
 	return nil
 }

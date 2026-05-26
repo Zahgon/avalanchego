@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/vms/avm/txs"
-	"github.com/ava-labs/avalanchego/vms/components/avax"
 )
 
 var _ txs.Visitor = (*backendVisitor)(nil)
@@ -20,45 +19,15 @@ type backendVisitor struct {
 	txID ids.ID
 }
 
-func (*backendVisitor) BaseTx(*txs.BaseTx) error {
-	return nil
-}
+func (*backendVisitor) BaseTx(*txs.BaseTx) error { _ = "STUB: not implemented"; return nil }
 
 func (*backendVisitor) CreateAssetTx(*txs.CreateAssetTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (*backendVisitor) OperationTx(*txs.OperationTx) error {
-	return nil
-}
+func (*backendVisitor) OperationTx(*txs.OperationTx) error { _ = "STUB: not implemented"; return nil }
 
-func (b *backendVisitor) ImportTx(tx *txs.ImportTx) error {
-	for _, in := range tx.ImportedIns {
-		utxoID := in.UTXOID.InputID()
-		if err := b.b.RemoveUTXO(b.ctx, tx.SourceChain, utxoID); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (b *backendVisitor) ImportTx(tx *txs.ImportTx) error { _ = "STUB: not implemented"; return nil }
 
-func (b *backendVisitor) ExportTx(tx *txs.ExportTx) error {
-	for i, out := range tx.ExportedOuts {
-		err := b.b.AddUTXO(
-			b.ctx,
-			tx.DestinationChain,
-			&avax.UTXO{
-				UTXOID: avax.UTXOID{
-					TxID:        b.txID,
-					OutputIndex: uint32(len(tx.Outs) + i),
-				},
-				Asset: avax.Asset{ID: out.AssetID()},
-				Out:   out.Out,
-			},
-		)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (b *backendVisitor) ExportTx(tx *txs.ExportTx) error { _ = "STUB: not implemented"; return nil }

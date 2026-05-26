@@ -28,10 +28,6 @@
 package snapshot
 
 import (
-	"bytes"
-	"fmt"
-	"sort"
-
 	"github.com/ava-labs/libevm/common"
 	"golang.org/x/exp/slices"
 )
@@ -45,25 +41,12 @@ type weightedIterator struct {
 }
 
 func (it *weightedIterator) Cmp(other *weightedIterator) int {
+	_ = "STUB: not implemented"
 	// Order the iterators primarily by the account hashes
-	hashI := it.it.Hash()
-	hashJ := other.it.Hash()
-
-	switch bytes.Compare(hashI[:], hashJ[:]) {
-	case -1:
-		return -1
-	case 1:
-		return 1
-	}
-	// Same account/storage-slot in multiple layers, split by priority
-	if it.priority < other.priority {
-		return -1
-	}
-	if it.priority > other.priority {
-		return 1
-	}
 	return 0
 }
+
+// Same account/storage-slot in multiple layers, split by priority
 
 // fastIterator is a more optimized multi-layer iterator which maintains a
 // direct mapping of all iterators leading down to the bottom layer.
@@ -84,40 +67,14 @@ type fastIterator struct {
 // element per diff layer. The returned combo iterator can be used to walk over
 // the entire snapshot diff stack simultaneously.
 func newFastIterator(tree *Tree, root common.Hash, account common.Hash, seek common.Hash, accountIterator bool, holdsTreeLock bool) (*fastIterator, error) {
-	current := tree.getSnapshot(root, holdsTreeLock)
-	if current == nil {
-		return nil, fmt.Errorf("unknown snapshot: %x", root)
-	}
-	fi := &fastIterator{
-		tree:    tree,
-		root:    root,
-		account: accountIterator,
-	}
-	for depth := 0; current != nil; depth++ {
-		if accountIterator {
-			fi.iterators = append(fi.iterators, &weightedIterator{
-				it:       current.AccountIterator(seek),
-				priority: depth,
-			})
-		} else {
-			// If the whole storage is destructed in this layer, don't
-			// bother deeper layer anymore. But we should still keep
-			// the iterator for this layer, since the iterator can contain
-			// some valid slots which belongs to the re-created account.
-			it, destructed := current.StorageIterator(account, seek)
-			fi.iterators = append(fi.iterators, &weightedIterator{
-				it:       it,
-				priority: depth,
-			})
-			if destructed {
-				break
-			}
-		}
-		current = current.Parent()
-	}
-	fi.init()
-	return fi, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// If the whole storage is destructed in this layer, don't
+// bother deeper layer anymore. But we should still keep
+// the iterator for this layer, since the iterator can contain
+// some valid slots which belongs to the re-created account.
 
 // init walks over all the iterators and resolves any clashes between them, after
 // which it prepares the stack for step-by-step iteration.
@@ -176,55 +133,27 @@ func (fi *fastIterator) init() {
 }
 
 // Next steps the iterator forward one element, returning false if exhausted.
-func (fi *fastIterator) Next() bool {
-	if len(fi.iterators) == 0 {
-		return false
-	}
-	if !fi.initiated {
-		// Don't forward first time -- we had to 'Next' once in order to
-		// do the sorting already
-		fi.initiated = true
-		if fi.account {
-			fi.curAccount = fi.iterators[0].it.(AccountIterator).Account()
-		} else {
-			fi.curSlot = fi.iterators[0].it.(StorageIterator).Slot()
-		}
-		if innerErr := fi.iterators[0].it.Error(); innerErr != nil {
-			fi.fail = innerErr
-			return false
-		}
-		if fi.curAccount != nil || fi.curSlot != nil {
-			return true
-		}
-		// Implicit else: we've hit a nil-account or nil-slot, and need to
-		// fall through to the loop below to land on something non-nil
-	}
-	// If an account or a slot is deleted in one of the layers, the key will
-	// still be there, but the actual value will be nil. However, the iterator
-	// should not export nil-values (but instead simply omit the key), so we
-	// need to loop here until we either
-	//  - get a non-nil value,
-	//  - hit an error,
-	//  - or exhaust the iterator
-	for {
-		if !fi.next(0) {
-			return false // exhausted
-		}
-		if fi.account {
-			fi.curAccount = fi.iterators[0].it.(AccountIterator).Account()
-		} else {
-			fi.curSlot = fi.iterators[0].it.(StorageIterator).Slot()
-		}
-		if innerErr := fi.iterators[0].it.Error(); innerErr != nil {
-			fi.fail = innerErr
-			return false // error
-		}
-		if fi.curAccount != nil || fi.curSlot != nil {
-			break // non-nil value found
-		}
-	}
-	return true
-}
+func (fi *fastIterator) Next() bool { _ = "STUB: not implemented"; return false }
+
+// Don't forward first time -- we had to 'Next' once in order to
+// do the sorting already
+
+// Implicit else: we've hit a nil-account or nil-slot, and need to
+// fall through to the loop below to land on something non-nil
+
+// If an account or a slot is deleted in one of the layers, the key will
+// still be there, but the actual value will be nil. However, the iterator
+// should not export nil-values (but instead simply omit the key), so we
+// need to loop here until we either
+//  - get a non-nil value,
+//  - hit an error,
+//  - or exhaust the iterator
+
+// exhausted
+
+// error
+
+// non-nil value found
 
 // next handles the next operation internally and should be invoked when we know
 // that two elements in the list may have the same value.
@@ -233,122 +162,78 @@ func (fi *fastIterator) Next() bool {
 // invoke next(3), which will call Next on elem 3 (the second '5') and will
 // cascade along the list, applying the same operation if needed.
 func (fi *fastIterator) next(idx int) bool {
+	_ = "STUB: not implemented"
 	// If this particular iterator got exhausted, remove it and return true (the
 	// next one is surely not exhausted yet, otherwise it would have been removed
 	// already).
-	if it := fi.iterators[idx].it; !it.Next() {
-		it.Release()
-
-		fi.iterators = append(fi.iterators[:idx], fi.iterators[idx+1:]...)
-		return len(fi.iterators) > 0
-	}
-	// If there's no one left to cascade into, return
-	if idx == len(fi.iterators)-1 {
-		return true
-	}
-	// We next-ed the iterator at 'idx', now we may have to re-sort that element
-	var (
-		cur, next         = fi.iterators[idx], fi.iterators[idx+1]
-		curHash, nextHash = cur.it.Hash(), next.it.Hash()
-	)
-	if diff := bytes.Compare(curHash[:], nextHash[:]); diff < 0 {
-		// It is still in correct place
-		return true
-	} else if diff == 0 && cur.priority < next.priority {
-		// So still in correct place, but we need to iterate on the next
-		fi.next(idx + 1)
-		return true
-	}
-	// At this point, the iterator is in the wrong location, but the remaining
-	// list is sorted. Find out where to move the item.
-	clash := -1
-	index := sort.Search(len(fi.iterators), func(n int) bool {
-		// The iterator always advances forward, so anything before the old slot
-		// is known to be behind us, so just skip them altogether. This actually
-		// is an important clause since the sort order got invalidated.
-		if n < idx {
-			return false
-		}
-		if n == len(fi.iterators)-1 {
-			// Can always place an elem last
-			return true
-		}
-		nextHash := fi.iterators[n+1].it.Hash()
-		if diff := bytes.Compare(curHash[:], nextHash[:]); diff < 0 {
-			return true
-		} else if diff > 0 {
-			return false
-		}
-		// The elem we're placing it next to has the same value,
-		// so whichever winds up on n+1 will need further iteration
-		clash = n + 1
-
-		return cur.priority < fi.iterators[n+1].priority
-	})
-	fi.move(idx, index)
-	if clash != -1 {
-		fi.next(clash)
-	}
-	return true
+	return false
 }
+
+// If there's no one left to cascade into, return
+
+// We next-ed the iterator at 'idx', now we may have to re-sort that element
+
+// It is still in correct place
+
+// So still in correct place, but we need to iterate on the next
+
+// At this point, the iterator is in the wrong location, but the remaining
+// list is sorted. Find out where to move the item.
+
+// The iterator always advances forward, so anything before the old slot
+// is known to be behind us, so just skip them altogether. This actually
+// is an important clause since the sort order got invalidated.
+
+// Can always place an elem last
+
+// The elem we're placing it next to has the same value,
+// so whichever winds up on n+1 will need further iteration
 
 // move advances an iterator to another position in the list.
-func (fi *fastIterator) move(index, newpos int) {
-	elem := fi.iterators[index]
-	copy(fi.iterators[index:], fi.iterators[index+1:newpos+1])
-	fi.iterators[newpos] = elem
-}
+func (fi *fastIterator) move(index, newpos int) { _ = "STUB: not implemented"; return }
 
 // Error returns any failure that occurred during iteration, which might have
 // caused a premature iteration exit (e.g. snapshot stack becoming stale).
 func (fi *fastIterator) Error() error {
-	return fi.fail
+	_ = "STUB: not implemented"
+
+	// Hash returns the current key
+	return nil
 }
 
-// Hash returns the current key
-func (fi *fastIterator) Hash() common.Hash {
-	return fi.iterators[0].it.Hash()
-}
+func (fi *fastIterator) Hash() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 // Account returns the current account blob.
 // Note the returned account is not a copy, please don't modify it.
-func (fi *fastIterator) Account() []byte {
-	return fi.curAccount
-}
+func (fi *fastIterator) Account() []byte { _ = "STUB: not implemented"; return nil }
 
 // Slot returns the current storage slot.
 // Note the returned slot is not a copy, please don't modify it.
 func (fi *fastIterator) Slot() []byte {
-	return fi.curSlot
+	_ = "STUB: not implemented"
+
+	// Release iterates over all the remaining live layer iterators and releases each
+	// of them individually.
+	return nil
 }
 
-// Release iterates over all the remaining live layer iterators and releases each
-// of them individually.
-func (fi *fastIterator) Release() {
-	for _, it := range fi.iterators {
-		it.it.Release()
-	}
-	fi.iterators = nil
-}
+func (fi *fastIterator) Release() { _ = "STUB: not implemented"; return }
 
 // Debug is a convenience helper during testing
-func (fi *fastIterator) Debug() {
-	for _, it := range fi.iterators {
-		fmt.Printf("[p=%v v=%v] ", it.priority, it.it.Hash()[0])
-	}
-	fmt.Println()
-}
+func (fi *fastIterator) Debug() { _ = "STUB: not implemented"; return }
 
 // newFastAccountIterator creates a new hierarchical account iterator with one
 // element per diff layer. The returned combo iterator can be used to walk over
 // the entire snapshot diff stack simultaneously.
 func newFastAccountIterator(tree *Tree, root common.Hash, seek common.Hash, holdsTreeLock bool) (AccountIterator, error) {
-	return newFastIterator(tree, root, common.Hash{}, seek, true, holdsTreeLock)
+	_ = "STUB: not implemented"
+	return *new(AccountIterator), nil
 }
 
 // newFastStorageIterator creates a new hierarchical storage iterator with one
 // element per diff layer. The returned combo iterator can be used to walk over
 // the entire snapshot diff stack simultaneously.
 func newFastStorageIterator(tree *Tree, root common.Hash, account common.Hash, seek common.Hash, holdsTreeLock bool) (StorageIterator, error) {
-	return newFastIterator(tree, root, account, seek, false, holdsTreeLock)
+	_ = "STUB: not implemented"
+	return *new(StorageIterator), nil
 }

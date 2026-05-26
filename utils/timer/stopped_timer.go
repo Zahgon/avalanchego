@@ -15,10 +15,4 @@ import "time"
 // It enables re-using the timer across loop iterations without
 // needing to have the first loop iteration perform any == nil checks
 // to initialize the first invocation.
-func StoppedTimer() *time.Timer {
-	timer := time.NewTimer(0)
-	if !timer.Stop() {
-		<-timer.C
-	}
-	return timer
-}
+func StoppedTimer() *time.Timer { _ = "STUB: not implemented"; return nil }

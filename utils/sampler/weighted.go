@@ -10,6 +10,4 @@ type Weighted interface {
 	Sample(sampleValue uint64) (int, bool)
 }
 
-func NewWeighted() Weighted {
-	return &weightedHeap{}
-}
+func NewWeighted() Weighted { _ = "STUB: not implemented"; return *new(Weighted) }

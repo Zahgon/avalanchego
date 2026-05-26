@@ -5,11 +5,10 @@ package extrastest
 
 import (
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
-	"github.com/ava-labs/avalanchego/upgrade"
 	"github.com/ava-labs/avalanchego/upgrade/upgradetest"
 )
 
 func ForkToAvalancheRules(fork upgradetest.Fork) extras.AvalancheRules {
-	networkUpgrades := extras.GetNetworkUpgrades(upgradetest.GetConfig(fork))
-	return networkUpgrades.GetAvalancheRules(uint64(upgrade.InitiallyActiveTime.Unix()))
+	_ = "STUB: not implemented"
+	return *new(extras.AvalancheRules)
 }

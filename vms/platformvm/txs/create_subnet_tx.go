@@ -21,31 +21,14 @@ type CreateSubnetTx struct {
 // InitCtx sets the FxID fields in the inputs and outputs of this
 // [CreateSubnetTx]. Also sets the [ctx] to the given [vm.ctx] so that
 // the addresses can be json marshalled into human readable format
-func (tx *CreateSubnetTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	tx.Owner.InitCtx(ctx)
-}
+func (tx *CreateSubnetTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // SyntacticVerify verifies that this transaction is well-formed
 func (tx *CreateSubnetTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := tx.Owner.Verify(); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *CreateSubnetTx) Visit(visitor Visitor) error {
-	return visitor.CreateSubnetTx(tx)
-}
+// already passed syntactic verification
+
+func (tx *CreateSubnetTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

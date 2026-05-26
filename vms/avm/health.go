@@ -7,5 +7,6 @@ import "context"
 
 // TODO: add health checks
 func (*VM) HealthCheck(context.Context) (interface{}, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }

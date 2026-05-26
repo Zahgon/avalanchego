@@ -61,7 +61,8 @@ var DefaultDialOptions = []grpc.DialOption{
 // Dial returns a gRPC ClientConn with the dial options as defined by
 // DefaultDialOptions. DialOption can also optionally be passed.
 func Dial(addr string, opts ...DialOption) (*grpc.ClientConn, error) {
-	return grpc.Dial("passthrough:///"+addr, newDialOpts(opts...)...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DialOptions are options which can be applied to a gRPC client in addition to
@@ -73,32 +74,22 @@ type DialOptions struct {
 // append(DefaultDialOptions, ...) will always allocate a new slice and will
 // not overwrite any potential data that may have previously been appended to
 // DefaultServerOptions https://go.dev/ref/spec#Composite_literals
-func newDialOpts(opts ...DialOption) []grpc.DialOption {
-	d := &DialOptions{opts: DefaultDialOptions}
-	d.applyOpts(opts)
-	return d.opts
-}
+func newDialOpts(opts ...DialOption) []grpc.DialOption { _ = "STUB: not implemented"; return nil }
 
-func (d *DialOptions) applyOpts(opts []DialOption) {
-	for _, opt := range opts {
-		opt(d)
-	}
-}
+func (d *DialOptions) applyOpts(opts []DialOption) { _ = "STUB: not implemented"; return }
 
 type DialOption func(*DialOptions)
 
 // WithChainUnaryInterceptor takes a list of unary client interceptors which
 // are added to the dial options.
 func WithChainUnaryInterceptor(interceptors ...grpc.UnaryClientInterceptor) DialOption {
-	return func(d *DialOptions) {
-		d.opts = append(d.opts, grpc.WithChainUnaryInterceptor(interceptors...))
-	}
+	_ = "STUB: not implemented"
+	return *new(DialOption)
 }
 
 // WithChainStreamInterceptor takes a list of stream client interceptors which
 // are added to the dial options.
 func WithChainStreamInterceptor(interceptors ...grpc.StreamClientInterceptor) DialOption {
-	return func(d *DialOptions) {
-		d.opts = append(d.opts, grpc.WithChainStreamInterceptor(interceptors...))
-	}
+	_ = "STUB: not implemented"
+	return *new(DialOption)
 }

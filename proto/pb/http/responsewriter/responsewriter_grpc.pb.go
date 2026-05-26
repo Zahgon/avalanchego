@@ -8,9 +8,8 @@ package responsewriter
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -48,47 +47,28 @@ type writerClient struct {
 }
 
 func NewWriterClient(cc grpc.ClientConnInterface) WriterClient {
-	return &writerClient{cc}
+	_ = "STUB: not implemented"
+	return *new(WriterClient)
 }
 
 func (c *writerClient) Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WriteResponse)
-	err := c.cc.Invoke(ctx, Writer_Write_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *writerClient) WriteHeader(ctx context.Context, in *WriteHeaderRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Writer_WriteHeader_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *writerClient) Flush(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Writer_Flush_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *writerClient) Hijack(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HijackResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HijackResponse)
-	err := c.cc.Invoke(ctx, Writer_Hijack_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WriterServer is the server API for Writer service.
@@ -117,108 +97,69 @@ type WriterServer interface {
 type UnimplementedWriterServer struct{}
 
 func (UnimplementedWriterServer) Write(context.Context, *WriteRequest) (*WriteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Write not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedWriterServer) WriteHeader(context.Context, *WriteHeaderRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method WriteHeader not implemented")
-}
-func (UnimplementedWriterServer) Flush(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Flush not implemented")
-}
-func (UnimplementedWriterServer) Hijack(context.Context, *emptypb.Empty) (*HijackResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Hijack not implemented")
-}
-func (UnimplementedWriterServer) mustEmbedUnimplementedWriterServer() {}
-func (UnimplementedWriterServer) testEmbeddedByValue()                {}
 
-// UnsafeWriterServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to WriterServer will
-// result in compilation errors.
+func (UnimplementedWriterServer) WriteHeader(context.Context, *WriteHeaderRequest) (*emptypb.Empty, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedWriterServer) Flush(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedWriterServer) Hijack(context.Context, *emptypb.Empty) (*HijackResponse, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedWriterServer) mustEmbedUnimplementedWriterServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedWriterServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeWriterServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to WriterServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeWriterServer interface {
 	mustEmbedUnimplementedWriterServer()
 }
 
 func RegisterWriterServer(s grpc.ServiceRegistrar, srv WriterServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedWriterServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&Writer_ServiceDesc, srv)
+	return
 }
 
 func _Writer_Write_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WriteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WriterServer).Write(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Writer_Write_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WriterServer).Write(ctx, req.(*WriteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _Writer_WriteHeader_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WriteHeaderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WriterServer).WriteHeader(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Writer_WriteHeader_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WriterServer).WriteHeader(ctx, req.(*WriteHeaderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _Writer_Flush_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WriterServer).Flush(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Writer_Flush_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WriterServer).Flush(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _Writer_Hijack_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WriterServer).Hijack(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Writer_Hijack_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WriterServer).Hijack(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Writer_ServiceDesc is the grpc.ServiceDesc for Writer service.

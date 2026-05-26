@@ -4,8 +4,6 @@
 package utils
 
 import (
-	"bytes"
-
 	"github.com/ava-labs/libevm/common"
 )
 
@@ -17,7 +15,4 @@ type AddressRange struct {
 
 // Contains returns true iff [addr] is contained within the (inclusive)
 // range of addresses defined by [a].
-func (a *AddressRange) Contains(addr common.Address) bool {
-	addrBytes := addr.Bytes()
-	return bytes.Compare(addrBytes, a.Start[:]) >= 0 && bytes.Compare(addrBytes, a.End[:]) <= 0
-}
+func (a *AddressRange) Contains(addr common.Address) bool { _ = "STUB: not implemented"; return false }

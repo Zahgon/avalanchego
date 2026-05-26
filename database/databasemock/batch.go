@@ -10,8 +10,6 @@
 package databasemock
 
 import (
-	reflect "reflect"
-
 	database "github.com/ava-labs/avalanchego/database"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,109 +27,59 @@ type BatchMockRecorder struct {
 }
 
 // NewBatch creates a new mock instance.
-func NewBatch(ctrl *gomock.Controller) *Batch {
-	mock := &Batch{ctrl: ctrl}
-	mock.recorder = &BatchMockRecorder{mock}
-	return mock
-}
+func NewBatch(ctrl *gomock.Controller) *Batch { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Batch) EXPECT() *BatchMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Delete mocks base method.
+	return nil
 }
 
-// Delete mocks base method.
-func (m *Batch) Delete(key []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Delete", key)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Batch) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Delete indicates an expected call of Delete.
-func (mr *BatchMockRecorder) Delete(key any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Delete", reflect.TypeOf((*Batch)(nil).Delete), key)
-}
+func (mr *BatchMockRecorder) Delete(key any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Inner mocks base method.
-func (m *Batch) Inner() database.Batch {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Inner")
-	ret0, _ := ret[0].(database.Batch)
-	return ret0
-}
+func (m *Batch) Inner() database.Batch { _ = "STUB: not implemented"; return *new(database.Batch) }
 
 // Inner indicates an expected call of Inner.
-func (mr *BatchMockRecorder) Inner() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Inner", reflect.TypeOf((*Batch)(nil).Inner))
-}
+func (mr *BatchMockRecorder) Inner() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Put mocks base method.
-func (m *Batch) Put(key, value []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Put", key, value)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Batch) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Put indicates an expected call of Put.
 func (mr *BatchMockRecorder) Put(key, value any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Put", reflect.TypeOf((*Batch)(nil).Put), key, value)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Replay mocks base method.
 func (m *Batch) Replay(w database.KeyValueWriterDeleter) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Replay", w)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Replay indicates an expected call of Replay.
-func (mr *BatchMockRecorder) Replay(w any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Replay", reflect.TypeOf((*Batch)(nil).Replay), w)
-}
+func (mr *BatchMockRecorder) Replay(w any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Reset mocks base method.
-func (m *Batch) Reset() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Reset")
-}
+func (m *Batch) Reset() { _ = "STUB: not implemented"; return }
 
 // Reset indicates an expected call of Reset.
-func (mr *BatchMockRecorder) Reset() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reset", reflect.TypeOf((*Batch)(nil).Reset))
-}
+func (mr *BatchMockRecorder) Reset() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Size mocks base method.
-func (m *Batch) Size() int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Size")
-	ret0, _ := ret[0].(int)
-	return ret0
-}
+func (m *Batch) Size() int { _ = "STUB: not implemented"; return 0 }
 
 // Size indicates an expected call of Size.
-func (mr *BatchMockRecorder) Size() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Size", reflect.TypeOf((*Batch)(nil).Size))
-}
+func (mr *BatchMockRecorder) Size() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Write mocks base method.
-func (m *Batch) Write() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Write")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Batch) Write() error { _ = "STUB: not implemented"; return nil }
 
 // Write indicates an expected call of Write.
-func (mr *BatchMockRecorder) Write() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Write", reflect.TypeOf((*Batch)(nil).Write))
-}
+func (mr *BatchMockRecorder) Write() *gomock.Call { _ = "STUB: not implemented"; return nil }

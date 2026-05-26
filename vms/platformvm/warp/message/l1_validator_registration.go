@@ -4,8 +4,6 @@
 package message
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -28,23 +26,13 @@ func NewL1ValidatorRegistration(
 	validationID ids.ID,
 	registered bool,
 ) (*L1ValidatorRegistration, error) {
-	msg := &L1ValidatorRegistration{
-		ValidationID: validationID,
-		Registered:   registered,
-	}
-	return msg, Initialize(msg)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ParseL1ValidatorRegistration parses bytes into an initialized
 // L1ValidatorRegistration.
 func ParseL1ValidatorRegistration(b []byte) (*L1ValidatorRegistration, error) {
-	payloadIntf, err := Parse(b)
-	if err != nil {
-		return nil, err
-	}
-	payload, ok := payloadIntf.(*L1ValidatorRegistration)
-	if !ok {
-		return nil, fmt.Errorf("%w: %T", ErrWrongType, payloadIntf)
-	}
-	return payload, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

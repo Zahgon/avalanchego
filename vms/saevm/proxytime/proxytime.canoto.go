@@ -41,44 +41,12 @@ type canotoData_Time struct {
 }
 
 // CanotoSpec returns the specification of this canoto message.
-func (*Time[T1]) CanotoSpec(...reflect.Type) *canoto.Spec {
-	var zero Time[T1]
-	s := &canoto.Spec{
-		Name: "Time",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber: canoto__Time__seconds,
-				Name:        "seconds",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.seconds),
-			},
-			{
-				FieldNumber: canoto__Time__fraction,
-				Name:        "fraction",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.fraction),
-			},
-			{
-				FieldNumber: canoto__Time__hertz,
-				Name:        "hertz",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.hertz),
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
-}
+func (*Time[T1]) CanotoSpec(...reflect.Type) *canoto.Spec { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *Time[T1]) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *Time[T1]) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -87,60 +55,8 @@ func (c *Time[T1]) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *Time[T1]) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = Time[T1]{}
-	c.canotoData.size.Store(uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__Time__seconds:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.seconds); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.seconds) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__Time__fraction:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.fraction); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.fraction) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__Time__hertz:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.hertz); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.hertz) {
-				return canoto.ErrZeroValue
-			}
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
 
@@ -152,24 +68,14 @@ func (c *Time[T1]) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
 func (c *Time[T1]) ValidCanoto() bool {
-	return true
+	_ = "STUB: not implemented"
+
+	// CalculateCanotoCache populates size and OneOf caches based on the current
+	// values in the struct.
+	return false
 }
 
-// CalculateCanotoCache populates size and OneOf caches based on the current
-// values in the struct.
-func (c *Time[T1]) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.seconds) {
-		size += uint64(len(canoto__Time__seconds__tag)) + canoto.SizeUint(c.seconds)
-	}
-	if !canoto.IsZero(c.fraction) {
-		size += uint64(len(canoto__Time__fraction__tag)) + canoto.SizeUint(c.fraction)
-	}
-	if !canoto.IsZero(c.hertz) {
-		size += uint64(len(canoto__Time__hertz__tag)) + canoto.SizeUint(c.hertz)
-	}
-	c.canotoData.size.Store(size)
-}
+func (c *Time[T1]) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -178,21 +84,12 @@ func (c *Time[T1]) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *Time[T1]) CachedCanotoSize() uint64 {
-	return c.canotoData.size.Load()
-}
+func (c *Time[T1]) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
-func (c *Time[T1]) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *Time[T1]) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -202,17 +99,6 @@ func (c *Time[T1]) MarshalCanoto() []byte {
 //
 // It is assumed that this struct is ValidCanoto.
 func (c *Time[T1]) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.seconds) {
-		canoto.Append(&w, canoto__Time__seconds__tag)
-		canoto.AppendUint(&w, c.seconds)
-	}
-	if !canoto.IsZero(c.fraction) {
-		canoto.Append(&w, canoto__Time__fraction__tag)
-		canoto.AppendUint(&w, c.fraction)
-	}
-	if !canoto.IsZero(c.hertz) {
-		canoto.Append(&w, canoto__Time__hertz__tag)
-		canoto.AppendUint(&w, c.hertz)
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }

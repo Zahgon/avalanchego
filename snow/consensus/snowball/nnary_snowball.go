@@ -4,19 +4,14 @@
 package snowball
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 )
 
 var _ Nnary = (*nnarySnowball)(nil)
 
 func newNnarySnowball(alphaPreference int, terminationConditions []terminationCondition, choice ids.ID) nnarySnowball {
-	return nnarySnowball{
-		nnarySnowflake:     newNnarySnowflake(alphaPreference, terminationConditions, choice),
-		preference:         choice,
-		preferenceStrength: make(map[ids.ID]int),
-	}
+	_ = "STUB: not implemented"
+	return *new(nnarySnowball)
 }
 
 // nnarySnowball is a naive implementation of a multi-color snowball instance
@@ -37,30 +32,14 @@ type nnarySnowball struct {
 }
 
 func (sb *nnarySnowball) Preference() ids.ID {
+	_ = "STUB: not implemented"
 	// It is possible, with low probability, that the snowflake preference is
 	// not equal to the snowball preference when snowflake finalizes. However,
 	// this case is handled for completion. Therefore, if snowflake is
 	// finalized, then our finalized snowflake choice should be preferred.
-	if sb.Finalized() {
-		return sb.nnarySnowflake.Preference()
-	}
-	return sb.preference
+	return *new(ids.ID)
 }
 
-func (sb *nnarySnowball) RecordPoll(count int, choice ids.ID) {
-	if count >= sb.alphaPreference {
-		preferenceStrength := sb.preferenceStrength[choice] + 1
-		sb.preferenceStrength[choice] = preferenceStrength
+func (sb *nnarySnowball) RecordPoll(count int, choice ids.ID) { _ = "STUB: not implemented"; return }
 
-		if preferenceStrength > sb.maxPreferenceStrength {
-			sb.preference = choice
-			sb.maxPreferenceStrength = preferenceStrength
-		}
-	}
-	sb.nnarySnowflake.RecordPoll(count, choice)
-}
-
-func (sb *nnarySnowball) String() string {
-	return fmt.Sprintf("SB(Preference = %s, PreferenceStrength = %d, %s)",
-		sb.preference, sb.maxPreferenceStrength, &sb.nnarySnowflake)
-}
+func (sb *nnarySnowball) String() string { _ = "STUB: not implemented"; return "" }

@@ -59,7 +59,8 @@ type ChainVMWithContext interface {
 // [snowman.Block] values returned by methods of the returned chain will be of
 // the concrete type [Block] with type parameter `BP`.
 func Convert[BP BlockProperties](vm ChainVM[BP]) ChainVMWithContext {
-	return &adaptor[BP]{vm}
+	_ = "STUB: not implemented"
+	return *new(ChainVMWithContext)
 }
 
 type adaptor[BP BlockProperties] struct {
@@ -74,7 +75,7 @@ type Block[BP BlockProperties] struct {
 }
 
 // Unwrap returns the [BlockProperties] carried by b.
-func (b Block[BP]) Unwrap() BP { return b.b }
+func (b Block[BP]) Unwrap() BP { _ = "STUB: not implemented"; return *new(BP) }
 
 type blockWithContext interface {
 	block.WithVerifyContext
@@ -82,67 +83,90 @@ type blockWithContext interface {
 }
 
 func (vm adaptor[BP]) newBlock(b BP, err error) (blockWithContext, error) {
-	if err != nil {
-		return nil, err
-	}
-	return Block[BP]{b, vm.ChainVM}, nil
+	_ = "STUB: not implemented"
+	return *new(blockWithContext), nil
 }
 
 func (vm adaptor[BP]) GetBlock(ctx context.Context, blkID ids.ID) (snowman.Block, error) {
-	return vm.newBlock(vm.ChainVM.GetBlock(ctx, blkID))
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm adaptor[BP]) ParseBlock(ctx context.Context, blockBytes []byte) (snowman.Block, error) {
-	return vm.newBlock(vm.ChainVM.ParseBlock(ctx, blockBytes))
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm adaptor[BP]) BuildBlock(ctx context.Context) (snowman.Block, error) {
-	return vm.newBlock(vm.ChainVM.BuildBlock(ctx, nil))
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm adaptor[BP]) BuildBlockWithContext(ctx context.Context, blockCtx *block.Context) (snowman.Block, error) {
-	return vm.newBlock(vm.ChainVM.BuildBlock(ctx, blockCtx))
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm adaptor[BP]) SetPreference(ctx context.Context, blkID ids.ID) error {
-	return vm.ChainVM.SetPreference(ctx, blkID, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm adaptor[BP]) SetPreferenceWithContext(ctx context.Context, blkID ids.ID, blockCtx *block.Context) error {
-	return vm.ChainVM.SetPreference(ctx, blkID, blockCtx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Verify calls VerifyBlock(b) on the [ChainVM] that created b.
-func (b Block[BP]) Verify(ctx context.Context) error { return b.vm.VerifyBlock(ctx, nil, b.b) }
+func (b Block[BP]) Verify(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Accept calls AcceptBlock(b) on the [ChainVM] that created b.
-func (b Block[BP]) Accept(ctx context.Context) error { return b.vm.AcceptBlock(ctx, b.b) }
+func (b Block[BP]) Accept(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Reject calls RejectBlock(b) on the [ChainVM] that created b.
-func (b Block[BP]) Reject(ctx context.Context) error { return b.vm.RejectBlock(ctx, b.b) }
+func (b Block[BP]) Reject(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // ShouldVerifyWithContext returns true, indicating that the block
 // SHOULD be verified with [VerifyWithContext].
 func (Block[BP]) ShouldVerifyWithContext(ctx context.Context) (bool, error) {
-	return true, nil
+	_ = "STUB: not implemented"
+
+	// VerifyWithContext calls VerifyBlock(ctx, blockCtx, b) on the [ChainVM] that created b.
+	return false, nil
 }
 
-// VerifyWithContext calls VerifyBlock(ctx, blockCtx, b) on the [ChainVM] that created b.
 func (b Block[BP]) VerifyWithContext(ctx context.Context, blockCtx *block.Context) error {
-	return b.vm.VerifyBlock(ctx, blockCtx, b.b)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ID propagates the respective method from the [BlockProperties] carried by b.
-func (b Block[BP]) ID() ids.ID { return b.b.ID() }
+func (b Block[BP]) ID() ids.ID {
+	_ = "STUB: not implemented"
 
-// Parent propagates the respective method from the [BlockProperties] carried by b.
-func (b Block[BP]) Parent() ids.ID { return b.b.Parent() }
+	// Parent propagates the respective method from the [BlockProperties] carried by b.
+	return *new(ids.ID)
+}
 
-// Bytes propagates the respective method from the [BlockProperties] carried by b.
-func (b Block[BP]) Bytes() []byte { return b.b.Bytes() }
+func (b Block[BP]) Parent() ids.ID {
+	_ = "STUB: not implemented"
 
-// Height propagates the respective method from the [BlockProperties] carried by b.
-func (b Block[BP]) Height() uint64 { return b.b.Height() }
+	// Bytes propagates the respective method from the [BlockProperties] carried by b.
+	return *new(ids.ID)
+}
 
-// Timestamp propagates the respective method from the [BlockProperties] carried by b.
-func (b Block[BP]) Timestamp() time.Time { return b.b.Timestamp() }
+func (b Block[BP]) Bytes() []byte {
+	_ = "STUB: not implemented"
+
+	// Height propagates the respective method from the [BlockProperties] carried by b.
+	return nil
+}
+
+func (b Block[BP]) Height() uint64 {
+	_ = "STUB: not implemented"
+
+	// Timestamp propagates the respective method from the [BlockProperties] carried by b.
+	return 0
+}
+
+func (b Block[BP]) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }

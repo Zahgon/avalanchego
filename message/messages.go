@@ -9,13 +9,10 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"google.golang.org/protobuf/proto"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/proto/pb/p2p"
 	"github.com/ava-labs/avalanchego/utils/compression"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/timer/mockable"
 )
 
 const (
@@ -44,16 +41,9 @@ type InboundMessage struct {
 	onFinishedHandling    func()
 }
 
-func (m *InboundMessage) OnFinishedHandling() {
-	if m.onFinishedHandling != nil {
-		m.onFinishedHandling()
-	}
-}
+func (m *InboundMessage) OnFinishedHandling() { _ = "STUB: not implemented"; return }
 
-func (m *InboundMessage) String() string {
-	return fmt.Sprintf("%s Op: %s Message: %s",
-		m.NodeID, m.Op, m.Message)
-}
+func (m *InboundMessage) String() string { _ = "STUB: not implemented"; return "" }
 
 // OutboundMessage represents a set of fields for an outbound message that can
 // be sent over the wire
@@ -81,159 +71,39 @@ func newMsgBuilder(
 	metrics prometheus.Registerer,
 	maxMessageTimeout time.Duration,
 ) (*msgBuilder, error) {
-	zstdCompressor, err := compression.NewZstdCompressor(constants.DefaultMaxMessageSize)
-	if err != nil {
-		return nil, err
-	}
-
-	mb := &msgBuilder{
-		zstdCompressor: zstdCompressor,
-		count: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "codec_compressed_count",
-				Help: "number of compressed messages",
-			},
-			metricLabels,
-		),
-		duration: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "codec_compressed_duration",
-				Help: "time spent handling compressed messages",
-			},
-			metricLabels,
-		),
-
-		maxMessageTimeout: maxMessageTimeout,
-	}
-	return mb, errors.Join(
-		metrics.Register(mb.count),
-		metrics.Register(mb.duration),
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (mb *msgBuilder) marshal(
 	uncompressedMsg *p2p.Message,
 	compressionType compression.Type,
 ) ([]byte, int, Op, error) {
-	uncompressedMsgBytes, err := proto.Marshal(uncompressedMsg)
-	if err != nil {
-		return nil, 0, 0, err
-	}
-
-	op, err := ToOp(uncompressedMsg)
-	if err != nil {
-		return nil, 0, 0, err
-	}
-
-	// If compression is enabled, we marshal twice:
-	// 1. the original message
-	// 2. the message with compressed bytes
-	//
-	// This recursive packing allows us to avoid an extra compression on/off
-	// field in the message.
-	var (
-		startTime     = time.Now()
-		compressedMsg p2p.Message
-	)
-	switch compressionType {
-	case compression.TypeNone:
-		return uncompressedMsgBytes, 0, op, nil
-	case compression.TypeZstd:
-		compressedBytes, err := mb.zstdCompressor.Compress(uncompressedMsgBytes)
-		if err != nil {
-			return nil, 0, 0, err
-		}
-		compressedMsg = p2p.Message{
-			Message: &p2p.Message_CompressedZstd{
-				CompressedZstd: compressedBytes,
-			},
-		}
-	default:
-		return nil, 0, 0, errUnknownCompressionType
-	}
-
-	compressedMsgBytes, err := proto.Marshal(&compressedMsg)
-	if err != nil {
-		return nil, 0, 0, err
-	}
-	compressTook := time.Since(startTime)
-
-	labels := prometheus.Labels{
-		typeLabel:      compressionType.String(),
-		opLabel:        op.String(),
-		directionLabel: compressionLabel,
-	}
-	mb.count.With(labels).Inc()
-	mb.duration.With(labels).Add(float64(compressTook))
-
-	bytesSaved := len(uncompressedMsgBytes) - len(compressedMsgBytes)
-	return compressedMsgBytes, bytesSaved, op, nil
+	_ = "STUB: not implemented"
+	return nil, 0, *new(Op), nil
 }
+
+// If compression is enabled, we marshal twice:
+// 1. the original message
+// 2. the message with compressed bytes
+//
+// This recursive packing allows us to avoid an extra compression on/off
+// field in the message.
 
 func (mb *msgBuilder) unmarshal(b []byte) (*p2p.Message, int, Op, error) {
-	m := new(p2p.Message)
-	if err := proto.Unmarshal(b, m); err != nil {
-		return nil, 0, 0, err
-	}
-
-	// Figure out what compression type, if any, was used to compress the message.
-	var (
-		compressor      compression.Compressor
-		compressedBytes []byte
-		zstdCompressed  = m.GetCompressedZstd()
-	)
-	switch {
-	case len(zstdCompressed) > 0:
-		compressor = mb.zstdCompressor
-		compressedBytes = zstdCompressed
-	default:
-		// The message wasn't compressed
-		op, err := ToOp(m)
-		return m, 0, op, err
-	}
-
-	startTime := time.Now()
-
-	decompressed, err := compressor.Decompress(compressedBytes)
-	if err != nil {
-		return nil, 0, 0, err
-	}
-	bytesSavedCompression := len(decompressed) - len(compressedBytes)
-
-	if err := proto.Unmarshal(decompressed, m); err != nil {
-		return nil, 0, 0, err
-	}
-	decompressTook := time.Since(startTime)
-
-	// Record decompression time metric
-	op, err := ToOp(m)
-	if err != nil {
-		return nil, 0, 0, err
-	}
-
-	labels := prometheus.Labels{
-		typeLabel:      compression.TypeZstd.String(),
-		opLabel:        op.String(),
-		directionLabel: decompressionLabel,
-	}
-	mb.count.With(labels).Inc()
-	mb.duration.With(labels).Add(float64(decompressTook))
-
-	return m, bytesSavedCompression, op, nil
+	_ = "STUB: not implemented"
+	return nil, 0, *new(Op), nil
 }
 
-func (mb *msgBuilder) createOutbound(m *p2p.Message, compressionType compression.Type, bypassThrottling bool) (*OutboundMessage, error) {
-	b, saved, op, err := mb.marshal(m, compressionType)
-	if err != nil {
-		return nil, err
-	}
+// Figure out what compression type, if any, was used to compress the message.
 
-	return &OutboundMessage{
-		BypassThrottling:      bypassThrottling,
-		Op:                    op,
-		Bytes:                 b,
-		BytesSavedCompression: saved,
-	}, nil
+// The message wasn't compressed
+
+// Record decompression time metric
+
+func (mb *msgBuilder) createOutbound(m *p2p.Message, compressionType compression.Type, bypassThrottling bool) (*OutboundMessage, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (mb *msgBuilder) parseInbound(
@@ -241,28 +111,6 @@ func (mb *msgBuilder) parseInbound(
 	nodeID ids.NodeID,
 	onFinishedHandling func(),
 ) (*InboundMessage, error) {
-	m, bytesSavedCompression, op, err := mb.unmarshal(bytes)
-	if err != nil {
-		return nil, err
-	}
-
-	msg, err := Unwrap(m)
-	if err != nil {
-		return nil, err
-	}
-
-	expiration := mockable.MaxTime
-	if deadline, ok := GetDeadline(msg); ok {
-		deadline = min(deadline, mb.maxMessageTimeout)
-		expiration = time.Now().Add(deadline)
-	}
-
-	return &InboundMessage{
-		NodeID:                nodeID,
-		Op:                    op,
-		Message:               msg,
-		Expiration:            expiration,
-		onFinishedHandling:    onFinishedHandling,
-		BytesSavedCompression: bytesSavedCompression,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

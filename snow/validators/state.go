@@ -9,7 +9,6 @@ import (
 	"sync"
 
 	"github.com/ava-labs/avalanchego/cache"
-	"github.com/ava-labs/avalanchego/cache/lru"
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -69,32 +68,21 @@ type lockedState struct {
 	s    State
 }
 
-func NewLockedState(lock sync.Locker, s State) State {
-	return &lockedState{
-		lock: lock,
-		s:    s,
-	}
-}
+func NewLockedState(lock sync.Locker, s State) State { _ = "STUB: not implemented"; return *new(State) }
 
 func (s *lockedState) GetMinimumHeight(ctx context.Context) (uint64, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetMinimumHeight(ctx)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *lockedState) GetCurrentHeight(ctx context.Context) (uint64, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetCurrentHeight(ctx)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *lockedState) GetSubnetID(ctx context.Context, chainID ids.ID) (ids.ID, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetSubnetID(ctx, chainID)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (s *lockedState) GetValidatorSet(
@@ -102,53 +90,45 @@ func (s *lockedState) GetValidatorSet(
 	height uint64,
 	subnetID ids.ID,
 ) (map[ids.NodeID]*GetValidatorOutput, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetValidatorSet(ctx, height, subnetID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *lockedState) GetWarpValidatorSets(
 	ctx context.Context,
 	height uint64,
 ) (map[ids.ID]WarpSet, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetWarpValidatorSets(ctx, height)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *lockedState) GetCurrentValidatorSet(
 	ctx context.Context,
 	subnetID ids.ID,
 ) (map[ids.ID]*GetCurrentValidatorOutput, uint64, error) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	return s.s.GetCurrentValidatorSet(ctx, subnetID)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 type noValidators struct {
 	State
 }
 
-func NewNoValidatorsState(state State) State {
-	return &noValidators{
-		State: state,
-	}
-}
+func NewNoValidatorsState(state State) State { _ = "STUB: not implemented"; return *new(State) }
 
 func (*noValidators) GetWarpValidatorSets(context.Context, uint64) (map[ids.ID]WarpSet, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func (*noValidators) GetValidatorSet(context.Context, uint64, ids.ID) (map[ids.NodeID]*GetValidatorOutput, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func (n *noValidators) GetCurrentValidatorSet(ctx context.Context, _ ids.ID) (map[ids.ID]*GetCurrentValidatorOutput, uint64, error) {
-	height, err := n.GetCurrentHeight(ctx)
-	return nil, height, err
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 type cachedState struct {
@@ -165,38 +145,17 @@ type cachedState struct {
 	validatorSetsCache cache.Cacher[uint64, map[ids.ID]WarpSet]
 }
 
-func NewCachedState(state State) State {
-	return &cachedState{
-		State:              state,
-		validatorSetsCache: lru.NewCache[uint64, map[ids.ID]WarpSet](validatorSetsCacheSize),
-		subnetIDsCache:     lru.NewCache[ids.ID, ids.ID](subnetIDsCacheSize),
-	}
-}
+func NewCachedState(state State) State { _ = "STUB: not implemented"; return *new(State) }
 
 func (c *cachedState) GetSubnetID(ctx context.Context, chainID ids.ID) (ids.ID, error) {
-	if s, ok := c.subnetIDsCache.Get(chainID); ok {
-		return s, nil
-	}
-	s, err := c.State.GetSubnetID(ctx, chainID)
-	if err != nil {
-		return ids.Empty, err
-	}
-	c.subnetIDsCache.Put(chainID, s)
-	return s, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (c *cachedState) GetWarpValidatorSets(
 	ctx context.Context,
 	height uint64,
 ) (map[ids.ID]WarpSet, error) {
-	if s, ok := c.validatorSetsCache.Get(height); ok {
-		return s, nil
-	}
-
-	s, err := c.State.GetWarpValidatorSets(ctx, height)
-	if err != nil {
-		return nil, err
-	}
-	c.validatorSetsCache.Put(height, s)
-	return s, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

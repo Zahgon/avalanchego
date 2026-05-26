@@ -4,8 +4,6 @@
 package node
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
@@ -17,10 +15,8 @@ var _ validators.Manager = (*overriddenManager)(nil)
 // newOverriddenManager returns a Manager that overrides of all calls to the
 // underlying Manager to only operate on the validators in [subnetID].
 func newOverriddenManager(subnetID ids.ID, manager validators.Manager) *overriddenManager {
-	return &overriddenManager{
-		subnetID: subnetID,
-		manager:  manager,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // overriddenManager is a wrapper around a Manager that overrides of all calls
@@ -33,68 +29,72 @@ type overriddenManager struct {
 }
 
 func (o *overriddenManager) AddStaker(_ ids.ID, nodeID ids.NodeID, pk *bls.PublicKey, txID ids.ID, weight uint64) error {
-	return o.manager.AddStaker(o.subnetID, nodeID, pk, txID, weight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *overriddenManager) AddWeight(_ ids.ID, nodeID ids.NodeID, weight uint64) error {
-	return o.manager.AddWeight(o.subnetID, nodeID, weight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *overriddenManager) GetWeight(_ ids.ID, nodeID ids.NodeID) uint64 {
-	return o.manager.GetWeight(o.subnetID, nodeID)
+	_ = "STUB: not implemented"
+	return 0
 }
 
 func (o *overriddenManager) GetValidator(_ ids.ID, nodeID ids.NodeID) (*validators.Validator, bool) {
-	return o.manager.GetValidator(o.subnetID, nodeID)
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (o *overriddenManager) SubsetWeight(_ ids.ID, nodeIDs set.Set[ids.NodeID]) (uint64, error) {
-	return o.manager.SubsetWeight(o.subnetID, nodeIDs)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (o *overriddenManager) RemoveWeight(_ ids.ID, nodeID ids.NodeID, weight uint64) error {
-	return o.manager.RemoveWeight(o.subnetID, nodeID, weight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (o *overriddenManager) NumSubnets() int {
-	if o.manager.NumValidators(o.subnetID) == 0 {
-		return 0
-	}
-	return 1
-}
+func (o *overriddenManager) NumSubnets() int { _ = "STUB: not implemented"; return 0 }
 
-func (o *overriddenManager) NumValidators(ids.ID) int {
-	return o.manager.NumValidators(o.subnetID)
-}
+func (o *overriddenManager) NumValidators(ids.ID) int { _ = "STUB: not implemented"; return 0 }
 
 func (o *overriddenManager) TotalWeight(ids.ID) (uint64, error) {
-	return o.manager.TotalWeight(o.subnetID)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (o *overriddenManager) Sample(_ ids.ID, size int) ([]ids.NodeID, error) {
-	return o.manager.Sample(o.subnetID, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (o *overriddenManager) GetAllMaps() map[ids.ID]map[ids.NodeID]*validators.GetValidatorOutput {
-	return o.manager.GetAllMaps()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *overriddenManager) GetMap(ids.ID) map[ids.NodeID]*validators.GetValidatorOutput {
-	return o.manager.GetMap(o.subnetID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *overriddenManager) RegisterCallbackListener(listener validators.ManagerCallbackListener) {
-	o.manager.RegisterCallbackListener(listener)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (o *overriddenManager) RegisterSetCallbackListener(_ ids.ID, listener validators.SetCallbackListener) {
-	o.manager.RegisterSetCallbackListener(o.subnetID, listener)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (o *overriddenManager) String() string {
-	return fmt.Sprintf("Overridden Validator Manager (SubnetID = %s): %s", o.subnetID, o.manager)
-}
+func (o *overriddenManager) String() string { _ = "STUB: not implemented"; return "" }
 
 func (o *overriddenManager) GetValidatorIDs(ids.ID) []ids.NodeID {
-	return o.manager.GetValidatorIDs(o.subnetID)
+	_ = "STUB: not implemented"
+	return nil
 }

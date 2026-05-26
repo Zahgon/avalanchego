@@ -10,9 +10,9 @@ package feemanager
 import (
 	"math/big"
 
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/commontype"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
+	"github.com/ava-labs/libevm/common"
 )
 
 // FeeConfigChangedEventGasCost is the gas cost of a FeeConfigChanged event.
@@ -37,47 +37,22 @@ type changeFeeConfigEventData struct {
 // PackFeeConfigChangedEvent packs the event into the appropriate arguments for changeFeeConfig.
 // It returns topic hashes and the encoded non-indexed data.
 func PackFeeConfigChangedEvent(sender common.Address, oldConfig commontype.FeeConfig, newConfig commontype.FeeConfig) ([]common.Hash, []byte, error) {
-	oldConfigC := convertFromCommonConfig(oldConfig)
-	newConfigC := convertFromCommonConfig(newConfig)
-	return FeeManagerABI.PackEvent("FeeConfigChanged", sender, oldConfigC, newConfigC)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // UnpackFeeConfigChangedEventData attempts to unpack non-indexed [dataBytes].
 func UnpackFeeConfigChangedEventData(dataBytes []byte) (commontype.FeeConfig, commontype.FeeConfig, error) {
-	eventData := make([]changeFeeConfigEventData, 2)
-	err := FeeManagerABI.UnpackIntoInterface(&eventData, "FeeConfigChanged", dataBytes)
-	if err != nil {
-		return commontype.FeeConfig{}, commontype.FeeConfig{}, err
-	}
-	return convertToCommonConfig(eventData[0]), convertToCommonConfig(eventData[1]), err
+	_ = "STUB: not implemented"
+	return *new(commontype.FeeConfig), *new(commontype.FeeConfig), nil
 }
 
 func convertFromCommonConfig(config commontype.FeeConfig) changeFeeConfigEventData {
-	return changeFeeConfigEventData{
-		GasLimit:                 config.GasLimit,
-		TargetBlockRate:          new(big.Int).SetUint64(config.TargetBlockRate),
-		MinBaseFee:               config.MinBaseFee,
-		TargetGas:                config.TargetGas,
-		BaseFeeChangeDenominator: config.BaseFeeChangeDenominator,
-		MinBlockGasCost:          config.MinBlockGasCost,
-		MaxBlockGasCost:          config.MaxBlockGasCost,
-		BlockGasCostStep:         config.BlockGasCostStep,
-	}
+	_ = "STUB: not implemented"
+	return *new(changeFeeConfigEventData)
 }
 
 func convertToCommonConfig(config changeFeeConfigEventData) commontype.FeeConfig {
-	var targetBlockRate uint64
-	if config.TargetBlockRate != nil {
-		targetBlockRate = config.TargetBlockRate.Uint64()
-	}
-	return commontype.FeeConfig{
-		GasLimit:                 config.GasLimit,
-		TargetBlockRate:          targetBlockRate,
-		MinBaseFee:               config.MinBaseFee,
-		TargetGas:                config.TargetGas,
-		BaseFeeChangeDenominator: config.BaseFeeChangeDenominator,
-		MinBlockGasCost:          config.MinBlockGasCost,
-		MaxBlockGasCost:          config.MaxBlockGasCost,
-		BlockGasCostStep:         config.BlockGasCostStep,
-	}
+	_ = "STUB: not implemented"
+	return *new(commontype.FeeConfig)
 }

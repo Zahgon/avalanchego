@@ -28,9 +28,6 @@
 package core
 
 import (
-	crand "crypto/rand"
-	"math"
-	"math/big"
 	mrand "math/rand"
 	"sync/atomic"
 
@@ -38,7 +35,6 @@ import (
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/common/lru"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 )
@@ -82,132 +78,84 @@ type HeaderChain struct {
 // NewHeaderChain creates a new HeaderChain structure. ProcInterrupt points
 // to the parent's interrupt semaphore.
 func NewHeaderChain(chainDb ethdb.Database, config *params.ChainConfig, cacheConfig *CacheConfig, engine consensus.Engine) (*HeaderChain, error) {
-	acceptedNumberCache := NewFIFOCache[uint64, *types.Header](cacheConfig.AcceptedCacheSize)
-
-	// Seed a fast but crypto originating random generator
-	seed, err := crand.Int(crand.Reader, big.NewInt(math.MaxInt64))
-	if err != nil {
-		return nil, err
-	}
-
-	hc := &HeaderChain{
-		config:              config,
-		chainDb:             chainDb,
-		headerCache:         lru.NewCache[common.Hash, *types.Header](headerCacheLimit),
-		numberCache:         lru.NewCache[common.Hash, uint64](numberCacheLimit),
-		acceptedNumberCache: acceptedNumberCache,
-		rand:                mrand.New(mrand.NewSource(seed.Int64())),
-		engine:              engine,
-	}
-
-	hc.genesisHeader = hc.GetHeaderByNumber(0)
-	if hc.genesisHeader == nil {
-		return nil, ErrNoGenesis
-	}
-
-	hc.currentHeader.Store(hc.genesisHeader)
-	if head := rawdb.ReadHeadBlockHash(chainDb); head != (common.Hash{}) {
-		if chead := hc.GetHeaderByHash(head); chead != nil {
-			hc.currentHeader.Store(chead)
-		}
-	}
-	hc.currentHeaderHash = hc.CurrentHeader().Hash()
-
-	return hc, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Seed a fast but crypto originating random generator
 
 // GetBlockNumber retrieves the block number belonging to the given hash
 // from the cache or database
 func (hc *HeaderChain) GetBlockNumber(hash common.Hash) *uint64 {
-	if cached, ok := hc.numberCache.Get(hash); ok {
-		return &cached
-	}
-	number := rawdb.ReadHeaderNumber(hc.chainDb, hash)
-	if number != nil {
-		hc.numberCache.Add(hash, *number)
-	}
-	return number
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetHeader retrieves a block header from the database by hash and number,
 // caching it if found.
 func (hc *HeaderChain) GetHeader(hash common.Hash, number uint64) *types.Header {
+	_ = "STUB: not implemented"
 	// Short circuit if the header's already in the cache, retrieve otherwise
-	if header, ok := hc.headerCache.Get(hash); ok {
-		return header
-	}
-	header := rawdb.ReadHeader(hc.chainDb, hash, number)
-	if header == nil {
-		return nil
-	}
-	// Cache the found header for next time and return
-	hc.headerCache.Add(hash, header)
-	return header
+	return nil
 }
+
+// Cache the found header for next time and return
 
 // GetHeaderByHash retrieves a block header from the database by hash, caching it if
 // found.
 func (hc *HeaderChain) GetHeaderByHash(hash common.Hash) *types.Header {
-	number := hc.GetBlockNumber(hash)
-	if number == nil {
-		return nil
-	}
-	return hc.GetHeader(hash, *number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HasHeader checks if a block header is present in the database or not.
 // In theory, if header is present in the database, all relative components
 // like td and hash->number should be present too.
 func (hc *HeaderChain) HasHeader(hash common.Hash, number uint64) bool {
-	if hc.numberCache.Contains(hash) || hc.headerCache.Contains(hash) {
-		return true
-	}
-	return rawdb.HasHeader(hc.chainDb, hash, number)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // GetHeaderByNumber retrieves a block header from the database by number,
 // caching it (associated with its hash) if found.
 func (hc *HeaderChain) GetHeaderByNumber(number uint64) *types.Header {
-	if cachedHeader, ok := hc.acceptedNumberCache.Get(number); ok {
-		return cachedHeader
-	}
-	hash := rawdb.ReadCanonicalHash(hc.chainDb, number)
-	if hash == (common.Hash{}) {
-		return nil
-	}
-	return hc.GetHeader(hash, number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (hc *HeaderChain) GetCanonicalHash(number uint64) common.Hash {
-	return rawdb.ReadCanonicalHash(hc.chainDb, number)
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 // CurrentHeader retrieves the current head header of the canonical chain. The
 // header is retrieved from the HeaderChain's internal cache.
-func (hc *HeaderChain) CurrentHeader() *types.Header {
-	return hc.currentHeader.Load().(*types.Header)
-}
+func (hc *HeaderChain) CurrentHeader() *types.Header { _ = "STUB: not implemented"; return nil }
 
 // SetCurrentHeader sets the in-memory head header marker of the canonical chan
 // as the given header.
-func (hc *HeaderChain) SetCurrentHeader(head *types.Header) {
-	hc.currentHeader.Store(head)
-	hc.currentHeaderHash = head.Hash()
-}
+func (hc *HeaderChain) SetCurrentHeader(head *types.Header) { _ = "STUB: not implemented"; return }
 
 // SetGenesis sets a new genesis block header for the chain
-func (hc *HeaderChain) SetGenesis(head *types.Header) {
-	hc.genesisHeader = head
-}
+func (hc *HeaderChain) SetGenesis(head *types.Header) { _ = "STUB: not implemented"; return }
 
 // Config retrieves the header chain's chain configuration.
-func (hc *HeaderChain) Config() *params.ChainConfig { return hc.config }
+func (hc *HeaderChain) Config() *params.ChainConfig {
+	_ = "STUB: not implemented"
 
-// Engine retrieves the header chain's consensus engine.
-func (hc *HeaderChain) Engine() consensus.Engine { return hc.engine }
+	// Engine retrieves the header chain's consensus engine.
+	return nil
+}
 
-// GetBlock implements consensus.ChainReader, and returns nil for every input as
-// a header chain does not have blocks available for retrieval.
+func (hc *HeaderChain) Engine() consensus.Engine {
+	_ = "STUB: not implemented"
+
+	// GetBlock implements consensus.ChainReader, and returns nil for every input as
+	// a header chain does not have blocks available for retrieval.
+	return *new(consensus.Engine)
+}
+
 func (hc *HeaderChain) GetBlock(hash common.Hash, number uint64) *types.Block {
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -6,22 +6,14 @@ package proposervm
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"go.uber.org/zap"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
-	"github.com/ava-labs/avalanchego/snow/validators"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/vms/proposervm/acp181"
 	"github.com/ava-labs/avalanchego/vms/proposervm/block"
-	"github.com/ava-labs/avalanchego/vms/proposervm/proposer"
-
-	smblock "github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
 
 const (
@@ -84,9 +76,7 @@ type postForkCommonComponents struct {
 }
 
 // Return the inner block's height
-func (p *postForkCommonComponents) Height() uint64 {
-	return p.innerBlk.Height()
-}
+func (p *postForkCommonComponents) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Verify returns nil if:
 // 1) [p]'s inner block is not an oracle block
@@ -106,98 +96,16 @@ func (p *postForkCommonComponents) Verify(
 	parentEpoch block.Epoch,
 	child *postForkBlock,
 ) error {
-	if err := verifyIsNotOracleBlock(ctx, p.innerBlk); err != nil {
-		return err
-	}
-
-	childPChainHeight := child.PChainHeight()
-	if childPChainHeight < parentPChainHeight {
-		return errPChainHeightNotMonotonic
-	}
-
-	expectedInnerParentID := p.innerBlk.ID()
-	innerParentID := child.innerBlk.Parent()
-	if innerParentID != expectedInnerParentID {
-		return errInnerParentMismatch
-	}
-
-	childTimestamp := child.Timestamp()
-	if childTimestamp.Before(parentTimestamp) {
-		return errTimeNotMonotonic
-	}
-
-	maxTimestamp := p.vm.Time().Add(maxSkew)
-	if childTimestamp.After(maxTimestamp) {
-		return errTimeTooAdvanced
-	}
-
-	childEpoch := child.PChainEpoch()
-	if p.vm.consensusState == snow.NormalOp {
-		// Some L1s that missed the Granite upgrade accepted blocks without
-		// epochs enabled. By enforcing this check only after syncing, new nodes
-		// are able to join the network.
-		if expected := acp181.NewEpoch(p.vm.Upgrades, parentPChainHeight, parentEpoch, parentTimestamp, childTimestamp); childEpoch != expected {
-			return fmt.Errorf("%w: epoch %v != expected %v", errEpochMismatch, childEpoch, expected)
-		}
-
-		// If the node is currently syncing - we don't assume that the P-chain
-		// has been synced up to this point yet.
-		currentPChainHeight, err := p.vm.ctx.ValidatorState.GetCurrentHeight(ctx)
-		if err != nil {
-			logUnexpectedPChainError(p.vm.ctx.Log, err, "block verification failed",
-				zap.String("reason", "failed to get current P-Chain height"),
-				zap.Stringer("blkID", child.ID()),
-			)
-			return err
-		}
-		if childPChainHeight > currentPChainHeight {
-			return fmt.Errorf("%w: %d > %d",
-				errPChainHeightNotReached,
-				childPChainHeight,
-				currentPChainHeight,
-			)
-		}
-
-		var shouldHaveProposer bool
-		if p.vm.Upgrades.IsDurangoActivated(parentTimestamp) {
-			shouldHaveProposer, err = p.verifyPostDurangoBlockDelay(ctx, parentTimestamp, parentPChainHeight, child)
-		} else {
-			shouldHaveProposer, err = p.verifyPreDurangoBlockDelay(ctx, parentTimestamp, parentPChainHeight, child)
-		}
-		if err != nil {
-			return err
-		}
-
-		hasProposer := child.SignedBlock.Proposer() != ids.EmptyNodeID
-		if shouldHaveProposer != hasProposer {
-			return fmt.Errorf("%w: shouldHaveProposer (%v) != hasProposer (%v)", errProposerMismatch, shouldHaveProposer, hasProposer)
-		}
-
-		p.vm.ctx.Log.Debug("verified post-fork block",
-			zap.Stringer("blkID", child.ID()),
-			zap.Time("parentTimestamp", parentTimestamp),
-			zap.Time("blockTimestamp", childTimestamp),
-		)
-	}
-
-	var contextPChainHeight uint64
-	switch {
-	case p.vm.Upgrades.IsGraniteActivated(childTimestamp):
-		contextPChainHeight = childEpoch.PChainHeight
-	case p.vm.Upgrades.IsEtnaActivated(childTimestamp):
-		contextPChainHeight = childPChainHeight
-	default:
-		contextPChainHeight = parentPChainHeight
-	}
-
-	return p.vm.verifyAndRecordInnerBlk(
-		ctx,
-		&smblock.Context{
-			PChainHeight: contextPChainHeight,
-		},
-		child,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Some L1s that missed the Granite upgrade accepted blocks without
+// epochs enabled. By enforcing this check only after syncing, new nodes
+// are able to join the network.
+
+// If the node is currently syncing - we don't assume that the P-chain
+// has been synced up to this point yet.
 
 // Return the child (a *postForkBlock) of this block
 func (p *postForkCommonComponents) buildChild(
@@ -207,158 +115,34 @@ func (p *postForkCommonComponents) buildChild(
 	parentPChainHeight uint64,
 	parentEpoch block.Epoch,
 ) (Block, error) {
+	_ = "STUB: not implemented"
 	// Child's timestamp is the later of now and this block's timestamp
-	newTimestamp := p.vm.Time().Truncate(time.Second)
-	if newTimestamp.Before(parentTimestamp) {
-		newTimestamp = parentTimestamp
-	}
-
-	// The child's P-Chain height is proposed as the optimal P-Chain height that
-	// is at least the parent's P-Chain height
-	pChainHeight, err := p.vm.selectChildPChainHeight(ctx, parentPChainHeight)
-	if err != nil {
-		logUnexpectedPChainError(p.vm.ctx.Log, err, "unexpected build block failure",
-			zap.String("reason", "failed to calculate optimal P-chain height"),
-			zap.Stringer("parentID", parentID),
-		)
-		return nil, err
-	}
-
-	var shouldBuildSignedBlock bool
-	if p.vm.Upgrades.IsDurangoActivated(parentTimestamp) {
-		shouldBuildSignedBlock, err = p.shouldBuildSignedBlockPostDurango(
-			ctx,
-			parentID,
-			parentTimestamp,
-			parentPChainHeight,
-			newTimestamp,
-		)
-	} else {
-		shouldBuildSignedBlock, err = p.shouldBuildSignedBlockPreDurango(
-			ctx,
-			parentID,
-			parentTimestamp,
-			parentPChainHeight,
-			newTimestamp,
-		)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	epoch := acp181.NewEpoch(p.vm.Upgrades, parentPChainHeight, parentEpoch, parentTimestamp, newTimestamp)
-
-	var contextPChainHeight uint64
-	switch {
-	case p.vm.Upgrades.IsGraniteActivated(newTimestamp):
-		contextPChainHeight = epoch.PChainHeight
-	case p.vm.Upgrades.IsEtnaActivated(newTimestamp):
-		contextPChainHeight = pChainHeight
-	default:
-		contextPChainHeight = parentPChainHeight
-	}
-
-	var innerBlock snowman.Block
-	if p.vm.blockBuilderVM != nil {
-		innerBlock, err = p.vm.blockBuilderVM.BuildBlockWithContext(ctx, &smblock.Context{
-			PChainHeight: contextPChainHeight,
-		})
-	} else {
-		innerBlock, err = p.vm.ChainVM.BuildBlock(ctx)
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	// Build the child
-	var statelessChild block.SignedBlock
-	if shouldBuildSignedBlock {
-		statelessChild, err = block.Build(
-			parentID,
-			newTimestamp,
-			pChainHeight,
-			epoch,
-			p.vm.StakingCertLeaf,
-			innerBlock.Bytes(),
-			p.vm.ctx.ChainID,
-			p.vm.StakingLeafSigner,
-		)
-	} else {
-		statelessChild, err = block.BuildUnsigned(
-			parentID,
-			newTimestamp,
-			pChainHeight,
-			epoch,
-			innerBlock.Bytes(),
-		)
-	}
-	if err != nil {
-		p.vm.ctx.Log.Error("unexpected build block failure",
-			zap.String("reason", "failed to generate proposervm block header"),
-			zap.Stringer("parentID", parentID),
-			zap.Stringer("blkID", innerBlock.ID()),
-			zap.Error(err),
-		)
-		return nil, err
-	}
-
-	child := &postForkBlock{
-		SignedBlock: statelessChild,
-		postForkCommonComponents: postForkCommonComponents{
-			vm:       p.vm,
-			innerBlk: innerBlock,
-		},
-	}
-
-	p.vm.ctx.Log.Info("built block",
-		zap.Stringer("blkID", child.ID()),
-		zap.Stringer("innerBlkID", innerBlock.ID()),
-		zap.Uint64("height", child.Height()),
-		zap.Uint64("pChainHeight", pChainHeight),
-		zap.Time("parentTimestamp", parentTimestamp),
-		zap.Time("blockTimestamp", newTimestamp),
-		zap.Reflect("epoch", epoch),
-	)
-	return child, nil
+	return *new(Block), nil
 }
 
+// The child's P-Chain height is proposed as the optimal P-Chain height that
+// is at least the parent's P-Chain height
+
+// Build the child
+
 func (p *postForkCommonComponents) getInnerBlk() snowman.Block {
-	return p.innerBlk
+	_ = "STUB: not implemented"
+	return *new(snowman.Block)
 }
 
 func (p *postForkCommonComponents) setInnerBlk(innerBlk snowman.Block) {
-	p.innerBlk = innerBlk
+	_ = "STUB: not implemented"
+	return
 }
 
 func verifyIsOracleBlock(ctx context.Context, b snowman.Block) error {
-	oracle, ok := b.(snowman.OracleBlock)
-	if !ok {
-		return fmt.Errorf(
-			"%w: expected block %s to be a snowman.OracleBlock but it's a %T",
-			errUnexpectedBlockType, b.ID(), b,
-		)
-	}
-	_, err := oracle.Options(ctx)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func verifyIsNotOracleBlock(ctx context.Context, b snowman.Block) error {
-	oracle, ok := b.(snowman.OracleBlock)
-	if !ok {
-		return nil
-	}
-	_, err := oracle.Options(ctx)
-	switch err {
-	case nil:
-		return fmt.Errorf(
-			"%w: expected block %s not to be an oracle block but it's a %T",
-			errUnexpectedBlockType, b.ID(), b,
-		)
-	case snowman.ErrNotOracle:
-		return nil
-	default:
-		return err
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *postForkCommonComponents) verifyPreDurangoBlockDelay(
@@ -367,33 +151,8 @@ func (p *postForkCommonComponents) verifyPreDurangoBlockDelay(
 	parentPChainHeight uint64,
 	blk *postForkBlock,
 ) (bool, error) {
-	var (
-		blkTimestamp = blk.Timestamp()
-		childHeight  = blk.Height()
-		proposerID   = blk.Proposer()
-	)
-	minDelay, err := p.vm.Windower.Delay(
-		ctx,
-		childHeight,
-		parentPChainHeight,
-		proposerID,
-		proposer.MaxVerifyWindows,
-	)
-	if err != nil {
-		p.vm.ctx.Log.Error("unexpected block verification failure",
-			zap.String("reason", "failed to calculate required timestamp delay"),
-			zap.Stringer("blkID", blk.ID()),
-			zap.Error(err),
-		)
-		return false, err
-	}
-
-	delay := blkTimestamp.Sub(parentTimestamp)
-	if delay < minDelay {
-		return false, fmt.Errorf("%w: delay %s < minDelay %s", errProposerWindowNotStarted, delay, minDelay)
-	}
-
-	return delay < proposer.MaxVerifyDelay, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (p *postForkCommonComponents) verifyPostDurangoBlockDelay(
@@ -402,37 +161,17 @@ func (p *postForkCommonComponents) verifyPostDurangoBlockDelay(
 	parentPChainHeight uint64,
 	blk *postForkBlock,
 ) (bool, error) {
-	var (
-		blkTimestamp = blk.Timestamp()
-		blkHeight    = blk.Height()
-		currentSlot  = proposer.TimeToSlot(parentTimestamp, blkTimestamp)
-		proposerID   = blk.Proposer()
-	)
-	// populate the slot for the block.
-	blk.slot = &currentSlot
-
-	// find the expected proposer
-	expectedProposerID, err := p.vm.Windower.ExpectedProposer(
-		ctx,
-		blkHeight,
-		parentPChainHeight,
-		currentSlot,
-	)
-	switch {
-	case errors.Is(err, proposer.ErrAnyoneCanPropose):
-		return false, nil // block should be unsigned
-	case err != nil:
-		logUnexpectedPChainError(p.vm.ctx.Log, err, "unexpected block verification failure",
-			zap.String("reason", "failed to calculate expected proposer"),
-			zap.Stringer("blkID", blk.ID()),
-		)
-		return false, err
-	case expectedProposerID == proposerID:
-		return true, nil // block should be signed
-	default:
-		return false, fmt.Errorf("%w: slot %d expects %s", errUnexpectedProposer, currentSlot, expectedProposerID)
-	}
+	_ = "STUB: not implemented"
+	return false, nil
 }
+
+// populate the slot for the block.
+
+// find the expected proposer
+
+// block should be unsigned
+
+// block should be signed
 
 func (p *postForkCommonComponents) shouldBuildSignedBlockPostDurango(
 	ctx context.Context,
@@ -441,46 +180,17 @@ func (p *postForkCommonComponents) shouldBuildSignedBlockPostDurango(
 	parentPChainHeight uint64,
 	newTimestamp time.Time,
 ) (bool, error) {
-	parentHeight := p.innerBlk.Height()
-	currentSlot := proposer.TimeToSlot(parentTimestamp, newTimestamp)
-	expectedProposerID, err := p.vm.Windower.ExpectedProposer(
-		ctx,
-		parentHeight+1,
-		parentPChainHeight,
-		currentSlot,
-	)
-	switch {
-	case errors.Is(err, proposer.ErrAnyoneCanPropose):
-		return false, nil // build an unsigned block
-	case errors.Is(err, validators.ErrUnfinalizedHeight):
-		p.logWarnOrError()("build block failed, validator set not yet finalized",
-			zap.String("reason", "failed to calculate expected proposer"),
-			zap.Uint64("parentPChainHeight", parentPChainHeight),
-			zap.Stringer("parentID", parentID),
-			zap.Error(err),
-		)
-		return false, err
-	case err != nil:
-		logUnexpectedPChainError(p.vm.ctx.Log, err, "unexpected build block failure",
-			zap.String("reason", "failed to calculate expected proposer"),
-			zap.Stringer("parentID", parentID),
-		)
-		return false, err
-	case expectedProposerID == p.vm.ctx.NodeID:
-		return true, nil // build a signed block
-	}
-
-	// It's not our turn to propose a block yet. This is likely caused by having
-	// previously notified the consensus engine to attempt to build a block on
-	// top of a block that is no longer the preferred block.
-	p.vm.ctx.Log.Debug("build block dropped",
-		zap.Time("parentTimestamp", parentTimestamp),
-		zap.Time("blockTimestamp", newTimestamp),
-		zap.Uint64("slot", currentSlot),
-		zap.Stringer("expectedProposer", expectedProposerID),
-	)
-	return false, fmt.Errorf("%w: slot %d expects %s", errUnexpectedProposer, currentSlot, expectedProposerID)
+	_ = "STUB: not implemented"
+	return false, nil
 }
+
+// build an unsigned block
+
+// build a signed block
+
+// It's not our turn to propose a block yet. This is likely caused by having
+// previously notified the consensus engine to attempt to build a block on
+// top of a block that is no longer the preferred block.
 
 func (p *postForkCommonComponents) shouldBuildSignedBlockPreDurango(
 	ctx context.Context,
@@ -489,46 +199,22 @@ func (p *postForkCommonComponents) shouldBuildSignedBlockPreDurango(
 	parentPChainHeight uint64,
 	newTimestamp time.Time,
 ) (bool, error) {
-	delay := newTimestamp.Sub(parentTimestamp)
-	if delay >= proposer.MaxBuildDelay {
-		return false, nil // time for any node to build an unsigned block
-	}
-
-	parentHeight := p.innerBlk.Height()
-	proposerID := p.vm.ctx.NodeID
-	minDelay, err := p.vm.Windower.Delay(ctx, parentHeight+1, parentPChainHeight, proposerID, proposer.MaxBuildWindows)
-	if err != nil {
-		p.vm.ctx.Log.Error("unexpected build block failure",
-			zap.String("reason", "failed to calculate required timestamp delay"),
-			zap.Stringer("parentID", parentID),
-			zap.Error(err),
-		)
-		return false, err
-	}
-
-	if delay >= minDelay {
-		// it's time for this node to propose a block. It'll be signed or
-		// unsigned depending on the delay
-		return delay < proposer.MaxVerifyDelay, nil
-	}
-
-	// It's not our turn to propose a block yet. This is likely caused by having
-	// previously notified the consensus engine to attempt to build a block on
-	// top of a block that is no longer the preferred block.
-	p.vm.ctx.Log.Debug("build block dropped",
-		zap.Time("parentTimestamp", parentTimestamp),
-		zap.Duration("minDelay", minDelay),
-		zap.Time("blockTimestamp", newTimestamp),
-	)
-	return false, fmt.Errorf("%w: delay %s < minDelay %s", errProposerWindowNotStarted, delay, minDelay)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
+// time for any node to build an unsigned block
+
+// it's time for this node to propose a block. It'll be signed or
+// unsigned depending on the delay
+
+// It's not our turn to propose a block yet. This is likely caused by having
+// previously notified the consensus engine to attempt to build a block on
+// top of a block that is no longer the preferred block.
+
 func (p *postForkCommonComponents) logWarnOrError() func(msg string, fields ...zap.Field) {
-	timeSinceBootstrapping := p.vm.Clock.Time().Sub(p.vm.finishedBootstrappingAt)
-	if p.vm.finishedBootstrappingAt.IsZero() || timeSinceBootstrapping < bootstrappingWarningGracePeriod {
-		return p.vm.ctx.Log.Warn
-	}
-	return p.vm.ctx.Log.Error
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // logUnexpectedPChainError logs an unexpected P-chain failure: Warn when err
@@ -539,12 +225,7 @@ func (p *postForkCommonComponents) logWarnOrError() func(msg string, fields ...z
 // avoids noise in that normal path. If ErrClosed happens during normal
 // operation, the failure will still be surfaced elsewhere.
 func logUnexpectedPChainError(log logging.Logger, err error, msg string, fields ...zap.Field) {
+	_ = "STUB: not implemented"
 	// Caller skip so the caller field points at the call site, not here.
-	log = log.WithOptions(zap.AddCallerSkip(1))
-	fields = append(fields, zap.Error(err))
-	if errors.Is(err, database.ErrClosed) {
-		log.Warn(msg, fields...)
-		return
-	}
-	log.Error(msg, fields...)
+	return
 }

@@ -4,8 +4,6 @@
 package feemanager
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
@@ -42,27 +40,21 @@ func init() {
 // MakeConfig returns a new precompile config instance.
 // This is required to Marshal/Unmarshal the precompile config.
 func (*configurator) MakeConfig() precompileconfig.Config {
-	return new(Config)
+	_ = "STUB: not implemented"
+	return *
+
+	// Configure configures [state] with the given [cfg] precompileconfig.
+	// This function is called by the EVM once per precompile contract activation.
+	new(precompileconfig.Config)
 }
 
-// Configure configures [state] with the given [cfg] precompileconfig.
-// This function is called by the EVM once per precompile contract activation.
 func (*configurator) Configure(chainConfig precompileconfig.ChainConfig, cfg precompileconfig.Config, state contract.StateDB, blockContext contract.ConfigurationBlockContext) error {
-	config, ok := cfg.(*Config)
-	if !ok {
-		return fmt.Errorf("expected config type %T, got %T: %v", &Config{}, cfg, cfg)
-	}
-	// Store the initial fee config into the state when the fee manager activates.
-	if config.InitialFeeConfig != nil {
-		if err := StoreFeeConfig(state, *config.InitialFeeConfig, blockContext); err != nil {
-			// This should not happen since we already checked this config with Verify()
-			return fmt.Errorf("cannot configure given initial fee config: %w", err)
-		}
-	} else {
-		if err := StoreFeeConfig(state, chainConfig.GetFeeConfig(), blockContext); err != nil {
-			// This should not happen since we already checked the chain config in the genesis creation.
-			return fmt.Errorf("cannot configure fee config in chain config: %w", err)
-		}
-	}
-	return config.AllowListConfig.Configure(chainConfig, ContractAddress, state, blockContext)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Store the initial fee config into the state when the fee manager activates.
+
+// This should not happen since we already checked this config with Verify()
+
+// This should not happen since we already checked the chain config in the genesis creation.

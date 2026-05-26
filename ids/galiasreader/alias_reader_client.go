@@ -4,8 +4,6 @@
 package galiasreader
 
 import (
-	"context"
-
 	"github.com/ava-labs/avalanchego/ids"
 
 	aliasreaderpb "github.com/ava-labs/avalanchego/proto/pb/aliasreader"
@@ -21,35 +19,15 @@ type Client struct {
 // NewClient returns an alias lookup instance connected to a remote alias lookup
 // instance
 func NewClient(client aliasreaderpb.AliasReaderClient) *Client {
-	return &Client{client: client}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (c *Client) Lookup(alias string) (ids.ID, error) {
-	resp, err := c.client.Lookup(context.Background(), &aliasreaderpb.Alias{
-		Alias: alias,
-	})
-	if err != nil {
-		return ids.Empty, err
-	}
-	return ids.ToID(resp.Id)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
-func (c *Client) PrimaryAlias(id ids.ID) (string, error) {
-	resp, err := c.client.PrimaryAlias(context.Background(), &aliasreaderpb.ID{
-		Id: id[:],
-	})
-	if err != nil {
-		return "", err
-	}
-	return resp.Alias, nil
-}
+func (c *Client) PrimaryAlias(id ids.ID) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (c *Client) Aliases(id ids.ID) ([]string, error) {
-	resp, err := c.client.Aliases(context.Background(), &aliasreaderpb.ID{
-		Id: id[:],
-	})
-	if err != nil {
-		return nil, err
-	}
-	return resp.Aliases, nil
-}
+func (c *Client) Aliases(id ids.ID) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }

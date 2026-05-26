@@ -10,8 +10,6 @@
 package block
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	snow "github.com/ava-labs/avalanchego/snow"
 	txs "github.com/ava-labs/avalanchego/vms/platformvm/txs"
@@ -31,123 +29,68 @@ type MockBlockMockRecorder struct {
 }
 
 // NewMockBlock creates a new mock instance.
-func NewMockBlock(ctrl *gomock.Controller) *MockBlock {
-	mock := &MockBlock{ctrl: ctrl}
-	mock.recorder = &MockBlockMockRecorder{mock}
-	return mock
-}
+func NewMockBlock(ctrl *gomock.Controller) *MockBlock { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockBlock) EXPECT() *MockBlockMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Bytes mocks base method.
+	return nil
 }
 
-// Bytes mocks base method.
-func (m *MockBlock) Bytes() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Bytes")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *MockBlock) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // Bytes indicates an expected call of Bytes.
-func (mr *MockBlockMockRecorder) Bytes() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bytes", reflect.TypeOf((*MockBlock)(nil).Bytes))
-}
+func (mr *MockBlockMockRecorder) Bytes() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Height mocks base method.
-func (m *MockBlock) Height() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Height")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockBlock) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Height indicates an expected call of Height.
-func (mr *MockBlockMockRecorder) Height() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Height", reflect.TypeOf((*MockBlock)(nil).Height))
-}
+func (mr *MockBlockMockRecorder) Height() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // ID mocks base method.
-func (m *MockBlock) ID() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ID")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *MockBlock) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // ID indicates an expected call of ID.
-func (mr *MockBlockMockRecorder) ID() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*MockBlock)(nil).ID))
-}
+func (mr *MockBlockMockRecorder) ID() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // InitCtx mocks base method.
-func (m *MockBlock) InitCtx(ctx *snow.Context) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "InitCtx", ctx)
-}
+func (m *MockBlock) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InitCtx indicates an expected call of InitCtx.
 func (mr *MockBlockMockRecorder) InitCtx(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitCtx", reflect.TypeOf((*MockBlock)(nil).InitCtx), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Parent mocks base method.
-func (m *MockBlock) Parent() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Parent")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *MockBlock) Parent() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // Parent indicates an expected call of Parent.
-func (mr *MockBlockMockRecorder) Parent() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parent", reflect.TypeOf((*MockBlock)(nil).Parent))
-}
+func (mr *MockBlockMockRecorder) Parent() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Txs mocks base method.
-func (m *MockBlock) Txs() []*txs.Tx {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Txs")
-	ret0, _ := ret[0].([]*txs.Tx)
-	return ret0
-}
+func (m *MockBlock) Txs() []*txs.Tx { _ = "STUB: not implemented"; return nil }
 
 // Txs indicates an expected call of Txs.
-func (mr *MockBlockMockRecorder) Txs() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Txs", reflect.TypeOf((*MockBlock)(nil).Txs))
-}
+func (mr *MockBlockMockRecorder) Txs() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Visit mocks base method.
-func (m *MockBlock) Visit(visitor Visitor) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Visit", visitor)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockBlock) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }
 
 // Visit indicates an expected call of Visit.
 func (mr *MockBlockMockRecorder) Visit(visitor any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Visit", reflect.TypeOf((*MockBlock)(nil).Visit), visitor)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // initialize mocks base method.
-func (m *MockBlock) initialize(bytes []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "initialize", bytes)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *MockBlock) initialize(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // initialize indicates an expected call of initialize.
 func (mr *MockBlockMockRecorder) initialize(bytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "initialize", reflect.TypeOf((*MockBlock)(nil).initialize), bytes)
+	_ = "STUB: not implemented"
+	return nil
 }

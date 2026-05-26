@@ -6,8 +6,6 @@ package bootstrapper
 import (
 	"context"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -37,41 +35,18 @@ func NewMinority(
 	frontierNodes set.Set[ids.NodeID],
 	maxOutstanding int,
 ) *Minority {
-	return &Minority{
-		requests: requests{
-			maxOutstanding: maxOutstanding,
-			pendingSend:    frontierNodes,
-		},
-		log: log,
-	}
-}
-
-func (m *Minority) RecordOpinion(_ context.Context, nodeID ids.NodeID, blkIDs set.Set[ids.ID]) error {
-	if !m.recordResponse(nodeID) {
-		// The chain router should have already dropped unexpected messages.
-		m.log.Error("received unexpected opinion",
-			zap.String("pollType", "minority"),
-			zap.Stringer("nodeID", nodeID),
-			zap.Reflect("blkIDs", blkIDs),
-		)
-		return nil
-	}
-
-	m.receivedSet.Union(blkIDs)
-
-	if !m.finished() {
-		return nil
-	}
-
-	m.received = m.receivedSet.List()
-
-	m.log.Debug("finalized bootstrapping poll",
-		zap.String("pollType", "minority"),
-		zap.Stringers("frontier", m.received),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (m *Minority) RecordOpinion(_ context.Context, nodeID ids.NodeID, blkIDs set.Set[ids.ID]) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+// The chain router should have already dropped unexpected messages.
+
 func (m *Minority) Result(context.Context) ([]ids.ID, bool) {
-	return m.received, m.finished()
+	_ = "STUB: not implemented"
+	return nil, false
 }

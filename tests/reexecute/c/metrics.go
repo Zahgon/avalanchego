@@ -4,11 +4,9 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/stretchr/testify/require"
 
 	"github.com/ava-labs/avalanchego/tests"
 )
@@ -52,56 +50,13 @@ type topLevelMetric struct {
 }
 
 func getMetricValue(registry prometheus.Gatherer, metric topLevelMetric) (float64, error) {
-	metricFamilies, err := registry.Gather()
-	if err != nil {
-		return 0, fmt.Errorf("failed to gather metrics: %w", err)
-	}
-
-	query := metric.query
-	for _, mf := range metricFamilies {
-		switch metric.kind {
-		case counter:
-			if mf.GetName() == query {
-				return mf.GetMetric()[0].Counter.GetValue(), nil
-			}
-		case gauge:
-			if mf.GetName() == query {
-				return mf.GetMetric()[0].Gauge.GetValue(), nil
-			}
-		default:
-			return 0, fmt.Errorf("metric type unknown: %d", metric.kind)
-		}
-	}
-
-	return 0, fmt.Errorf("metric %s not found", query)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func getTopLevelMetrics(tc tests.TestContext, tool *benchmarkTool, registry prometheus.Gatherer, elapsed time.Duration) {
-	r := require.New(tc)
-
-	totalGas, err := getMetricValue(registry, gasMetric)
-	r.NoError(err)
-	r.NotZero(totalGas, "denominator metric %q has value 0", gasMetric.name)
-
-	var (
-		mgas                      float64 = 1_000_000
-		ggas                      float64 = 1_000_000_000
-		nanosecondsPerMillisecond float64 = 1_000_000
-	)
-
-	mgasPerSecond := (totalGas / mgas) / elapsed.Seconds()
-	tool.addResult(mgasPerSecond, "mgas/s")
-
-	totalGGas := totalGas / ggas
-	msPerGGas := (float64(elapsed) / nanosecondsPerMillisecond) / totalGGas
-	tool.addResult(msPerGGas, "ms/ggas")
-
-	for _, metric := range meterVMMetrics {
-		// MeterVM counters are in terms of nanoseconds
-		metricValNanoseconds, err := getMetricValue(registry, metric)
-		r.NoError(err)
-
-		msPerGGas := (metricValNanoseconds / nanosecondsPerMillisecond) / totalGGas
-		tool.addResult(msPerGGas, metric.name+"_ms/ggas")
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// MeterVM counters are in terms of nanoseconds

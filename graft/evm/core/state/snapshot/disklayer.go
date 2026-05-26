@@ -28,16 +28,13 @@
 package snapshot
 
 import (
-	"bytes"
 	"sync"
 	"time"
 
 	"github.com/ava-labs/avalanchego/graft/evm/utils"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/rlp"
 	"github.com/ava-labs/libevm/triedb"
 )
 
@@ -73,139 +70,87 @@ type diskLayer struct {
 // Release releases underlying resources; specifically the fastcache requires
 // Reset() in order to not leak memory.
 // OBS: It does not invoke Close on the diskdb
-func (dl *diskLayer) Release() error {
-	dl.stopGeneration()
-
-	if dl.cache != nil {
-		dl.cache.Reset()
-	}
-	return nil
-}
+func (dl *diskLayer) Release() error { _ = "STUB: not implemented"; return nil }
 
 // Root returns  root hash for which this snapshot was made.
 func (dl *diskLayer) Root() common.Hash {
-	return dl.root
+	_ = "STUB: not implemented"
+
+	// BlockHash returns the block hash for which this snapshot was made
+	return *new(common.Hash)
 }
 
-// BlockHash returns the block hash for which this snapshot was made
 func (dl *diskLayer) BlockHash() common.Hash {
-	return dl.blockHash
+	_ = "STUB: not implemented"
+	return *
+
+	// Parent always returns nil as there's no layer below the disk.
+	new(common.Hash)
 }
 
-// Parent always returns nil as there's no layer below the disk.
 func (dl *diskLayer) Parent() snapshot {
-	return nil
+	_ = "STUB: not implemented"
+
+	// Stale return whether this layer has become stale (was flattened across) or if
+	// it's still live.
+	return *new(snapshot)
 }
 
-// Stale return whether this layer has become stale (was flattened across) or if
-// it's still live.
-func (dl *diskLayer) Stale() bool {
-	dl.lock.RLock()
-	defer dl.lock.RUnlock()
-
-	return dl.stale
-}
+func (dl *diskLayer) Stale() bool { _ = "STUB: not implemented"; return false }
 
 // Account directly retrieves the account associated with a particular hash in
 // the snapshot slim data format.
 func (dl *diskLayer) Account(hash common.Hash) (*types.SlimAccount, error) {
-	data, err := dl.AccountRLP(hash)
-	if err != nil {
-		return nil, err
-	}
-	if len(data) == 0 { // can be both nil and []byte{}
-		return nil, nil
-	}
-	account := new(types.SlimAccount)
-	if err := rlp.DecodeBytes(data, account); err != nil {
-		panic(err)
-	}
-	return account, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// can be both nil and []byte{}
 
 // AccountRLP directly retrieves the account RLP associated with a particular
 // hash in the snapshot slim data format.
 func (dl *diskLayer) AccountRLP(hash common.Hash) ([]byte, error) {
-	dl.lock.RLock()
-	defer dl.lock.RUnlock()
-
-	// If the layer was flattened into, consider it invalid (any live reference to
-	// the original should be marked as unusable).
-	if dl.stale {
-		return nil, ErrSnapshotStale
-	}
-	// If the layer is being generated, ensure the requested hash has already been
-	// covered by the generator.
-	if dl.genMarker != nil && bytes.Compare(hash[:], dl.genMarker) > 0 {
-		return nil, ErrNotCoveredYet
-	}
-	// If we're in the disk layer, all diff layers missed
-	snapshotDirtyAccountMissMeter.Mark(1)
-
-	// Try to retrieve the account from the memory cache
-	if blob, found := dl.cache.HasGet(nil, hash[:]); found {
-		snapshotCleanAccountHitMeter.Mark(1)
-		snapshotCleanAccountReadMeter.Mark(int64(len(blob)))
-		return blob, nil
-	}
-	// Cache doesn't contain account, pull from disk and cache for later
-	blob := rawdb.ReadAccountSnapshot(dl.diskdb, hash)
-	dl.cache.Set(hash[:], blob)
-
-	snapshotCleanAccountMissMeter.Mark(1)
-	if n := len(blob); n > 0 {
-		snapshotCleanAccountWriteMeter.Mark(int64(n))
-	} else {
-		snapshotCleanAccountInexMeter.Mark(1)
-	}
-	return blob, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// If the layer was flattened into, consider it invalid (any live reference to
+// the original should be marked as unusable).
+
+// If the layer is being generated, ensure the requested hash has already been
+// covered by the generator.
+
+// If we're in the disk layer, all diff layers missed
+
+// Try to retrieve the account from the memory cache
+
+// Cache doesn't contain account, pull from disk and cache for later
 
 // Storage directly retrieves the storage data associated with a particular hash,
 // within a particular account.
 func (dl *diskLayer) Storage(accountHash, storageHash common.Hash) ([]byte, error) {
-	dl.lock.RLock()
-	defer dl.lock.RUnlock()
-
-	// If the layer was flattened into, consider it invalid (any live reference to
-	// the original should be marked as unusable).
-	if dl.stale {
-		return nil, ErrSnapshotStale
-	}
-	key := append(accountHash[:], storageHash[:]...)
-
-	// If the layer is being generated, ensure the requested hash has already been
-	// covered by the generator.
-	if dl.genMarker != nil && bytes.Compare(key, dl.genMarker) > 0 {
-		return nil, ErrNotCoveredYet
-	}
-	// If we're in the disk layer, all diff layers missed
-	snapshotDirtyStorageMissMeter.Mark(1)
-
-	// Try to retrieve the storage slot from the memory cache
-	if blob, found := dl.cache.HasGet(nil, key); found {
-		snapshotCleanStorageHitMeter.Mark(1)
-		snapshotCleanStorageReadMeter.Mark(int64(len(blob)))
-		return blob, nil
-	}
-	// Cache doesn't contain storage slot, pull from disk and cache for later
-	blob := rawdb.ReadStorageSnapshot(dl.diskdb, accountHash, storageHash)
-	dl.cache.Set(key, blob)
-
-	snapshotCleanStorageMissMeter.Mark(1)
-	if n := len(blob); n > 0 {
-		snapshotCleanStorageWriteMeter.Mark(int64(n))
-	} else {
-		snapshotCleanStorageInexMeter.Mark(1)
-	}
-	return blob, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// If the layer was flattened into, consider it invalid (any live reference to
+// the original should be marked as unusable).
+
+// If the layer is being generated, ensure the requested hash has already been
+// covered by the generator.
+
+// If we're in the disk layer, all diff layers missed
+
+// Try to retrieve the storage slot from the memory cache
+
+// Cache doesn't contain storage slot, pull from disk and cache for later
 
 // Update creates a new layer on top of the existing snapshot diff tree with
 // the specified data items. Note, the maps are retained by the method to avoid
 // copying everything.
 func (dl *diskLayer) Update(blockHash, blockRoot common.Hash, destructs map[common.Hash]struct{}, accounts map[common.Hash][]byte, storage map[common.Hash]map[common.Hash][]byte) *diffLayer {
-	return newDiffLayer(dl, blockHash, blockRoot, destructs, accounts, storage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // stopGeneration requests cancellation of any running snapshot generation and
@@ -221,23 +166,10 @@ func (dl *diskLayer) Update(blockHash, blockRoot common.Hash, destructs map[comm
 //   - The generator goroutine has terminated
 //   - It is safe to proceed with cleanup operations (e.g. closing databases)
 func (dl *diskLayer) stopGeneration() {
+	_ = "STUB: not implemented"
 	// Record abort time on first call so diffToDisk can measure disk layer
 	// age regardless of whether generation was running.
-	dl.lock.Lock()
-	if dl.abortStarted.IsZero() {
-		dl.abortStarted = time.Now()
-	}
-	dl.lock.Unlock()
-
-	cancel := dl.cancel
-	done := dl.done
-	if cancel == nil || done == nil {
-		// Generation was skipped for this layer so there is nothing to stop.
-		return
-	}
-
-	dl.cancelOnce.Do(func() {
-		close(cancel)
-	})
-	<-done
+	return
 }
+
+// Generation was skipped for this layer so there is nothing to stop.

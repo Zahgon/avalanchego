@@ -13,16 +13,12 @@ type WeightedWithoutReplacement interface {
 
 // NewDeterministicWeightedWithoutReplacement returns a new sampler
 func NewDeterministicWeightedWithoutReplacement(source Source) WeightedWithoutReplacement {
-	return &weightedWithoutReplacementGeneric{
-		u: NewDeterministicUniform(source),
-		w: NewWeighted(),
-	}
+	_ = "STUB: not implemented"
+	return *new(WeightedWithoutReplacement)
 }
 
 // NewWeightedWithoutReplacement returns a new sampler
 func NewWeightedWithoutReplacement() WeightedWithoutReplacement {
-	return &weightedWithoutReplacementGeneric{
-		u: NewUniform(),
-		w: NewWeighted(),
-	}
+	_ = "STUB: not implemented"
+	return *new(WeightedWithoutReplacement)
 }

@@ -169,107 +169,43 @@ type RingConfig struct {
 }
 
 // NewHashRing instantiates an instance of hashRing.
-func NewHashRing(config RingConfig) Ring {
-	return &hashRing{
-		hasher:       config.Hasher,
-		virtualNodes: config.VirtualNodes,
-		ring:         btree.NewG(config.Degree, ringItem.Less),
-	}
-}
+func NewHashRing(config RingConfig) Ring { _ = "STUB: not implemented"; return *new(Ring) }
 
 func (h *hashRing) Get(key Hashable) (Hashable, error) {
-	h.lock.RLock()
-	defer h.lock.RUnlock()
-
-	return h.get(key)
+	_ = "STUB: not implemented"
+	return *new(Hashable), nil
 }
 
 func (h *hashRing) get(key Hashable) (Hashable, error) {
+	_ = "STUB: not implemented"
 	// If we have no members in the ring, it's not possible to find where the
 	// key belongs.
-	if h.ring.Len() == 0 {
-		return nil, errEmptyRing
-	}
-
-	var (
-		// Compute this key's hash
-		hash   = h.hasher.Hash(key.ConsistentHashKey())
-		result Hashable
-	)
-	h.ring.AscendGreaterOrEqual(
-		ringItem{
-			hash:  hash,
-			value: key,
-		},
-		func(item ringItem) bool {
-			if hash < item.hash {
-				result = item.value
-				return false
-			}
-			return true
-		},
-	)
-
-	// If found nothing ascending the tree, we need to wrap around the ring to
-	// the left-most (min) node.
-	if result == nil {
-		minNode, _ := h.ring.Min()
-		result = minNode.value
-	}
-	return result, nil
+	return *new(Hashable), nil
 }
 
-func (h *hashRing) Add(key Hashable) {
-	h.lock.Lock()
-	defer h.lock.Unlock()
+// Compute this key's hash
 
-	h.add(key)
-}
+// If found nothing ascending the tree, we need to wrap around the ring to
+// the left-most (min) node.
+
+func (h *hashRing) Add(key Hashable) { _ = "STUB: not implemented"; return }
 
 func (h *hashRing) add(key Hashable) {
+	_ = "STUB: not implemented"
 	// Replicate the node in the ring.
-	hashKey := key.ConsistentHashKey()
-	for i := 0; i < h.virtualNodes; i++ {
-		virtualNode := getHashKey(hashKey, i)
-		virtualNodeHash := h.hasher.Hash(virtualNode)
-
-		// Insert it into the ring.
-		h.ring.ReplaceOrInsert(ringItem{
-			hash:  virtualNodeHash,
-			value: key,
-		})
-	}
+	return
 }
 
-func (h *hashRing) Remove(key Hashable) bool {
-	h.lock.Lock()
-	defer h.lock.Unlock()
+// Insert it into the ring.
 
-	return h.remove(key)
-}
+func (h *hashRing) Remove(key Hashable) bool { _ = "STUB: not implemented"; return false }
 
-func (h *hashRing) remove(key Hashable) bool {
-	var (
-		hashKey = key.ConsistentHashKey()
-		removed = false
-	)
+func (h *hashRing) remove(key Hashable) bool { _ = "STUB: not implemented"; return false }
 
-	// We need to delete all virtual nodes created for a single node.
-	for i := 0; i < h.virtualNodes; i++ {
-		virtualNode := getHashKey(hashKey, i)
-		virtualNodeHash := h.hasher.Hash(virtualNode)
-		item := ringItem{
-			hash: virtualNodeHash,
-		}
-		_, removed = h.ring.Delete(item)
-	}
-	return removed
-}
+// We need to delete all virtual nodes created for a single node.
 
 // getHashKey builds a key given a base key and a virtual node number.
-func getHashKey(key []byte, virtualNode int) []byte {
-	return append(key, byte(virtualNode))
-}
+func getHashKey(key []byte, virtualNode int) []byte { _ = "STUB: not implemented"; return nil }
 
 // ringItem is a helper class to represent ring nodes in the b-tree.
 type ringItem struct {
@@ -277,6 +213,4 @@ type ringItem struct {
 	value Hashable
 }
 
-func (r ringItem) Less(than ringItem) bool {
-	return r.hash < than.hash
-}
+func (r ringItem) Less(than ringItem) bool { _ = "STUB: not implemented"; return false }

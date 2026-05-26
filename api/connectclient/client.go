@@ -4,15 +4,9 @@
 package connectclient
 
 import (
-	"context"
-	"crypto/tls"
-	"net"
 	"net/http"
 
 	"connectrpc.com/connect"
-	"golang.org/x/net/http2"
-
-	"github.com/ava-labs/avalanchego/api/server"
 )
 
 var _ connect.Interceptor = (*SetRouteHeaderInterceptor)(nil)
@@ -24,36 +18,20 @@ type SetRouteHeaderInterceptor struct {
 }
 
 func (s SetRouteHeaderInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
-	return func(ctx context.Context, request connect.AnyRequest) (connect.AnyResponse, error) {
-		for _, route := range s.Route {
-			request.Header().Add(server.HTTPHeaderRoute, route)
-		}
-		return next(ctx, request)
-	}
+	_ = "STUB: not implemented"
+	return *new(connect.UnaryFunc)
 }
 
 func (s SetRouteHeaderInterceptor) WrapStreamingClient(next connect.StreamingClientFunc) connect.StreamingClientFunc {
-	return func(ctx context.Context, spec connect.Spec) connect.StreamingClientConn {
-		conn := next(ctx, spec)
-		for _, route := range s.Route {
-			conn.RequestHeader().Add(server.HTTPHeaderRoute, route)
-		}
-		return conn
-	}
+	_ = "STUB: not implemented"
+	return *new(connect.StreamingClientFunc)
 }
 
 func (SetRouteHeaderInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc) connect.StreamingHandlerFunc {
-	return next
+	_ = "STUB: not implemented"
+	return *new(connect.StreamingHandlerFunc)
 }
 
-func New() *http.Client {
-	return &http.Client{
-		Transport: &http2.Transport{
-			AllowHTTP: true,
-			DialTLSContext: func(ctx context.Context, network, addr string, _ *tls.Config) (net.Conn, error) {
-				var d net.Dialer
-				return d.DialContext(ctx, network, addr) // Skip TLS to use h2c
-			},
-		},
-	}
-}
+func New() *http.Client { _ = "STUB: not implemented"; return nil }
+
+// Skip TLS to use h2c

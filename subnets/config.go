@@ -54,36 +54,10 @@ type Config struct {
 	ProposerNumHistoricalBlocks uint64 `json:"proposerNumHistoricalBlocks" yaml:"proposerNumHistoricalBlocks"`
 }
 
-func boolToInt(b bool) int {
-	if b {
-		return 1
-	}
-	return 0
-}
+func boolToInt(b bool) int { _ = "STUB: not implemented"; return 0 }
 
 // ValidConsensusConfiguration ensures that at most one consensus parameter type is set.
 // If none are set, then the default snowball parameters will be used for SnowParameters.
-func (c *Config) ValidConsensusConfiguration() error {
-	numSet := boolToInt(c.SimplexParameters != nil) +
-		boolToInt(c.SnowParameters != nil) +
-		boolToInt(c.ConsensusParameters != nil)
-	if numSet > 1 {
-		return ErrTooManyConsensusParameters
-	}
-	return nil
-}
+func (c *Config) ValidConsensusConfiguration() error { _ = "STUB: not implemented"; return nil }
 
-func (c *Config) ValidParameters() error {
-	if !c.ValidatorOnly && c.AllowedNodes.Len() > 0 {
-		return errAllowedNodesWhenNotValidatorOnly
-	}
-
-	if c.SnowParameters != nil {
-		return c.SnowParameters.Verify()
-	}
-	if c.SimplexParameters != nil {
-		return c.SimplexParameters.Verify()
-	}
-
-	return errNoParametersSet
-}
+func (c *Config) ValidParameters() error { _ = "STUB: not implemented"; return nil }

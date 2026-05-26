@@ -65,7 +65,8 @@ type SimulatedBackend struct {
 
 // Fork sets the head to a new block, which is based on the provided parentHash.
 func (b *SimulatedBackend) Fork(ctx context.Context, parentHash common.Hash) error {
-	return b.Backend.Fork(parentHash)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewSimulatedBackend creates a new binding backend using a simulated blockchain
@@ -76,9 +77,6 @@ func (b *SimulatedBackend) Fork(ctx context.Context, parentHash common.Hash) err
 // Deprecated: please use simulated.Backend from package
 // github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient/simulated instead.
 func NewSimulatedBackend(alloc types.GenesisAlloc, gasLimit uint64) *SimulatedBackend {
-	b := simulated.NewBackend(alloc, simulated.WithBlockGasLimit(gasLimit))
-	return &SimulatedBackend{
-		Backend: b,
-		Client:  b.Client(),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

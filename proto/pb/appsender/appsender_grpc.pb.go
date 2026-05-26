@@ -8,9 +8,8 @@ package appsender
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -41,47 +40,28 @@ type appSenderClient struct {
 }
 
 func NewAppSenderClient(cc grpc.ClientConnInterface) AppSenderClient {
-	return &appSenderClient{cc}
+	_ = "STUB: not implemented"
+	return *new(AppSenderClient)
 }
 
 func (c *appSenderClient) SendAppRequest(ctx context.Context, in *SendAppRequestMsg, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, AppSender_SendAppRequest_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *appSenderClient) SendAppResponse(ctx context.Context, in *SendAppResponseMsg, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, AppSender_SendAppResponse_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *appSenderClient) SendAppError(ctx context.Context, in *SendAppErrorMsg, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, AppSender_SendAppError_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *appSenderClient) SendAppGossip(ctx context.Context, in *SendAppGossipMsg, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, AppSender_SendAppGossip_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppSenderServer is the server API for AppSender service.
@@ -103,108 +83,69 @@ type AppSenderServer interface {
 type UnimplementedAppSenderServer struct{}
 
 func (UnimplementedAppSenderServer) SendAppRequest(context.Context, *SendAppRequestMsg) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendAppRequest not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedAppSenderServer) SendAppResponse(context.Context, *SendAppResponseMsg) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendAppResponse not implemented")
-}
-func (UnimplementedAppSenderServer) SendAppError(context.Context, *SendAppErrorMsg) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendAppError not implemented")
-}
-func (UnimplementedAppSenderServer) SendAppGossip(context.Context, *SendAppGossipMsg) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendAppGossip not implemented")
-}
-func (UnimplementedAppSenderServer) mustEmbedUnimplementedAppSenderServer() {}
-func (UnimplementedAppSenderServer) testEmbeddedByValue()                   {}
 
-// UnsafeAppSenderServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AppSenderServer will
-// result in compilation errors.
+func (UnimplementedAppSenderServer) SendAppResponse(context.Context, *SendAppResponseMsg) (*emptypb.Empty, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedAppSenderServer) SendAppError(context.Context, *SendAppErrorMsg) (*emptypb.Empty, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedAppSenderServer) SendAppGossip(context.Context, *SendAppGossipMsg) (*emptypb.Empty, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedAppSenderServer) mustEmbedUnimplementedAppSenderServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedAppSenderServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeAppSenderServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to AppSenderServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeAppSenderServer interface {
 	mustEmbedUnimplementedAppSenderServer()
 }
 
 func RegisterAppSenderServer(s grpc.ServiceRegistrar, srv AppSenderServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedAppSenderServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&AppSender_ServiceDesc, srv)
+	return
 }
 
 func _AppSender_SendAppRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendAppRequestMsg)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppSenderServer).SendAppRequest(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AppSender_SendAppRequest_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppSenderServer).SendAppRequest(ctx, req.(*SendAppRequestMsg))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _AppSender_SendAppResponse_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendAppResponseMsg)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppSenderServer).SendAppResponse(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AppSender_SendAppResponse_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppSenderServer).SendAppResponse(ctx, req.(*SendAppResponseMsg))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _AppSender_SendAppError_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendAppErrorMsg)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppSenderServer).SendAppError(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AppSender_SendAppError_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppSenderServer).SendAppError(ctx, req.(*SendAppErrorMsg))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _AppSender_SendAppGossip_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendAppGossipMsg)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AppSenderServer).SendAppGossip(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AppSender_SendAppGossip_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AppSenderServer).SendAppGossip(ctx, req.(*SendAppGossipMsg))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppSender_ServiceDesc is the grpc.ServiceDesc for AppSender service.

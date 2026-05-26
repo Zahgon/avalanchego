@@ -6,21 +6,11 @@ package address
 import "github.com/ava-labs/avalanchego/ids"
 
 func ParseToID(addrStr string) (ids.ShortID, error) {
-	_, _, addrBytes, err := Parse(addrStr)
-	if err != nil {
-		return ids.ShortID{}, err
-	}
-	return ids.ToShortID(addrBytes)
+	_ = "STUB: not implemented"
+	return *new(ids.ShortID), nil
 }
 
 func ParseToIDs(addrStrs []string) ([]ids.ShortID, error) {
-	var err error
-	addrs := make([]ids.ShortID, len(addrStrs))
-	for i, addrStr := range addrStrs {
-		addrs[i], err = ParseToID(addrStr)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return addrs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

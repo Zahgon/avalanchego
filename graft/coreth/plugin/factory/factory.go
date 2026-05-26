@@ -4,13 +4,10 @@
 package factory
 
 import (
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms"
-
-	atomicvm "github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/atomic/vm"
 )
 
 var (
@@ -23,9 +20,8 @@ var (
 type Factory struct{}
 
 func (*Factory) New(logging.Logger) (interface{}, error) {
-	return atomicvm.WrapVM(&evm.VM{}), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func NewPluginVM() block.ChainVM {
-	return atomicvm.WrapVM(&evm.VM{IsPlugin: true})
-}
+func NewPluginVM() block.ChainVM { _ = "STUB: not implemented"; return *new(block.ChainVM) }

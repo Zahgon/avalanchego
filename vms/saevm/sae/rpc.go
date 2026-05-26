@@ -23,35 +23,40 @@ import (
 // GethRPCBackends returns the backing infrastructure for geth's implementations
 // of the JSON-RPC namespaces supported by the VM.
 func (vm *VM) GethRPCBackends() saerpc.GethBackends {
-	return vm.rpcProvider.GethBackends()
+	_ = "STUB: not implemented"
+	return *new(saerpc.GethBackends)
 }
 
-func (vm *VM) chain() saerpc.Chain {
-	return chain{vm, vm.exec}
-}
+func (vm *VM) chain() saerpc.Chain { _ = "STUB: not implemented"; return *new(saerpc.Chain) }
 
 type chain struct {
 	*VM
 	*saexec.Executor
 }
 
-func (c chain) Logger() logging.Logger         { return c.VM.snowCtx.Log }
-func (c chain) Hooks() hook.Points             { return c.hooks }
-func (c chain) DB() ethdb.Database             { return c.db }
-func (c chain) XDB() saetypes.ExecutionResults { return c.xdb }
-func (c chain) Mempool() *txgossip.Set         { return c.mempool }
-func (c chain) Peers() *p2p.Peers              { return c.VM.Peers }
-func (c chain) LastAccepted() *blocks.Block    { return c.last.accepted.Load() }
-func (c chain) LastSettled() *blocks.Block     { return c.last.settled.Load() }
+func (c chain) Logger() logging.Logger { _ = "STUB: not implemented"; return *new(logging.Logger) }
+func (c chain) Hooks() hook.Points     { _ = "STUB: not implemented"; return *new(hook.Points) }
+func (c chain) DB() ethdb.Database     { _ = "STUB: not implemented"; return *new(ethdb.Database) }
+func (c chain) XDB() saetypes.ExecutionResults {
+	_ = "STUB: not implemented"
+	return *new(saetypes.ExecutionResults)
+}
+func (c chain) Mempool() *txgossip.Set      { _ = "STUB: not implemented"; return nil }
+func (c chain) Peers() *p2p.Peers           { _ = "STUB: not implemented"; return nil }
+func (c chain) LastAccepted() *blocks.Block { _ = "STUB: not implemented"; return nil }
+func (c chain) LastSettled() *blocks.Block  { _ = "STUB: not implemented"; return nil }
 
 func (c chain) ConsensusCriticalBlock(h common.Hash) (*blocks.Block, bool) {
-	return c.consensusCritical.Load(h)
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (c chain) NewBlock(eth *types.Block, parent, lastSettled *blocks.Block) (*blocks.Block, error) {
-	return c.blockBuilder.new(eth, parent, lastSettled)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c chain) SubscribeAcceptedBlocks(ch chan<- *blocks.Block) event.Subscription {
-	return c.acceptedBlocks.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }

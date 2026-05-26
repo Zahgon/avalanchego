@@ -58,72 +58,33 @@ type TxSenderCacher struct {
 
 // NewTxSenderCacher creates a new transaction sender background cacher and starts
 // as many processing goroutines as allowed by the GOMAXPROCS on construction.
-func NewTxSenderCacher(threads int) *TxSenderCacher {
-	cacher := &TxSenderCacher{
-		tasks:   make(chan *txSenderCacherRequest, threads),
-		threads: threads,
-	}
-	for i := 0; i < threads; i++ {
-		cacher.wg.Add(1)
-		go func() {
-			defer cacher.wg.Done()
-			cacher.cache()
-		}()
-	}
-	return cacher
-}
+func NewTxSenderCacher(threads int) *TxSenderCacher { _ = "STUB: not implemented"; return nil }
 
 // cache is an infinite loop, caching transaction senders from various forms of
 // data structures.
-func (cacher *TxSenderCacher) cache() {
-	for task := range cacher.tasks {
-		for i := 0; i < len(task.txs); i += task.inc {
-			types.Sender(task.signer, task.txs[i])
-		}
-	}
-}
+func (cacher *TxSenderCacher) cache() { _ = "STUB: not implemented"; return }
 
 // Recover recovers the senders from a batch of transactions and caches them
 // back into the same data structures. There is no validation being done, nor
 // any reaction to invalid signatures. That is up to calling code later.
 func (cacher *TxSenderCacher) Recover(signer types.Signer, txs []*types.Transaction) {
+	_ = "STUB: not implemented"
 	// Hold a read lock on tasksMu to make sure we don't close
 	// the channel in the middle of this call during Shutdown
-	cacher.tasksMu.RLock()
-	defer cacher.tasksMu.RUnlock()
-
-	// If there's nothing to recover, abort
-	if len(txs) == 0 {
-		return
-	}
-	// If we're shutting down, abort
-	if cacher.tasks == nil {
-		return
-	}
-
-	// Ensure we have meaningful task sizes and schedule the recoveries
-	tasks := cacher.threads
-	if len(txs) < tasks*4 {
-		tasks = (len(txs) + 3) / 4
-	}
-	for i := 0; i < tasks; i++ {
-		cacher.tasks <- &txSenderCacherRequest{
-			signer: signer,
-			txs:    txs[i:],
-			inc:    tasks,
-		}
-	}
+	return
 }
+
+// If there's nothing to recover, abort
+
+// If we're shutting down, abort
+
+// Ensure we have meaningful task sizes and schedule the recoveries
 
 // Shutdown stops the threads started by newTxSenderCacher
 func (cacher *TxSenderCacher) Shutdown() {
+	_ = "STUB: not implemented"
 	// Hold the lock on tasksMu to make sure we don't close
 	// the channel in the middle of Recover, which would
 	// cause it to write to a closed channel.
-	cacher.tasksMu.Lock()
-	defer cacher.tasksMu.Unlock()
-
-	close(cacher.tasks)
-	cacher.wg.Wait()
-	cacher.tasks = nil
+	return
 }

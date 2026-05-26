@@ -8,9 +8,8 @@ package writer
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -37,17 +36,13 @@ type writerClient struct {
 }
 
 func NewWriterClient(cc grpc.ClientConnInterface) WriterClient {
-	return &writerClient{cc}
+	_ = "STUB: not implemented"
+	return *new(WriterClient)
 }
 
 func (c *writerClient) Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(WriteResponse)
-	err := c.cc.Invoke(ctx, Writer_Write_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WriterServer is the server API for Writer service.
@@ -69,45 +64,39 @@ type WriterServer interface {
 type UnimplementedWriterServer struct{}
 
 func (UnimplementedWriterServer) Write(context.Context, *WriteRequest) (*WriteResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Write not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedWriterServer) mustEmbedUnimplementedWriterServer() {}
-func (UnimplementedWriterServer) testEmbeddedByValue()                {}
 
-// UnsafeWriterServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to WriterServer will
-// result in compilation errors.
+func (UnimplementedWriterServer) mustEmbedUnimplementedWriterServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedWriterServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeWriterServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to WriterServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeWriterServer interface {
 	mustEmbedUnimplementedWriterServer()
 }
 
 func RegisterWriterServer(s grpc.ServiceRegistrar, srv WriterServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedWriterServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&Writer_ServiceDesc, srv)
+	return
 }
 
 func _Writer_Write_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WriteRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(WriterServer).Write(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Writer_Write_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(WriterServer).Write(ctx, req.(*WriteRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Writer_ServiceDesc is the grpc.ServiceDesc for Writer service.

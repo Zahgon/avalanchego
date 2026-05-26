@@ -40,31 +40,15 @@ func New(
 	ctx *snow.ConsensusContext,
 	gets common.AllGetsServer,
 ) common.Engine {
-	return &engine{
-		AllGetsServer:               gets,
-		StateSummaryFrontierHandler: common.NewNoOpStateSummaryFrontierHandler(ctx.Log),
-		AcceptedStateSummaryHandler: common.NewNoOpAcceptedStateSummaryHandler(ctx.Log),
-		AcceptedFrontierHandler:     common.NewNoOpAcceptedFrontierHandler(ctx.Log),
-		AcceptedHandler:             common.NewNoOpAcceptedHandler(ctx.Log),
-		AncestorsHandler:            common.NewNoOpAncestorsHandler(ctx.Log),
-		PutHandler:                  common.NewNoOpPutHandler(ctx.Log),
-		QueryHandler:                common.NewNoOpQueryHandler(ctx.Log),
-		ChitsHandler:                common.NewNoOpChitsHandler(ctx.Log),
-		AppHandler:                  common.NewNoOpAppHandler(ctx.Log),
-		InternalHandler:             common.NewNoOpInternalHandler(ctx.Log),
-		SimplexHandler:              common.NewNoOpSimplexHandler(ctx.Log),
-		ctx:                         ctx,
-	}
+	_ = "STUB: not implemented"
+	return *new(common.Engine)
 }
 
-func (*engine) Start(context.Context, uint32) error {
-	return errUnexpectedStart
-}
+func (*engine) Start(context.Context, uint32) error { _ = "STUB: not implemented"; return nil }
 
-func (e *engine) Context() *snow.ConsensusContext {
-	return e.ctx
-}
+func (e *engine) Context() *snow.ConsensusContext { _ = "STUB: not implemented"; return nil }
 
 func (*engine) HealthCheck(context.Context) (interface{}, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }

@@ -11,12 +11,9 @@ type SimpleCalculator struct {
 	txFee uint64
 }
 
-func NewSimpleCalculator(fee uint64) *SimpleCalculator {
-	return &SimpleCalculator{
-		txFee: fee,
-	}
-}
+func NewSimpleCalculator(fee uint64) *SimpleCalculator { _ = "STUB: not implemented"; return nil }
 
 func (c *SimpleCalculator) CalculateFee(txs.UnsignedTx) (uint64, error) {
-	return c.txFee, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }

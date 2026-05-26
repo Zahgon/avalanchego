@@ -7,59 +7,30 @@ import (
 	"context"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/libevm/ethapi"
 	"github.com/ava-labs/libevm/rpc"
 
-	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
 	"github.com/ava-labs/avalanchego/vms/saevm/saexec"
 )
 
 func (b *backend) GetReceipts(ctx context.Context, hash common.Hash) (types.Receipts, error) {
-	receipts, _, err := b.getReceipts(rpc.BlockNumberOrHashWithHash(hash, false))
-	if err != nil {
-		return nil, nil //nolint:nilerr // This follows geth behavior for [ethapi.Backend.GetReceipts]
-	}
-	return receipts, nil
+	_ = "STUB: not implemented"
+	return *new(types.Receipts), nil
 }
+
+//nolint:nilerr // This follows geth behavior for [ethapi.Backend.GetReceipts]
 
 // getReceipts resolves receipts and the underlying [types.Block] by number or
 // hash, checking in-memory blocks first then falling back to the database.
 // Returns nils for blocks that are not yet executed.
 func (b *backend) getReceipts(numOrHash rpc.BlockNumberOrHash) (types.Receipts, *types.Block, error) {
-	blk, err := readByNumberOrHash(
-		b,
-		numOrHash,
-		func(b *blocks.Block) *blocks.Block {
-			return b
-		},
-		func(db ethdb.Reader, h common.Hash, num uint64) (*blocks.Block, error) {
-			if num > b.LastExecuted().Height() {
-				return nil, blocks.ErrNotFound
-			}
-			blk, err := blocks.New(rawdb.ReadBlock(db, h, num), nil, nil, b.Logger())
-			if err != nil {
-				return nil, err
-			}
-			if err := blk.RestoreExecutionArtefacts(b.DB(), b.XDB(), b.ChainConfig()); err != nil {
-				return nil, err
-			}
-			return blk, nil
-		},
-	)
-	switch {
-	case err != nil:
-		// The use of [notFoundIsNil] in [readByNumberOrHash] means that we know
-		// this is a "real" error, not just [blocks.ErrNotFound].
-		return nil, nil, err
-	case blk == nil || !blk.Executed():
-		return nil, nil, nil
-	default:
-		return blk.Receipts(), blk.EthBlock(), nil
-	}
+	_ = "STUB: not implemented"
+	return *new(types.Receipts), nil, nil
 }
+
+// The use of [notFoundIsNil] in [readByNumberOrHash] means that we know
+// this is a "real" error, not just [blocks.ErrNotFound].
 
 type blockChainAPI struct {
 	*ethapi.BlockChainAPI
@@ -69,22 +40,11 @@ type blockChainAPI struct {
 // GetBlockReceipts overrides [ethapi.BlockChainAPI.GetBlockReceipts] to avoid
 // returning an error when a user queries a known, but not yet executed, block.
 func (b *blockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) ([]map[string]any, error) {
-	receipts, blk, err := b.b.getReceipts(blockNrOrHash)
-	if err != nil || blk == nil {
-		return nil, nil //nolint:nilerr // This follows geth behavior for [ethapi.BlockChainAPI.GetBlockReceipts]
-	}
-
-	hash := blk.Hash()
-	num := blk.NumberU64()
-	signer := blocks.Signer(blk, b.b.ChainConfig())
-	txs := blk.Transactions()
-
-	result := make([]map[string]any, len(txs))
-	for i, receipt := range receipts {
-		result[i] = ethapi.MarshalReceipt(receipt, hash, num, signer, txs[i], i)
-	}
-	return result, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+//nolint:nilerr // This follows geth behavior for [ethapi.BlockChainAPI.GetBlockReceipts]
 
 // PendingBlockAndReceipts returns a nil block and receipts. Returning nil tells
 // geth that this backend does not support pending blocks. In SAE, the pending
@@ -92,11 +52,13 @@ func (b *blockChainAPI) GetBlockReceipts(ctx context.Context, blockNrOrHash rpc.
 // available after execution. Returning a non-nil block with incorrect or empty
 // receipts could cause geth to encounter errors.
 func (*backend) PendingBlockAndReceipts() (*types.Block, types.Receipts) {
-	return nil, nil
+	_ = "STUB: not implemented"
+	return nil, *new(types.Receipts)
 }
 
 func (b *backend) GetLogs(ctx context.Context, blockHash common.Hash, number uint64) ([][]*types.Log, error) {
-	return rawdb.ReadLogs(b.DB(), blockHash, number), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type immediateReceipts struct {
@@ -105,22 +67,12 @@ type immediateReceipts struct {
 }
 
 func (ir immediateReceipts) GetTransactionReceipt(ctx context.Context, h common.Hash) (map[string]any, error) {
-	r, ok, err := ir.recent(ctx, h)
-	if err != nil {
-		return nil, err
-	}
-	if !ok {
-		// The transaction has either not been included yet, or it was cleared
-		// from the [saexec.Executor] cache but is on disk. The standard
-		// mechanism already differentiates between these scenarios.
-		return ir.TransactionAPI.GetTransactionReceipt(ctx, h)
-	}
-	return ethapi.MarshalReceipt(
-		r.Receipt,
-		r.BlockHash,
-		r.BlockNumber.Uint64(),
-		r.Signer,
-		r.Tx,
-		int(r.TransactionIndex), //#nosec G115 -- Known to not overflow
-	), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// The transaction has either not been included yet, or it was cleared
+// from the [saexec.Executor] cache but is on disk. The standard
+// mechanism already differentiates between these scenarios.
+
+//#nosec G115 -- Known to not overflow

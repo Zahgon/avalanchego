@@ -69,36 +69,21 @@ type chainIDGetter interface {
 	GetChainId() []byte
 }
 
-func GetChainID(m any) (ids.ID, error) {
-	msg, ok := m.(chainIDGetter)
-	if !ok {
-		return ids.Empty, errMissingField
-	}
-	chainIDBytes := msg.GetChainId()
-	return ids.ToID(chainIDBytes)
-}
+func GetChainID(m any) (ids.ID, error) { _ = "STUB: not implemented"; return *new(ids.ID), nil }
 
 type requestIDGetter interface {
 	GetRequestId() uint32
 }
 
-func GetRequestID(m any) (uint32, bool) {
-	if msg, ok := m.(requestIDGetter); ok {
-		return msg.GetRequestId(), true
-	}
-	return 0, false
-}
+func GetRequestID(m any) (uint32, bool) { _ = "STUB: not implemented"; return 0, false }
 
 type engineTypeGetter interface {
 	GetEngineType() p2p.EngineType
 }
 
 func GetEngineType(m any) (p2p.EngineType, bool) {
-	msg, ok := m.(engineTypeGetter)
-	if !ok {
-		return p2p.EngineType_ENGINE_TYPE_UNSPECIFIED, false
-	}
-	return msg.GetEngineType(), true
+	_ = "STUB: not implemented"
+	return *new(p2p.EngineType), false
 }
 
 type deadlineGetter interface {
@@ -106,10 +91,6 @@ type deadlineGetter interface {
 }
 
 func GetDeadline(m any) (time.Duration, bool) {
-	msg, ok := m.(deadlineGetter)
-	if !ok {
-		return 0, false
-	}
-	deadline := msg.GetDeadline()
-	return time.Duration(deadline), true
+	_ = "STUB: not implemented"
+	return *new(time.Duration), false
 }

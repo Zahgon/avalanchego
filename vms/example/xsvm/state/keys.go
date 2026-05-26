@@ -11,15 +11,4 @@ var (
 	messagePrefix  = []byte{0x03}
 )
 
-func Flatten[T any](slices ...[]T) []T {
-	var size int
-	for _, slice := range slices {
-		size += len(slice)
-	}
-
-	result := make([]T, 0, size)
-	for _, slice := range slices {
-		result = append(result, slice...)
-	}
-	return result
-}
+func Flatten[T any](slices ...[]T) []T { _ = "STUB: not implemented"; return nil }

@@ -7,8 +7,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/enginetest"
@@ -44,72 +42,34 @@ type VM struct {
 	GetBlockIDAtHeightF func(ctx context.Context, height uint64) (ids.ID, error)
 }
 
-func (vm *VM) Default(cant bool) {
-	vm.VM.Default(cant)
-
-	vm.CantBuildBlock = cant
-	vm.CantParseBlock = cant
-	vm.CantGetBlock = cant
-	vm.CantSetPreference = cant
-	vm.CantLastAccepted = cant
-}
+func (vm *VM) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (vm *VM) BuildBlock(ctx context.Context) (snowman.Block, error) {
-	if vm.BuildBlockF != nil {
-		return vm.BuildBlockF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantBuildBlock, errBuildBlock)
-	}
-	return nil, errBuildBlock
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *VM) ParseBlock(ctx context.Context, b []byte) (snowman.Block, error) {
-	if vm.ParseBlockF != nil {
-		return vm.ParseBlockF(ctx, b)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantParseBlock, errParseBlock)
-	}
-	return nil, errParseBlock
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *VM) GetBlock(ctx context.Context, id ids.ID) (snowman.Block, error) {
-	if vm.GetBlockF != nil {
-		return vm.GetBlockF(ctx, id)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetBlock, errGetBlock)
-	}
-	return nil, errGetBlock
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *VM) SetPreference(ctx context.Context, id ids.ID) error {
-	if vm.SetPreferenceF != nil {
-		return vm.SetPreferenceF(ctx, id)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantSetPreference, "Unexpectedly called SetPreference")
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (vm *VM) LastAccepted(ctx context.Context) (ids.ID, error) {
-	if vm.LastAcceptedF != nil {
-		return vm.LastAcceptedF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantLastAccepted, errLastAccepted)
-	}
-	return ids.Empty, errLastAccepted
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (vm *VM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	if vm.GetBlockIDAtHeightF != nil {
-		return vm.GetBlockIDAtHeightF(ctx, height)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetBlockIDAtHeight, errGetAncestor)
-	}
-	return ids.Empty, errGetBlockIDAtHeight
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

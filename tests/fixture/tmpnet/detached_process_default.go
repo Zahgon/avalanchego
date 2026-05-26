@@ -7,11 +7,6 @@ package tmpnet
 
 import (
 	"os/exec"
-	"syscall"
 )
 
-func configureDetachedProcess(cmd *exec.Cmd) {
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Setsid: true,
-	}
-}
+func configureDetachedProcess(cmd *exec.Cmd) { _ = "STUB: not implemented"; return }

@@ -7,5 +7,6 @@ import "context"
 
 // HealthCheck returns the current health status of the VM.
 func (*VM) HealthCheck(context.Context) (any, error) {
-	return nil, nil
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }

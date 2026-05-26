@@ -28,30 +28,7 @@
 package runtime
 
 import (
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/core"
 	"github.com/ava-labs/libevm/core/vm"
 )
 
-func NewEnv(cfg *Config) *vm.EVM {
-	txContext := vm.TxContext{
-		Origin:     cfg.Origin,
-		GasPrice:   cfg.GasPrice,
-		BlobHashes: cfg.BlobHashes,
-		BlobFeeCap: cfg.BlobFeeCap,
-	}
-	blockContext := vm.BlockContext{
-		CanTransfer: core.CanTransfer,
-		Transfer:    core.Transfer,
-		GetHash:     cfg.GetHashFn,
-		Coinbase:    cfg.Coinbase,
-		BlockNumber: cfg.BlockNumber,
-		Time:        cfg.Time,
-		Difficulty:  cfg.Difficulty,
-		GasLimit:    cfg.GasLimit,
-		BaseFee:     cfg.BaseFee,
-		BlobBaseFee: cfg.BlobBaseFee,
-		Random:      cfg.Random,
-	}
-
-	return vm.NewEVM(blockContext, txContext, cfg.State, cfg.ChainConfig, cfg.EVMConfig)
-}
+func NewEnv(cfg *Config) *vm.EVM { _ = "STUB: not implemented"; return nil }

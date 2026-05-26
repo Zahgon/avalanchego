@@ -18,46 +18,14 @@ type Atomic[T any] struct {
 	value T
 }
 
-func NewAtomic[T any](value T) *Atomic[T] {
-	return &Atomic[T]{
-		value: value,
-	}
-}
+func NewAtomic[T any](value T) *Atomic[T] { _ = "STUB: not implemented"; return nil }
 
-func (a *Atomic[T]) Get() T {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
+func (a *Atomic[T]) Get() T { _ = "STUB: not implemented"; return *new(T) }
 
-	return a.value
-}
+func (a *Atomic[T]) Set(value T) { _ = "STUB: not implemented"; return }
 
-func (a *Atomic[T]) Set(value T) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
+func (a *Atomic[T]) Swap(value T) T { _ = "STUB: not implemented"; return *new(T) }
 
-	a.value = value
-}
+func (a *Atomic[T]) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (a *Atomic[T]) Swap(value T) T {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	old := a.value
-	a.value = value
-
-	return old
-}
-
-func (a *Atomic[T]) MarshalJSON() ([]byte, error) {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	return json.Marshal(a.value)
-}
-
-func (a *Atomic[T]) UnmarshalJSON(b []byte) error {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return json.Unmarshal(b, &a.value)
-}
+func (a *Atomic[T]) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }

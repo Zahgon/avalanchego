@@ -23,53 +23,21 @@ type lockedWriter struct {
 }
 
 func NewLockedWriter(w http.ResponseWriter) http.ResponseWriter {
-	return &lockedWriter{writer: w}
+	_ = "STUB: not implemented"
+	return *new(http.ResponseWriter)
 }
 
-func (lw *lockedWriter) Header() http.Header {
-	lw.lock.Lock()
-	defer lw.lock.Unlock()
+func (lw *lockedWriter) Header() http.Header { _ = "STUB: not implemented"; return *new(http.Header) }
 
-	return lw.writer.Header()
-}
+func (lw *lockedWriter) Write(b []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (lw *lockedWriter) Write(b []byte) (int, error) {
-	lw.lock.Lock()
-	defer lw.lock.Unlock()
+func (lw *lockedWriter) WriteHeader(statusCode int) { _ = "STUB: not implemented"; return }
 
-	lw.headerWritten = true
-	return lw.writer.Write(b)
-}
+// Skip writing the header if it has already been written once.
 
-func (lw *lockedWriter) WriteHeader(statusCode int) {
-	lw.lock.Lock()
-	defer lw.lock.Unlock()
-
-	// Skip writing the header if it has already been written once.
-	if lw.headerWritten {
-		return
-	}
-	lw.headerWritten = true
-	lw.writer.WriteHeader(statusCode)
-}
-
-func (lw *lockedWriter) Flush() {
-	lw.lock.Lock()
-	defer lw.lock.Unlock()
-
-	flusher, ok := lw.writer.(http.Flusher)
-	if ok {
-		flusher.Flush()
-	}
-}
+func (lw *lockedWriter) Flush() { _ = "STUB: not implemented"; return }
 
 func (lw *lockedWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
-	lw.lock.Lock()
-	defer lw.lock.Unlock()
-
-	hijacker, ok := lw.writer.(http.Hijacker)
-	if !ok {
-		return nil, nil, errUnsupportedHijacking
-	}
-	return hijacker.Hijack()
+	_ = "STUB: not implemented"
+	return *new(net.Conn), nil, nil
 }

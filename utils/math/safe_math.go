@@ -22,39 +22,24 @@ var (
 
 // MaxUint returns the maximum value of an unsigned integer of type T.
 func MaxUint[T constraints.Unsigned]() T {
-	return ^T(0)
+	_ = "STUB: not implemented"
+
+	// Add returns:
+	// 1) a + b
+	// 2) If there is overflow, an error
+	return *new(T)
 }
 
-// Add returns:
-// 1) a + b
-// 2) If there is overflow, an error
-func Add[T constraints.Unsigned](a, b T) (T, error) {
-	if a > MaxUint[T]()-b {
-		return 0, ErrOverflow
-	}
-	return a + b, nil
-}
+func Add[T constraints.Unsigned](a, b T) (T, error) { _ = "STUB: not implemented"; return *new(T), nil }
 
 // Sub returns:
 // 1) a - b
 // 2) If there is underflow, an error
-func Sub[T constraints.Unsigned](a, b T) (T, error) {
-	if a < b {
-		return 0, ErrUnderflow
-	}
-	return a - b, nil
-}
+func Sub[T constraints.Unsigned](a, b T) (T, error) { _ = "STUB: not implemented"; return *new(T), nil }
 
 // Mul returns:
 // 1) a * b
 // 2) If there is overflow, an error
-func Mul[T constraints.Unsigned](a, b T) (T, error) {
-	if b != 0 && a > MaxUint[T]()/b {
-		return 0, ErrOverflow
-	}
-	return a * b, nil
-}
+func Mul[T constraints.Unsigned](a, b T) (T, error) { _ = "STUB: not implemented"; return *new(T), nil }
 
-func AbsDiff[T constraints.Unsigned](a, b T) T {
-	return max(a, b) - min(a, b)
-}
+func AbsDiff[T constraints.Unsigned](a, b T) T { _ = "STUB: not implemented"; return *new(T) }

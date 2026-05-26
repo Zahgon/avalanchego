@@ -4,8 +4,6 @@
 package x
 
 import (
-	"time"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/vms/avm"
 	"github.com/ava-labs/avalanchego/vms/avm/txs"
@@ -145,12 +143,8 @@ func NewWallet(
 	client *avm.Client,
 	backend Backend,
 ) Wallet {
-	return &wallet{
-		backend: backend,
-		builder: builder,
-		signer:  signer,
-		client:  client,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type wallet struct {
@@ -160,23 +154,16 @@ type wallet struct {
 	client  *avm.Client
 }
 
-func (w *wallet) Builder() builder.Builder {
-	return w.builder
-}
+func (w *wallet) Builder() builder.Builder { _ = "STUB: not implemented"; return *new(builder.Builder) }
 
-func (w *wallet) Signer() signer.Signer {
-	return w.signer
-}
+func (w *wallet) Signer() signer.Signer { _ = "STUB: not implemented"; return *new(signer.Signer) }
 
 func (w *wallet) IssueBaseTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewBaseTx(outputs, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueCreateAssetTx(
@@ -186,33 +173,24 @@ func (w *wallet) IssueCreateAssetTx(
 	initialState map[uint32][]verify.State,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewCreateAssetTx(name, symbol, denomination, initialState, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueOperationTx(
 	operations []*txs.Operation,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewOperationTx(operations, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueOperationTxMintFT(
 	outputs map[ids.ID]*secp256k1fx.TransferOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewOperationTxMintFT(outputs, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueOperationTxMintNFT(
@@ -221,11 +199,8 @@ func (w *wallet) IssueOperationTxMintNFT(
 	owners []*secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewOperationTxMintNFT(assetID, payload, owners, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueOperationTxMintProperty(
@@ -233,22 +208,16 @@ func (w *wallet) IssueOperationTxMintProperty(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewOperationTxMintProperty(assetID, owner, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueOperationTxBurnProperty(
 	assetID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewOperationTxBurnProperty(assetID, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueImportTx(
@@ -256,11 +225,8 @@ func (w *wallet) IssueImportTx(
 	to *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewImportTx(chainID, to, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueExportTx(
@@ -268,67 +234,22 @@ func (w *wallet) IssueExportTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewExportTx(chainID, outputs, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueUnsignedTx(
 	utx txs.UnsignedTx,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	ops := common.NewOptions(options)
-	ctx := ops.Context()
-	tx, err := signer.SignUnsigned(ctx, w.signer, utx)
-	if err != nil {
-		return nil, err
-	}
-
-	return tx, w.IssueTx(tx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueTx(
 	tx *txs.Tx,
 	options ...common.Option,
 ) error {
-	ops := common.NewOptions(options)
-	ctx := ops.Context()
-	startTime := time.Now()
-	txID, err := w.client.IssueTx(ctx, tx.Bytes())
-	if err != nil {
-		return err
-	}
-
-	issuanceDuration := time.Since(startTime)
-	if f := ops.IssuanceHandler(); f != nil {
-		f(common.IssuanceReceipt{
-			ChainAlias: builder.Alias,
-			TxID:       txID,
-			Duration:   issuanceDuration,
-		})
-	}
-
-	if ops.AssumeDecided() {
-		return w.backend.AcceptTx(ctx, tx)
-	}
-
-	if err := w.client.AwaitTxAccepted(ctx, txID, ops.PollFrequency()); err != nil {
-		return err
-	}
-
-	if f := ops.ConfirmationHandler(); f != nil {
-		totalDuration := time.Since(startTime)
-		confirmationDuration := totalDuration - issuanceDuration
-
-		f(common.ConfirmationReceipt{
-			ChainAlias:           builder.Alias,
-			TxID:                 txID,
-			TotalDuration:        totalDuration,
-			ConfirmationDuration: confirmationDuration,
-		})
-	}
-
-	return w.backend.AcceptTx(ctx, tx)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -30,34 +30,15 @@ type chainState struct {
 }
 
 func NewChainState(db database.Database) ChainState {
-	return &chainState{db: db}
+	_ = "STUB: not implemented"
+	return *new(ChainState)
 }
 
-func (s *chainState) SetLastAccepted(blkID ids.ID) error {
-	if s.lastAccepted == blkID {
-		return nil
-	}
-	s.lastAccepted = blkID
-	return s.db.Put(lastAcceptedKey, blkID[:])
-}
+func (s *chainState) SetLastAccepted(blkID ids.ID) error { _ = "STUB: not implemented"; return nil }
 
-func (s *chainState) DeleteLastAccepted() error {
-	s.lastAccepted = ids.Empty
-	return s.db.Delete(lastAcceptedKey)
-}
+func (s *chainState) DeleteLastAccepted() error { _ = "STUB: not implemented"; return nil }
 
 func (s *chainState) GetLastAccepted() (ids.ID, error) {
-	if s.lastAccepted != ids.Empty {
-		return s.lastAccepted, nil
-	}
-	lastAcceptedBytes, err := s.db.Get(lastAcceptedKey)
-	if err != nil {
-		return ids.Empty, err
-	}
-	lastAccepted, err := ids.ToID(lastAcceptedBytes)
-	if err != nil {
-		return ids.Empty, err
-	}
-	s.lastAccepted = lastAccepted
-	return lastAccepted, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

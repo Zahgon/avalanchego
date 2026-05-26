@@ -16,36 +16,38 @@ var Noop Metrics = noopMetrics{}
 
 type noopMetrics struct{}
 
-func (noopMetrics) MarkOptionVoteWon() {}
+func (noopMetrics) MarkOptionVoteWon() { _ = "STUB: not implemented"; return }
 
-func (noopMetrics) MarkOptionVoteLost() {}
+func (noopMetrics) MarkOptionVoteLost() { _ = "STUB: not implemented"; return }
 
-func (noopMetrics) MarkAccepted(Block) error {
+func (noopMetrics) MarkAccepted(Block) error { _ = "STUB: not implemented"; return nil }
+
+func (noopMetrics) InterceptRequest(i *rpc.RequestInfo) *http.Request {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (noopMetrics) InterceptRequest(i *rpc.RequestInfo) *http.Request {
-	return i.Request
+func (noopMetrics) AfterRequest(*rpc.RequestInfo) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) IncValidatorSetsCreated() { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) IncValidatorSetsCached() { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) AddValidatorSetsDuration(time.Duration) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) AddValidatorSetsHeightDiff(uint64) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) SetLocalStake(uint64) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) SetTotalStake(uint64) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) SetTimeUntilUnstake(time.Duration) { _ = "STUB: not implemented"; return }
+
+func (noopMetrics) SetTimeUntilSubnetUnstake(ids.ID, time.Duration) {
+	_ = "STUB: not implemented"
+	return
 }
 
-func (noopMetrics) AfterRequest(*rpc.RequestInfo) {}
+func (noopMetrics) SetSubnetPercentConnected(ids.ID, float64) { _ = "STUB: not implemented"; return }
 
-func (noopMetrics) IncValidatorSetsCreated() {}
-
-func (noopMetrics) IncValidatorSetsCached() {}
-
-func (noopMetrics) AddValidatorSetsDuration(time.Duration) {}
-
-func (noopMetrics) AddValidatorSetsHeightDiff(uint64) {}
-
-func (noopMetrics) SetLocalStake(uint64) {}
-
-func (noopMetrics) SetTotalStake(uint64) {}
-
-func (noopMetrics) SetTimeUntilUnstake(time.Duration) {}
-
-func (noopMetrics) SetTimeUntilSubnetUnstake(ids.ID, time.Duration) {}
-
-func (noopMetrics) SetSubnetPercentConnected(ids.ID, float64) {}
-
-func (noopMetrics) SetPercentConnected(float64) {}
+func (noopMetrics) SetPercentConnected(float64) { _ = "STUB: not implemented"; return }

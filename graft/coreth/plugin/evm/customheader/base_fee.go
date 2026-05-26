@@ -4,13 +4,11 @@
 package customheader
 
 import (
-	"fmt"
 	"math/big"
 
 	"github.com/ava-labs/libevm/core/types"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/params/extras"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
 )
 
 // BaseFee takes the previous header and the timestamp of its child block and
@@ -22,22 +20,11 @@ func BaseFee(
 	parent *types.Header,
 	timeMS uint64,
 ) (*big.Int, error) {
-	timestamp := timeMS / 1000
-	switch {
-	case config.IsFortuna(timestamp):
-		state, err := feeStateBeforeBlock(config, parent, timeMS)
-		if err != nil {
-			return nil, fmt.Errorf("calculating initial fee state: %w", err)
-		}
-		price := state.GasPrice()
-		return new(big.Int).SetUint64(uint64(price)), nil
-	case config.IsApricotPhase3(timestamp):
-		return baseFeeFromWindow(config, parent, timestamp)
-	default:
-		// Prior to AP3 the expected base fee is nil.
-		return nil, nil
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Prior to AP3 the expected base fee is nil.
 
 // EstimateNextBaseFee attempts to estimate the base fee of a block built at
 // `timestamp` on top of `parent`.
@@ -52,7 +39,6 @@ func EstimateNextBaseFee(
 	parent *types.Header,
 	timeMS uint64,
 ) (*big.Int, error) {
-	parentMS := customtypes.HeaderTimeMilliseconds(parent)
-	timeMS = max(timeMS, parentMS)
-	return BaseFee(config, parent, timeMS)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

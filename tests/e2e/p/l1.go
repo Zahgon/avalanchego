@@ -5,13 +5,10 @@ package p
 
 import (
 	"context"
-	"errors"
 	"math"
-	"slices"
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/proto"
@@ -20,12 +17,10 @@ import (
 	"github.com/ava-labs/avalanchego/config"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/peer"
-	"github.com/ava-labs/avalanchego/proto/pb/sdk"
 	"github.com/ava-labs/avalanchego/snow/networking/router"
 	"github.com/ava-labs/avalanchego/tests"
 	"github.com/ava-labs/avalanchego/tests/fixture/e2e"
 	"github.com/ava-labs/avalanchego/tests/fixture/tmpnet"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/buffer"
 	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
@@ -42,8 +37,6 @@ import (
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 
 	p2pmessage "github.com/ava-labs/avalanchego/message"
-	p2psdk "github.com/ava-labs/avalanchego/network/p2p"
-	p2ppb "github.com/ava-labs/avalanchego/proto/pb/p2p"
 	platformvmpb "github.com/ava-labs/avalanchego/proto/pb/platformvm"
 	snowvalidators "github.com/ava-labs/avalanchego/snow/validators"
 	platformapi "github.com/ava-labs/avalanchego/vms/platformvm/api"
@@ -847,90 +840,23 @@ func wrapWarpSignatureRequest(
 	msg *warp.UnsignedMessage,
 	justification []byte,
 ) (*p2pmessage.OutboundMessage, error) {
-	p2pMessageFactory, err := p2pmessage.NewCreator(
-		prometheus.NewRegistry(),
-		constants.DefaultNetworkCompressionType,
-		p2pTimeout,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	request := sdk.SignatureRequest{
-		Message:       msg.Bytes(),
-		Justification: justification,
-	}
-	requestBytes, err := proto.Marshal(&request)
-	if err != nil {
-		return nil, err
-	}
-
-	return p2pMessageFactory.AppRequest(
-		msg.SourceChainID,
-		0,
-		time.Hour,
-		p2psdk.PrefixMessage(
-			p2psdk.ProtocolPrefix(p2psdk.SignatureRequestHandlerID),
-			requestBytes,
-		),
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func findMessage[T any](
 	q buffer.BlockingDeque[*p2pmessage.InboundMessage],
 	parser func(*p2pmessage.InboundMessage) (T, bool, error),
 ) (T, bool, error) {
-	var messagesToReprocess []*p2pmessage.InboundMessage
-	defer func() {
-		slices.Reverse(messagesToReprocess)
-		for _, msg := range messagesToReprocess {
-			q.PushLeft(msg)
-		}
-	}()
-
-	for {
-		msg, ok := q.PopLeft()
-		if !ok {
-			return utils.Zero[T](), false, nil
-		}
-
-		parsed, ok, err := parser(msg)
-		if err != nil {
-			return utils.Zero[T](), false, err
-		}
-		if ok {
-			return parsed, true, nil
-		}
-
-		messagesToReprocess = append(messagesToReprocess, msg)
-	}
+	_ = "STUB: not implemented"
+	return *new(T), false, nil
 }
 
 // unwrapWarpSignature assumes the only type of AppResponses that will be
 // received are ACP-118 compliant responses.
 func unwrapWarpSignature(msg *p2pmessage.InboundMessage) (*bls.Signature, bool, error) {
-	var appResponse *p2ppb.AppResponse
-	switch msg := msg.Message.(type) {
-	case *p2ppb.AppResponse:
-		appResponse = msg
-	case *p2ppb.AppError:
-		return nil, false, errors.New(msg.ErrorMessage)
-	default:
-		return nil, false, nil
-	}
-
-	var response sdk.SignatureResponse
-	if err := proto.Unmarshal(appResponse.AppBytes, &response); err != nil {
-		return nil, false, err
-	}
-
-	warpSignature, err := bls.SignatureFromBytes(response.Signature)
-	return warpSignature, true, err
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
 
-func must[T any](t require.TestingT) func(T, error) T {
-	return func(val T, err error) T {
-		require.NoError(t, err)
-		return val
-	}
-}
+func must[T any](t require.TestingT) func(T, error) T { _ = "STUB: not implemented"; return nil }

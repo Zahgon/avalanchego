@@ -4,7 +4,6 @@
 package state
 
 import (
-	"encoding/binary"
 	"fmt"
 
 	"github.com/google/btree"
@@ -47,68 +46,27 @@ type ExpiryEntry struct {
 	ValidationID ids.ID
 }
 
-func (e *ExpiryEntry) Marshal() []byte {
-	data := make([]byte, expiryEntryLength)
-	binary.BigEndian.PutUint64(data, e.Timestamp)
-	copy(data[database.Uint64Size:], e.ValidationID[:])
-	return data
-}
+func (e *ExpiryEntry) Marshal() []byte { _ = "STUB: not implemented"; return nil }
 
-func (e *ExpiryEntry) Unmarshal(data []byte) error {
-	if len(data) != expiryEntryLength {
-		return errUnexpectedExpiryEntryLength
-	}
+func (e *ExpiryEntry) Unmarshal(data []byte) error { _ = "STUB: not implemented"; return nil }
 
-	e.Timestamp = binary.BigEndian.Uint64(data)
-	copy(e.ValidationID[:], data[database.Uint64Size:])
-	return nil
-}
-
-func (e ExpiryEntry) Less(o ExpiryEntry) bool {
-	return e.Compare(o) == -1
-}
+func (e ExpiryEntry) Less(o ExpiryEntry) bool { _ = "STUB: not implemented"; return false }
 
 // Invariant: Compare produces the same ordering as the marshalled bytes.
-func (e ExpiryEntry) Compare(o ExpiryEntry) int {
-	switch {
-	case e.Timestamp < o.Timestamp:
-		return -1
-	case e.Timestamp > o.Timestamp:
-		return 1
-	default:
-		return e.ValidationID.Compare(o.ValidationID)
-	}
-}
+func (e ExpiryEntry) Compare(o ExpiryEntry) int { _ = "STUB: not implemented"; return 0 }
 
 type expiryDiff struct {
 	modified map[ExpiryEntry]bool // bool represents isAdded
 	added    *btree.BTreeG[ExpiryEntry]
 }
 
-func newExpiryDiff() *expiryDiff {
-	return &expiryDiff{
-		modified: make(map[ExpiryEntry]bool),
-		added:    btree.NewG(defaultTreeDegree, ExpiryEntry.Less),
-	}
-}
+func newExpiryDiff() *expiryDiff { _ = "STUB: not implemented"; return nil }
 
-func (e *expiryDiff) PutExpiry(entry ExpiryEntry) {
-	e.modified[entry] = true
-	e.added.ReplaceOrInsert(entry)
-}
+func (e *expiryDiff) PutExpiry(entry ExpiryEntry) { _ = "STUB: not implemented"; return }
 
-func (e *expiryDiff) DeleteExpiry(entry ExpiryEntry) {
-	e.modified[entry] = false
-	e.added.Delete(entry)
-}
+func (e *expiryDiff) DeleteExpiry(entry ExpiryEntry) { _ = "STUB: not implemented"; return }
 
 func (e *expiryDiff) getExpiryIterator(parentIterator iterator.Iterator[ExpiryEntry]) iterator.Iterator[ExpiryEntry] {
-	return iterator.Merge(
-		ExpiryEntry.Less,
-		iterator.Filter(parentIterator, func(entry ExpiryEntry) bool {
-			_, ok := e.modified[entry]
-			return ok
-		}),
-		iterator.FromTree(e.added),
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

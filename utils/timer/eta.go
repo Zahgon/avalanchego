@@ -4,19 +4,16 @@
 package timer
 
 import (
-	"encoding/binary"
-	"math"
 	"time"
 )
 
 // ProgressFromHash returns the progress out of MaxUint64 assuming [b] is a key
 // in a uniformly distributed sequence that is being iterated lexicographically.
 func ProgressFromHash(b []byte) uint64 {
+	_ = "STUB: not implemented"
 	// binary.BigEndian.Uint64 will panic if the input length is less than 8, so
 	// pad 0s as needed.
-	var progress [8]byte
-	copy(progress[:], b)
-	return binary.BigEndian.Uint64(progress[:])
+	return 0
 }
 
 // A sample represents a completed amount and the timestamp of the sample
@@ -49,15 +46,8 @@ type EtaTracker struct {
 //
 // If maxSamples is less than 1, it will default to 5
 func NewEtaTracker(maxSamples uint8, slowdownFactor float64) *EtaTracker {
-	if maxSamples < 1 {
-		maxSamples = 5
-	}
-	return &EtaTracker{
-		samples:        make([]sample, maxSamples),
-		samplePosition: 0,
-		totalSamples:   0,
-		slowdownFactor: slowdownFactor,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddSample adds a sample to the EtaTracker
@@ -68,64 +58,24 @@ func NewEtaTracker(maxSamples uint8, slowdownFactor float64) *EtaTracker {
 //
 // The first sample should be at 0% progress to establish a baseline
 func (t *EtaTracker) AddSample(completed uint64, target uint64, timestamp time.Time) (*time.Duration, float64) {
-	sample := sample{
-		completed: completed,
-		timestamp: timestamp,
-	}
-	// save the oldest sample; this will not be used if we don't have enough samples
-	maxSamples := len(t.samples)
-	t.samples[t.samplePosition] = sample
-	t.samplePosition = (t.samplePosition + 1) % uint8(maxSamples)
-	t.totalSamples++
-
-	// If we don't have enough samples, return nil
-	if t.totalSamples < uint64(maxSamples) {
-		return nil, 0.0
-	}
-
-	oldestSample := t.samples[t.samplePosition]
-
-	// Calculate the time and progress since the oldest sample
-	timeSinceOldest := sample.timestamp.Sub(oldestSample.timestamp)
-	progressSinceOldest := sample.completed - oldestSample.completed
-
-	// Check if target is already completed or exceeded
-	if sample.completed >= target {
-		zeroDuration := time.Duration(0)
-		return &zeroDuration, 100
-	}
-
-	if timeSinceOldest <= 0 {
-		return nil, 0.0
-	}
-	rate := float64(progressSinceOldest) / float64(timeSinceOldest)
-	if rate == 0 {
-		return nil, 0.0
-	}
-
-	remainingWork := target - sample.completed
-
-	actualPercentComplete := float64(sample.completed) / float64(target)
-	// scale to 0.00 to 100.00
-	roundedScaledPercentComplete := math.Round(actualPercentComplete*10000) / 100
-
-	duration := float64(remainingWork) / rate
-	adjustment := t.slowdownFactor - (t.slowdownFactor-1.0)*actualPercentComplete
-
-	adjustedDuration := duration * adjustment
-	eta := time.Duration(adjustedDuration)
-	roundedEta := eta.Round(time.Second)
-	return &roundedEta, roundedScaledPercentComplete
+	_ = "STUB: not implemented"
+	return nil, 0
 }
+
+// save the oldest sample; this will not be used if we don't have enough samples
+
+// If we don't have enough samples, return nil
+
+// Calculate the time and progress since the oldest sample
+
+// Check if target is already completed or exceeded
+
+// scale to 0.00 to 100.00
 
 // EstimateETA calculates ETA from start time and current progress.
 //
 // Deprecated: use EtaTracker instead
 func EstimateETA(startTime time.Time, progress, end uint64) time.Duration {
-	timeSpent := time.Since(startTime)
-
-	percentExecuted := float64(progress) / float64(end)
-	estimatedTotalDuration := time.Duration(float64(timeSpent) / percentExecuted)
-	eta := estimatedTotalDuration - timeSpent
-	return eta.Round(time.Second)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }

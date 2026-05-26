@@ -27,65 +27,38 @@ var (
 )
 
 func (vm *VM) SetExtensionConfig(config *extension.Config) error {
-	if vm.ctx != nil {
-		return errVMAlreadyInitialized
-	}
-	if vm.extensionConfig != nil {
-		return errExtensionConfigAlreadySet
-	}
-	vm.extensionConfig = config
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // All these methods below assumes that VM is already initialized
 
 func (vm *VM) GetExtendedBlock(ctx context.Context, blkID ids.ID) (extension.ExtendedBlock, error) {
+	_ = "STUB: not implemented"
 	// Since each internal handler used by [vm.State] always returns a block
 	// with non-nil ethBlock value, GetBlockInternal should never return a
 	// (*Block) with a nil ethBlock value.
-	blk, err := vm.GetBlockInternal(ctx, blkID)
-	if err != nil {
-		return nil, err
-	}
-
-	return blk.(*wrappedBlock), nil
+	return *new(extension.ExtendedBlock), nil
 }
 
 func (vm *VM) LastAcceptedExtendedBlock() extension.ExtendedBlock {
-	lastAcceptedBlock := vm.LastAcceptedBlockInternal()
-	if lastAcceptedBlock == nil {
-		return nil
-	}
-	return lastAcceptedBlock.(*wrappedBlock)
+	_ = "STUB: not implemented"
+	return *new(extension.ExtendedBlock)
 }
 
 // ChainConfig returns the chain config for the VM
 // Even though this is available through Blockchain().Config(),
 // ChainConfig() here will be available before the blockchain is initialized.
-func (vm *VM) ChainConfig() *params.ChainConfig {
-	return vm.chainConfig
-}
+func (vm *VM) ChainConfig() *params.ChainConfig { _ = "STUB: not implemented"; return nil }
 
-func (vm *VM) Ethereum() *eth.Ethereum {
-	return vm.eth
-}
+func (vm *VM) Ethereum() *eth.Ethereum { _ = "STUB: not implemented"; return nil }
 
-func (vm *VM) Config() config.Config {
-	return vm.config
-}
+func (vm *VM) Config() config.Config { _ = "STUB: not implemented"; return *new(config.Config) }
 
-func (vm *VM) MetricRegistry() *prometheus.Registry {
-	return vm.sdkMetrics
-}
+func (vm *VM) MetricRegistry() *prometheus.Registry { _ = "STUB: not implemented"; return nil }
 
-func (vm *VM) Validators() *p2p.Validators {
-	return vm.P2PValidators()
-}
+func (vm *VM) Validators() *p2p.Validators { _ = "STUB: not implemented"; return nil }
 
-func (vm *VM) VersionDB() *versiondb.Database {
-	return vm.versiondb
-}
+func (vm *VM) VersionDB() *versiondb.Database { _ = "STUB: not implemented"; return nil }
 
-func (vm *VM) SyncerClient() engine.Client {
-	return vm.Client
-}
+func (vm *VM) SyncerClient() engine.Client { _ = "STUB: not implemented"; return *new(engine.Client) }

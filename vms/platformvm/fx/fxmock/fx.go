@@ -10,8 +10,6 @@
 package fxmock
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -28,98 +26,62 @@ type FxMockRecorder struct {
 }
 
 // NewFx creates a new mock instance.
-func NewFx(ctrl *gomock.Controller) *Fx {
-	mock := &Fx{ctrl: ctrl}
-	mock.recorder = &FxMockRecorder{mock}
-	return mock
-}
+func NewFx(ctrl *gomock.Controller) *Fx { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Fx) EXPECT() *FxMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Bootstrapped mocks base method.
+	return nil
 }
 
-// Bootstrapped mocks base method.
-func (m *Fx) Bootstrapped() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Bootstrapped")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Fx) Bootstrapped() error { _ = "STUB: not implemented"; return nil }
 
 // Bootstrapped indicates an expected call of Bootstrapped.
-func (mr *FxMockRecorder) Bootstrapped() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bootstrapped", reflect.TypeOf((*Fx)(nil).Bootstrapped))
-}
+func (mr *FxMockRecorder) Bootstrapped() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Bootstrapping mocks base method.
-func (m *Fx) Bootstrapping() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Bootstrapping")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Fx) Bootstrapping() error { _ = "STUB: not implemented"; return nil }
 
 // Bootstrapping indicates an expected call of Bootstrapping.
-func (mr *FxMockRecorder) Bootstrapping() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bootstrapping", reflect.TypeOf((*Fx)(nil).Bootstrapping))
-}
+func (mr *FxMockRecorder) Bootstrapping() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // CreateOutput mocks base method.
 func (m *Fx) CreateOutput(amount uint64, controlGroup any) (any, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateOutput", amount, controlGroup)
-	ret0, _ := ret[0].(any)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 // CreateOutput indicates an expected call of CreateOutput.
 func (mr *FxMockRecorder) CreateOutput(amount, controlGroup any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateOutput", reflect.TypeOf((*Fx)(nil).CreateOutput), amount, controlGroup)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize mocks base method.
-func (m *Fx) Initialize(vm any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Initialize", vm)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Fx) Initialize(vm any) error { _ = "STUB: not implemented"; return nil }
 
 // Initialize indicates an expected call of Initialize.
-func (mr *FxMockRecorder) Initialize(vm any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Initialize", reflect.TypeOf((*Fx)(nil).Initialize), vm)
-}
+func (mr *FxMockRecorder) Initialize(vm any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // VerifyPermission mocks base method.
 func (m *Fx) VerifyPermission(tx, in, cred, controlGroup any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyPermission", tx, in, cred, controlGroup)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyPermission indicates an expected call of VerifyPermission.
 func (mr *FxMockRecorder) VerifyPermission(tx, in, cred, controlGroup any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyPermission", reflect.TypeOf((*Fx)(nil).VerifyPermission), tx, in, cred, controlGroup)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyTransfer mocks base method.
-func (m *Fx) VerifyTransfer(tx, in, cred, utxo any) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyTransfer", tx, in, cred, utxo)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Fx) VerifyTransfer(tx, in, cred, utxo any) error { _ = "STUB: not implemented"; return nil }
 
 // VerifyTransfer indicates an expected call of VerifyTransfer.
 func (mr *FxMockRecorder) VerifyTransfer(tx, in, cred, utxo any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyTransfer", reflect.TypeOf((*Fx)(nil).VerifyTransfer), tx, in, cred, utxo)
+	_ = "STUB: not implemented"
+	return nil
 }

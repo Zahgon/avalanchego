@@ -4,37 +4,16 @@
 package tmpnet
 
 import (
-	"bytes"
 	"context"
-	"encoding/base64"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
-	"fmt"
-	"maps"
-	"net/netip"
-	"os"
-	"os/exec"
-	"path/filepath"
-	"slices"
-	"strconv"
-	"strings"
 	"time"
 
-	"github.com/google/uuid"
-	"go.uber.org/zap"
-
-	"github.com/ava-labs/avalanchego/chains"
-	"github.com/ava-labs/avalanchego/config"
 	"github.com/ava-labs/avalanchego/genesis"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/tests/fixture/stacktrace"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/perms"
 	"github.com/ava-labs/avalanchego/utils/set"
-	"github.com/ava-labs/avalanchego/vms/platformvm"
 )
 
 // The Network type is defined in this file (orchestration) and
@@ -150,28 +129,12 @@ type Network struct {
 	log logging.Logger
 }
 
-func NewDefaultNetwork(owner string) *Network {
-	return &Network{
-		UUID:  uuid.NewString(),
-		Owner: owner,
-		Nodes: NewNodesOrPanic(DefaultNodeCount),
-	}
-}
+func NewDefaultNetwork(owner string) *Network { _ = "STUB: not implemented"; return nil }
 
 // Ensure a real and absolute network dir so that node
 // configuration that embeds the network path will continue to
 // work regardless of symlink and working directory changes.
-func toCanonicalDir(dir string) (string, error) {
-	absDir, err := filepath.Abs(dir)
-	if err != nil {
-		return "", stacktrace.Wrap(err)
-	}
-	canonicalDir, err := filepath.EvalSymlinks(absDir)
-	if err != nil {
-		return "", stacktrace.Wrap(err)
-	}
-	return canonicalDir, nil
-}
+func toCanonicalDir(dir string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 func BootstrapNewNetwork(
 	ctx context.Context,
@@ -179,796 +142,294 @@ func BootstrapNewNetwork(
 	network *Network,
 	rootNetworkDir string,
 ) error {
-	if len(network.Nodes) == 0 {
-		return stacktrace.Wrap(errInsufficientNodes)
-	}
-
-	if err := checkVMBinaries(log, network.Subnets, network.DefaultRuntimeConfig.Process); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	if err := network.EnsureDefaultConfig(ctx, log); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	if err := network.Create(rootNetworkDir); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	return network.Bootstrap(ctx, log)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Stops the nodes of the network configured in the provided directory.
 func StopNetwork(ctx context.Context, log logging.Logger, dir string) error {
-	network, err := ReadNetwork(ctx, log, dir)
-	if err != nil {
-		return stacktrace.Wrap(err)
-	}
-	return network.Stop(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Restarts the nodes of the network configured in the provided directory.
 func RestartNetwork(ctx context.Context, log logging.Logger, dir string) error {
-	network, err := ReadNetwork(ctx, log, dir)
-	if err != nil {
-		return stacktrace.Wrap(err)
-	}
-	return network.Restart(ctx)
-}
-
-// Restart the provided nodes. Blocks on the nodes accepting API requests but not their health.
-func restartNodes(ctx context.Context, nodes []*Node) error {
-	for _, node := range nodes {
-		if err := node.Restart(ctx); err != nil {
-			return stacktrace.Errorf("failed to restart node %s: %w", node.NodeID, err)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// Restart the provided nodes. Blocks on the nodes accepting API requests but not their health.
+func restartNodes(ctx context.Context, nodes []*Node) error { _ = "STUB: not implemented"; return nil }
+
 // Reads a network from the provided directory.
 func ReadNetwork(ctx context.Context, log logging.Logger, dir string) (*Network, error) {
-	canonicalDir, err := toCanonicalDir(dir)
-	if err != nil {
-		return nil, stacktrace.Wrap(err)
-	}
-	network := &Network{
-		Dir: canonicalDir,
-		log: log,
-	}
-	if err := network.Read(ctx); err != nil {
-		return nil, stacktrace.Errorf("failed to read network: %w", err)
-	}
-	if network.DefaultFlags == nil {
-		network.DefaultFlags = FlagsMap{}
-	}
-	return network, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Initializes a new network with default configuration.
 func (n *Network) EnsureDefaultConfig(ctx context.Context, log logging.Logger) error {
+	_ = "STUB: not implemented"
 	// Populate runtime defaults before logging it
-	if n.DefaultRuntimeConfig.Kube != nil {
-		if err := n.DefaultRuntimeConfig.Kube.ensureDefaults(ctx, log); err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
-
-	log.Info("preparing configuration for new network",
-		zap.Any("runtimeConfig", n.DefaultRuntimeConfig),
-	)
-
-	n.log = log
-
-	// A UUID supports centralized metrics collection
-	if len(n.UUID) == 0 {
-		n.UUID = uuid.NewString()
-	}
-
-	if n.DefaultFlags == nil {
-		n.DefaultFlags = FlagsMap{}
-	}
-
-	// Ensure pre-funded keys if the genesis is not predefined
-	if n.Genesis == nil && len(n.PreFundedKeys) == 0 {
-		keys, err := NewPrivateKeys(DefaultPreFundedKeyCount)
-		if err != nil {
-			return stacktrace.Wrap(err)
-		}
-		n.PreFundedKeys = keys
-	}
-
-	// Ensure primary chains are configured
-	if n.PrimaryChainConfigs == nil {
-		n.PrimaryChainConfigs = map[string]ConfigMap{}
-	}
-	defaultChainConfigs := DefaultChainConfigs()
-	for alias, defaultChainConfig := range defaultChainConfigs {
-		if _, ok := n.PrimaryChainConfigs[alias]; !ok {
-			n.PrimaryChainConfigs[alias] = ConfigMap{}
-		}
-		primaryChainConfig := n.PrimaryChainConfigs[alias]
-		for key, value := range defaultChainConfig {
-			if _, ok := primaryChainConfig[key]; !ok {
-				primaryChainConfig[key] = value
-			}
-		}
-	}
-
-	emptyRuntime := NodeRuntimeConfig{}
-	if n.DefaultRuntimeConfig == emptyRuntime {
-		return stacktrace.Wrap(errMissingRuntimeConfig)
-	}
-
 	return nil
 }
 
+// A UUID supports centralized metrics collection
+
+// Ensure pre-funded keys if the genesis is not predefined
+
+// Ensure primary chains are configured
+
 // Creates the network on disk, generating its genesis and configuring its nodes in the process.
 func (n *Network) Create(rootDir string) error {
+	_ = "STUB: not implemented"
 	// Ensure creation of the root dir
-	if len(rootDir) == 0 {
-		// Use the default root dir
-		var err error
-		rootDir, err = getDefaultRootNetworkDir()
-		if err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
-	if err := os.MkdirAll(rootDir, perms.ReadWriteExecute); err != nil {
-		return stacktrace.Errorf("failed to create root network dir: %w", err)
-	}
-
-	// A time-based name ensures consistent directory ordering
-	dirName := time.Now().Format("20060102-150405.999999")
-	if len(n.Owner) > 0 {
-		// Include the owner to differentiate networks created at similar times
-		dirName = fmt.Sprintf("%s-%s", dirName, n.Owner)
-	}
-
-	// Ensure creation of the network dir
-	networkDir := filepath.Join(rootDir, dirName)
-	if err := os.MkdirAll(networkDir, perms.ReadWriteExecute); err != nil {
-		return stacktrace.Errorf("failed to create network dir: %w", err)
-	}
-	canonicalDir, err := toCanonicalDir(networkDir)
-	if err != nil {
-		return stacktrace.Wrap(err)
-	}
-	n.Dir = canonicalDir
-
-	if n.NetworkID == 0 && n.Genesis == nil {
-		genesis, err := n.DefaultGenesis()
-		if err != nil {
-			return stacktrace.Wrap(err)
-		}
-		n.Genesis = genesis
-	}
-
-	for _, node := range n.Nodes {
-		// Ensure the node is configured for use with the network and
-		// knows where to write its configuration.
-		if err := n.EnsureNodeConfig(node); err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
-
-	// Ensure configuration on disk is current
-	return n.Write()
+	return nil
 }
 
+// Use the default root dir
+
+// A time-based name ensures consistent directory ordering
+
+// Include the owner to differentiate networks created at similar times
+
+// Ensure creation of the network dir
+
+// Ensure the node is configured for use with the network and
+// knows where to write its configuration.
+
+// Ensure configuration on disk is current
+
 func (n *Network) DefaultGenesis() (*genesis.UnparsedConfig, error) {
+	_ = "STUB: not implemented"
 	// Pre-fund known legacy keys to support ad-hoc testing. Usage of a legacy key will
 	// require knowing the key beforehand rather than retrieving it from the set of pre-funded
 	// keys exposed by a network. Since allocation will not be exclusive, a test using a
 	// legacy key is unlikely to be a good candidate for parallel execution.
-	keysToFund := []*secp256k1.PrivateKey{
-		genesis.VMRQKey,
-		genesis.EWOQKey,
-		HardhatKey,
-	}
-	keysToFund = append(keysToFund, n.PreFundedKeys...)
-
-	return NewTestGenesis(defaultNetworkID, n.Nodes, keysToFund)
+	return nil, nil
 }
 
 // Starts the specified nodes
 func (n *Network) StartNodes(ctx context.Context, log logging.Logger, nodesToStart ...*Node) error {
-	if len(nodesToStart) == 0 {
-		return stacktrace.Wrap(errInsufficientNodes)
-	}
-	nodesToWaitFor := nodesToStart
-	if !slices.Contains(nodesToStart, n.Nodes[0]) {
-		// If starting all nodes except the bootstrap node (because the bootstrap node is already
-		// running), ensure that the health of the bootstrap node will be logged by including it in
-		// the set of nodes to wait for.
-		nodesToWaitFor = n.Nodes
-	} else {
-		// Simplify output by only logging network start when starting all nodes or when starting
-		// the first node by itself to bootstrap subnet creation.
-		log.Info("starting network",
-			zap.String("networkDir", n.Dir),
-			zap.String("uuid", n.UUID),
-		)
-	}
-
-	// Record the time before nodes are started to ensure visibility of subsequently collected metrics via the emitted link
-	startTime := time.Now()
-
-	for _, node := range nodesToStart {
-		if err := n.StartNode(ctx, node); err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
-
-	log.Info("waiting for nodes to report healthy")
-	if err := waitForHealthy(ctx, log, nodesToWaitFor); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	log.Info("started network",
-		zap.String("networkDir", n.Dir),
-		zap.String("uuid", n.UUID),
-	)
-	// Provide a link to the main dashboard filtered by the uuid and showing results from now till whenever the link is viewed
-	startTimeStr := strconv.FormatInt(startTime.UnixMilli(), 10)
-	metricsURL := MetricsLinkForNetwork(n.UUID, startTimeStr, "")
-
-	// Write link to the network path
-	metricsPath := filepath.Join(n.Dir, "metrics.txt")
-	if err := os.WriteFile(metricsPath, []byte(metricsURL+"\n"), perms.ReadWrite); err != nil {
-		return stacktrace.Errorf("failed to write metrics link to %s: %w", metricsPath, err)
-	}
-
-	log.Info(MetricsAvailableMessage,
-		zap.String("url", metricsURL),
-		zap.String("linkPath", metricsPath),
-	)
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// If starting all nodes except the bootstrap node (because the bootstrap node is already
+// running), ensure that the health of the bootstrap node will be logged by including it in
+// the set of nodes to wait for.
+
+// Simplify output by only logging network start when starting all nodes or when starting
+// the first node by itself to bootstrap subnet creation.
+
+// Record the time before nodes are started to ensure visibility of subsequently collected metrics via the emitted link
+
+// Provide a link to the main dashboard filtered by the uuid and showing results from now till whenever the link is viewed
+
+// Write link to the network path
 
 // Start the network for the first time
 func (n *Network) Bootstrap(ctx context.Context, log logging.Logger) error {
-	if len(n.Subnets) == 0 {
-		// Without the need to coordinate subnet configuration,
-		// starting all nodes at once is the simplest option.
-		return n.StartNodes(ctx, log, n.Nodes...)
-	}
+	_ = "STUB: not implemented"
+	return nil
 
-	// The node that will be used to create subnets and bootstrap the network
-	bootstrapNode := n.Nodes[0]
-
-	// An existing sybil protection value that may need to be restored after subnet creation
-	var existingSybilProtectionValue *string
-
-	if len(n.Nodes) > 1 {
-		// Reduce the cost of subnet creation for a network of multiple nodes by
-		// creating subnets with a single node with sybil protection
-		// disabled. This allows the creation of initial subnet state without
-		// requiring coordination between multiple nodes.
-
-		log.Info("starting a single-node network with sybil protection disabled for quicker subnet creation")
-
-		// If sybil protection is enabled, it should be re-enabled before the node is used to bootstrap the other nodes
-		if value, ok := bootstrapNode.Flags[config.SybilProtectionEnabledKey]; ok {
-			existingSybilProtectionValue = &value
-		}
-		// Ensure sybil protection is disabled for the bootstrap node.
-		bootstrapNode.Flags[config.SybilProtectionEnabledKey] = "false"
-	}
-
-	if err := n.StartNodes(ctx, log, bootstrapNode); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	// Affected node IDs can be ignored because the bootstrap node will
-	// always be restarted and other nodes have yet to start.
-	if _, err := n.CreateSubnets(ctx, log, bootstrapNode); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	if existingSybilProtectionValue == nil {
-		log.Info("re-enabling sybil protection",
-			zap.Stringer("nodeID", bootstrapNode.NodeID),
-		)
-		delete(bootstrapNode.Flags, config.SybilProtectionEnabledKey)
-	} else {
-		log.Info("restoring previous sybil protection value",
-			zap.Stringer("nodeID", bootstrapNode.NodeID),
-			zap.String("sybilProtectionEnabled", *existingSybilProtectionValue),
-		)
-		bootstrapNode.Flags[config.SybilProtectionEnabledKey] = *existingSybilProtectionValue
-	}
-
-	log.Info("restarting bootstrap node to ensure sybil protection and subnet changes take effect",
-		zap.Stringer("nodeID", bootstrapNode.NodeID),
-	)
-	if err := bootstrapNode.Restart(ctx); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	if len(n.Nodes) == 1 {
-		return nil
-	}
-
-	log.Info("starting remaining nodes")
-	return n.StartNodes(ctx, log, n.Nodes[1:]...)
+	// Without the need to coordinate subnet configuration,
+	// starting all nodes at once is the simplest option.
 }
+
+// The node that will be used to create subnets and bootstrap the network
+
+// An existing sybil protection value that may need to be restored after subnet creation
+
+// Reduce the cost of subnet creation for a network of multiple nodes by
+// creating subnets with a single node with sybil protection
+// disabled. This allows the creation of initial subnet state without
+// requiring coordination between multiple nodes.
+
+// If sybil protection is enabled, it should be re-enabled before the node is used to bootstrap the other nodes
+
+// Ensure sybil protection is disabled for the bootstrap node.
+
+// Affected node IDs can be ignored because the bootstrap node will
+// always be restarted and other nodes have yet to start.
 
 // Starts the provided node after configuring it for the network.
 func (n *Network) StartNode(ctx context.Context, node *Node) error {
-	if err := n.EnsureNodeConfig(node); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	if err := node.Write(); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	if err := node.Start(ctx); err != nil {
-		// Attempt to stop an unhealthy node to provide some assurance to the caller
-		// that an error condition will not result in a lingering process.
-		err = errors.Join(err, node.Stop(ctx))
-		return stacktrace.Wrap(err)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Attempt to stop an unhealthy node to provide some assurance to the caller
+// that an error condition will not result in a lingering process.
 
 // Stops all nodes in the network.
 func (n *Network) Stop(ctx context.Context) error {
+	_ = "STUB: not implemented"
 	// Ensure the node state is up-to-date
-	if err := n.readNodes(ctx); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	var errs []error
-
-	// Initiate stop on all nodes
-	for _, node := range n.Nodes {
-		if err := node.InitiateStop(ctx); err != nil {
-			errs = append(errs, stacktrace.Errorf("failed to stop node %s: %w", node.NodeID, err))
-		}
-	}
-
-	// Wait for stop to complete on all nodes
-	for _, node := range n.Nodes {
-		if err := node.WaitForStopped(ctx); err != nil {
-			errs = append(errs, stacktrace.Errorf("failed to wait for node %s to stop: %w", node.NodeID, err))
-		}
-	}
-
-	if len(errs) > 0 {
-		return stacktrace.Errorf("failed to stop network:\n%w", errors.Join(errs...))
-	}
 	return nil
 }
 
+// Initiate stop on all nodes
+
+// Wait for stop to complete on all nodes
+
 // Restarts all running nodes in the network.
-func (n *Network) Restart(ctx context.Context) error {
-	n.log.Info("restarting network")
-	nodes := make([]*Node, 0, len(n.Nodes))
-	for _, node := range n.Nodes {
-		if !node.IsRunning() {
-			continue
-		}
-		nodes = append(nodes, node)
-	}
-	if err := restartNodes(ctx, nodes); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	return WaitForHealthyNodes(ctx, n.log, nodes)
-}
+func (n *Network) Restart(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Waits for the provided nodes to become healthy.
 func WaitForHealthyNodes(ctx context.Context, log logging.Logger, nodes []*Node) error {
-	for _, node := range nodes {
-		log.Info("waiting for node to become healthy",
-			zap.Stringer("nodeID", node.NodeID),
-		)
-		if err := node.WaitForHealthy(ctx); err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Ensures the provided node has the configuration it needs to start. If the data dir is not
 // set, it will be defaulted to [nodeParentDir]/[node ID].
 func (n *Network) EnsureNodeConfig(node *Node) error {
+	_ = "STUB: not implemented"
 	// Ensure the node has access to network configuration
-	node.network = n
-
-	if err := node.EnsureKeys(); err != nil {
-		return stacktrace.Wrap(err)
-	}
-
-	// Ensure a data directory if not already set
-	if len(node.DataDir) == 0 {
-		node.DataDir = filepath.Join(n.Dir, node.NodeID.String())
-	}
-
 	return nil
 }
+
+// Ensure a data directory if not already set
 
 // TrackedSubnetsForNode returns the subnet IDs for the given node
 func (n *Network) TrackedSubnetsForNode(nodeID ids.NodeID) string {
-	subnetIDs := make([]string, 0, len(n.Subnets))
-	for _, subnet := range n.Subnets {
-		if subnet.SubnetID == ids.Empty {
-			// Subnet has not yet been created
-			continue
-		}
-		// Only track subnets that this node validates
-		if slices.Contains(subnet.ValidatorIDs, nodeID) {
-			subnetIDs = append(subnetIDs, subnet.SubnetID.String())
-		}
-	}
-	return strings.Join(subnetIDs, ",")
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func (n *Network) GetSubnet(name string) *Subnet {
-	for _, subnet := range n.Subnets {
-		if subnet.Name == name {
-			return subnet
-		}
-	}
-	return nil
-}
+// Subnet has not yet been created
+
+// Only track subnets that this node validates
+
+func (n *Network) GetSubnet(name string) *Subnet { _ = "STUB: not implemented"; return nil }
 
 // Ensure that each subnet on the network is created. Returns the IDs of nodes whose configuration is affected by
 // subnet creation so that they can be restarted if already running.
 func (n *Network) CreateSubnets(ctx context.Context, log logging.Logger, apiNode *Node) (set.Set[ids.NodeID], error) {
-	createdSubnets := make([]*Subnet, 0, len(n.Subnets))
-	apiURI := apiNode.GetAccessibleURI()
-	for _, subnet := range n.Subnets {
-		if len(subnet.ValidatorIDs) == 0 {
-			return nil, stacktrace.Errorf("subnet %s needs at least one validator", subnet.SubnetID)
-		}
-		if subnet.SubnetID != ids.Empty {
-			// The subnet already exists
-			continue
-		}
-
-		log.Info("creating subnet",
-			zap.String("name", subnet.Name),
-		)
-
-		if subnet.OwningKey == nil {
-			// Allocate a pre-funded key and remove it from the network so it won't be used for
-			// other purposes
-			if len(n.PreFundedKeys) == 0 {
-				return nil, stacktrace.Errorf("no pre-funded keys available to create subnet %q", subnet.Name)
-			}
-			subnet.OwningKey = n.PreFundedKeys[len(n.PreFundedKeys)-1]
-			n.PreFundedKeys = n.PreFundedKeys[:len(n.PreFundedKeys)-1]
-		}
-
-		// Create the subnet on the network
-		if err := subnet.Create(ctx, apiURI); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-
-		log.Info("created subnet",
-			zap.String("name", subnet.Name),
-			zap.Stringer("id", subnet.SubnetID),
-		)
-
-		// Persist the subnet configuration
-		if err := subnet.Write(n.GetSubnetDir()); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-
-		log.Info("wrote subnet configuration",
-			zap.String("name", subnet.Name),
-		)
-
-		createdSubnets = append(createdSubnets, subnet)
-	}
-
-	if len(createdSubnets) == 0 {
-		return nil, nil
-	}
-
-	// Ensure the pre-funded key changes are persisted to disk
-	if err := n.Write(); err != nil {
-		return nil, stacktrace.Wrap(err)
-	}
-
-	// Track the set of nodes that will need to be restarted after subnet creation
-	reconfiguredNodes := set.Set[ids.NodeID]{}
-
-	// Update node configuration to track the new subnets
-	for _, node := range n.Nodes {
-		existingTrackedSubnets := node.Flags[config.TrackSubnetsKey]
-		trackedSubnets := n.TrackedSubnetsForNode(node.NodeID)
-		if existingTrackedSubnets == trackedSubnets {
-			continue
-		}
-		node.Flags[config.TrackSubnetsKey] = trackedSubnets
-		reconfiguredNodes.Add(node.NodeID)
-	}
-
-	// Add validators for the subnet
-	for _, subnet := range createdSubnets {
-		log.Info("adding validators for subnet",
-			zap.String("name", subnet.Name),
-		)
-
-		// Collect the nodes intended to validate the subnet
-		validatorIDs := set.NewSet[ids.NodeID](len(subnet.ValidatorIDs))
-		validatorIDs.Add(subnet.ValidatorIDs...)
-		validatorNodes := []*Node{}
-		for _, node := range n.Nodes {
-			if !validatorIDs.Contains(node.NodeID) {
-				continue
-			}
-			validatorNodes = append(validatorNodes, node)
-		}
-
-		if err := subnet.AddValidators(ctx, log, apiURI, validatorNodes...); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-	}
-
-	// Wait for nodes to become subnet validators
-	pChainClient := platformvm.NewClient(apiURI)
-	for _, subnet := range createdSubnets {
-		if err := WaitForActiveValidators(ctx, log, pChainClient, subnet); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-
-		// It should now be safe to create chains for the subnet
-		if err := subnet.CreateChains(ctx, log, apiURI); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-
-		if err := subnet.Write(n.GetSubnetDir()); err != nil {
-			return nil, stacktrace.Wrap(err)
-		}
-		log.Info("wrote subnet configuration",
-			zap.String("name", subnet.Name),
-			zap.Stringer("id", subnet.SubnetID),
-		)
-
-		// If one or more of the subnets chains have explicit configuration, the
-		// subnet's validator nodes will need to be restarted for those nodes to read
-		// the newly written chain configuration and apply it to the chain(s).
-		if subnet.HasChainConfig() {
-			reconfiguredNodes.Add(subnet.ValidatorIDs...)
-		}
-	}
-
-	return reconfiguredNodes, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// The subnet already exists
+
+// Allocate a pre-funded key and remove it from the network so it won't be used for
+// other purposes
+
+// Create the subnet on the network
+
+// Persist the subnet configuration
+
+// Ensure the pre-funded key changes are persisted to disk
+
+// Track the set of nodes that will need to be restarted after subnet creation
+
+// Update node configuration to track the new subnets
+
+// Add validators for the subnet
+
+// Collect the nodes intended to validate the subnet
+
+// Wait for nodes to become subnet validators
+
+// It should now be safe to create chains for the subnet
+
+// If one or more of the subnets chains have explicit configuration, the
+// subnet's validator nodes will need to be restarted for those nodes to read
+// the newly written chain configuration and apply it to the chain(s).
+
 func (n *Network) GetNode(nodeID ids.NodeID) (*Node, error) {
-	for _, node := range n.Nodes {
-		if node.NodeID == nodeID {
-			return node, nil
-		}
-	}
-	return nil, stacktrace.Errorf("%s is not known to the network", nodeID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetNodeURIs returns the accessible URIs of nodes in the network that are running and not ephemeral.
-func (n *Network) GetNodeURIs() []NodeURI {
-	return GetNodeURIs(n.Nodes)
-}
+func (n *Network) GetNodeURIs() []NodeURI { _ = "STUB: not implemented"; return nil }
 
 // GetAvailableNodeIDs returns the node IDs of nodes in the network that are running and not ephemeral.
-func (n *Network) GetAvailableNodeIDs() []string {
-	availableNodes := FilterAvailableNodes(n.Nodes)
-	ids := []string{}
-	for _, node := range availableNodes {
-		ids = append(ids, node.NodeID.String())
-	}
-	return ids
-}
+func (n *Network) GetAvailableNodeIDs() []string { _ = "STUB: not implemented"; return nil }
 
 // Retrieves bootstrap IPs and IDs for all non-ephemeral nodes except the skipped one
 // (this supports collecting the bootstrap details for restarting a node).
 //
 // For consumption outside of avalanchego. Needs to be kept exported.
 func (n *Network) GetBootstrapIPsAndIDs(skippedNode *Node) ([]string, []string) {
-	bootstrapIPs := []string{}
-	bootstrapIDs := []string{}
-	for _, node := range n.Nodes {
-		if node.IsEphemeral {
-			// Ephemeral nodes are not guaranteed to stay running
-			continue
-		}
-		if skippedNode != nil && node.NodeID == skippedNode.NodeID {
-			continue
-		}
-
-		if node.StakingAddress == (netip.AddrPort{}) {
-			// Node is not running
-			continue
-		}
-
-		bootstrapIPs = append(bootstrapIPs, node.StakingAddress.String())
-		bootstrapIDs = append(bootstrapIDs, node.NodeID.String())
-	}
-
-	return bootstrapIPs, bootstrapIDs
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Ephemeral nodes are not guaranteed to stay running
+
+// Node is not running
 
 // GetNetworkID returns the effective ID of the network. If the network
 // defines a genesis, the network ID in the genesis will be returned. If a
 // genesis is not present (i.e. a network with a genesis included in the
 // avalanchego binary - mainnet, testnet and local), the value of the
 // NetworkID field will be returned
-func (n *Network) GetNetworkID() uint32 {
-	if n.Genesis != nil && n.Genesis.NetworkID > 0 {
-		return n.Genesis.NetworkID
-	}
-	return n.NetworkID
-}
+func (n *Network) GetNetworkID() uint32 { _ = "STUB: not implemented"; return 0 }
 
 // GetGenesisFileContent returns the base64-encoded JSON-marshaled
 // network genesis.
 func (n *Network) GetGenesisFileContent() (string, error) {
-	bytes, err := json.Marshal(n.Genesis)
-	if err != nil {
-		return "", stacktrace.Errorf("failed to marshal genesis: %w", err)
-	}
-	return base64.StdEncoding.EncodeToString(bytes), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 // GetSubnetConfigContent returns the base64-encoded and
 // JSON-marshaled map of subnetID to subnet configuration.
 func (n *Network) GetSubnetConfigContent() (string, error) {
-	subnetConfigs := map[ids.ID]ConfigMap{}
-
-	if len(n.PrimarySubnetConfig) > 0 {
-		subnetConfigs[constants.PrimaryNetworkID] = n.PrimarySubnetConfig
-	}
-
-	// Collect configuration for non-primary subnets
-	for _, subnet := range n.Subnets {
-		if subnet.SubnetID == ids.Empty {
-			// The subnet hasn't been created yet and it's not
-			// possible to supply configuration without an ID.
-			continue
-		}
-		if len(subnet.Config) == 0 {
-			continue
-		}
-		subnetConfigs[subnet.SubnetID] = subnet.Config
-	}
-
-	if len(subnetConfigs) == 0 {
-		return "", nil
-	}
-
-	marshaledConfigs, err := json.Marshal(subnetConfigs)
-	if err != nil {
-		return "", stacktrace.Errorf("failed to marshal subnet configs: %w", err)
-	}
-	return base64.StdEncoding.EncodeToString(marshaledConfigs), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
+
+// Collect configuration for non-primary subnets
+
+// The subnet hasn't been created yet and it's not
+// possible to supply configuration without an ID.
 
 // GetChainConfigContent returns the base64-encoded and JSON-marshaled map of chain alias/ID
 // to JSON-marshaled chain configuration for both primary and custom chains.
 func (n *Network) GetChainConfigContent() (string, error) {
-	chainConfigs := map[string]chains.ChainConfig{}
-	for alias, flags := range n.PrimaryChainConfigs {
-		marshaledFlags, err := json.Marshal(flags)
-		if err != nil {
-			return "", stacktrace.Errorf("failed to marshal flags map for %s-Chain: %w", alias, err)
-		}
-		chainConfigs[alias] = chains.ChainConfig{
-			Config: marshaledFlags,
-		}
-	}
-
-	// Collect custom chain configuration
-	for _, subnet := range n.Subnets {
-		for _, chain := range subnet.Chains {
-			if chain.ChainID == ids.Empty {
-				// The chain hasn't been created yet and it's not possible to supply
-				// configuration without a chain ID.
-				continue
-			}
-			chainConfigs[chain.ChainID.String()] = chains.ChainConfig{
-				Config: []byte(chain.Config),
-			}
-		}
-	}
-
-	marshaledConfigs, err := json.Marshal(chainConfigs)
-	if err != nil {
-		return "", stacktrace.Errorf("failed to marshal chain configs: %w", err)
-	}
-	return base64.StdEncoding.EncodeToString(marshaledConfigs), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
+
+// Collect custom chain configuration
+
+// The chain hasn't been created yet and it's not possible to supply
+// configuration without a chain ID.
 
 // GetMonitoringLabels retrieves the map of labels and their values to be
 // applied to metrics and logs collected from nodes and other collection
 // targets for the network (including test workloads). Callers may need
 // to set a unique value for the `instance` label to ensure a stable
 // identity for the collection target.
-func (n *Network) GetMonitoringLabels() map[string]string {
-	labels := map[string]string{
-		"network_uuid": n.UUID,
-		// This label must be set for compatibility with the expected
-		// filtering. Nodes should override this value.
-		"is_ephemeral_node": "false",
-		"network_owner":     n.Owner,
-	}
-	maps.Copy(labels, GetGitHubLabels())
-	return labels
-}
+func (n *Network) GetMonitoringLabels() map[string]string { _ = "STUB: not implemented"; return nil }
+
+// This label must be set for compatibility with the expected
+// filtering. Nodes should override this value.
 
 // GetGitHubLabels returns a map of GitHub labels and their values if available.
-func GetGitHubLabels() map[string]string {
-	labels := map[string]string{}
-	for _, label := range githubLabels {
-		value := os.Getenv(strings.ToUpper(label))
-		if len(value) > 0 {
-			labels[label] = value
-		}
-	}
-	return labels
-}
+func GetGitHubLabels() map[string]string { _ = "STUB: not implemented"; return nil }
 
 // Waits until the provided nodes are healthy.
 func waitForHealthy(ctx context.Context, log logging.Logger, nodes []*Node) error {
-	ticker := time.NewTicker(networkHealthCheckInterval)
-	defer ticker.Stop()
-
-	unhealthyNodes := set.Of(nodes...)
-	for {
-		for node := range unhealthyNodes {
-			healthy, err := node.IsHealthy(ctx)
-			if err != nil {
-				return stacktrace.Wrap(err)
-			}
-			if !healthy {
-				continue
-			}
-
-			unhealthyNodes.Remove(node)
-			log.Info("node is healthy",
-				zap.Stringer("nodeID", node.NodeID),
-				zap.String("uri", node.GetAccessibleURI()),
-			)
-		}
-
-		if unhealthyNodes.Len() == 0 {
-			return nil
-		}
-
-		select {
-		case <-ctx.Done():
-			return stacktrace.Errorf("failed to see all nodes healthy before timeout: %w", ctx.Err())
-		case <-ticker.C:
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Retrieves the root dir for tmpnet data.
-func getTmpnetPath() (string, error) {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return "", stacktrace.Wrap(err)
-	}
-	return filepath.Join(homeDir, ".tmpnet"), nil
-}
+func getTmpnetPath() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // Retrieves the default root dir for storing networks and their
 // configuration.
-func getDefaultRootNetworkDir() (string, error) {
-	tmpnetPath, err := getTmpnetPath()
-	if err != nil {
-		return "", stacktrace.Wrap(err)
-	}
-	return filepath.Join(tmpnetPath, "networks"), nil
-}
+func getDefaultRootNetworkDir() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // Retrieves the path to a reusable network path for the given owner.
 func GetReusableNetworkPathForOwner(owner string) (string, error) {
-	networkPath, err := getDefaultRootNetworkDir()
-	if err != nil {
-		return "", stacktrace.Wrap(err)
-	}
-	return filepath.Join(networkPath, "latest_"+owner), nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 const invalidRPCVersion = 0
@@ -976,66 +437,17 @@ const invalidRPCVersion = 0
 // checkVMBinaries checks that VM binaries for the given subnets exist and optionally checks that VM
 // binaries have the same rpcchainvm version as the indicated avalanchego binary.
 func checkVMBinaries(log logging.Logger, subnets []*Subnet, config *ProcessRuntimeConfig) error {
-	if len(subnets) == 0 {
-		// Without subnets there are no VM binaries to check
-		return nil
-	}
-
-	if config == nil {
-		log.Info("skipping rpcchainvm version check because the process runtime is not configured")
-		return nil
-	}
-
-	avalanchegoRPCVersion, err := getRPCVersion(log, config.AvalancheGoPath, "--version-json")
-	if err != nil {
-		log.Warn("unable to check rpcchainvm version for avalanchego", zap.Error(err))
-		return nil
-	}
-
-	var incompatibleChains bool
-	for _, subnet := range subnets {
-		for _, chain := range subnet.Chains {
-			vmPath := filepath.Join(config.PluginDir, chain.VMID.String())
-
-			// Check that the path exists
-			if _, err := os.Stat(vmPath); err != nil {
-				log.Warn("unable to check rpcchainvm version for VM",
-					zap.String("vmPath", vmPath),
-					zap.Error(err),
-				)
-				continue
-			}
-
-			if len(chain.VersionArgs) == 0 || avalanchegoRPCVersion == invalidRPCVersion {
-				// Not possible to check the rpcchainvm version
-				continue
-			}
-
-			// Check that the VM's rpcchainvm version matches avalanchego's version
-			vmRPCVersion, err := getRPCVersion(log, vmPath, chain.VersionArgs...)
-			if err != nil {
-				log.Warn("unable to check rpcchainvm version for VM Binary",
-					zap.String("subnet", subnet.Name),
-					zap.Error(err),
-				)
-			} else if avalanchegoRPCVersion != vmRPCVersion {
-				log.Error("unexpected rpcchainvm version for VM binary",
-					zap.String("subnet", subnet.Name),
-					zap.String("avalanchegoPath", config.AvalancheGoPath),
-					zap.Uint64("avalanchegoRPCVersion", avalanchegoRPCVersion),
-					zap.String("vmPath", vmPath),
-					zap.Uint64("vmRPCVersion", vmRPCVersion),
-				)
-				incompatibleChains = true
-			}
-		}
-	}
-
-	if incompatibleChains {
-		return stacktrace.New("the rpcchainvm version of the VMs for one or more chains may not be compatible with the specified avalanchego binary")
-	}
+	_ = "STUB: not implemented"
 	return nil
+
+	// Without subnets there are no VM binaries to check
 }
+
+// Check that the path exists
+
+// Not possible to check the rpcchainvm version
+
+// Check that the VM's rpcchainvm version matches avalanchego's version
 
 type RPCChainVMVersion struct {
 	RPCChainVM uint64 `json:"rpcchainvm"`
@@ -1044,40 +456,19 @@ type RPCChainVMVersion struct {
 // getRPCVersion attempts to invoke the given command with the specified version arguments and
 // retrieve an rpcchainvm version from its output.
 func getRPCVersion(log logging.Logger, command string, versionArgs ...string) (uint64, error) {
-	cmd := exec.Command(command, versionArgs...)
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return 0, stacktrace.Errorf("command %q failed with output: %s", command, output)
-	}
-
-	// Ignore output before the opening brace to tolerate the case of a command being invoked
-	// with `go run` and the go toolchain emitting diagnostic logging before the version output.
-	if idx := bytes.IndexByte(output, '{'); idx > 0 {
-		log.Info("ignoring leading bytes of JSON version output in advance of opening `{`",
-			zap.String("command", command),
-			zap.String("ignoredLeadingBytes", string(output[:idx])),
-		)
-		output = output[idx:]
-	}
-
-	version := &RPCChainVMVersion{}
-	if err := json.Unmarshal(output, version); err != nil {
-		return 0, stacktrace.Errorf("failed to unmarshal output from command %q: %w, output: %s", command, err, output)
-	}
-
-	return version.RPCChainVM, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// Ignore output before the opening brace to tolerate the case of a command being invoked
+// with `go run` and the go toolchain emitting diagnostic logging before the version output.
 
 // MetricsLinkForNetwork returns a link to the default metrics dashboard for the network
 // with the given UUID. The start and end times are accepted as strings to support the
 // use of Grafana's time range syntax (e.g. `now`, `now-1h`).
 func MetricsLinkForNetwork(networkUUID string, startTime string, endTime string) string {
-	return NewGrafanaURI(
-		networkUUID,
-		startTime,
-		endTime,
-		GetEnvWithDefault("GRAFANA_URI", defaultGrafanaURI),
-	)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 // NewGrafanaURI returns a Grafana dashboard URI.
@@ -1087,18 +478,6 @@ func NewGrafanaURI(
 	endTime string,
 	grafanaURI string,
 ) string {
-	if startTime == "" {
-		startTime = "now-1h"
-	}
-	if endTime == "" {
-		endTime = "now"
-	}
-
-	return fmt.Sprintf(
-		"%s?&var-filter=network_uuid%%7C%%3D%%7C%s&var-filter=is_ephemeral_node%%7C%%3D%%7Cfalse&from=%s&to=%s",
-		grafanaURI,
-		networkUUID,
-		startTime,
-		endTime,
-	)
+	_ = "STUB: not implemented"
+	return ""
 }

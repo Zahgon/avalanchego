@@ -29,17 +29,11 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
-	"path/filepath"
-	"strings"
 
 	_ "embed"
 
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind/precompilebind"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/internal/flags"
-	"github.com/ava-labs/libevm/cmd/utils"
 	"github.com/ava-labs/libevm/log"
 	"github.com/urfave/cli/v2"
 )
@@ -80,114 +74,28 @@ func init() {
 	app.Action = precompilegen
 }
 
-func precompilegen(c *cli.Context) error {
-	outFlagStr := c.String(outFlag.Name)
-	isOutStdout := outFlagStr == "-"
+func precompilegen(c *cli.Context) error { _ = "STUB: not implemented"; return nil }
 
-	if isOutStdout && !c.IsSet(typeFlag.Name) {
-		utils.Fatalf("type (--type) should be set explicitly for STDOUT ")
-	}
-	lang := bind.LangGo
-	// If the entire solidity code was specified, build and bind based on that
-	var (
-		bins    []string
-		types   []string
-		sigs    []map[string]string
-		libs    = make(map[string]string)
-		aliases = make(map[string]string)
-	)
-	if c.String(abiFlag.Name) == "" {
-		utils.Fatalf("no abi path is specified (--abi)")
-	}
-	// Load up the ABI
-	var (
-		abi []byte
-		err error
-	)
+// If the entire solidity code was specified, build and bind based on that
 
-	input := c.String(abiFlag.Name)
-	if input == "-" {
-		abi, err = io.ReadAll(os.Stdin)
-	} else {
-		abi, err = os.ReadFile(input)
-	}
-	if err != nil {
-		utils.Fatalf("Failed to read input ABI: %v", err)
-	}
+// Load up the ABI
 
-	bins = append(bins, "")
+// we should not generate the abi file if output is set to stdout
 
-	kind := c.String(typeFlag.Name)
-	if kind == "" {
-		fn := filepath.Base(input)
-		kind = strings.TrimSuffix(fn, filepath.Ext(fn))
-		kind = strings.TrimSpace(kind)
-	}
-	types = append(types, kind)
+// get file name from the output path
 
-	pkg := c.String(pkgFlag.Name)
-	if pkg == "" {
-		pkg = strings.ToLower(kind)
-	}
+// if output is set to stdout, we should not generate the test codes
 
-	if outFlagStr == "" {
-		outFlagStr = filepath.Join("./precompile/contracts", pkg)
-	}
+// Generate the contract precompile
 
-	abifilename := ""
-	abipath := ""
-	// we should not generate the abi file if output is set to stdout
-	if !isOutStdout {
-		// get file name from the output path
-		abifilename = "contract.abi"
-		abipath = filepath.Join(outFlagStr, abifilename)
-	}
-	// if output is set to stdout, we should not generate the test codes
-	generateTests := !isOutStdout
+// Either flush it out to a file or display on the standard output
+// Skip displaying test codes here.
 
-	// Generate the contract precompile
-	bindedFiles, err := precompilebind.PrecompileBind(types, string(abi), bins, sigs, pkg, lang, libs, aliases, abifilename, generateTests)
-	if err != nil {
-		utils.Fatalf("Failed to generate precompile: %v", err)
-	}
+// Create your file
 
-	// Either flush it out to a file or display on the standard output
-	// Skip displaying test codes here.
-	if isOutStdout {
-		for _, file := range bindedFiles {
-			if !file.IsTest {
-				fmt.Printf("-----file: %s-----\n", file.FileName)
-				fmt.Printf("%s\n", file.Content)
-			}
-		}
-		return nil
-	}
+// Write the ABI to the output folder
 
-	if _, err := os.Stat(outFlagStr); os.IsNotExist(err) {
-		os.MkdirAll(outFlagStr, 0o700) // Create your file
-	}
-
-	for _, file := range bindedFiles {
-		outputPath := filepath.Join(outFlagStr, file.FileName)
-		if err := os.WriteFile(outputPath, []byte(file.Content), 0o600); err != nil {
-			utils.Fatalf("Failed to write generated file %s: %v", file.FileName, err)
-		}
-	}
-
-	// Write the ABI to the output folder
-	if err := os.WriteFile(abipath, abi, 0o600); err != nil {
-		utils.Fatalf("Failed to write ABI: %v", err)
-	}
-
-	// Write the README to the output folder
-	readmeOut := filepath.Join(outFlagStr, "README.md")
-	if err := os.WriteFile(readmeOut, []byte(readme), 0o600); err != nil {
-		utils.Fatalf("Failed to write README: %v", err)
-	}
-
-	fmt.Println("Precompile files generated successfully at: ", outFlagStr)
-	return nil
-}
+// Write the README to the output folder
 
 func main() {
 	log.SetDefault(log.NewLogger(log.NewTerminalHandlerWithLevel(os.Stderr, log.LevelInfo, true)))

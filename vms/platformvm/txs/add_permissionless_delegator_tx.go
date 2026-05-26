@@ -4,17 +4,11 @@
 package txs
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/fx"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var (
@@ -40,104 +34,58 @@ type AddPermissionlessDelegatorTx struct {
 // [AddPermissionlessDelegatorTx]. Also sets the [ctx] to the given [vm.ctx] so
 // that the addresses can be json marshalled into human readable format
 func (tx *AddPermissionlessDelegatorTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	for _, out := range tx.StakeOuts {
-		out.FxID = secp256k1fx.ID
-		out.InitCtx(ctx)
-	}
-	tx.DelegationRewardsOwner.InitCtx(ctx)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (tx *AddPermissionlessDelegatorTx) SubnetID() ids.ID {
-	return tx.Subnet
+	_ = "STUB: not implemented"
+	return *new(ids.ID)
 }
 
 func (tx *AddPermissionlessDelegatorTx) NodeID() ids.NodeID {
-	return tx.Validator.NodeID
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID)
 }
 
 func (*AddPermissionlessDelegatorTx) PublicKey() (*bls.PublicKey, bool, error) {
+	_ = "STUB: not implemented"
 	return nil, false, nil
 }
 
 func (tx *AddPermissionlessDelegatorTx) PendingPriority() Priority {
-	if tx.Subnet == constants.PrimaryNetworkID {
-		return PrimaryNetworkDelegatorBanffPendingPriority
-	}
-	return SubnetPermissionlessDelegatorPendingPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 func (tx *AddPermissionlessDelegatorTx) CurrentPriority() Priority {
-	if tx.Subnet == constants.PrimaryNetworkID {
-		return PrimaryNetworkDelegatorCurrentPriority
-	}
-	return SubnetPermissionlessDelegatorCurrentPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 func (tx *AddPermissionlessDelegatorTx) Stake() []*avax.TransferableOutput {
-	return tx.StakeOuts
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (tx *AddPermissionlessDelegatorTx) RewardsOwner() fx.Owner {
-	return tx.DelegationRewardsOwner
+	_ = "STUB: not implemented"
+	return *new(fx.Owner)
 }
 
 // SyntacticVerify returns nil iff [tx] is valid
 func (tx *AddPermissionlessDelegatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case len(tx.StakeOuts) == 0: // Ensure there is provided stake
-		return errNoStake
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return fmt.Errorf("failed to verify BaseTx: %w", err)
-	}
-	if err := verify.All(&tx.Validator, tx.DelegationRewardsOwner); err != nil {
-		return fmt.Errorf("failed to verify validator or rewards owner: %w", err)
-	}
-
-	for _, out := range tx.StakeOuts {
-		if err := out.Verify(); err != nil {
-			return fmt.Errorf("failed to verify output: %w", err)
-		}
-	}
-
-	firstStakeOutput := tx.StakeOuts[0]
-	stakedAssetID := firstStakeOutput.AssetID()
-	totalStakeWeight := firstStakeOutput.Output().Amount()
-	for _, out := range tx.StakeOuts[1:] {
-		newWeight, err := math.Add(totalStakeWeight, out.Output().Amount())
-		if err != nil {
-			return err
-		}
-		totalStakeWeight = newWeight
-
-		assetID := out.AssetID()
-		if assetID != stakedAssetID {
-			return fmt.Errorf("%w: %q and %q", errMultipleStakedAssets, stakedAssetID, assetID)
-		}
-	}
-
-	switch {
-	case !avax.IsSortedTransferableOutputs(tx.StakeOuts, Codec):
-		return errOutputsNotSorted
-	case totalStakeWeight != tx.Wght:
-		return fmt.Errorf("%w, delegator weight %d total stake weight %d",
-			errDelegatorWeightMismatch,
-			tx.Wght,
-			totalStakeWeight,
-		)
-	}
-
-	// cache that this is valid
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// already passed syntactic verification
+
+// Ensure there is provided stake
+
+// cache that this is valid
+
 func (tx *AddPermissionlessDelegatorTx) Visit(visitor Visitor) error {
-	return visitor.AddPermissionlessDelegatorTx(tx)
+	_ = "STUB: not implemented"
+	return nil
 }

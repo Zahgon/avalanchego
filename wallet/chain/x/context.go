@@ -12,9 +12,8 @@ import (
 )
 
 func NewContextFromURI(ctx context.Context, uri string) (*builder.Context, error) {
-	infoClient := info.NewClient(uri)
-	xChainClient := avm.NewClient(uri, builder.Alias)
-	return NewContextFromClients(ctx, infoClient, xChainClient)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewContextFromClients(
@@ -22,31 +21,6 @@ func NewContextFromClients(
 	infoClient *info.Client,
 	xChainClient *avm.Client,
 ) (*builder.Context, error) {
-	networkID, err := infoClient.GetNetworkID(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	chainID, err := infoClient.GetBlockchainID(ctx, builder.Alias)
-	if err != nil {
-		return nil, err
-	}
-
-	asset, err := xChainClient.GetAssetDescription(ctx, "AVAX")
-	if err != nil {
-		return nil, err
-	}
-
-	baseTxFee, createAssetTxFee, err := xChainClient.GetTxFee(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return &builder.Context{
-		NetworkID:        networkID,
-		BlockchainID:     chainID,
-		AVAXAssetID:      asset.AssetID,
-		BaseTxFee:        baseTxFee,
-		CreateAssetTxFee: createAssetTxFee,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -16,13 +16,8 @@ var _ net.Listener = (*throttledListener)(nil)
 // [maxConnsPerSec] connections per second.
 // [maxConnsPerSec] must be non-negative.
 func NewThrottledListener(listener net.Listener, maxConnsPerSec float64) net.Listener {
-	ctx, cancel := context.WithCancel(context.Background())
-	return &throttledListener{
-		ctx:           ctx,
-		ctxCancelFunc: cancel,
-		listener:      listener,
-		limiter:       rate.NewLimiter(rate.Limit(maxConnsPerSec), int(maxConnsPerSec)+1),
-	}
+	_ = "STUB: not implemented"
+	return *new(net.Listener)
 }
 
 // [throttledListener] is a net.Listener that rate-limits
@@ -42,21 +37,17 @@ type throttledListener struct {
 }
 
 func (l *throttledListener) Accept() (net.Conn, error) {
+	_ = "STUB: not implemented"
 	// Wait until the rate-limiter says to accept the
 	// next incoming connection. If l.Close() is called,
 	// Wait will return immediately.
-	if err := l.limiter.Wait(l.ctx); err != nil {
-		return nil, err
-	}
-	return l.listener.Accept()
+	return *new(net.Conn), nil
 }
 
 func (l *throttledListener) Close() error {
+	_ = "STUB: not implemented"
 	// Cancel [l.ctx] so Accept() will return immediately
-	l.ctxCancelFunc()
-	return l.listener.Close()
+	return nil
 }
 
-func (l *throttledListener) Addr() net.Addr {
-	return l.listener.Addr()
-}
+func (l *throttledListener) Addr() net.Addr { _ = "STUB: not implemented"; return *new(net.Addr) }

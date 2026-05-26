@@ -5,13 +5,9 @@ package gaspricemanager
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 
-	"github.com/ava-labs/libevm/accounts/abi"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/core/vm"
 
 	_ "embed"
 
@@ -50,27 +46,11 @@ var (
 var gasPriceManagerPrecompile = createGasPriceManagerPrecompile()
 
 func createGasPriceManagerPrecompile() contract.StatefulPrecompiledContract {
-	abiFunctionMap := map[string]contract.RunStatefulPrecompileFunc{
-		"getGasPriceConfig":              getGasPriceConfig,
-		"getGasPriceConfigLastChangedAt": getGasPriceConfigLastChangedAt,
-		"setGasPriceConfig":              setGasPriceConfig,
-	}
-	functions := make([]*contract.StatefulPrecompileFunction, 0, len(abiFunctionMap)+len(allowlist.AllowListABI.Methods))
-	functions = append(functions, allowlist.CreateAllowListFunctions(ContractAddress)...)
-
-	for name, function := range abiFunctionMap {
-		method, ok := GasPriceManagerABI.Methods[name]
-		if !ok {
-			panic(fmt.Errorf("given method (%s) does not exist in the ABI", name))
-		}
-		functions = append(functions, contract.NewStatefulPrecompileFunction(method.ID, function))
-	}
-	statefulContract, err := contract.NewStatefulPrecompileContract(nil, functions) // nil = no fallback
-	if err != nil {
-		panic(err)
-	}
-	return statefulContract
+	_ = "STUB: not implemented"
+	return *new(contract.StatefulPrecompiledContract)
 }
+
+// nil = no fallback
 
 // getGasPriceConfig
 
@@ -83,35 +63,23 @@ func getGasPriceConfig(
 	suppliedGas uint64,
 	readOnly bool, // ignored - method only reads
 ) (ret []byte, remainingGas uint64, err error) {
-	if remainingGas, err = contract.DeductGas(suppliedGas, getGasPriceConfigGasCost); err != nil {
-		return nil, 0, err
-	}
-
-	gasPriceConfig := GetStoredGasPriceConfig(accessibleState.GetStateDB(), self)
-
-	output, err := PackGetGasPriceConfigOutput(gasPriceConfig)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	return output, remainingGas, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // PackGetGasPriceConfig packs the getGasPriceConfig calldata including the 4-byte selector.
-func PackGetGasPriceConfig() ([]byte, error) {
-	return GasPriceManagerABI.Pack("getGasPriceConfig")
-}
+func PackGetGasPriceConfig() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // PackGetGasPriceConfigOutput ABI-encodes [config] as getGasPriceConfig return data.
 func PackGetGasPriceConfigOutput(config commontype.GasPriceConfig) ([]byte, error) {
-	return GasPriceManagerABI.PackOutput("getGasPriceConfig", config)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackGetGasPriceConfigOutput decodes ABI-encoded getGasPriceConfig return data.
 func UnpackGetGasPriceConfigOutput(output []byte) (commontype.GasPriceConfig, error) {
-	var config commontype.GasPriceConfig
-	err := GasPriceManagerABI.UnpackIntoInterface(&config, "getGasPriceConfig", output)
-	return config, err
+	_ = "STUB: not implemented"
+	return *new(commontype.GasPriceConfig), nil
 }
 
 // getGasPriceConfigLastChangedAt
@@ -125,37 +93,26 @@ func getGasPriceConfigLastChangedAt(
 	suppliedGas uint64,
 	readOnly bool, // ignored - method only reads
 ) (ret []byte, remainingGas uint64, err error) {
-	if remainingGas, err = contract.DeductGas(suppliedGas, getGasPriceConfigLastChangedAtGasCost); err != nil {
-		return nil, 0, err
-	}
-
-	lastChangedAt := GetGasPriceConfigLastChangedAt(accessibleState.GetStateDB(), self)
-	packedOutput, err := PackGetGasPriceConfigLastChangedAtOutput(lastChangedAt)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	return packedOutput, remainingGas, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // PackGetGasPriceConfigLastChangedAt packs the calldata including the 4-byte selector.
 func PackGetGasPriceConfigLastChangedAt() ([]byte, error) {
-	return GasPriceManagerABI.Pack("getGasPriceConfigLastChangedAt")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PackGetGasPriceConfigLastChangedAtOutput ABI-encodes [blockNumber] as return data.
 func PackGetGasPriceConfigLastChangedAtOutput(blockNumber *big.Int) ([]byte, error) {
-	return GasPriceManagerABI.PackOutput("getGasPriceConfigLastChangedAt", blockNumber)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackGetGasPriceConfigLastChangedAtOutput decodes ABI-encoded return data.
 func UnpackGetGasPriceConfigLastChangedAtOutput(output []byte) (*big.Int, error) {
-	res, err := GasPriceManagerABI.Unpack("getGasPriceConfigLastChangedAt", output)
-	if err != nil {
-		return nil, err
-	}
-	unpacked := *abi.ConvertType(res[0], new(*big.Int)).(**big.Int)
-	return unpacked, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // setGasPriceConfig
@@ -168,88 +125,30 @@ func setGasPriceConfig(
 	suppliedGas uint64,
 	readOnly bool,
 ) (ret []byte, remainingGas uint64, err error) {
-	if remainingGas, err = contract.DeductGas(suppliedGas, setGasPriceConfigGasCost); err != nil {
-		return nil, 0, err
-	}
-
-	if readOnly {
-		return nil, remainingGas, vm.ErrWriteProtection
-	}
-
-	stateDB := accessibleState.GetStateDB()
-	callerStatus := GetGasPriceManagerAllowListStatus(stateDB, self, caller)
-	if !callerStatus.IsEnabled() {
-		return nil, remainingGas, fmt.Errorf("%w: %s", errCannotSetGasPriceConfig, caller)
-	}
-
-	gasPriceConfig, err := UnpackSetGasPriceConfigInput(input)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	blockNumber := accessibleState.GetBlockContext().Number()
-	if blockNumber == nil {
-		return nil, remainingGas, errNilBlockNumber
-	}
-
-	oldConfig := GetStoredGasPriceConfig(stateDB, self)
-
-	if err := StoreGasPriceConfig(stateDB, self, gasPriceConfig, blockNumber); err != nil {
-		return nil, remainingGas, err
-	}
-	topics, data, err := PackGasPriceConfigUpdatedEvent(
-		caller,
-		oldConfig,
-		gasPriceConfig,
-	)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	stateDB.AddLog(&types.Log{
-		Address:     self,
-		Topics:      topics,
-		Data:        data,
-		BlockNumber: blockNumber.Uint64(),
-	})
-
-	return []byte{}, remainingGas, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // PackSetGasPriceConfig packs [config] into ABI-encoded calldata including the 4-byte selector.
 func PackSetGasPriceConfig(config commontype.GasPriceConfig) ([]byte, error) {
-	return GasPriceManagerABI.Pack("setGasPriceConfig", config)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackSetGasPriceConfigInput assumes [input] does not include the 4-byte selector.
 func UnpackSetGasPriceConfigInput(input []byte) (commontype.GasPriceConfig, error) {
+	_ = "STUB: not implemented"
 	// UnpackInputIntoInterface doesn't work for single-tuple arguments: copyAtomic
 	// tries to assign the whole tuple to the first struct field (a bool), causing a
 	// type mismatch. Use method.Inputs.Unpack + abi.ConvertType instead.
-	method, ok := GasPriceManagerABI.Methods["setGasPriceConfig"]
-	if !ok {
-		return commontype.GasPriceConfig{}, errors.New("method setGasPriceConfig not found")
-	}
-	res, err := method.Inputs.Unpack(input)
-	if err != nil {
-		return commontype.GasPriceConfig{}, err
-	}
-	config, ok := abi.ConvertType(res[0], new(commontype.GasPriceConfig)).(*commontype.GasPriceConfig)
-	if !ok {
-		return commontype.GasPriceConfig{}, errInvalidABIConfig
-	}
-	return *config, nil
+	return *new(commontype.GasPriceConfig), nil
 }
 
 // storageSlot returns a storage key with the "gasprm" namespace prefix
 // left-aligned in the hash. This avoids collisions with AllowList role
 // storage, which right-aligns 20-byte addresses via BytesToHash and
 // therefore always has 12 leading zero bytes.
-func storageSlot(key ...byte) common.Hash {
-	s := common.Hash{'g', 'a', 's', 'p', 'r', 'm'}
-	copy(s[6:], key)
-	return s
-}
+func storageSlot(key ...byte) common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 var (
 	gasPriceConfigStorageKey       = storageSlot('g', 'p')
@@ -258,38 +157,34 @@ var (
 
 // GetGasPriceManagerAllowListStatus returns the role of `address` for the allowlist.
 func GetGasPriceManagerAllowListStatus(stateDB contract.StateReader, contractAddr common.Address, address common.Address) allowlist.Role {
-	return allowlist.GetAllowListStatus(stateDB, contractAddr, address)
+	_ = "STUB: not implemented"
+	return *new(allowlist.Role)
 }
 
 // SetGasPriceManagerAllowListStatus assumes [role] has already been verified as valid.
 // Roles are stored keyed by address hash, so precompile storage keys must not collide
 // with address-derived keys.
 func SetGasPriceManagerAllowListStatus(stateDB contract.StateDB, contractAddr common.Address, address common.Address, role allowlist.Role) {
-	allowlist.SetAllowListRole(stateDB, contractAddr, address, role)
+	_ = "STUB: not implemented"
+	return
 }
 
 // GetStoredGasPriceConfig returns the gas price config from contract storage.
 // Configure always stores a value during activation, so the caller
 // MUST NOT call this before the precompile has been configured.
 func GetStoredGasPriceConfig(stateDB contract.StateReader, contractAddr common.Address) commontype.GasPriceConfig {
-	var cfg commontype.GasPriceConfig
-	cfg.UnpackFrom(stateDB.GetState(contractAddr, gasPriceConfigStorageKey))
-	return cfg
+	_ = "STUB: not implemented"
+	return *new(commontype.GasPriceConfig)
 }
 
 // GetGasPriceConfigLastChangedAt returns the block number of the last gas price config update.
 func GetGasPriceConfigLastChangedAt(stateDB contract.StateReader, contractAddr common.Address) *big.Int {
-	val := stateDB.GetState(contractAddr, gasPriceConfigLastChangedAtKey)
-	return val.Big()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StoreGasPriceConfig validates and persists gasPriceConfig and blockNumber to contract storage.
 func StoreGasPriceConfig(stateDB contract.StateDB, contractAddr common.Address, gasPriceConfig commontype.GasPriceConfig, blockNumber *big.Int) error {
-	if err := gasPriceConfig.Verify(); err != nil {
-		return fmt.Errorf("cannot verify gas price config: %w", err)
-	}
-
-	stateDB.SetState(contractAddr, gasPriceConfigStorageKey, gasPriceConfig.Pack())
-	stateDB.SetState(contractAddr, gasPriceConfigLastChangedAtKey, common.BigToHash(blockNumber))
+	_ = "STUB: not implemented"
 	return nil
 }

@@ -4,7 +4,6 @@
 package stats
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/libevm/metrics"
@@ -41,38 +40,23 @@ type messageMetric struct {
 }
 
 func NewMessageMetric(name string) MessageMetric {
-	return &messageMetric{
-		requested:       metrics.GetOrRegisterCounter(name+"_requested", nil),
-		succeeded:       metrics.GetOrRegisterCounter(name+"_succeeded", nil),
-		failed:          metrics.GetOrRegisterCounter(name+"_failed", nil),
-		invalidResponse: metrics.GetOrRegisterCounter(name+"_invalid_response", nil),
-		received:        metrics.GetOrRegisterCounter(name+"_received", nil),
-		requestLatency:  metrics.GetOrRegisterTimer(name+"_request_latency", nil),
-	}
+	_ = "STUB: not implemented"
+	return *new(MessageMetric)
 }
 
-func (m *messageMetric) IncRequested() {
-	m.requested.Inc(1)
-}
+func (m *messageMetric) IncRequested() { _ = "STUB: not implemented"; return }
 
-func (m *messageMetric) IncSucceeded() {
-	m.succeeded.Inc(1)
-}
+func (m *messageMetric) IncSucceeded() { _ = "STUB: not implemented"; return }
 
-func (m *messageMetric) IncFailed() {
-	m.failed.Inc(1)
-}
+func (m *messageMetric) IncFailed() { _ = "STUB: not implemented"; return }
 
-func (m *messageMetric) IncInvalidResponse() {
-	m.invalidResponse.Inc(1)
-}
+func (m *messageMetric) IncInvalidResponse() { _ = "STUB: not implemented"; return }
 
-func (m *messageMetric) IncReceived(size int64) {
-	m.received.Inc(size)
-}
+func (m *messageMetric) IncReceived(size int64) { _ = "STUB: not implemented"; return }
 
 func (m *messageMetric) UpdateRequestLatency(duration time.Duration) {
-	m.requestLatency.Update(duration)
+	_ = "STUB: not implemented"
+	return
 }
 
 type clientSyncerStats struct {
@@ -83,33 +67,14 @@ type clientSyncerStats struct {
 
 // NewClientSyncerStats returns stats for the client syncer
 func NewClientSyncerStats(leafMetricNames map[message.NodeType]string) *clientSyncerStats {
-	leafMetrics := make(map[message.NodeType]MessageMetric, len(leafMetricNames))
-	for nodeType, name := range leafMetricNames {
-		leafMetrics[nodeType] = NewMessageMetric(name)
-	}
-	return &clientSyncerStats{
-		leafMetrics:        leafMetrics,
-		codeRequestMetric:  NewMessageMetric("sync_code"),
-		blockRequestMetric: NewMessageMetric("sync_blocks"),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMetric returns the appropriate messaage metric for the given request
 func (c *clientSyncerStats) GetMetric(msgIntf message.Request) (MessageMetric, error) {
-	switch msg := msgIntf.(type) {
-	case message.BlockRequest:
-		return c.blockRequestMetric, nil
-	case message.CodeRequest:
-		return c.codeRequestMetric, nil
-	case message.LeafsRequest:
-		metric, ok := c.leafMetrics[msg.LeafType()]
-		if !ok {
-			return nil, fmt.Errorf("invalid leafs request for node type: %T", msg.LeafType())
-		}
-		return metric, nil
-	default:
-		return nil, fmt.Errorf("attempted to get metric for invalid request with type %T", msg)
-	}
+	_ = "STUB: not implemented"
+	return *new(MessageMetric), nil
 }
 
 // no-op implementation of ClientSyncerStats
@@ -119,17 +84,16 @@ type noopStats struct {
 
 type noopMsgMetric struct{}
 
-func (noopMsgMetric) IncRequested()                      {}
-func (noopMsgMetric) IncSucceeded()                      {}
-func (noopMsgMetric) IncFailed()                         {}
-func (noopMsgMetric) IncInvalidResponse()                {}
-func (noopMsgMetric) IncReceived(int64)                  {}
-func (noopMsgMetric) UpdateRequestLatency(time.Duration) {}
+func (noopMsgMetric) IncRequested()                      { _ = "STUB: not implemented"; return }
+func (noopMsgMetric) IncSucceeded()                      { _ = "STUB: not implemented"; return }
+func (noopMsgMetric) IncFailed()                         { _ = "STUB: not implemented"; return }
+func (noopMsgMetric) IncInvalidResponse()                { _ = "STUB: not implemented"; return }
+func (noopMsgMetric) IncReceived(int64)                  { _ = "STUB: not implemented"; return }
+func (noopMsgMetric) UpdateRequestLatency(time.Duration) { _ = "STUB: not implemented"; return }
 
-func NewNoOpStats() ClientSyncerStats {
-	return &noopStats{}
-}
+func NewNoOpStats() ClientSyncerStats { _ = "STUB: not implemented"; return *new(ClientSyncerStats) }
 
 func (n noopStats) GetMetric(_ message.Request) (MessageMetric, error) {
-	return n.noop, nil
+	_ = "STUB: not implemented"
+	return *new(MessageMetric), nil
 }

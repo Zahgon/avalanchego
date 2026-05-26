@@ -4,18 +4,13 @@
 package config
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/spf13/cast"
 
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
-	"github.com/ava-labs/avalanchego/vms/evm/sync/customrawdb"
 )
 
 var errNonDefaultCommitInterval = errors.New("cannot use non-default commit interval on production network")
@@ -191,91 +186,40 @@ type Config struct {
 // If the unmarshalling fails, an error is returned.
 // If the config is invalid, an error is returned.
 func GetConfig(configBytes []byte, networkID uint32) (Config, string, error) {
-	config := NewDefaultConfig()
-	if len(configBytes) > 0 {
-		if err := json.Unmarshal(configBytes, &config); err != nil {
-			return Config{}, "", fmt.Errorf("failed to unmarshal config %s: %w", string(configBytes), err)
-		}
-	}
-	if err := config.validate(networkID); err != nil {
-		return Config{}, "", err
-	}
-	// We should deprecate config flags as the first thing, before we do anything else
-	// because this can set old flags to new flags. log the message after we have
-	// initialized the logger.
-	deprecateMsg := config.deprecate()
-	return config, deprecateMsg, nil
+	_ = "STUB: not implemented"
+	return *new(Config), "", nil
 }
+
+// We should deprecate config flags as the first thing, before we do anything else
+// because this can set old flags to new flags. log the message after we have
+// initialized the logger.
 
 // EthAPIs returns an array of strings representing the Eth APIs that should be enabled
-func (c Config) EthAPIs() []string {
-	return c.EnabledEthAPIs
-}
+func (c Config) EthAPIs() []string { _ = "STUB: not implemented"; return nil }
 
-func (d *Duration) UnmarshalJSON(data []byte) (err error) {
-	var v interface{}
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	d.Duration, err = cast.ToDurationE(v)
-	return err
-}
+func (d *Duration) UnmarshalJSON(data []byte) (err error) { _ = "STUB: not implemented"; return nil }
 
 // String implements the stringer interface.
-func (d Duration) String() string {
-	return d.Duration.String()
-}
+func (d Duration) String() string { _ = "STUB: not implemented"; return "" }
 
 // String implements the stringer interface.
-func (d Duration) MarshalJSON() ([]byte, error) {
-	return json.Marshal(d.Duration.String())
-}
+func (d Duration) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // validate returns an error if this is an invalid config.
 func (c *Config) validate(networkID uint32) error {
+	_ = "STUB: not implemented"
 	// Ensure that non-standard commit interval is not allowed for production networks
-	if constants.ProductionNetworkIDs.Contains(networkID) {
-		defaultConfig := NewDefaultConfig()
-		// Firewood allows arbitrary commit intervals even on production networks
-		if c.StateScheme != customrawdb.FirewoodScheme && c.CommitInterval != defaultConfig.CommitInterval {
-			return fmt.Errorf("%w: got %d, expected %d", errNonDefaultCommitInterval, c.CommitInterval, defaultConfig.CommitInterval)
-		}
-		// All nodes must agree on the state sync commit interval so they produce
-		// syncable summaries at the same block heights.
-		if c.StateSyncCommitInterval != defaultConfig.StateSyncCommitInterval {
-			return fmt.Errorf("cannot start non-local network with syncable interval %d different than %d", c.StateSyncCommitInterval, defaultConfig.StateSyncCommitInterval)
-		}
-	}
-
-	if c.PopulateMissingTries != nil && (c.OfflinePruning || c.Pruning) {
-		return fmt.Errorf("cannot enable populate missing tries while offline pruning (enabled: %t)/pruning (enabled: %t) are enabled", c.OfflinePruning, c.Pruning)
-	}
-	if c.PopulateMissingTries != nil && c.PopulateMissingTriesParallelism < 1 {
-		return fmt.Errorf("cannot enable populate missing tries without at least one reader (parallelism: %d)", c.PopulateMissingTriesParallelism)
-	}
-
-	if !c.Pruning && c.OfflinePruning {
-		return errors.New("cannot run offline pruning while pruning is disabled")
-	}
-	// If pruning is enabled, the commit interval must be non-zero so the node commits state tries every CommitInterval blocks.
-	if c.Pruning && c.CommitInterval == 0 {
-		return errors.New("cannot use commit interval of 0 with pruning enabled")
-	}
-	if c.Pruning && c.StateHistory == 0 {
-		return errors.New("cannot use state history of 0 with pruning enabled")
-	}
-
-	if c.PushGossipPercentStake < 0 || c.PushGossipPercentStake > 1 {
-		return fmt.Errorf("push-gossip-percent-stake is %f but must be in the range [0, 1]", c.PushGossipPercentStake)
-	}
 	return nil
 }
+
+// Firewood allows arbitrary commit intervals even on production networks
+
+// All nodes must agree on the state sync commit interval so they produce
+// syncable summaries at the same block heights.
+
+// If pruning is enabled, the commit interval must be non-zero so the node commits state tries every CommitInterval blocks.
 
 // deprecate returns a string of deprecation messages for the config.
 // This is used to log a message when the config is loaded and contains deprecated flags.
 // This function should be kept as a placeholder even if it is empty.
-func (*Config) deprecate() string {
-	msg := ""
-
-	return msg
-}
+func (*Config) deprecate() string { _ = "STUB: not implemented"; return "" }

@@ -40,12 +40,9 @@ import (
 	"fmt"
 	"math/big"
 	"os"
-	"strconv"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/core"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/rlp"
-	"golang.org/x/exp/slices"
 )
 
 type allocItem struct {
@@ -65,40 +62,9 @@ type allocItemStorageItem struct {
 	Val common.Hash
 }
 
-func makelist(g *core.Genesis) []allocItem {
-	items := make([]allocItem, 0, len(g.Alloc))
-	for addr, account := range g.Alloc {
-		var misc *allocItemMisc
-		if len(account.Storage) > 0 || len(account.Code) > 0 || account.Nonce != 0 {
-			misc = &allocItemMisc{
-				Nonce: account.Nonce,
-				Code:  account.Code,
-				Slots: make([]allocItemStorageItem, 0, len(account.Storage)),
-			}
-			for key, val := range account.Storage {
-				misc.Slots = append(misc.Slots, allocItemStorageItem{key, val})
-			}
-			slices.SortFunc(misc.Slots, func(a, b allocItemStorageItem) int {
-				return a.Key.Cmp(b.Key)
-			})
-		}
-		bigAddr := new(big.Int).SetBytes(addr.Bytes())
-		items = append(items, allocItem{bigAddr, account.Balance, misc})
-	}
-	slices.SortFunc(items, func(a, b allocItem) int {
-		return a.Addr.Cmp(b.Addr)
-	})
-	return items
-}
+func makelist(g *core.Genesis) []allocItem { _ = "STUB: not implemented"; return nil }
 
-func makealloc(g *core.Genesis) string {
-	a := makelist(g)
-	data, err := rlp.EncodeToBytes(a)
-	if err != nil {
-		panic(err)
-	}
-	return strconv.QuoteToASCII(string(data))
-}
+func makealloc(g *core.Genesis) string { _ = "STUB: not implemented"; return "" }
 
 func main() {
 	if len(os.Args) != 2 {

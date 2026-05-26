@@ -9,6 +9,7 @@ import "context"
 // Also returns details, which should be one of:
 // string, []byte, map[string]string
 func (*VM) HealthCheck(context.Context) (interface{}, error) {
+	_ = "STUB: not implemented"
 	// TODO perform actual health check
 	return nil, nil
 }

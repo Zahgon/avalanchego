@@ -28,7 +28,6 @@
 package rpc
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/libevm/metrics"
@@ -56,15 +55,6 @@ var (
 
 // updateServeTimeHistogram tracks the serving time of a remote RPC call.
 func updateServeTimeHistogram(method string, success bool, elapsed time.Duration) {
-	note := "success"
-	if !success {
-		note = "failure"
-	}
-	h := fmt.Sprintf("%s/%s/%s", serveTimeHistName, method, note)
-	sampler := func() metrics.Sample {
-		return metrics.ResettingSample(
-			metrics.NewExpDecaySample(1028, 0.015),
-		)
-	}
-	metrics.GetOrRegisterHistogramLazy(h, nil, sampler).Update(elapsed.Nanoseconds())
+	_ = "STUB: not implemented"
+	return
 }

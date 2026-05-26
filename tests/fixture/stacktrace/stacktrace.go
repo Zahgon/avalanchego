@@ -4,11 +4,8 @@
 package stacktrace
 
 import (
-	"errors"
-	"fmt"
 	"os"
 	"runtime"
-	"strings"
 )
 
 // If the environment variable STACK_TRACE_ERRORS=1 is set, errors
@@ -35,97 +32,30 @@ type StackTraceError struct {
 	Cause      error
 }
 
-func (e StackTraceError) Error() string {
-	result := e.Cause.Error()
-	if !stackTraceErrors {
-		return result
-	}
+func (e StackTraceError) Error() string { _ = "STUB: not implemented"; return "" }
 
-	var b strings.Builder
-	b.WriteString(result)
-	b.WriteString("\nStack trace:\n")
-	for _, frame := range e.StackTrace {
-		fmt.Fprintf(&b, "%s:%d: %s\n", frame.File, frame.Line, frame.Function)
-	}
-	return b.String()
-}
+func (e StackTraceError) Unwrap() error { _ = "STUB: not implemented"; return nil }
 
-func (e StackTraceError) Unwrap() error {
-	return e.Cause
-}
-
-func New(msg string) error {
-	if !stackTraceErrors {
-		return errors.New(msg)
-	}
-	return wrap(errors.New(msg))
-}
+func New(msg string) error { _ = "STUB: not implemented"; return nil }
 
 // Errorf adds a stack trace to the last argument provided if it is an
 // error and stack traces are enabled.
-func Errorf(format string, args ...any) error {
-	if !stackTraceErrors {
-		return fmt.Errorf(format, args...)
-	}
+func Errorf(format string, args ...any) error { _ = "STUB: not implemented"; return nil }
 
-	// Assume the last argument is an error requiring a stack trace if it is of type error
-	err, ok := args[len(args)-1].(error)
-	if !ok {
-		return fmt.Errorf(format, args...)
-	}
+// Assume the last argument is an error requiring a stack trace if it is of type error
 
-	newErr := fmt.Errorf(format, args...)
+// If there's already a StackTraceError, preserve its stack but update the cause
 
-	// If there's already a StackTraceError, preserve its stack but update the cause
-	var existingStackErr StackTraceError
-	if errors.As(err, &existingStackErr) {
-		existingStackErr.Cause = newErr
-		return existingStackErr
-	}
+// No stack trace exists, capture one now
 
-	// No stack trace exists, capture one now
-	return wrap(newErr)
-}
-
-func Wrap(err error) error {
-	if !stackTraceErrors {
-		return err
-	}
-	return wrap(err)
-}
+func Wrap(err error) error { _ = "STUB: not implemented"; return nil }
 
 // wrap adds a stack trace to err if stack traces are enabled and it
 // doesn't already have one.
-func wrap(err error) error {
-	if err == nil {
-		return nil
-	}
+func wrap(err error) error { _ = "STUB: not implemented"; return nil }
 
-	// If there's already a StackTraceError in the chain, just return it
-	var existingStackErr StackTraceError
-	if errors.As(err, &existingStackErr) {
-		return err
-	}
+// If there's already a StackTraceError in the chain, just return it
 
-	// Need to capture a stack trace
-	const depth = 32
-	var pcs [depth]uintptr
-	skip := 3 // skip wrap, New/Wrap/Errorf, and runtime.Callers
-	n := runtime.Callers(skip, pcs[:])
+// Need to capture a stack trace
 
-	frames := runtime.CallersFrames(pcs[:n])
-	var frameSlice []runtime.Frame
-
-	for {
-		frame, more := frames.Next()
-		frameSlice = append(frameSlice, frame)
-		if !more {
-			break
-		}
-	}
-
-	return StackTraceError{
-		StackTrace: frameSlice,
-		Cause:      err,
-	}
-}
+// skip wrap, New/Wrap/Errorf, and runtime.Callers

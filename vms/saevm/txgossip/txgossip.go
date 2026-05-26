@@ -8,12 +8,8 @@
 package txgossip
 
 import (
-	"errors"
-
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/txpool"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/rlp"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p/gossip"
@@ -27,9 +23,7 @@ type Transaction struct {
 }
 
 // GossipID returns the transaction hash.
-func (tx Transaction) GossipID() ids.ID {
-	return ids.ID(tx.Hash())
-}
+func (tx Transaction) GossipID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 var _ gossip.Marshaller[Transaction] = Marshaller{}
 
@@ -40,16 +34,14 @@ type Marshaller struct{}
 // MarshalGossip returns the [rlp] encoding of the underlying
 // [types.Transaction].
 func (Marshaller) MarshalGossip(tx Transaction) ([]byte, error) {
-	return rlp.EncodeToBytes(tx.Transaction)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnmarshalGossip [rlp] decodes the buffer into a [types.Transaction].
 func (Marshaller) UnmarshalGossip(buf []byte) (Transaction, error) {
-	tx := Transaction{new(types.Transaction)}
-	if err := rlp.DecodeBytes(buf, tx.Transaction); err != nil {
-		return Transaction{}, err
-	}
-	return tx, nil
+	_ = "STUB: not implemented"
+	return *new(Transaction), nil
 }
 
 // Set couples a [gossip.BloomSet] with a [txpool.TxPool] that acts as the
@@ -65,16 +57,8 @@ type Set struct {
 // NewSet returns a new Set. Use [gossip.BloomSet.Add] or [Set.SendTx] to add
 // transactions to the pool, which SHOULD NOT be populated directly.
 func NewSet(pool *txpool.TxPool, config gossip.BloomSetConfig) (*Set, error) {
-	s := &txSet{pool}
-	bs, err := gossip.NewBloomSet(s, config)
-	if err != nil {
-		return nil, err
-	}
-	return &Set{
-		BloomSet: bs,
-		Pool:     pool,
-		set:      s,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var _ gossip.Set[Transaction] = (*txSet)(nil)
@@ -83,40 +67,22 @@ type txSet struct {
 	pool *txpool.TxPool
 }
 
-func (s *txSet) Add(tx Transaction) error {
-	errs := s.addToPool(false, tx.Transaction)
-	for i, err := range errs {
-		if errors.Is(err, txpool.ErrAlreadyKnown) {
-			errs[i] = nil
-		}
-	}
-	return errors.Join(errs...)
-}
+func (s *txSet) Add(tx Transaction) error { _ = "STUB: not implemented"; return nil }
 
 func (s *txSet) addToPool(local bool, txs ...*types.Transaction) []error {
-	return s.pool.Add(txs, local, false /*sync*/)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *txSet) Has(id ids.ID) bool {
-	return s.pool.Has(common.Hash(id))
-}
+/*sync*/
+
+func (s *txSet) Has(id ids.ID) bool { _ = "STUB: not implemented"; return false }
 
 func (s *txSet) Iterate(fn func(Transaction) bool) {
+	_ = "STUB: not implemented"
 	// TODO(arr4n) implement a method on libevm's [txpool.TxPool] that returns
 	// a more efficient iterator.
-	pending, queued := s.pool.Content()
-	for _, group := range []map[common.Address][]*types.Transaction{pending, queued} {
-		for _, txs := range group {
-			for _, tx := range txs {
-				if !fn(Transaction{tx}) {
-					return
-				}
-			}
-		}
-	}
+	return
 }
 
-func (s *txSet) Len() int {
-	pending, queued := s.pool.Stats()
-	return pending + queued
-}
+func (s *txSet) Len() int { _ = "STUB: not implemented"; return 0 }

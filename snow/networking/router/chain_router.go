@@ -6,13 +6,10 @@ package router
 import (
 	"context"
 	"errors"
-	"fmt"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/message"
@@ -20,8 +17,6 @@ import (
 	"github.com/ava-labs/avalanchego/snow/networking/benchlist"
 	"github.com/ava-labs/avalanchego/snow/networking/handler"
 	"github.com/ava-labs/avalanchego/snow/networking/timeout"
-	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/linked"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -109,35 +104,13 @@ func (cr *ChainRouter) Initialize(
 	healthConfig HealthConfig,
 	reg prometheus.Registerer,
 ) error {
-	cr.log = log
-	cr.chainHandlers = make(map[ids.ID]handler.Handler)
-	cr.timeoutManager = timeoutManager
-	cr.closeTimeout = closeTimeout
-	cr.benched = make(map[ids.NodeID]set.Set[ids.ID])
-	cr.criticalChains = criticalChains
-	cr.sybilProtectionEnabled = sybilProtectionEnabled
-	cr.onFatal = onFatal
-	cr.timedRequests = linked.NewHashmap[ids.RequestID, *requestEntry]()
-	cr.peers = make(map[ids.NodeID]*peer)
-	cr.healthConfig = healthConfig
-
-	// Mark myself as connected
-	cr.myNodeID = nodeID
-	myself := &peer{
-		version: version.Current,
-	}
-	myself.trackedSubnets.Union(trackedSubnets)
-	myself.trackedSubnets.Add(constants.PrimaryNetworkID)
-	cr.peers[nodeID] = myself
-
-	// Register metrics
-	rMetrics, err := newRouterMetrics(reg)
-	if err != nil {
-		return err
-	}
-	cr.metrics = rMetrics
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Mark myself as connected
+
+// Register metrics
 
 // RegisterRequest marks that we should expect to receive a reply for a request
 // from the given node's [chainID] and
@@ -158,70 +131,41 @@ func (cr *ChainRouter) RegisterRequest(
 	timeoutMsg *message.InboundMessage,
 	engineType p2p.EngineType,
 ) {
-	cr.lock.Lock()
-	if cr.closing {
-		cr.log.Debug("dropping request",
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Uint32("requestID", requestID),
-			zap.Stringer("messageOp", op),
-			zap.Error(errClosing),
-		)
-		cr.lock.Unlock()
-		return
-	}
-	// When we receive a response message type (Chits, Put, Accepted, etc.)
-	// we validate that we actually sent the corresponding request.
-	// Give this request a unique ID so we can do that validation.
-	uniqueRequestID := ids.RequestID{
-		NodeID:    nodeID,
-		ChainID:   chainID,
-		RequestID: requestID,
-		Op:        byte(op),
-	}
-	// Add to the set of unfulfilled requests
-	cr.timedRequests.Put(uniqueRequestID, &requestEntry{
-		time:       cr.clock.Time(),
-		op:         op,
-		engineType: engineType,
-		handled:    false,
-	})
-	cr.metrics.outstandingRequests.Set(float64(cr.timedRequests.Len()))
-	cr.lock.Unlock()
-
-	// Determine whether we should include the latency of this request in our
-	// measurements.
-	// - Don't measure messages from ourself since these don't go over the
-	//   network.
-	// - Don't measure Puts because an adversary can cause us to issue a Get
-	//   request to them and not respond, causing a timeout, skewing latency
-	//   measurements.
-	shouldMeasureLatency := nodeID != cr.myNodeID && op != message.PutOp
-
-	// Register a timeout to fire if we don't get a reply in time.
-	cr.timeoutManager.RegisterRequest(
-		nodeID,
-		chainID,
-		shouldMeasureLatency,
-		uniqueRequestID,
-		func() {
-			// Note: timeout manager prepends this function with a notification to the benchlist manager
-			// of the failure (timeout).
-			cr.handleMessage(ctx, timeoutMsg, true, true)
-		},
-	)
+	_ = "STUB: not implemented"
+	return
 }
 
+// When we receive a response message type (Chits, Put, Accepted, etc.)
+// we validate that we actually sent the corresponding request.
+// Give this request a unique ID so we can do that validation.
+
+// Add to the set of unfulfilled requests
+
+// Determine whether we should include the latency of this request in our
+// measurements.
+// - Don't measure messages from ourself since these don't go over the
+//   network.
+// - Don't measure Puts because an adversary can cause us to issue a Get
+//   request to them and not respond, causing a timeout, skewing latency
+//   measurements.
+
+// Register a timeout to fire if we don't get a reply in time.
+
+// Note: timeout manager prepends this function with a notification to the benchlist manager
+// of the failure (timeout).
+
 func (cr *ChainRouter) HandleInbound(ctx context.Context, msg *message.InboundMessage) {
-	cr.handleMessage(ctx, msg, false, false)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (cr *ChainRouter) HandleInternal(ctx context.Context, msg *message.InboundMessage) {
+	_ = "STUB: not implemented"
 	// handleMessage is called in a separate goroutine because internal messages
 	// may be sent while holding the chain's context lock. To enforce the
 	// expected lock ordering, we must not grab the chain router lock while
 	// holding the chain's context lock.
-	go cr.handleMessage(ctx, msg, true, false)
+	return
 }
 
 // handleMessage routes a message to the specified chain. Messages may be
@@ -229,521 +173,128 @@ func (cr *ChainRouter) HandleInternal(ctx context.Context, msg *message.InboundM
 // message is being sent from an internal component, such as due to a timeout,
 // or if the message originated from a remote peer.
 func (cr *ChainRouter) handleMessage(ctx context.Context, msg *message.InboundMessage, internal, timeout bool) {
-	nodeID := msg.NodeID
-	op := msg.Op
-
-	m := msg.Message
-	chainID, err := message.GetChainID(m)
-	if err != nil {
-		cr.log.Debug("dropping message with invalid field",
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("messageOp", op),
-			zap.String("field", "ChainID"),
-			zap.Error(err),
-		)
-
-		msg.OnFinishedHandling()
-		return
-	}
-
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	if cr.closing {
-		cr.log.Debug("dropping message",
-			zap.Stringer("messageOp", op),
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Error(errClosing),
-		)
-		msg.OnFinishedHandling()
-		return
-	}
-
-	// Get the chain, if it exists
-	chain, exists := cr.chainHandlers[chainID]
-	if !exists {
-		cr.log.Debug("dropping message",
-			zap.Stringer("messageOp", op),
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Error(errUnknownChain),
-		)
-		msg.OnFinishedHandling()
-		return
-	}
-
-	if !internal && !chain.ShouldHandle(nodeID) {
-		cr.log.Debug("dropping message",
-			zap.Stringer("messageOp", op),
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Error(errUnallowedNode),
-		)
-		msg.OnFinishedHandling()
-		return
-	}
-
-	chainCtx := chain.Context()
-	if message.UnrequestedOps.Contains(op) {
-		if chainCtx.Executing.Get() {
-			cr.log.Debug("dropping message and skipping queue",
-				zap.String("reason", "the chain is currently executing"),
-				zap.Stringer("messageOp", op),
-			)
-			cr.metrics.droppedRequests.Inc()
-			msg.OnFinishedHandling()
-			return
-		}
-
-		// Note: engineType is not guaranteed to be one of the explicitly named
-		// enum values. If it was not specified it defaults to UNSPECIFIED.
-		engineType, _ := message.GetEngineType(m)
-		chain.Push(
-			ctx,
-			handler.Message{
-				InboundMessage: msg,
-				EngineType:     engineType,
-			},
-		)
-		return
-	}
-
-	requestID, ok := message.GetRequestID(m)
-	if !ok {
-		cr.log.Debug("dropping message with invalid field",
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("messageOp", op),
-			zap.String("field", "RequestID"),
-		)
-
-		msg.OnFinishedHandling()
-		return
-	}
-
-	if expectedResponse, isFailed := message.FailedToResponseOps[op]; isFailed {
-		uniqueRequestID := ids.RequestID{
-			NodeID:    nodeID,
-			ChainID:   chainID,
-			RequestID: requestID,
-			Op:        byte(expectedResponse),
-		}
-		req, exists := cr.timedRequests.Get(uniqueRequestID)
-		if !exists {
-			// This was a duplicated message
-			msg.OnFinishedHandling()
-			return
-		}
-
-		// External failures and timeout-fired failures both clear the
-		// outstanding request.
-		//
-		// External failures (`AppError`) also remove the request from the
-		// timeout-manager so the timeout callback does not fire later.
-		// Timeout-fired failures do not need to remove the request from the
-		// timeout-manager because we are currently executing the callback,
-		// which already clears the request.
-		//
-		// Early internal failures caused by benching, disconnect, or a request
-		// to self are delivered once, but the request remains outstanding
-		// until the real response arrives or the timeout fires.
-		switch {
-		case !internal:
-			cr.timeoutManager.RemoveRequest(uniqueRequestID)
-			fallthrough
-		case timeout:
-			cr.timedRequests.Delete(uniqueRequestID)
-			cr.metrics.outstandingRequests.Set(float64(cr.timedRequests.Len()))
-		}
-
-		if req.handled {
-			// This was a duplicated message
-			msg.OnFinishedHandling()
-			return
-		}
-
-		// Prevent duplicate handling of the request
-		req.handled = true
-
-		// Pass the failure to the chain
-		chain.Push(
-			ctx,
-			handler.Message{
-				InboundMessage: msg,
-				EngineType:     req.engineType,
-			},
-		)
-		return
-	}
-
-	if chainCtx.Executing.Get() {
-		cr.log.Debug("dropping message and skipping queue",
-			zap.String("reason", "the chain is currently executing"),
-			zap.Stringer("messageOp", op),
-		)
-		cr.metrics.droppedRequests.Inc()
-		msg.OnFinishedHandling()
-		return
-	}
-
-	uniqueRequestID, req := cr.clearRequest(op, nodeID, chainID, requestID)
-	if req == nil {
-		// We didn't request this message.
-		msg.OnFinishedHandling()
-		return
-	}
-
-	// Calculate how long it took [nodeID] to reply
-	latency := cr.clock.Time().Sub(req.time)
-
-	// Tell the timeout manager we got a response
-	cr.timeoutManager.RegisterResponse(nodeID, chainID, uniqueRequestID, req.op, latency)
-
-	if req.handled {
-		// This message was already marked as handled internally. Skip pushing
-		// to the chain.
-		msg.OnFinishedHandling()
-		return
-	}
-
-	// Pass the response to the chain
-	chain.Push(
-		ctx,
-		handler.Message{
-			InboundMessage: msg,
-			EngineType:     req.engineType,
-		},
-	)
+	_ = "STUB: not implemented"
+	return
 }
+
+// Get the chain, if it exists
+
+// Note: engineType is not guaranteed to be one of the explicitly named
+// enum values. If it was not specified it defaults to UNSPECIFIED.
+
+// This was a duplicated message
+
+// External failures and timeout-fired failures both clear the
+// outstanding request.
+//
+// External failures (`AppError`) also remove the request from the
+// timeout-manager so the timeout callback does not fire later.
+// Timeout-fired failures do not need to remove the request from the
+// timeout-manager because we are currently executing the callback,
+// which already clears the request.
+//
+// Early internal failures caused by benching, disconnect, or a request
+// to self are delivered once, but the request remains outstanding
+// until the real response arrives or the timeout fires.
+
+// This was a duplicated message
+
+// Prevent duplicate handling of the request
+
+// Pass the failure to the chain
+
+// We didn't request this message.
+
+// Calculate how long it took [nodeID] to reply
+
+// Tell the timeout manager we got a response
+
+// This message was already marked as handled internally. Skip pushing
+// to the chain.
+
+// Pass the response to the chain
 
 // Shutdown shuts down this router
-func (cr *ChainRouter) Shutdown(ctx context.Context) {
-	cr.log.Info("shutting down chain router")
-	cr.lock.Lock()
-	prevChains := cr.chainHandlers
-	cr.chainHandlers = map[ids.ID]handler.Handler{}
-	cr.closing = true
-	cr.lock.Unlock()
-
-	for _, chain := range prevChains {
-		chain.Stop(ctx)
-	}
-
-	ctx, cancel := context.WithTimeout(ctx, cr.closeTimeout)
-	defer cancel()
-
-	for _, chain := range prevChains {
-		shutdownDuration, err := chain.AwaitStopped(ctx)
-
-		chainLog := chain.Context().Log
-		if err != nil {
-			chainLog.Warn("timed out while shutting down",
-				zap.String("stack", utils.GetStacktrace(true)),
-				zap.Error(err),
-			)
-		} else {
-			chainLog.Info("chain shutdown",
-				zap.Duration("shutdownDuration", shutdownDuration),
-			)
-		}
-	}
-}
+func (cr *ChainRouter) Shutdown(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // AddChain registers the specified chain so that incoming
 // messages can be routed to it
 func (cr *ChainRouter) AddChain(ctx context.Context, chain handler.Handler) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	chainID := chain.Context().ChainID
-	if cr.closing {
-		cr.log.Debug("dropping add chain request",
-			zap.Stringer("chainID", chainID),
-			zap.Error(errClosing),
-		)
-		return
-	}
-	cr.log.Debug("registering chain with chain router",
-		zap.Stringer("chainID", chainID),
-	)
-	chain.SetOnStopped(func() {
-		cr.removeChain(ctx, chainID)
-	})
-	cr.chainHandlers[chainID] = chain
-
-	// Notify connected validators
-	subnetID := chain.Context().SubnetID
-	for validatorID, peer := range cr.peers {
-		// If this validator is benched on any chain, treat them as disconnected
-		// on all chains
-		_, benched := cr.benched[validatorID]
-		if benched {
-			continue
-		}
-
-		// If this peer isn't running this chain, then we shouldn't mark them as
-		// connected
-		if !peer.trackedSubnets.Contains(subnetID) && cr.sybilProtectionEnabled {
-			continue
-		}
-
-		msg := message.InternalConnected(validatorID, peer.version)
-		chain.Push(ctx,
-			handler.Message{
-				InboundMessage: msg,
-				EngineType:     p2p.EngineType_ENGINE_TYPE_UNSPECIFIED,
-			},
-		)
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// Notify connected validators
+
+// If this validator is benched on any chain, treat them as disconnected
+// on all chains
+
+// If this peer isn't running this chain, then we shouldn't mark them as
+// connected
 
 // Connected routes an incoming notification that a validator was just connected
 func (cr *ChainRouter) Connected(nodeID ids.NodeID, nodeVersion *version.Application, subnetID ids.ID) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	if cr.closing {
-		cr.log.Debug("dropping connected message",
-			zap.Stringer("nodeID", nodeID),
-			zap.Error(errClosing),
-		)
-		return
-	}
-
-	connectedPeer, exists := cr.peers[nodeID]
-	if !exists {
-		connectedPeer = &peer{
-			version: nodeVersion,
-		}
-		cr.peers[nodeID] = connectedPeer
-	}
-	connectedPeer.trackedSubnets.Add(subnetID)
-
-	// If this validator is benched on any chain, treat them as disconnected on all chains
-	if _, benched := cr.benched[nodeID]; benched {
-		return
-	}
-
-	msg := message.InternalConnected(nodeID, nodeVersion)
-
-	// TODO: fire up an event when validator state changes i.e when they leave
-	// set, disconnect. we cannot put an L1 validator check here since
-	// Disconnected would not be handled properly.
-	//
-	// When sybil protection is disabled, we only want this clause to happen
-	// once. Therefore, we only update the chains during the connection of the
-	// primary network, which is guaranteed to happen for every peer.
-	if cr.sybilProtectionEnabled || subnetID == constants.PrimaryNetworkID {
-		for _, chain := range cr.chainHandlers {
-			// If sybil protection is disabled, send a Connected message to
-			// every chain when connecting to the primary network.
-			if subnetID == chain.Context().SubnetID || !cr.sybilProtectionEnabled {
-				chain.Push(
-					context.TODO(),
-					handler.Message{
-						InboundMessage: msg,
-						EngineType:     p2p.EngineType_ENGINE_TYPE_UNSPECIFIED,
-					},
-				)
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// If this validator is benched on any chain, treat them as disconnected on all chains
+
+// TODO: fire up an event when validator state changes i.e when they leave
+// set, disconnect. we cannot put an L1 validator check here since
+// Disconnected would not be handled properly.
+//
+// When sybil protection is disabled, we only want this clause to happen
+// once. Therefore, we only update the chains during the connection of the
+// primary network, which is guaranteed to happen for every peer.
+
+// If sybil protection is disabled, send a Connected message to
+// every chain when connecting to the primary network.
 
 // Disconnected routes an incoming notification that a validator was connected
-func (cr *ChainRouter) Disconnected(nodeID ids.NodeID) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
+func (cr *ChainRouter) Disconnected(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
-	if cr.closing {
-		cr.log.Debug("dropping disconnected message",
-			zap.Stringer("nodeID", nodeID),
-			zap.Error(errClosing),
-		)
-		return
-	}
-
-	peer := cr.peers[nodeID]
-	delete(cr.peers, nodeID)
-	if _, benched := cr.benched[nodeID]; benched {
-		return
-	}
-
-	msg := message.InternalDisconnected(nodeID)
-
-	// TODO: fire up an event when validator state changes i.e when they leave
-	// set, disconnect. we cannot put an L1 validator check here since
-	// if a validator connects then it leaves validator-set, it would not be
-	// disconnected properly.
-	for _, chain := range cr.chainHandlers {
-		if peer.trackedSubnets.Contains(chain.Context().SubnetID) || !cr.sybilProtectionEnabled {
-			chain.Push(
-				context.TODO(),
-				handler.Message{
-					InboundMessage: msg,
-					EngineType:     p2p.EngineType_ENGINE_TYPE_UNSPECIFIED,
-				})
-		}
-	}
-}
+// TODO: fire up an event when validator state changes i.e when they leave
+// set, disconnect. we cannot put an L1 validator check here since
+// if a validator connects then it leaves validator-set, it would not be
+// disconnected properly.
 
 // Benched routes an incoming notification that a validator was benched
 func (cr *ChainRouter) Benched(chainID ids.ID, nodeID ids.NodeID) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	if cr.closing {
-		cr.log.Debug("dropping benched message",
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Error(errClosing),
-		)
-		return
-	}
-
-	benchedChains, exists := cr.benched[nodeID]
-	benchedChains.Add(chainID)
-	cr.benched[nodeID] = benchedChains
-	peer, hasPeer := cr.peers[nodeID]
-	if exists || !hasPeer {
-		// If the set already existed, then the node was previously benched.
-		return
-	}
-
-	// This will disconnect the node from all subnets when issued to P-chain.
-	// Even if there is no chain in the subnet.
-	msg := message.InternalDisconnected(nodeID)
-
-	for _, chain := range cr.chainHandlers {
-		if peer.trackedSubnets.Contains(chain.Context().SubnetID) || !cr.sybilProtectionEnabled {
-			chain.Push(
-				context.TODO(),
-				handler.Message{
-					InboundMessage: msg,
-					EngineType:     p2p.EngineType_ENGINE_TYPE_UNSPECIFIED,
-				})
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// If the set already existed, then the node was previously benched.
+
+// This will disconnect the node from all subnets when issued to P-chain.
+// Even if there is no chain in the subnet.
 
 // Unbenched routes an incoming notification that a validator was just unbenched
 func (cr *ChainRouter) Unbenched(chainID ids.ID, nodeID ids.NodeID) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	if cr.closing {
-		cr.log.Debug("dropping unbenched message",
-			zap.Stringer("nodeID", nodeID),
-			zap.Stringer("chainID", chainID),
-			zap.Error(errClosing),
-		)
-		return
-	}
-
-	benchedChains := cr.benched[nodeID]
-	benchedChains.Remove(chainID)
-	if benchedChains.Len() != 0 {
-		cr.benched[nodeID] = benchedChains
-		return // This node is still benched
-	}
-
-	delete(cr.benched, nodeID)
-
-	peer, found := cr.peers[nodeID]
-	if !found {
-		return
-	}
-
-	msg := message.InternalConnected(nodeID, peer.version)
-
-	for _, chain := range cr.chainHandlers {
-		if peer.trackedSubnets.Contains(chain.Context().SubnetID) || !cr.sybilProtectionEnabled {
-			chain.Push(
-				context.TODO(),
-				handler.Message{
-					InboundMessage: msg,
-					EngineType:     p2p.EngineType_ENGINE_TYPE_UNSPECIFIED,
-				})
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// This node is still benched
 
 // HealthCheck returns results of router health checks. Returns:
 // 1) Information about health check results
 // 2) An error if the health check reports unhealthy
 func (cr *ChainRouter) HealthCheck(context.Context) (interface{}, error) {
-	cr.lock.Lock()
-	defer cr.lock.Unlock()
-
-	numOutstandingReqs := cr.timedRequests.Len()
-	isOutstandingReqs := numOutstandingReqs <= cr.healthConfig.MaxOutstandingRequests
-	healthy := isOutstandingReqs
-	details := map[string]interface{}{
-		"outstandingRequests": numOutstandingReqs,
-	}
-
-	// check for long running requests
-	now := cr.clock.Time()
-	processingRequest := now
-	if _, longestRunning, exists := cr.timedRequests.Oldest(); exists {
-		processingRequest = longestRunning.time
-	}
-	timeReqRunning := now.Sub(processingRequest)
-	isOutstanding := timeReqRunning <= cr.healthConfig.MaxOutstandingDuration
-	healthy = healthy && isOutstanding
-	details["longestRunningRequest"] = timeReqRunning.String()
-	cr.metrics.longestRunningRequest.Set(float64(timeReqRunning))
-
-	if !healthy {
-		var errorReasons []string
-		if !isOutstandingReqs {
-			errorReasons = append(errorReasons, fmt.Sprintf("number of outstanding requests %d > %d", numOutstandingReqs, cr.healthConfig.MaxOutstandingRequests))
-		}
-		if !isOutstanding {
-			errorReasons = append(errorReasons, fmt.Sprintf("time for outstanding requests %s > %s", timeReqRunning, cr.healthConfig.MaxOutstandingDuration))
-		}
-		// The router is not healthy
-		return details, fmt.Errorf("the router is not healthy reason: %s", strings.Join(errorReasons, ", "))
-	}
-	return details, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// check for long running requests
+
+// The router is not healthy
 
 // RemoveChain removes the specified chain so that incoming
 // messages can't be routed to it
 func (cr *ChainRouter) removeChain(ctx context.Context, chainID ids.ID) {
-	cr.lock.Lock()
-	chain, exists := cr.chainHandlers[chainID]
-	if !exists {
-		cr.log.Debug("can't remove unknown chain",
-			zap.Stringer("chainID", chainID),
-		)
-		cr.lock.Unlock()
-		return
-	}
-	delete(cr.chainHandlers, chainID)
-	cr.lock.Unlock()
-
-	chain.Stop(ctx)
-
-	ctx, cancel := context.WithTimeout(ctx, cr.closeTimeout)
-	shutdownDuration, err := chain.AwaitStopped(ctx)
-	cancel()
-
-	chainLog := chain.Context().Log
-	if err != nil {
-		chainLog.Warn("timed out while shutting down",
-			zap.String("stack", utils.GetStacktrace(true)),
-			zap.Error(err),
-		)
-	} else {
-		chainLog.Info("chain shutdown",
-			zap.Duration("shutdownDuration", shutdownDuration),
-		)
-	}
-
-	if cr.onFatal != nil && cr.criticalChains.Contains(chainID) {
-		go cr.onFatal(1)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (cr *ChainRouter) clearRequest(
@@ -752,20 +303,9 @@ func (cr *ChainRouter) clearRequest(
 	chainID ids.ID,
 	requestID uint32,
 ) (ids.RequestID, *requestEntry) {
+	_ = "STUB: not implemented"
 	// Create the request ID of the request we sent that this message is (allegedly) in response to.
-	uniqueRequestID := ids.RequestID{
-		NodeID:    nodeID,
-		ChainID:   chainID,
-		RequestID: requestID,
-		Op:        byte(op),
-	}
-	// Mark that an outstanding request has been fulfilled
-	request, exists := cr.timedRequests.Get(uniqueRequestID)
-	if !exists {
-		return uniqueRequestID, nil
-	}
-
-	cr.timedRequests.Delete(uniqueRequestID)
-	cr.metrics.outstandingRequests.Set(float64(cr.timedRequests.Len()))
-	return uniqueRequestID, request
+	return *new(ids.RequestID), nil
 }
+
+// Mark that an outstanding request has been fulfilled

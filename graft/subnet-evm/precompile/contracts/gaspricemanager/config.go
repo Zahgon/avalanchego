@@ -26,55 +26,25 @@ type Config struct {
 
 // NewConfig returns a config that enables GasPriceManager at `blockTimestamp`.
 func NewConfig(blockTimestamp *uint64, admins []common.Address, enabled []common.Address, managers []common.Address, initialConfig *commontype.GasPriceConfig) *Config {
-	return &Config{
-		AllowListConfig: allowlist.AllowListConfig{
-			AdminAddresses:   admins,
-			EnabledAddresses: enabled,
-			ManagerAddresses: managers,
-		},
-		Upgrade:               precompileconfig.Upgrade{BlockTimestamp: blockTimestamp},
-		InitialGasPriceConfig: initialConfig,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewDisableConfig returns a config that disables GasPriceManager at `blockTimestamp`.
-func NewDisableConfig(blockTimestamp *uint64) *Config {
-	return &Config{
-		Upgrade: precompileconfig.Upgrade{
-			BlockTimestamp: blockTimestamp,
-			Disable:        true,
-		},
-	}
-}
+func NewDisableConfig(blockTimestamp *uint64) *Config { _ = "STUB: not implemented"; return nil }
 
 // Key must match ConfigKey used in the precompile module.
-func (*Config) Key() string { return ConfigKey }
+func (*Config) Key() string {
+	_ = "STUB: not implemented"
 
-// Equal returns true if [cfg] is a *Config identical to [c].
-func (c *Config) Equal(cfg precompileconfig.Config) bool {
-	if c == nil {
-		return cfg == nil
-	}
-	other, ok := (cfg).(*Config)
-	if !ok || other == nil {
-		return false
-	}
-	eq := c.Upgrade.Equal(&other.Upgrade) && c.AllowListConfig.Equal(&other.AllowListConfig)
-	if !eq {
-		return false
-	}
-
-	return c.InitialGasPriceConfig.Equal(other.InitialGasPriceConfig)
+	// Equal returns true if [cfg] is a *Config identical to [c].
+	return ""
 }
+
+func (c *Config) Equal(cfg precompileconfig.Config) bool { _ = "STUB: not implemented"; return false }
 
 // Verify validates the allow list config and, if set, the initial gas price config.
 func (c *Config) Verify(chainConfig precompileconfig.ChainConfig) error {
-	if err := c.AllowListConfig.Verify(chainConfig, c.Upgrade); err != nil {
-		return err
-	}
-	if c.InitialGasPriceConfig == nil {
-		return nil
-	}
-
-	return c.InitialGasPriceConfig.Verify()
+	_ = "STUB: not implemented"
+	return nil
 }

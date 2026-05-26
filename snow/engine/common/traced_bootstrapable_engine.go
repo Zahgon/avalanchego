@@ -18,16 +18,11 @@ type tracedBootstrapableEngine struct {
 }
 
 func TraceBootstrapableEngine(bootstrapableEngine BootstrapableEngine, tracer trace.Tracer) BootstrapableEngine {
-	return &tracedBootstrapableEngine{
-		Engine:              TraceEngine(bootstrapableEngine, tracer),
-		bootstrapableEngine: bootstrapableEngine,
-		tracer:              tracer,
-	}
+	_ = "STUB: not implemented"
+	return *new(BootstrapableEngine)
 }
 
 func (e *tracedBootstrapableEngine) Clear(ctx context.Context) error {
-	ctx, span := e.tracer.Start(ctx, "tracedBootstrapableEngine.Clear")
-	defer span.End()
-
-	return e.bootstrapableEngine.Clear(ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

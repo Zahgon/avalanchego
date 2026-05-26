@@ -20,10 +20,8 @@ func NewWalletWithOptions(
 	wallet Wallet,
 	options ...common.Option,
 ) Wallet {
-	return &walletWithOptions{
-		wallet:  wallet,
-		options: options,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type walletWithOptions struct {
@@ -32,24 +30,21 @@ type walletWithOptions struct {
 }
 
 func (w *walletWithOptions) Builder() builder.Builder {
-	return builder.NewWithOptions(
-		w.wallet.Builder(),
-		w.options...,
-	)
+	_ = "STUB: not implemented"
+	return *new(builder.Builder)
 }
 
 func (w *walletWithOptions) Signer() signer.Signer {
-	return w.wallet.Signer()
+	_ = "STUB: not implemented"
+	return *new(signer.Signer)
 }
 
 func (w *walletWithOptions) IssueBaseTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueBaseTx(
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueCreateAssetTx(
@@ -59,33 +54,24 @@ func (w *walletWithOptions) IssueCreateAssetTx(
 	initialState map[uint32][]verify.State,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueCreateAssetTx(
-		name,
-		symbol,
-		denomination,
-		initialState,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueOperationTx(
 	operations []*txs.Operation,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueOperationTx(
-		operations,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueOperationTxMintFT(
 	outputs map[ids.ID]*secp256k1fx.TransferOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueOperationTxMintFT(
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueOperationTxMintNFT(
@@ -94,12 +80,8 @@ func (w *walletWithOptions) IssueOperationTxMintNFT(
 	owners []*secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueOperationTxMintNFT(
-		assetID,
-		payload,
-		owners,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueOperationTxMintProperty(
@@ -107,21 +89,16 @@ func (w *walletWithOptions) IssueOperationTxMintProperty(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueOperationTxMintProperty(
-		assetID,
-		owner,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueOperationTxBurnProperty(
 	assetID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueOperationTxBurnProperty(
-		assetID,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueImportTx(
@@ -129,11 +106,8 @@ func (w *walletWithOptions) IssueImportTx(
 	to *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueImportTx(
-		chainID,
-		to,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueExportTx(
@@ -141,29 +115,22 @@ func (w *walletWithOptions) IssueExportTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueExportTx(
-		chainID,
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueUnsignedTx(
 	utx txs.UnsignedTx,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueUnsignedTx(
-		utx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueTx(
 	tx *txs.Tx,
 	options ...common.Option,
 ) error {
-	return w.wallet.IssueTx(
-		tx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -4,7 +4,6 @@
 package secp256k1fx
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/ava-labs/avalanchego/vms/components/verify"
@@ -28,31 +27,13 @@ type TransferOutput struct {
 // into a JSON readable format
 // If OutputOwners cannot be serialized then this will return error
 func (out *TransferOutput) MarshalJSON() ([]byte, error) {
-	result, err := out.OutputOwners.Fields()
-	if err != nil {
-		return nil, err
-	}
-
-	result["amount"] = out.Amt
-	return json.Marshal(result)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Amount returns the quantity of the asset this output consumes
-func (out *TransferOutput) Amount() uint64 {
-	return out.Amt
-}
+func (out *TransferOutput) Amount() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (out *TransferOutput) Verify() error {
-	switch {
-	case out == nil:
-		return ErrNilOutput
-	case out.Amt == 0:
-		return ErrNoValueOutput
-	default:
-		return out.OutputOwners.Verify()
-	}
-}
+func (out *TransferOutput) Verify() error { _ = "STUB: not implemented"; return nil }
 
-func (out *TransferOutput) Owners() interface{} {
-	return &out.OutputOwners
-}
+func (out *TransferOutput) Owners() interface{} { _ = "STUB: not implemented"; return nil }

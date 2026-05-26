@@ -5,10 +5,6 @@ package txheap
 
 import (
 	"time"
-
-	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/heap"
-	"github.com/ava-labs/avalanchego/vms/platformvm/txs"
 )
 
 var _ TimedHeap = (*byEndTime)(nil)
@@ -23,18 +19,6 @@ type byEndTime struct {
 	txHeap
 }
 
-func NewByEndTime() TimedHeap {
-	return &byEndTime{
-		txHeap: txHeap{
-			heap: heap.NewMap[ids.ID, *txs.Tx](func(a, b *txs.Tx) bool {
-				aTime := a.Unsigned.(txs.Staker).EndTime()
-				bTime := b.Unsigned.(txs.Staker).EndTime()
-				return aTime.Before(bTime)
-			}),
-		},
-	}
-}
+func NewByEndTime() TimedHeap { _ = "STUB: not implemented"; return *new(TimedHeap) }
 
-func (h *byEndTime) Timestamp() time.Time {
-	return h.Peek().Unsigned.(txs.Staker).EndTime()
-}
+func (h *byEndTime) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }

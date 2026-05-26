@@ -37,7 +37,6 @@ import (
 	"github.com/ava-labs/avalanchego/graft/coreth/internal/ethapi"
 	"github.com/ava-labs/avalanchego/graft/coreth/miner"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/params"
 )
 
 // DefaultFullGPOConfig contains default gasprice oracle settings for full node.
@@ -55,25 +54,11 @@ var DefaultFullGPOConfig = gasprice.Config{
 // DefaultConfig contains default settings for use on the Avalanche main net.
 var DefaultConfig = NewDefaultConfig()
 
-func NewDefaultConfig() Config {
-	return Config{
-		NetworkId:                 0, // enable auto configuration of networkID == chainID
-		StateHistory:              params.FullImmutabilityThreshold,
-		TrieCleanCache:            512,
-		TrieDirtyCache:            256,
-		TrieDirtyCommitTarget:     20,
-		TriePrefetcherParallelism: 16,
-		SnapshotCache:             256,
-		AcceptedCacheSize:         32,
-		Miner:                     miner.Config{},
-		TxPool:                    legacypool.DefaultConfig,
-		BlobPool:                  blobpool.DefaultConfig,
-		RPCGasCap:                 25000000,
-		RPCEVMTimeout:             5 * time.Second,
-		GPO:                       DefaultFullGPOConfig,
-		RPCTxFeeCap:               1, // 1 AVAX
-	}
-}
+func NewDefaultConfig() Config { _ = "STUB: not implemented"; return *new(Config) }
+
+// enable auto configuration of networkID == chainID
+
+// 1 AVAX
 
 //go:generate go tool gencodec -type Config -formats toml -out gen_config.go
 

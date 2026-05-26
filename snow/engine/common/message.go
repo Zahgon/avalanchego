@@ -3,8 +3,6 @@
 
 package common
 
-import "fmt"
-
 // TODO: Consider renaming Message to, say, VMMessage
 
 // Message is an enum of the message types that vms can send to consensus
@@ -25,13 +23,4 @@ const (
 	StateSyncDone
 )
 
-func (msg Message) String() string {
-	switch msg {
-	case PendingTxs:
-		return "Pending Transactions"
-	case StateSyncDone:
-		return "State Sync Done"
-	default:
-		return fmt.Sprintf("Unknown Message: %d", msg)
-	}
-}
+func (msg Message) String() string { _ = "STUB: not implemented"; return "" }

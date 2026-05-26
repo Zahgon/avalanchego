@@ -320,11 +320,8 @@ func New(
 	builder builder.Builder,
 	signer walletsigner.Signer,
 ) Wallet {
-	return &wallet{
-		Client:  client,
-		builder: builder,
-		signer:  signer,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type wallet struct {
@@ -333,23 +330,19 @@ type wallet struct {
 	signer  walletsigner.Signer
 }
 
-func (w *wallet) Builder() builder.Builder {
-	return w.builder
-}
+func (w *wallet) Builder() builder.Builder { _ = "STUB: not implemented"; return *new(builder.Builder) }
 
 func (w *wallet) Signer() walletsigner.Signer {
-	return w.signer
+	_ = "STUB: not implemented"
+	return *new(walletsigner.Signer)
 }
 
 func (w *wallet) IssueBaseTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewBaseTx(outputs, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAddValidatorTx(
@@ -358,22 +351,16 @@ func (w *wallet) IssueAddValidatorTx(
 	shares uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewAddValidatorTx(vdr, rewardsOwner, shares, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAddSubnetValidatorTx(
 	vdr *txs.SubnetValidator,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewAddSubnetValidatorTx(vdr, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueRemoveSubnetValidatorTx(
@@ -381,11 +368,8 @@ func (w *wallet) IssueRemoveSubnetValidatorTx(
 	subnetID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewRemoveSubnetValidatorTx(nodeID, subnetID, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAddDelegatorTx(
@@ -393,11 +377,8 @@ func (w *wallet) IssueAddDelegatorTx(
 	rewardsOwner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewAddDelegatorTx(vdr, rewardsOwner, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueCreateChainTx(
@@ -408,22 +389,16 @@ func (w *wallet) IssueCreateChainTx(
 	chainName string,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewCreateChainTx(subnetID, genesis, vmID, fxIDs, chainName, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueCreateSubnetTx(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewCreateSubnetTx(owner, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueTransferSubnetOwnershipTx(
@@ -431,11 +406,8 @@ func (w *wallet) IssueTransferSubnetOwnershipTx(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewTransferSubnetOwnershipTx(subnetID, owner, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueConvertSubnetToL1Tx(
@@ -445,11 +417,8 @@ func (w *wallet) IssueConvertSubnetToL1Tx(
 	validators []*txs.ConvertSubnetToL1Validator,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewConvertSubnetToL1Tx(subnetID, chainID, address, validators, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueRegisterL1ValidatorTx(
@@ -458,22 +427,16 @@ func (w *wallet) IssueRegisterL1ValidatorTx(
 	message []byte,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewRegisterL1ValidatorTx(balance, proofOfPossession, message, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueSetL1ValidatorWeightTx(
 	message []byte,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewSetL1ValidatorWeightTx(message, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueIncreaseL1ValidatorBalanceTx(
@@ -481,22 +444,16 @@ func (w *wallet) IssueIncreaseL1ValidatorBalanceTx(
 	balance uint64,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewIncreaseL1ValidatorBalanceTx(validationID, balance, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueDisableL1ValidatorTx(
 	validationID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewDisableL1ValidatorTx(validationID, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueImportTx(
@@ -504,11 +461,8 @@ func (w *wallet) IssueImportTx(
 	to *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewImportTx(sourceChainID, to, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueExportTx(
@@ -516,11 +470,8 @@ func (w *wallet) IssueExportTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewExportTx(chainID, outputs, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueTransformSubnetTx(
@@ -540,27 +491,8 @@ func (w *wallet) IssueTransformSubnetTx(
 	uptimeRequirement uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewTransformSubnetTx(
-		subnetID,
-		assetID,
-		initialSupply,
-		maxSupply,
-		minConsumptionRate,
-		maxConsumptionRate,
-		minValidatorStake,
-		maxValidatorStake,
-		minStakeDuration,
-		maxStakeDuration,
-		minDelegationFee,
-		minDelegatorStake,
-		maxValidatorWeightFactor,
-		uptimeRequirement,
-		options...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAddPermissionlessValidatorTx(
@@ -572,19 +504,8 @@ func (w *wallet) IssueAddPermissionlessValidatorTx(
 	shares uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewAddPermissionlessValidatorTx(
-		vdr,
-		signer,
-		assetID,
-		validationRewardsOwner,
-		delegationRewardsOwner,
-		shares,
-		options...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAddPermissionlessDelegatorTx(
@@ -593,28 +514,14 @@ func (w *wallet) IssueAddPermissionlessDelegatorTx(
 	rewardsOwner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	utx, err := w.builder.NewAddPermissionlessDelegatorTx(
-		vdr,
-		assetID,
-		rewardsOwner,
-		options...,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueUnsignedTx(
 	utx txs.UnsignedTx,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	ops := common.NewOptions(options)
-	ctx := ops.Context()
-	tx, err := walletsigner.SignUnsigned(ctx, w.signer, utx)
-	if err != nil {
-		return nil, err
-	}
-
-	return tx, w.IssueTx(tx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

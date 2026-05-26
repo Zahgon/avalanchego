@@ -40,35 +40,28 @@ type Node struct {
 
 // New creates a new P2P node, ready for protocol registration.
 func New(conf *Config) (*Node, error) {
+	_ = "STUB: not implemented"
 	// Copy config and resolve the datadir so future changes to the current
 	// working directory don't affect the node.
-	confCopy := *conf
-	conf = &confCopy
-
-	node := &Node{config: conf}
-
-	// Ensure that the AccountManager method works before the node has started. We rely on
-	// this in cmd/geth.
-	am, err := makeAccountManager(conf)
-	if err != nil {
-		return nil, err
-	}
-	node.accman = am
-
-	return node, nil
+	return nil, nil
 }
+
+// Ensure that the AccountManager method works before the node has started. We rely on
+// this in cmd/geth.
 
 // Config returns the configuration of node.
 func (n *Node) Config() *Config {
-	return n.config
+	_ = "STUB: not implemented"
+
+	// AccountManager retrieves the account manager used by the protocol stack.
+	return nil
 }
 
-// AccountManager retrieves the account manager used by the protocol stack.
 func (n *Node) AccountManager() *accounts.Manager {
-	return n.accman
+	_ = "STUB: not implemented"
+
+	// RegisterAPIs registers the APIs a service provides on the node.
+	return nil
 }
 
-// RegisterAPIs registers the APIs a service provides on the node.
-func (n *Node) APIs() []rpc.API {
-	return n.apis()
-}
+func (n *Node) APIs() []rpc.API { _ = "STUB: not implemented"; return nil }

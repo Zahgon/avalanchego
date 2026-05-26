@@ -4,9 +4,7 @@
 package gossip
 
 import (
-	"crypto/rand"
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/ava-labs/avalanchego/ids"
@@ -43,17 +41,7 @@ type BloomSetConfig struct {
 	ResetFalsePositiveProbability float64
 }
 
-func (c *BloomSetConfig) fillDefaults() {
-	if c.MinTargetElements == 0 {
-		c.MinTargetElements = DefaultMinTargetElements
-	}
-	if c.TargetFalsePositiveProbability == 0 {
-		c.TargetFalsePositiveProbability = DefaultTargetFalsePositiveProbability
-	}
-	if c.ResetFalsePositiveProbability == 0 {
-		c.ResetFalsePositiveProbability = DefaultResetFalsePositiveProbability
-	}
-}
+func (c *BloomSetConfig) fillDefaults() { _ = "STUB: not implemented"; return }
 
 type Set[T Gossipable] interface {
 	HandlerSet[T]
@@ -71,12 +59,8 @@ func NewBloomSet[T Gossipable](
 	set Set[T],
 	c BloomSetConfig,
 ) (*BloomSet[T], error) {
-	c.fillDefaults()
-	m := &BloomSet[T]{
-		set: set,
-		c:   c,
-	}
-	return m, m.resetBloom()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type BloomSet[T Gossipable] struct {
@@ -97,43 +81,18 @@ type BloomSet[T Gossipable] struct {
 // If adding the inner set succeeds and resetting the bloom filter fails,
 // [ErrBloomReset] is returned. However, it is still guaranteed that v has
 // been added to the bloom filter.
-func (s *BloomSet[T]) Add(v T) error {
-	if err := s.set.Add(v); err != nil {
-		return err
-	}
-	return s.addToBloom(v.GossipID())
-}
+func (s *BloomSet[T]) Add(v T) error { _ = "STUB: not implemented"; return nil }
 
 // addToBloom adds the provided ID to the bloom filter.
 //
 // Even if an error is returned, the ID has still been added to the bloom
 // filter.
-func (s *BloomSet[T]) addToBloom(h ids.ID) error {
-	s.lock.RLock()
-	if bloom.Add(s.bloom, h[:], s.salt[:]) && s.c.Metrics != nil {
-		s.c.Metrics.Count.Inc()
-	}
-	shouldReset := s.shouldReset()
-	s.lock.RUnlock()
+func (s *BloomSet[T]) addToBloom(h ids.ID) error { _ = "STUB: not implemented"; return nil }
 
-	if !shouldReset {
-		return nil
-	}
-
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	// Bloom filter was already reset by another thread
-	if !s.shouldReset() {
-		return nil
-	}
-	return s.resetBloom()
-}
+// Bloom filter was already reset by another thread
 
 // shouldReset expects either a read lock or a write lock to be held.
-func (s *BloomSet[T]) shouldReset() bool {
-	return s.bloom.Count() > s.maxCount
-}
+func (s *BloomSet[T]) shouldReset() bool { _ = "STUB: not implemented"; return false }
 
 // resetBloom attempts to generate a new bloom filter and fill it with the
 // current entries in the set.
@@ -141,51 +100,15 @@ func (s *BloomSet[T]) shouldReset() bool {
 // If an error is returned, the bloom filter and salt are unchanged.
 //
 // resetBloom expects a write lock to be held.
-func (s *BloomSet[T]) resetBloom() error {
-	targetElements := max(2*s.set.Len(), s.c.MinTargetElements)
-	numHashes, numEntries := bloom.OptimalParameters(
-		targetElements,
-		s.c.TargetFalsePositiveProbability,
-	)
-	newBloom, err := bloom.New(numHashes, numEntries)
-	if err != nil {
-		return fmt.Errorf("%w: creating new bloom: %w", ErrBloomReset, err)
-	}
-	var newSalt ids.ID
-	if _, err := rand.Read(newSalt[:]); err != nil {
-		return fmt.Errorf("%w: generating new salt: %w", ErrBloomReset, err)
-	}
-	s.set.Iterate(func(v T) bool {
-		h := v.GossipID()
-		bloom.Add(newBloom, h[:], newSalt[:])
-		return true
-	})
+func (s *BloomSet[T]) resetBloom() error { _ = "STUB: not implemented"; return nil }
 
-	s.maxCount = bloom.EstimateCount(numHashes, numEntries, s.c.ResetFalsePositiveProbability)
-	s.bloom = newBloom
-	s.salt = newSalt
+func (s *BloomSet[T]) Has(h ids.ID) bool { _ = "STUB: not implemented"; return false }
 
-	if s.c.Metrics != nil {
-		s.c.Metrics.Reset(newBloom, s.maxCount)
-	}
-	return nil
-}
+func (s *BloomSet[T]) Iterate(f func(T) bool) { _ = "STUB: not implemented"; return }
 
-func (s *BloomSet[T]) Has(h ids.ID) bool {
-	return s.set.Has(h)
-}
-
-func (s *BloomSet[T]) Iterate(f func(T) bool) {
-	s.set.Iterate(f)
-}
-
-func (s *BloomSet[T]) Len() int {
-	return s.set.Len()
-}
+func (s *BloomSet[T]) Len() int { _ = "STUB: not implemented"; return 0 }
 
 func (s *BloomSet[_]) BloomFilter() (*bloom.Filter, ids.ID) {
-	s.lock.RLock()
-	defer s.lock.RUnlock()
-
-	return s.bloom, s.salt
+	_ = "STUB: not implemented"
+	return nil, *new(ids.ID)
 }

@@ -6,16 +6,13 @@ package throttling
 import (
 	"context"
 	"sync"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 	"golang.org/x/time/rate"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/utils/metric"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var _ bandwidthThrottler = (*bandwidthThrottlerImpl)(nil)
@@ -61,26 +58,8 @@ func newBandwidthThrottler(
 	registerer prometheus.Registerer,
 	config BandwidthThrottlerConfig,
 ) (bandwidthThrottler, error) {
-	errs := wrappers.Errs{}
-	t := &bandwidthThrottlerImpl{
-		BandwidthThrottlerConfig: config,
-		log:                      log,
-		limiters:                 make(map[ids.NodeID]*rate.Limiter),
-		metrics: bandwidthThrottlerMetrics{
-			acquireLatency: metric.NewAveragerWithErrs(
-				"bandwidth_throttler_inbound_acquire_latency",
-				"average time (in ns) to acquire bytes from the inbound bandwidth throttler",
-				registerer,
-				&errs,
-			),
-			awaitingAcquire: prometheus.NewGauge(prometheus.GaugeOpts{
-				Name: "bandwidth_throttler_inbound_awaiting_acquire",
-				Help: "Number of inbound messages waiting to acquire bandwidth from the inbound bandwidth throttler",
-			}),
-		},
-	}
-	errs.Add(registerer.Register(t.metrics.awaitingAcquire))
-	return t, errs.Err
+	_ = "STUB: not implemented"
+	return *new(bandwidthThrottler), nil
 }
 
 type bandwidthThrottlerMetrics struct {
@@ -104,58 +83,16 @@ func (t *bandwidthThrottlerImpl) Acquire(
 	msgSize uint64,
 	nodeID ids.NodeID,
 ) {
-	startTime := time.Now()
-	t.metrics.awaitingAcquire.Inc()
-	defer func() {
-		t.metrics.acquireLatency.Observe(float64(time.Since(startTime)))
-		t.metrics.awaitingAcquire.Dec()
-	}()
-
-	t.lock.RLock()
-	limiter, ok := t.limiters[nodeID]
-	t.lock.RUnlock()
-	if !ok {
-		// This should never happen. If it is, the caller is misusing this struct.
-		t.log.Debug("tried to acquire throttler but the node isn't registered",
-			zap.Uint64("messageSize", msgSize),
-			zap.Stringer("nodeID", nodeID),
-		)
-		return
-	}
-	if err := limiter.WaitN(ctx, int(msgSize)); err != nil {
-		// This should only happen on shutdown.
-		t.log.Debug("error while waiting for throttler",
-			zap.Uint64("messageSize", msgSize),
-			zap.Stringer("nodeID", nodeID),
-			zap.Error(err),
-		)
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// This should never happen. If it is, the caller is misusing this struct.
+
+// This should only happen on shutdown.
 
 // See BandwidthThrottler.
-func (t *bandwidthThrottlerImpl) AddNode(nodeID ids.NodeID) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	if _, ok := t.limiters[nodeID]; ok {
-		t.log.Debug("tried to add peer but it's already registered",
-			zap.Stringer("nodeID", nodeID),
-		)
-		return
-	}
-	t.limiters[nodeID] = rate.NewLimiter(rate.Limit(t.RefillRate), int(t.MaxBurstSize))
-}
+func (t *bandwidthThrottlerImpl) AddNode(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
 // See BandwidthThrottler.
-func (t *bandwidthThrottlerImpl) RemoveNode(nodeID ids.NodeID) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	if _, ok := t.limiters[nodeID]; !ok {
-		t.log.Debug("tried to remove peer but it isn't registered",
-			zap.Stringer("nodeID", nodeID),
-		)
-		return
-	}
-	delete(t.limiters, nodeID)
-}
+func (t *bandwidthThrottlerImpl) RemoveNode(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }

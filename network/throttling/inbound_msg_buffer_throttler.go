@@ -6,13 +6,11 @@ package throttling
 import (
 	"context"
 	"sync"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/metric"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 // See inbound_msg_throttler.go
@@ -21,12 +19,8 @@ func newInboundMsgBufferThrottler(
 	registerer prometheus.Registerer,
 	maxProcessingMsgsPerNode uint64,
 ) (*inboundMsgBufferThrottler, error) {
-	t := &inboundMsgBufferThrottler{
-		maxProcessingMsgsPerNode: maxProcessingMsgsPerNode,
-		awaitingAcquire:          make(map[ids.NodeID]chan struct{}),
-		nodeToNumProcessingMsgs:  make(map[ids.NodeID]uint64),
-	}
-	return t, t.metrics.initialize(registerer)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Rate-limits inbound messages based on the number of
@@ -60,69 +54,24 @@ type inboundMsgBufferThrottler struct {
 // invariant: There should be a maximum of 1 blocking call to Acquire for a
 // given nodeID. Callers must enforce this invariant.
 func (t *inboundMsgBufferThrottler) Acquire(ctx context.Context, nodeID ids.NodeID) ReleaseFunc {
-	startTime := time.Now()
-	defer func() {
-		t.metrics.acquireLatency.Observe(float64(time.Since(startTime)))
-	}()
-
-	t.lock.Lock()
-	if t.nodeToNumProcessingMsgs[nodeID] < t.maxProcessingMsgsPerNode {
-		t.nodeToNumProcessingMsgs[nodeID]++
-		t.lock.Unlock()
-		return func() {
-			t.release(nodeID)
-		}
-	}
-
-	// We're currently processing the maximum number of
-	// messages from [nodeID]. Wait until we've finished
-	// processing some messages from [nodeID].
-	// [closeOnAcquireChan] will be closed inside Release()
-	// when we've acquired space on the inbound message buffer
-	// for this message.
-	closeOnAcquireChan := make(chan struct{})
-	t.awaitingAcquire[nodeID] = closeOnAcquireChan
-	t.lock.Unlock()
-	t.metrics.awaitingAcquire.Inc()
-	defer t.metrics.awaitingAcquire.Dec()
-
-	var releaseFunc ReleaseFunc
-	select {
-	case <-closeOnAcquireChan:
-		t.lock.Lock()
-		t.nodeToNumProcessingMsgs[nodeID]++
-		releaseFunc = func() {
-			t.release(nodeID)
-		}
-	case <-ctx.Done():
-		t.lock.Lock()
-		delete(t.awaitingAcquire, nodeID)
-		releaseFunc = noopRelease
-	}
-
-	t.lock.Unlock()
-	return releaseFunc
+	_ = "STUB: not implemented"
+	return *new(ReleaseFunc)
 }
+
+// We're currently processing the maximum number of
+// messages from [nodeID]. Wait until we've finished
+// processing some messages from [nodeID].
+// [closeOnAcquireChan] will be closed inside Release()
+// when we've acquired space on the inbound message buffer
+// for this message.
 
 // release marks that we've finished processing a message from [nodeID]
 // and can release the space it took on the inbound message buffer.
-func (t *inboundMsgBufferThrottler) release(nodeID ids.NodeID) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
+func (t *inboundMsgBufferThrottler) release(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
-	t.nodeToNumProcessingMsgs[nodeID]--
-	if t.nodeToNumProcessingMsgs[nodeID] == 0 {
-		delete(t.nodeToNumProcessingMsgs, nodeID)
-	}
-
-	// If we're waiting to acquire space on the inbound message
-	// buffer for messages from [nodeID], allow it to proceed
-	// (i.e. for its call to Acquire to return.)
-	if waiting, ok := t.awaitingAcquire[nodeID]; ok {
-		close(waiting)
-		delete(t.awaitingAcquire, nodeID)
-	}
-}
+// If we're waiting to acquire space on the inbound message
+// buffer for messages from [nodeID], allow it to proceed
+// (i.e. for its call to Acquire to return.)
 
 type inboundMsgBufferThrottlerMetrics struct {
 	acquireLatency  metric.Averager
@@ -130,19 +79,6 @@ type inboundMsgBufferThrottlerMetrics struct {
 }
 
 func (m *inboundMsgBufferThrottlerMetrics) initialize(reg prometheus.Registerer) error {
-	errs := wrappers.Errs{}
-	m.acquireLatency = metric.NewAveragerWithErrs(
-		"buffer_throttler_inbound_acquire_latency",
-		"average time (in ns) to get space on the inbound message buffer",
-		reg,
-		&errs,
-	)
-	m.awaitingAcquire = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "buffer_throttler_inbound_awaiting_acquire",
-		Help: "Number of inbound messages waiting to take space on the inbound message buffer",
-	})
-	errs.Add(
-		reg.Register(m.awaitingAcquire),
-	)
-	return errs.Err
+	_ = "STUB: not implemented"
+	return nil
 }

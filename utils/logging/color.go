@@ -46,9 +46,7 @@ var (
 	unknownLevelColor         = Reset
 )
 
-func (lc Color) Wrap(text string) string {
-	return string(lc) + text + string(Reset)
-}
+func (lc Color) Wrap(text string) string { _ = "STUB: not implemented"; return "" }
 
 func init() {
 	for level, color := range levelToColor {

@@ -37,45 +37,29 @@ type accepted struct {
 	lastAccepted map[ids.NodeID]idHeight
 }
 
-func NewAccepted() Accepted {
-	return &accepted{
-		lastAccepted: make(map[ids.NodeID]idHeight),
-	}
-}
+func NewAccepted() Accepted { _ = "STUB: not implemented"; return *new(Accepted) }
 
 func (a *accepted) OnValidatorAdded(nodeID ids.NodeID, _ *bls.PublicKey, _ ids.ID, _ uint64) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	a.validators.Add(nodeID)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (a *accepted) OnValidatorRemoved(nodeID ids.NodeID, _ uint64) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	a.validators.Remove(nodeID)
-	delete(a.lastAccepted, nodeID)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (*accepted) OnValidatorWeightChanged(_ ids.NodeID, _, _ uint64) {}
+func (*accepted) OnValidatorWeightChanged(_ ids.NodeID, _, _ uint64) {
+	_ = "STUB: not implemented"
+	return
+}
 
 func (a *accepted) SetLastAccepted(nodeID ids.NodeID, id ids.ID, height uint64) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	if a.validators.Contains(nodeID) {
-		a.lastAccepted[nodeID] = idHeight{
-			id:     id,
-			height: height,
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (a *accepted) LastAccepted(nodeID ids.NodeID) (ids.ID, uint64, bool) {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	acceptedAndHeight, ok := a.lastAccepted[nodeID]
-	return acceptedAndHeight.id, acceptedAndHeight.height, ok
+	_ = "STUB: not implemented"
+	return *new(ids.ID), 0, false
 }

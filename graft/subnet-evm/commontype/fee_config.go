@@ -5,12 +5,7 @@ package commontype
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
-
-	"github.com/ava-labs/libevm/common"
-
-	"github.com/ava-labs/avalanchego/graft/evm/utils"
 )
 
 var (
@@ -90,94 +85,12 @@ type FeeConfig struct {
 var EmptyFeeConfig = FeeConfig{}
 
 // Verify checks fields of this config to ensure a valid fee configuration is provided.
-func (f *FeeConfig) Verify() error {
-	switch {
-	case f.GasLimit == nil:
-		return ErrGasLimitNil
-	case f.MinBaseFee == nil:
-		return errMinBaseFeeNil
-	case f.TargetGas == nil:
-		return errTargetGasNil
-	case f.BaseFeeChangeDenominator == nil:
-		return errBaseFeeChangeDenominatorNil
-	case f.MinBlockGasCost == nil:
-		return errMinBlockGasCostNil
-	case f.MaxBlockGasCost == nil:
-		return errMaxBlockGasCostNil
-	case f.BlockGasCostStep == nil:
-		return errBlockGasCostStepNil
-	}
-
-	switch {
-	case f.GasLimit.Cmp(common.Big0) != 1:
-		return fmt.Errorf("%w: gasLimit = %d", ErrGasLimitTooLow, f.GasLimit)
-	case f.TargetBlockRate <= 0:
-		return fmt.Errorf("%w: targetBlockRate = %d", errTargetBlockRateTooLow, f.TargetBlockRate)
-	case f.MinBaseFee.Cmp(common.Big0) == -1:
-		return fmt.Errorf("%w: minBaseFee = %d", errMinBaseFeeNegative, f.MinBaseFee)
-	case f.TargetGas.Cmp(common.Big0) != 1:
-		return fmt.Errorf("%w: targetGas = %d", errTargetGasTooLow, f.TargetGas)
-	case f.BaseFeeChangeDenominator.Cmp(common.Big0) != 1:
-		return fmt.Errorf("%w: baseFeeChangeDenominator = %d", errBaseFeeChangeDenominatorTooLow, f.BaseFeeChangeDenominator)
-	case f.MinBlockGasCost.Cmp(common.Big0) == -1:
-		return fmt.Errorf("%w: minBlockGasCost = %d", errMinBlockGasCostNegative, f.MinBlockGasCost)
-	case f.MinBlockGasCost.Cmp(f.MaxBlockGasCost) == 1:
-		return fmt.Errorf("%w: minBlockGasCost = %d, maxBlockGasCost = %d", ErrMinBlockGasCostTooHigh, f.MinBlockGasCost, f.MaxBlockGasCost)
-	case f.BlockGasCostStep.Cmp(common.Big0) == -1:
-		return fmt.Errorf("%w: blockGasCostStep = %d", errBlockGasCostStepNegative, f.BlockGasCostStep)
-	case !f.MaxBlockGasCost.IsUint64():
-		return fmt.Errorf("%w: maxBlockGasCost = %d", errMaxBlockGasCostNotUint64, f.MaxBlockGasCost)
-	}
-	return f.checkByteLens()
-}
+func (f *FeeConfig) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Equal checks if given [other] is same with this FeeConfig.
-func (f *FeeConfig) Equal(other *FeeConfig) bool {
-	if other == nil {
-		return false
-	}
-
-	return utils.BigEqual(f.GasLimit, other.GasLimit) &&
-		f.TargetBlockRate == other.TargetBlockRate &&
-		utils.BigEqual(f.MinBaseFee, other.MinBaseFee) &&
-		utils.BigEqual(f.TargetGas, other.TargetGas) &&
-		utils.BigEqual(f.BaseFeeChangeDenominator, other.BaseFeeChangeDenominator) &&
-		utils.BigEqual(f.MinBlockGasCost, other.MinBlockGasCost) &&
-		utils.BigEqual(f.MaxBlockGasCost, other.MaxBlockGasCost) &&
-		utils.BigEqual(f.BlockGasCostStep, other.BlockGasCostStep)
-}
+func (f *FeeConfig) Equal(other *FeeConfig) bool { _ = "STUB: not implemented"; return false }
 
 // checkByteLens checks byte lengths against common.HashLen (32 bytes) and returns error
-func (f *FeeConfig) checkByteLens() error {
-	if isBiggerThanHashLen(f.GasLimit) {
-		return fmt.Errorf("%w: %d bytes", errGasLimitExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(new(big.Int).SetUint64(f.TargetBlockRate)) {
-		return fmt.Errorf("%w: %d bytes", errTargetBlockRateExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.MinBaseFee) {
-		return fmt.Errorf("%w: %d bytes", errMinBaseFeeExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.TargetGas) {
-		return fmt.Errorf("%w: %d bytes", errTargetGasExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.BaseFeeChangeDenominator) {
-		return fmt.Errorf("%w: %d bytes", errBaseFeeChangeDenominatorExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.MinBlockGasCost) {
-		return fmt.Errorf("%w: %d bytes", errMinBlockGasCostExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.MaxBlockGasCost) {
-		return fmt.Errorf("%w: %d bytes", errMaxBlockGasCostExceedsHashLength, common.HashLength)
-	}
-	if isBiggerThanHashLen(f.BlockGasCostStep) {
-		return fmt.Errorf("%w: %d bytes", errBlockGasCostStepExceedsHashLength, common.HashLength)
-	}
-	return nil
-}
+func (f *FeeConfig) checkByteLens() error { _ = "STUB: not implemented"; return nil }
 
-func isBiggerThanHashLen(bigint *big.Int) bool {
-	buf := bigint.Bytes()
-	isBigger := len(buf) > common.HashLength
-	return isBigger
-}
+func isBiggerThanHashLen(bigint *big.Int) bool { _ = "STUB: not implemented"; return false }

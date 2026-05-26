@@ -5,9 +5,6 @@ package rpc
 
 import (
 	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/ava-labs/libevm/crypto"
-
-	"github.com/ava-labs/avalanchego/version"
 )
 
 // web3API offers the `web3` RPCs.
@@ -15,16 +12,11 @@ type web3API struct {
 	clientVersion string
 }
 
-func newWeb3API() *web3API {
-	return &web3API{
-		clientVersion: version.GetVersions().String(),
-	}
-}
+func newWeb3API() *web3API { _ = "STUB: not implemented"; return nil }
 
-func (w *web3API) ClientVersion() string {
-	return w.clientVersion
-}
+func (w *web3API) ClientVersion() string { _ = "STUB: not implemented"; return "" }
 
 func (*web3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
-	return crypto.Keccak256(input)
+	_ = "STUB: not implemented"
+	return *new(hexutil.Bytes)
 }

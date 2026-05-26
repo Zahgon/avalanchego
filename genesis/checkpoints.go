@@ -10,7 +10,6 @@ import (
 	_ "embed"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
 
@@ -30,6 +29,6 @@ func init() {
 // GetCheckpoints returns all known checkpoints for the chain on the requested
 // network.
 func GetCheckpoints(networkID uint32, chainID ids.ID) set.Set[ids.ID] {
-	networkName := constants.NetworkIDToNetworkName[networkID]
-	return checkpointsPerNetwork[networkName][chainID]
+	_ = "STUB: not implemented"
+	return nil
 }

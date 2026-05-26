@@ -7,7 +7,6 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/utils/metric"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 	"github.com/ava-labs/avalanchego/vms/avm/block"
 	"github.com/ava-labs/avalanchego/vms/avm/txs"
 )
@@ -41,57 +40,17 @@ type metrics struct {
 	metric.APIInterceptor
 }
 
-func (m *metrics) IncTxRefreshes() {
-	m.numTxRefreshes.Inc()
-}
+func (m *metrics) IncTxRefreshes() { _ = "STUB: not implemented"; return }
 
-func (m *metrics) IncTxRefreshHits() {
-	m.numTxRefreshHits.Inc()
-}
+func (m *metrics) IncTxRefreshHits() { _ = "STUB: not implemented"; return }
 
-func (m *metrics) IncTxRefreshMisses() {
-	m.numTxRefreshMisses.Inc()
-}
+func (m *metrics) IncTxRefreshMisses() { _ = "STUB: not implemented"; return }
 
-func (m *metrics) MarkBlockAccepted(b block.Block) error {
-	for _, tx := range b.Txs() {
-		if err := tx.Unsigned.Visit(m.txMetrics); err != nil {
-			return err
-		}
-	}
-	return nil
-}
+func (m *metrics) MarkBlockAccepted(b block.Block) error { _ = "STUB: not implemented"; return nil }
 
-func (m *metrics) MarkTxAccepted(tx *txs.Tx) error {
-	return tx.Unsigned.Visit(m.txMetrics)
-}
+func (m *metrics) MarkTxAccepted(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 func New(registerer prometheus.Registerer) (Metrics, error) {
-	txMetrics, err := newTxMetrics(registerer)
-	errs := wrappers.Errs{Err: err}
-
-	m := &metrics{txMetrics: txMetrics}
-
-	m.numTxRefreshes = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "tx_refreshes",
-		Help: "Number of times unique txs have been refreshed",
-	})
-	m.numTxRefreshHits = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "tx_refresh_hits",
-		Help: "Number of times unique txs have not been unique, but were cached",
-	})
-	m.numTxRefreshMisses = prometheus.NewCounter(prometheus.CounterOpts{
-		Name: "tx_refresh_misses",
-		Help: "Number of times unique txs have not been unique and weren't cached",
-	})
-
-	apiRequestMetric, err := metric.NewAPIInterceptor(registerer)
-	m.APIInterceptor = apiRequestMetric
-	errs.Add(
-		err,
-		registerer.Register(m.numTxRefreshes),
-		registerer.Register(m.numTxRefreshHits),
-		registerer.Register(m.numTxRefreshMisses),
-	)
-	return m, errs.Err
+	_ = "STUB: not implemented"
+	return *new(Metrics), nil
 }

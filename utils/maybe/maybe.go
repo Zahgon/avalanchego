@@ -3,8 +3,6 @@
 
 package maybe
 
-import "fmt"
-
 // Maybe T = Some T | Nothing.
 // A data wrapper that allows values to be something [Some T] or nothing [Nothing].
 // Invariant: If [hasValue] is false, then [value] is the zero value of type T.
@@ -20,57 +18,40 @@ type Maybe[T any] struct {
 
 // Some returns a new Maybe[T] with the value val.
 // If m.IsNothing(), returns the zero value of type T.
-func Some[T any](val T) Maybe[T] {
-	return Maybe[T]{
-		value:    val,
-		hasValue: true,
-	}
-}
+func Some[T any](val T) Maybe[T] { _ = "STUB: not implemented"; return nil }
 
 // Nothing returns a new Maybe[T] with no value.
 func Nothing[T any]() Maybe[T] {
-	return Maybe[T]{}
+	_ = "STUB: not implemented"
+
+	// IsNothing returns false iff [m] has a value.
+	return nil
 }
 
-// IsNothing returns false iff [m] has a value.
 func (m Maybe[T]) IsNothing() bool {
-	return !m.hasValue
+	_ = "STUB: not implemented"
+
+	// HasValue returns true iff [m] has a value.
+	return false
 }
 
-// HasValue returns true iff [m] has a value.
 func (m Maybe[T]) HasValue() bool {
-	return m.hasValue
+	_ = "STUB: not implemented"
+
+	// Value returns the value of [m].
+	return false
 }
 
-// Value returns the value of [m].
-func (m Maybe[T]) Value() T {
-	return m.value
-}
+func (m Maybe[T]) Value() T { _ = "STUB: not implemented"; return *new(T) }
 
-func (m Maybe[T]) String() string {
-	if !m.hasValue {
-		return fmt.Sprintf("Nothing[%T]", m.value)
-	}
-	return fmt.Sprintf("Some[%T]{%v}", m.value, m.value)
-}
+func (m Maybe[T]) String() string { _ = "STUB: not implemented"; return "" }
 
 // Bind returns Nothing iff [m] is Nothing.
 // Otherwise applies [f] to the value of [m] and returns the result as a Some.
-func Bind[T, U any](m Maybe[T], f func(T) U) Maybe[U] {
-	if m.IsNothing() {
-		return Nothing[U]()
-	}
-	return Some(f(m.Value()))
-}
+func Bind[T, U any](m Maybe[T], f func(T) U) Maybe[U] { _ = "STUB: not implemented"; return nil }
 
 // Equal returns true if both m1 and m2 are nothing or have the same value according to [equalFunc].
 func Equal[T any](m1 Maybe[T], m2 Maybe[T], equalFunc func(T, T) bool) bool {
-	if m1.IsNothing() {
-		return m2.IsNothing()
-	}
-
-	if m2.IsNothing() {
-		return false
-	}
-	return equalFunc(m1.Value(), m2.Value())
+	_ = "STUB: not implemented"
+	return false
 }

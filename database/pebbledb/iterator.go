@@ -5,8 +5,6 @@ package pebbledb
 
 import (
 	"errors"
-	"fmt"
-	"slices"
 	"sync"
 
 	"github.com/cockroachdb/pebble"
@@ -40,98 +38,20 @@ type iter struct {
 }
 
 // Must not be called with [db.lock] held.
-func (it *iter) Next() bool {
-	it.lock.Lock()
-	defer it.lock.Unlock()
+func (it *iter) Next() bool { _ = "STUB: not implemented"; return false }
 
-	switch {
-	case it.err != nil:
-		it.hasNext = false
-		return false
-	case it.closed:
-		it.hasNext = false
-		it.err = database.ErrClosed
-		return false
-	case !it.initialized:
-		it.hasNext = it.iter.First()
-		it.initialized = true
-	default:
-		it.hasNext = it.iter.Next()
-	}
+func (it *iter) Error() error { _ = "STUB: not implemented"; return nil }
 
-	if !it.hasNext {
-		return false
-	}
+func (it *iter) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-	key := it.iter.Key()
-	value, err := it.iter.ValueAndErr()
-	if err != nil {
-		it.hasNext = false
-		it.err = fmt.Errorf("%w: %w", errCouldNotGetValue, err)
-		return false
-	}
+func (it *iter) Value() []byte { _ = "STUB: not implemented"; return nil }
 
-	it.nextKey = key
-	it.nextVal = value
-	return true
-}
-
-func (it *iter) Error() error {
-	it.lock.Lock()
-	defer it.lock.Unlock()
-
-	if it.err != nil || it.closed {
-		return it.err
-	}
-	return updateError(it.iter.Error())
-}
-
-func (it *iter) Key() []byte {
-	it.lock.Lock()
-	defer it.lock.Unlock()
-
-	if !it.hasNext {
-		return nil
-	}
-	return slices.Clone(it.nextKey)
-}
-
-func (it *iter) Value() []byte {
-	it.lock.Lock()
-	defer it.lock.Unlock()
-
-	if !it.hasNext {
-		return nil
-	}
-	return slices.Clone(it.nextVal)
-}
-
-func (it *iter) Release() {
-	it.db.lock.Lock()
-	defer it.db.lock.Unlock()
-
-	it.lock.Lock()
-	defer it.lock.Unlock()
-
-	it.release()
-}
+func (it *iter) Release() { _ = "STUB: not implemented"; return }
 
 // Assumes [it.lock] and [it.db.lock] are held.
-func (it *iter) release() {
-	if it.closed {
-		return
-	}
+func (it *iter) release() { _ = "STUB: not implemented"; return }
 
-	// Cloning these values ensures that calling it.Key() or it.Value() after
-	// releasing the iterator will not segfault.
-	it.nextKey = slices.Clone(it.nextKey)
-	it.nextVal = slices.Clone(it.nextVal)
+// Cloning these values ensures that calling it.Key() or it.Value() after
+// releasing the iterator will not segfault.
 
-	// Remove the iterator from the list of open iterators.
-	it.db.openIterators.Remove(it)
-
-	it.closed = true
-	if err := it.iter.Close(); err != nil {
-		it.err = updateError(err)
-	}
-}
+// Remove the iterator from the list of open iterators.

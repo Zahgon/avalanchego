@@ -6,14 +6,11 @@ package engine
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/triedb"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
 
@@ -56,11 +53,8 @@ type Server interface {
 }
 
 func NewServer(chain BlockChain, provider SummaryProvider, syncableInterval uint64) Server {
-	return &server{
-		chain:            chain,
-		syncableInterval: syncableInterval,
-		provider:         provider,
-	}
+	_ = "STUB: not implemented"
+	return *new(Server)
 }
 
 // GetLastStateSummary returns the latest state summary.
@@ -68,50 +62,19 @@ func NewServer(chain BlockChain, provider SummaryProvider, syncableInterval uint
 // that is divisible by [syncableInterval]
 // If no summary is available, [database.ErrNotFound] must be returned.
 func (s *server) GetLastStateSummary(context.Context) (block.StateSummary, error) {
-	lastHeight := s.chain.LastAcceptedBlock().NumberU64()
-	lastSyncSummaryNumber := lastHeight - lastHeight%s.syncableInterval
-
-	summary, err := s.stateSummaryAtHeight(lastSyncSummaryNumber)
-	if err != nil {
-		log.Debug("could not get latest state summary", "err", err)
-		return nil, database.ErrNotFound
-	}
-	log.Debug("Serving syncable block at latest height", "summary", summary)
-	return summary, nil
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 // GetStateSummary implements StateSyncableVM and returns a summary corresponding
 // to the provided [height] if the node can serve state sync data for that key.
 // If not, [database.ErrNotFound] must be returned.
 func (s *server) GetStateSummary(_ context.Context, height uint64) (block.StateSummary, error) {
-	summaryBlock := s.chain.GetBlockByNumber(height)
-	if summaryBlock == nil ||
-		summaryBlock.NumberU64() > s.chain.LastAcceptedBlock().NumberU64() ||
-		summaryBlock.NumberU64()%s.syncableInterval != 0 {
-		return nil, database.ErrNotFound
-	}
-
-	summary, err := s.stateSummaryAtHeight(summaryBlock.NumberU64())
-	if err != nil {
-		log.Debug("could not get state summary", "height", height, "err", err)
-		return nil, database.ErrNotFound
-	}
-
-	log.Debug("Serving syncable block at requested height", "height", height, "summary", summary)
-	return summary, nil
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 func (s *server) stateSummaryAtHeight(height uint64) (block.StateSummary, error) {
-	blk := s.chain.GetBlockByNumber(height)
-	if blk == nil {
-		return nil, fmt.Errorf("block not found for height (%d)", height)
-	}
-
-	if !s.chain.HasState(blk.Root()) {
-		return nil, fmt.Errorf("block root does not exist for height (%d), root (%s)", height, blk.Root())
-	}
-	if s.provider == nil {
-		return nil, errProviderNotSet
-	}
-	return s.provider.StateSummaryAtBlock(blk)
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }

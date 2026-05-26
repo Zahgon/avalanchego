@@ -7,8 +7,6 @@ import (
 	"math"
 
 	"github.com/holiman/uint256"
-
-	safemath "github.com/ava-labs/avalanchego/utils/math"
 )
 
 var maxUint64 = new(uint256.Int).SetUint64(math.MaxUint64)
@@ -21,38 +19,22 @@ type (
 // Cost converts the gas to nAVAX based on the price.
 //
 // If overflow would occur, an error is returned.
-func (g Gas) Cost(price Price) (uint64, error) {
-	return safemath.Mul(uint64(g), uint64(price))
-}
+func (g Gas) Cost(price Price) (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // AddOverTime returns g + gasRate * duration.
 //
 // If overflow would occur, MaxUint64 is returned.
 func (g Gas) AddOverTime(gasRate Gas, duration uint64) Gas {
-	newGas, err := safemath.Mul(uint64(gasRate), duration)
-	if err != nil {
-		return math.MaxUint64
-	}
-	totalGas, err := safemath.Add(uint64(g), newGas)
-	if err != nil {
-		return math.MaxUint64
-	}
-	return Gas(totalGas)
+	_ = "STUB: not implemented"
+	return *new(Gas)
 }
 
 // SubOverTime returns g - gasRate * duration.
 //
 // If underflow would occur, 0 is returned.
 func (g Gas) SubOverTime(gasRate Gas, duration uint64) Gas {
-	gasToRemove, err := safemath.Mul(uint64(gasRate), duration)
-	if err != nil {
-		return 0
-	}
-	totalGas, err := safemath.Sub(uint64(g), gasToRemove)
-	if err != nil {
-		return 0
-	}
-	return Gas(totalGas)
+	_ = "STUB: not implemented"
+	return *new(Gas)
 }
 
 // CalculatePrice returns the gas price given the minimum gas price, the
@@ -87,35 +69,19 @@ func CalculatePrice(
 	excess Gas,
 	excessConversionConstant Gas,
 ) Price {
-	var (
-		numerator   uint256.Int
-		denominator uint256.Int
-
-		i              uint256.Int
-		output         uint256.Int
-		numeratorAccum uint256.Int
-
-		maxOutput uint256.Int
-	)
-	numerator.SetUint64(uint64(excess))                     // range is [0, MaxUint64]
-	denominator.SetUint64(uint64(excessConversionConstant)) // range is [0, MaxUint64]
-
-	i.SetOne()
-	numeratorAccum.SetUint64(uint64(minPrice))        // range is [0, MaxUint64]
-	numeratorAccum.Mul(&numeratorAccum, &denominator) // range is [0, MaxUint128]
-
-	maxOutput.Mul(&denominator, maxUint64) // range is [0, MaxUint128]
-	for numeratorAccum.Sign() > 0 {
-		output.Add(&output, &numeratorAccum) // range is [0, MaxUint192+MaxUint128]
-		if output.Cmp(&maxOutput) >= 0 {
-			return math.MaxUint64
-		}
-		// maxOutput < MaxUint128 so numeratorAccum < MaxUint128.
-		numeratorAccum.Mul(&numeratorAccum, &numerator) // range is [0, MaxUint192]
-		numeratorAccum.Div(&numeratorAccum, &denominator)
-		numeratorAccum.Div(&numeratorAccum, &i)
-
-		i.AddUint64(&i, 1)
-	}
-	return Price(output.Div(&output, &denominator).Uint64())
+	_ = "STUB: not implemented"
+	return *new(Price)
 }
+
+// range is [0, MaxUint64]
+// range is [0, MaxUint64]
+
+// range is [0, MaxUint64]
+// range is [0, MaxUint128]
+
+// range is [0, MaxUint128]
+
+// range is [0, MaxUint192+MaxUint128]
+
+// maxOutput < MaxUint128 so numeratorAccum < MaxUint128.
+// range is [0, MaxUint192]

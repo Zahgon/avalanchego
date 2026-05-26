@@ -18,12 +18,7 @@ type Cond struct {
 }
 
 // NewCond returns a new Cond with Locker l.
-func NewCond(l sync.Locker) *Cond {
-	return &Cond{
-		L: l,
-		w: make(map[chan struct{}]struct{}),
-	}
-}
+func NewCond(l sync.Locker) *Cond { _ = "STUB: not implemented"; return nil }
 
 // Wait atomically unlocks c.L and suspends execution of the calling goroutine.
 // After later resuming execution, Wait locks c.L before returning. Unlike in
@@ -44,31 +39,17 @@ func NewCond(l sync.Locker) *Cond {
 //	}
 //	... make use of condition ...
 func (c *Cond) Wait(ctx context.Context) error {
+	_ = "STUB: not implemented"
 	// Add this thread as a new waiter
-	c.m.Lock()
-	newL := make(chan struct{})
-	c.w[newL] = struct{}{}
-	c.m.Unlock()
-
-	c.L.Unlock()
-	// We must hold the lock when we return to ensure that the caller can
-	// release the lock after wait returns. This is true regardless of if the
-	// wait was cancelled or not.
-	defer c.L.Lock()
-
-	select {
-	case <-ctx.Done():
-		// Since the wait was cancelled, we remove our waiting channel on a
-		// best-effort basis.
-		c.m.Lock()
-		delete(c.w, newL)
-		c.m.Unlock()
-
-		return ctx.Err()
-	case <-newL:
-		return nil
-	}
+	return nil
 }
+
+// We must hold the lock when we return to ensure that the caller can
+// release the lock after wait returns. This is true regardless of if the
+// wait was cancelled or not.
+
+// Since the wait was cancelled, we remove our waiting channel on a
+// best-effort basis.
 
 // Signal wakes one goroutine waiting on c, if there is any.
 //
@@ -76,26 +57,9 @@ func (c *Cond) Wait(ctx context.Context) error {
 //
 // Signal() does not affect goroutine scheduling priority; if other goroutines
 // are attempting to lock c.L, they may be awoken before a "waiting" goroutine.
-func (c *Cond) Signal() {
-	c.m.Lock()
-	defer c.m.Unlock()
-
-	for w := range c.w {
-		close(w)
-		delete(c.w, w)
-		break
-	}
-}
+func (c *Cond) Signal() { _ = "STUB: not implemented"; return }
 
 // Broadcast wakes all goroutines waiting on c.
 //
 // It is allowed but not required for the caller to hold c.L during the call.
-func (c *Cond) Broadcast() {
-	c.m.Lock()
-	defer c.m.Unlock()
-
-	for w := range c.w {
-		close(w)
-		delete(c.w, w)
-	}
-}
+func (c *Cond) Broadcast() { _ = "STUB: not implemented"; return }

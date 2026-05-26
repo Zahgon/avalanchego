@@ -11,50 +11,16 @@ type bytesPool struct {
 	bytes     [][]byte
 }
 
-func newBytesPool(numSlots int) *bytesPool {
-	return &bytesPool{
-		slots: make(chan struct{}, numSlots),
-		bytes: make([][]byte, 0, numSlots),
-	}
-}
+func newBytesPool(numSlots int) *bytesPool { _ = "STUB: not implemented"; return nil }
 
-func (p *bytesPool) Acquire() []byte {
-	p.slots <- struct{}{}
-	return p.pop()
-}
+func (p *bytesPool) Acquire() []byte { _ = "STUB: not implemented"; return nil }
 
-func (p *bytesPool) TryAcquire() ([]byte, bool) {
-	select {
-	case p.slots <- struct{}{}:
-		return p.pop(), true
-	default:
-		return nil, false
-	}
-}
+func (p *bytesPool) TryAcquire() ([]byte, bool) { _ = "STUB: not implemented"; return nil, false }
 
-func (p *bytesPool) pop() []byte {
-	p.bytesLock.Lock()
-	defer p.bytesLock.Unlock()
-
-	numBytes := len(p.bytes)
-	if numBytes == 0 {
-		return nil
-	}
-
-	b := p.bytes[numBytes-1]
-	p.bytes = p.bytes[:numBytes-1]
-	return b
-}
+func (p *bytesPool) pop() []byte { _ = "STUB: not implemented"; return nil }
 
 func (p *bytesPool) Release(b []byte) {
+	_ = "STUB: not implemented"
 	// Before waking anyone waiting on a slot, return the bytes.
-	p.bytesLock.Lock()
-	p.bytes = append(p.bytes, b)
-	p.bytesLock.Unlock()
-
-	select {
-	case <-p.slots:
-	default:
-		panic("release of unacquired semaphore")
-	}
+	return
 }

@@ -4,10 +4,7 @@
 package txs
 
 import (
-	"bytes"
-	"cmp"
 	"errors"
-	"sort"
 
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
@@ -31,76 +28,31 @@ type InitialState struct {
 	Outs    []verify.State `serialize:"true"  json:"outputs"`
 }
 
-func (is *InitialState) InitCtx(ctx *snow.Context) {
-	for _, out := range is.Outs {
-		out.InitCtx(ctx)
-	}
-}
+func (is *InitialState) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 func (is *InitialState) Verify(c codec.Manager, numFxs int) error {
-	switch {
-	case is == nil:
-		return ErrNilInitialState
-	case is.FxIndex >= uint32(numFxs):
-		return ErrUnknownFx
-	}
-
-	for _, out := range is.Outs {
-		if out == nil {
-			return ErrNilFxOutput
-		}
-		if err := out.Verify(); err != nil {
-			return err
-		}
-	}
-	if !isSortedState(is.Outs, c) {
-		return ErrOutputsNotSorted
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (is *InitialState) Compare(other *InitialState) int {
-	return cmp.Compare(is.FxIndex, other.FxIndex)
-}
+func (is *InitialState) Compare(other *InitialState) int { _ = "STUB: not implemented"; return 0 }
 
-func (is *InitialState) Sort(c codec.Manager) {
-	sortState(is.Outs, c)
-}
+func (is *InitialState) Sort(c codec.Manager) { _ = "STUB: not implemented"; return }
 
 type innerSortState struct {
 	vers  []verify.State
 	codec codec.Manager
 }
 
-func (vers *innerSortState) Less(i, j int) bool {
-	iVer := vers.vers[i]
-	jVer := vers.vers[j]
+func (vers *innerSortState) Less(i, j int) bool { _ = "STUB: not implemented"; return false }
 
-	iBytes, err := vers.codec.Marshal(CodecVersion, &iVer)
-	if err != nil {
-		return false
-	}
-	jBytes, err := vers.codec.Marshal(CodecVersion, &jVer)
-	if err != nil {
-		return false
-	}
-	return bytes.Compare(iBytes, jBytes) == -1
-}
+func (vers *innerSortState) Len() int { _ = "STUB: not implemented"; return 0 }
 
-func (vers *innerSortState) Len() int {
-	return len(vers.vers)
-}
+func (vers *innerSortState) Swap(i, j int) { _ = "STUB: not implemented"; return }
 
-func (vers *innerSortState) Swap(i, j int) {
-	v := vers.vers
-	v[j], v[i] = v[i], v[j]
-}
-
-func sortState(vers []verify.State, c codec.Manager) {
-	sort.Sort(&innerSortState{vers: vers, codec: c})
-}
+func sortState(vers []verify.State, c codec.Manager) { _ = "STUB: not implemented"; return }
 
 func isSortedState(vers []verify.State, c codec.Manager) bool {
-	return sort.IsSorted(&innerSortState{vers: vers, codec: c})
+	_ = "STUB: not implemented"
+	return false
 }

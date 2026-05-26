@@ -12,5 +12,6 @@ import (
 // NewGetProofHandler returns a handler that services proof requests
 // using the provided Firewood database for p2p connections.
 func NewGetProofHandler(db *ffi.Database) *sync.ProofHandler[*RangeProof, struct{}] {
-	return sync.NewProofHandler(&database{db: db}, rangeProofMarshaler{}, changeProofMarshaler{})
+	_ = "STUB: not implemented"
+	return nil
 }

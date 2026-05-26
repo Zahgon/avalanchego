@@ -4,11 +4,8 @@
 package reflectcodec
 
 import (
-	"fmt"
 	"reflect"
 	"sync"
-
-	"github.com/ava-labs/avalanchego/codec"
 )
 
 // TagValue is the value the tag must have to be serialized.
@@ -28,10 +25,8 @@ type StructFielder interface {
 }
 
 func NewStructFielder(tagNames []string) StructFielder {
-	return &structFielder{
-		tags:                   tagNames,
-		serializedFieldIndices: make(map[reflect.Type][]int),
-	}
+	_ = "STUB: not implemented"
+	return *new(StructFielder)
 }
 
 type structFielder struct {
@@ -50,47 +45,23 @@ type structFielder struct {
 }
 
 func (s *structFielder) GetSerializedFields(t reflect.Type) ([]int, error) {
-	if serializedFields, ok := s.getCachedSerializedFields(t); ok { // use pre-computed result
-		return serializedFields, nil
-	}
-
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	numFields := t.NumField()
-	serializedFields := make([]int, 0, numFields)
-	for i := 0; i < numFields; i++ { // Go through all fields of this struct
-		field := t.Field(i)
-
-		// Multiple tags per fields can be specified.
-		// Serialize/Deserialize field if it has
-		// any tag with the right value
-		var captureField bool
-		for _, tag := range s.tags {
-			if field.Tag.Get(tag) == TagValue {
-				captureField = true
-				break
-			}
-		}
-		if !captureField {
-			continue
-		}
-		if !field.IsExported() { // Can only marshal exported fields
-			return nil, fmt.Errorf("can not marshal %w: %s",
-				codec.ErrUnexportedField,
-				field.Name,
-			)
-		}
-		serializedFields = append(serializedFields, i)
-	}
-	s.serializedFieldIndices[t] = serializedFields // cache result
-	return serializedFields, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (s *structFielder) getCachedSerializedFields(t reflect.Type) ([]int, bool) {
-	s.lock.RLock()
-	defer s.lock.RUnlock()
+// use pre-computed result
 
-	cachedFields, ok := s.serializedFieldIndices[t]
-	return cachedFields, ok
+// Go through all fields of this struct
+
+// Multiple tags per fields can be specified.
+// Serialize/Deserialize field if it has
+// any tag with the right value
+
+// Can only marshal exported fields
+
+// cache result
+
+func (s *structFielder) getCachedSerializedFields(t reflect.Type) ([]int, bool) {
+	_ = "STUB: not implemented"
+	return nil, false
 }

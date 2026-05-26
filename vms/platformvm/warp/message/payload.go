@@ -5,7 +5,6 @@ package message
 
 import (
 	"errors"
-	"fmt"
 )
 
 var ErrWrongType = errors.New("wrong payload type")
@@ -26,28 +25,10 @@ type Payload interface {
 // of Payload.
 type payload []byte
 
-func (p payload) Bytes() []byte {
-	return p
-}
+func (p payload) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (p *payload) initialize(bytes []byte) {
-	*p = bytes
-}
+func (p *payload) initialize(bytes []byte) { _ = "STUB: not implemented"; return }
 
-func Parse(bytes []byte) (Payload, error) {
-	var p Payload
-	if _, err := Codec.Unmarshal(bytes, &p); err != nil {
-		return nil, err
-	}
-	p.initialize(bytes)
-	return p, nil
-}
+func Parse(bytes []byte) (Payload, error) { _ = "STUB: not implemented"; return *new(Payload), nil }
 
-func Initialize(p Payload) error {
-	bytes, err := Codec.Marshal(CodecVersion, &p)
-	if err != nil {
-		return fmt.Errorf("couldn't marshal %T payload: %w", p, err)
-	}
-	p.initialize(bytes)
-	return nil
-}
+func Initialize(p Payload) error { _ = "STUB: not implemented"; return nil }

@@ -29,19 +29,14 @@
 package snapshot
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 
-	"github.com/ava-labs/avalanchego/vms/evm/sync/customrawdb"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	ethsnapshot "github.com/ava-labs/libevm/core/state/snapshot"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/libevm/stateconf"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/metrics"
 	"github.com/ava-labs/libevm/triedb"
 )
@@ -203,116 +198,47 @@ type Tree struct {
 // reconstructed using both the existing data and the state trie.
 // The repair happens on a background thread.
 func New(config Config, diskdb ethdb.KeyValueStore, triedb *triedb.Database, blockHash, root common.Hash) (*Tree, error) {
+	_ = "STUB: not implemented"
 	// Create a new, empty snapshot tree
-	snap := &Tree{
-		config:      config,
-		diskdb:      diskdb,
-		triedb:      triedb,
-		blockLayers: make(map[common.Hash]snapshot),
-		stateLayers: make(map[common.Hash]map[common.Hash]snapshot),
-		verified:    config.SkipVerify, // if SkipVerify is true, all verification will be bypassed
-	}
-
-	// Attempt to load a previously persisted snapshot and rebuild one if failed
-	head, generated, err := loadSnapshot(diskdb, triedb, config.CacheSize, blockHash, root, config.NoBuild)
-	if err != nil {
-		log.Warn("Failed to load snapshot, regenerating", "err", err)
-		if !config.NoBuild {
-			snap.Rebuild(blockHash, root)
-			if !config.AsyncBuild {
-				if err := snap.verifyIntegrity(snap.disklayer(), true); err != nil {
-					return nil, err
-				}
-			}
-			return snap, nil
-		}
-		return nil, err // Bail out the error, don't rebuild automatically.
-	}
-
-	// Existing snapshot loaded, seed all the layers
-	// It is unnecessary to grab the lock here, since it was created within this function
-	// call, but we grab it nevertheless to follow the spec for insertSnap.
-	snap.lock.Lock()
-	defer snap.lock.Unlock()
-	for head != nil {
-		snap.insertSnap(head)
-		head = head.Parent()
-	}
-
-	// Verify any synchronously generated or loaded snapshot from disk
-	if !config.AsyncBuild || generated {
-		if err := snap.verifyIntegrity(snap.disklayer(), !config.AsyncBuild && !generated); err != nil {
-			return nil, err
-		}
-	}
-
-	return snap, nil
+	return nil, nil
 }
+
+// if SkipVerify is true, all verification will be bypassed
+
+// Attempt to load a previously persisted snapshot and rebuild one if failed
+
+// Bail out the error, don't rebuild automatically.
+
+// Existing snapshot loaded, seed all the layers
+// It is unnecessary to grab the lock here, since it was created within this function
+// call, but we grab it nevertheless to follow the spec for insertSnap.
+
+// Verify any synchronously generated or loaded snapshot from disk
 
 // insertSnap inserts [snap] into the tree.
 // Assumes the lock is held.
-func (t *Tree) insertSnap(snap snapshot) {
-	t.blockLayers[snap.BlockHash()] = snap
-	blockSnaps, ok := t.stateLayers[snap.Root()]
-	if !ok {
-		blockSnaps = make(map[common.Hash]snapshot)
-		t.stateLayers[snap.Root()] = blockSnaps
-	}
-	blockSnaps[snap.BlockHash()] = snap
-}
+func (t *Tree) insertSnap(snap snapshot) { _ = "STUB: not implemented"; return }
 
 // Snapshot retrieves a snapshot belonging to the given state root, or nil if no
 // snapshot is maintained for that state root.
 func (t *Tree) Snapshot(stateRoot common.Hash) Snapshot {
-	return t.getSnapshot(stateRoot, false)
+	_ = "STUB: not implemented"
+	return *new(Snapshot)
 }
 
 // getSnapshot retrieves a Snapshot by its state root. If the caller already holds the
 // snapTree lock when callthing this function, [holdsTreeLock] should be set to true.
 func (t *Tree) getSnapshot(stateRoot common.Hash, holdsTreeLock bool) snapshot {
-	if !holdsTreeLock {
-		t.lock.RLock()
-		defer t.lock.RUnlock()
-	}
-
-	layers := t.stateLayers[stateRoot]
-	for _, layer := range layers {
-		return layer
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(snapshot)
 }
 
 // Snapshots returns all visited layers from the topmost layer with specific
 // root and traverses downward. The layer amount is limited by the given number.
 // If nodisk is set, then disk layer is excluded.
 func (t *Tree) Snapshots(blockHash common.Hash, limits int, nodisk bool) []Snapshot {
-	t.lock.RLock()
-	defer t.lock.RUnlock()
-
-	if limits == 0 {
-		return nil
-	}
-	layer, ok := t.blockLayers[blockHash]
-	if !ok {
-		return nil
-	}
-	var ret []Snapshot
-	for {
-		if _, isdisk := layer.(*diskLayer); isdisk && nodisk {
-			break
-		}
-		ret = append(ret, layer)
-		limits -= 1
-		if limits == 0 {
-			break
-		}
-		parent := layer.Parent()
-		if parent == nil {
-			break
-		}
-		layer = parent
-	}
-	return ret
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type blockHashes struct {
@@ -321,7 +247,8 @@ type blockHashes struct {
 }
 
 func WithBlockHashes(blockHash, parentBlockHash common.Hash) stateconf.SnapshotUpdateOption {
-	return stateconf.WithSnapshotUpdatePayload(blockHashes{blockHash, parentBlockHash})
+	_ = "STUB: not implemented"
+	return *new(stateconf.SnapshotUpdateOption)
 }
 
 // Update adds a new snapshot into the tree, if that can be linked to an existing
@@ -334,17 +261,8 @@ func (t *Tree) Update(
 	storage map[common.Hash]map[common.Hash][]byte,
 	opts ...stateconf.SnapshotUpdateOption,
 ) error {
-	if len(opts) == 0 {
-		return fmt.Errorf("missing block hashes")
-	}
-
-	payload := stateconf.ExtractSnapshotUpdatePayload(opts[0])
-	p, ok := payload.(blockHashes)
-	if !ok {
-		return fmt.Errorf("invalid block hashes payload type: %T", payload)
-	}
-
-	return t.UpdateWithBlockHashes(p.blockHash, blockRoot, p.parentBlockHash, destructs, accounts, storage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (t *Tree) UpdateWithBlockHashes(
@@ -353,27 +271,11 @@ func (t *Tree) UpdateWithBlockHashes(
 	accounts map[common.Hash][]byte,
 	storage map[common.Hash]map[common.Hash][]byte,
 ) error {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	// Grab the parent snapshot based on the parent block hash, not the parent state root
-	parent := t.blockLayers[parentBlockHash]
-	if parent == nil {
-		return fmt.Errorf("parent [%#x] snapshot missing", parentBlockHash)
-	}
-
-	snap := t.blockLayers[blockHash]
-	if snap != nil {
-		log.Warn("Attempted to insert a snapshot layer for an existing block",
-			"blockHash", blockHash, "blockRoot", blockRoot, "parentHash", parentBlockHash,
-			"existingBlockRoot", snap.Root(),
-		)
-	}
-
-	snap = parent.Update(blockHash, blockRoot, destructs, accounts, storage)
-	t.insertSnap(snap)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Grab the parent snapshot based on the parent block hash, not the parent state root
 
 // verifyIntegrity performs an integrity check on the current snapshot using
 // verify. Most importantly, verifyIntegrity ensures verify is called at
@@ -384,34 +286,16 @@ func (t *Tree) UpdateWithBlockHashes(
 // It is assumed that the caller holds the [snapTree] lock
 // when calling this function.
 func (t *Tree) verifyIntegrity(base *diskLayer, waitBuild bool) error {
+	_ = "STUB: not implemented"
 	// Find the rebuild termination channel and wait until
 	// the snapshot is generated
-	if done := base.genPending; waitBuild && done != nil {
-		log.Info("Waiting for snapshot generation", "root", base.root)
-		<-done
-	}
-
-	if t.verified {
-		return nil
-	}
-
-	if base.genMarker != nil {
-		return errors.New("cannot verify integrity of an unfinished snapshot")
-	}
-
-	start := time.Now()
-	log.Info("Verifying snapshot integrity", "root", base.root)
-	if err := t.verify(base.root, true); err != nil {
-		return fmt.Errorf("unable to verify snapshot integrity: %w", err)
-	}
-
-	log.Info("Verified snapshot integrity", "root", base.root, "elapsed", time.Since(start))
-	t.verified = true
 	return nil
 }
 
 func (t *Tree) Cap(root common.Hash, layers int) error {
-	return nil // No-op as this code uses Flatten on block accept instead
+	_ = "STUB: not implemented"
+	// No-op as this code uses Flatten on block accept instead
+	return nil
 }
 
 // Flatten flattens the snapshot for [blockHash] into its parent. if its
@@ -430,127 +314,32 @@ func (t *Tree) Cap(root common.Hash, layers int) error {
 // different paths to the resulting state. We use block hashes and parent
 // block hashes to ensure that the exact path through which we flatten
 // diffLayers is well defined.
-func (t *Tree) Flatten(blockHash common.Hash) error {
-	t.lock.Lock()
-	defer t.lock.Unlock()
+func (t *Tree) Flatten(blockHash common.Hash) error { _ = "STUB: not implemented"; return nil }
 
-	start := time.Now()
-	snap, ok := t.blockLayers[blockHash]
-	if !ok {
-		return fmt.Errorf("cannot flatten missing snapshot: %s", blockHash)
-	}
-	diff, ok := snap.(*diffLayer)
-	if !ok {
-		return fmt.Errorf("cannot flatten disk layer: (%s, %s)", blockHash, snap.Root())
-	}
-	if diff.parent == nil {
-		return fmt.Errorf("cannot flatten snapshot with missing parent (%s, %s)", blockHash, diff.root)
-	}
-	if parentDiff, ok := diff.parent.(*diffLayer); ok {
-		return fmt.Errorf("cannot flatten snapshot (%s, %s) into diff layer parent (%s, %s)", blockHash, diff.root, parentDiff.blockHash, parentDiff.root)
-	}
-	parentLayer := t.blockLayers[diff.parent.BlockHash()]
-	if parentLayer == nil {
-		return fmt.Errorf("snapshot missing parent layer: %s", diff.parent.BlockHash())
-	}
+// Invoke the hook if it's registered. Ugly hack.
 
-	diff.lock.Lock()
-	// Invoke the hook if it's registered. Ugly hack.
-	if t.onFlatten != nil {
-		t.onFlatten()
-	}
-	base, snapshotGenerated, err := diffToDisk(diff)
-	diff.lock.Unlock()
-	if err != nil {
-		return err
-	}
+// Remove parent layer
 
-	// Remove parent layer
-	if err := t.discard(diff.parent.BlockHash(), true); err != nil {
-		return fmt.Errorf("failed to discard parent layer while flattening (%s, %s): %w", blockHash, diff.root, err)
-	}
-	// We created a new diskLayer [base] to replace [diff], so we need to replace
-	// it in both maps and replace all pointers to it.
-	t.blockLayers[base.blockHash] = base
-	stateSnaps := t.stateLayers[base.root]
-	// stateSnaps must already be initialized here, since we are replacing
-	// an existing snapshot instead of adding a new one.
-	stateSnaps[base.blockHash] = base
+// We created a new diskLayer [base] to replace [diff], so we need to replace
+// it in both maps and replace all pointers to it.
 
-	// Replace the parent pointers for any snapshot that referenced
-	// the replaced diffLayer.
-	for _, snap := range t.blockLayers {
-		if diff, ok := snap.(*diffLayer); ok {
-			if base.blockHash == diff.parent.BlockHash() {
-				diff.lock.Lock()
-				diff.parent = base
-				diff.lock.Unlock()
-			}
-		}
-	}
+// stateSnaps must already be initialized here, since we are replacing
+// an existing snapshot instead of adding a new one.
 
-	// TODO add tracking of children to the snapshots to reduce overhead here.
-	children := make(map[common.Hash][]common.Hash)
-	for blockHash, snap := range t.blockLayers {
-		if diff, ok := snap.(*diffLayer); ok {
-			parent := diff.parent.BlockHash()
-			children[parent] = append(children[parent], blockHash)
-		}
-	}
-	var remove func(blockHash common.Hash)
-	remove = func(blockHash common.Hash) {
-		t.discard(blockHash, false)
-		for _, child := range children[blockHash] {
-			remove(child)
-		}
-		delete(children, blockHash)
-	}
-	for blockHash, snap := range t.blockLayers {
-		if snap.Stale() {
-			remove(blockHash)
-		}
-	}
-	// If the disk layer was modified, regenerate all the cumulative blooms
-	var rebloom func(blockHash common.Hash)
-	rebloom = func(blockHash common.Hash) {
-		if diff, ok := t.blockLayers[blockHash].(*diffLayer); ok {
-			diff.rebloom(base)
-		}
-		for _, child := range children[blockHash] {
-			rebloom(child)
-		}
-	}
-	rebloom(base.blockHash)
-	log.Debug("Flattened snapshot tree", "blockHash", blockHash, "root", base.root, "size", len(t.blockLayers), "elapsed", common.PrettyDuration(time.Since(start)))
+// Replace the parent pointers for any snapshot that referenced
+// the replaced diffLayer.
 
-	if !snapshotGenerated {
-		return nil
-	}
-	return t.verifyIntegrity(base, false)
-}
+// TODO add tracking of children to the snapshots to reduce overhead here.
+
+// If the disk layer was modified, regenerate all the cumulative blooms
 
 // Length returns the number of snapshot layers that is currently being maintained.
-func (t *Tree) NumStateLayers() int {
-	t.lock.RLock()
-	defer t.lock.RUnlock()
+func (t *Tree) NumStateLayers() int { _ = "STUB: not implemented"; return 0 }
 
-	return len(t.stateLayers)
-}
-
-func (t *Tree) NumBlockLayers() int {
-	t.lock.RLock()
-	defer t.lock.RUnlock()
-
-	return len(t.blockLayers)
-}
+func (t *Tree) NumBlockLayers() int { _ = "STUB: not implemented"; return 0 }
 
 // Discard removes layers that we no longer need
-func (t *Tree) Discard(blockHash common.Hash) error {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	return t.discard(blockHash, false)
-}
+func (t *Tree) Discard(blockHash common.Hash) error { _ = "STUB: not implemented"; return nil }
 
 // discard removes the snapshot associated with [blockHash] from the
 // snapshot tree.
@@ -558,28 +347,14 @@ func (t *Tree) Discard(blockHash common.Hash) error {
 // only be called within Flatten, when a new disk layer is being created.
 // Assumes the lock is held.
 func (t *Tree) discard(blockHash common.Hash, force bool) error {
-	snap := t.blockLayers[blockHash]
-	if snap == nil {
-		return fmt.Errorf("cannot discard missing snapshot: %s", blockHash)
-	}
-	_, ok := snap.(*diffLayer)
-	// Never discard the disk layer
-	if !ok && !force {
-		return fmt.Errorf("cannot discard the disk layer: %s", blockHash)
-	}
-	snaps, ok := t.stateLayers[snap.Root()]
-	if !ok {
-		return fmt.Errorf("cannot discard snapshot %s missing from state: %s", blockHash, snap.Root())
-	}
-	// Discard the block from the map. If there are no more blocks
-	// mapping to the same state remove it from [stateLayers] as well.
-	delete(snaps, blockHash)
-	if len(snaps) == 0 {
-		delete(t.stateLayers, snap.Root())
-	}
-	delete(t.blockLayers, blockHash)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Never discard the disk layer
+
+// Discard the block from the map. If there are no more blocks
+// mapping to the same state remove it from [stateLayers] as well.
 
 // AbortGeneration aborts an ongoing snapshot generation process (if it hasn't
 // stopped already).
@@ -589,13 +364,7 @@ func (t *Tree) discard(blockHash common.Hash, force bool) error {
 //
 // It is safe to call this method multiple times and when there is no snapshot
 // generation currently underway.
-func (t *Tree) AbortGeneration() {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	dl := t.disklayer()
-	dl.stopGeneration()
-}
+func (t *Tree) AbortGeneration() { _ = "STUB: not implemented"; return }
 
 // diffToDisk merges a bottom-most diff into the persistent disk layer underneath
 // it. The method will panic if called onto a non-bottom-most diff layer.
@@ -603,223 +372,91 @@ func (t *Tree) AbortGeneration() {
 // The disk layer persistence should be operated in an atomic way. All updates should
 // be discarded if the whole transition if not finished.
 func diffToDisk(bottom *diffLayer) (*diskLayer, bool, error) {
-	var (
-		base  = bottom.parent.(*diskLayer)
-		batch = base.diskdb.NewBatch()
-	)
-
-	// Attempt to abort generation (if not already aborted)
-	base.stopGeneration()
-
-	// Put the deletion in the batch writer, flush all updates in the final step.
-	customrawdb.DeleteSnapshotBlockHash(batch)
-	rawdb.DeleteSnapshotRoot(batch)
-
-	// Mark the original base as stale as we're going to create a new wrapper
-	base.lock.Lock()
-	if base.stale {
-		base.lock.Unlock()
-		return nil, false, ErrStaleParentLayer // we've committed into the same base from two children, boo
-	}
-	base.stale = true
-	base.lock.Unlock()
-
-	// Destroy all the destructed accounts from the database
-	for hash := range bottom.destructSet {
-		// Skip any account not covered yet by the snapshot
-		if base.genMarker != nil && bytes.Compare(hash[:], base.genMarker) > 0 {
-			continue
-		}
-		// Remove all storage slots
-		rawdb.DeleteAccountSnapshot(batch, hash)
-		base.cache.Set(hash[:], nil)
-
-		it := rawdb.IterateStorageSnapshots(base.diskdb, hash)
-		for it.Next() {
-			key := it.Key()
-			batch.Delete(key)
-			base.cache.Del(key[1:])
-			snapshotFlushStorageItemMeter.Mark(1)
-
-			// Ensure we don't delete too much data blindly (contract can be
-			// huge). It's ok to flush, the root will go missing in case of a
-			// crash and we'll detect and regenerate the snapshot.
-			if batch.ValueSize() > 64*1024*1024 {
-				if err := batch.Write(); err != nil {
-					log.Crit("Failed to write storage deletions", "err", err)
-				}
-				batch.Reset()
-			}
-		}
-		it.Release()
-	}
-	// Push all updated accounts into the database
-	for hash, data := range bottom.accountData {
-		// Skip any account not covered yet by the snapshot
-		if base.genMarker != nil && bytes.Compare(hash[:], base.genMarker) > 0 {
-			continue
-		}
-		// Push the account to disk
-		rawdb.WriteAccountSnapshot(batch, hash, data)
-		base.cache.Set(hash[:], data)
-		snapshotCleanAccountWriteMeter.Mark(int64(len(data)))
-
-		snapshotFlushAccountItemMeter.Mark(1)
-		snapshotFlushAccountSizeMeter.Mark(int64(len(data)))
-
-		// Ensure we don't write too much data blindly. It's ok to flush, the
-		// root will go missing in case of a crash and we'll detect and regen
-		// the snapshot.
-		if batch.ValueSize() > 64*1024*1024 {
-			if err := batch.Write(); err != nil {
-				log.Crit("Failed to write storage deletions", "err", err)
-			}
-			batch.Reset()
-		}
-	}
-	// Push all the storage slots into the database
-	for accountHash, storage := range bottom.storageData {
-		// Skip any account not covered yet by the snapshot
-		if base.genMarker != nil && bytes.Compare(accountHash[:], base.genMarker) > 0 {
-			continue
-		}
-		// Generation might be mid-account, track that case too
-		midAccount := base.genMarker != nil && bytes.Equal(accountHash[:], base.genMarker[:common.HashLength])
-
-		for storageHash, data := range storage {
-			// Skip any slot not covered yet by the snapshot
-			if midAccount && bytes.Compare(storageHash[:], base.genMarker[common.HashLength:]) > 0 {
-				continue
-			}
-			if len(data) > 0 {
-				rawdb.WriteStorageSnapshot(batch, accountHash, storageHash, data)
-				base.cache.Set(append(accountHash[:], storageHash[:]...), data)
-				snapshotCleanStorageWriteMeter.Mark(int64(len(data)))
-			} else {
-				rawdb.DeleteStorageSnapshot(batch, accountHash, storageHash)
-				base.cache.Set(append(accountHash[:], storageHash[:]...), nil)
-			}
-			snapshotFlushStorageItemMeter.Mark(1)
-			snapshotFlushStorageSizeMeter.Mark(int64(len(data)))
-		}
-	}
-	// Update the snapshot block marker and write any remainder data
-	customrawdb.WriteSnapshotBlockHash(batch, bottom.blockHash)
-	rawdb.WriteSnapshotRoot(batch, bottom.root)
-
-	// Write out the generator progress marker and report
-	journalProgress(batch, base.genMarker, base.genStats)
-
-	// Flush all the updates in the single db operation. Ensure the
-	// disk layer transition is atomic.
-	if err := batch.Write(); err != nil {
-		log.Crit("Failed to write leftover snapshot", "err", err)
-	}
-	log.Debug("Journalled disk layer", "root", bottom.root, "complete", base.genMarker == nil)
-	res := &diskLayer{
-		root:       bottom.root,
-		blockHash:  bottom.blockHash,
-		cache:      base.cache,
-		diskdb:     base.diskdb,
-		triedb:     base.triedb,
-		genMarker:  base.genMarker,
-		genPending: base.genPending,
-		created:    time.Now(),
-	}
-	// If snapshot generation hasn't finished yet, port over all the starts and
-	// continue where the previous round left off.
-	//
-	// Note, the `base.genPending` comparison is not used normally, it's checked
-	// to allow the tests to play with the marker without triggering this path.
-	if base.genMarker != nil && base.genPending != nil {
-		res.genMarker = base.genMarker
-
-		// If the diskLayer we are about to discard is not very old, we skip
-		// generation on the next layer (assuming generation will just get canceled
-		// before doing meaningful work anyways).
-		diskLayerAge := base.abortStarted.Sub(base.created)
-		if diskLayerAge < skipGenThreshold {
-			log.Debug("Skipping snapshot generation", "previous disk layer age", diskLayerAge)
-			res.genStats = base.genStats
-		} else {
-			res.cancel = make(chan struct{})
-			res.done = make(chan struct{})
-			go res.generate(base.genStats)
-		}
-	}
-	return res, base.genMarker == nil, nil
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
+
+// Attempt to abort generation (if not already aborted)
+
+// Put the deletion in the batch writer, flush all updates in the final step.
+
+// Mark the original base as stale as we're going to create a new wrapper
+
+// we've committed into the same base from two children, boo
+
+// Destroy all the destructed accounts from the database
+
+// Skip any account not covered yet by the snapshot
+
+// Remove all storage slots
+
+// Ensure we don't delete too much data blindly (contract can be
+// huge). It's ok to flush, the root will go missing in case of a
+// crash and we'll detect and regenerate the snapshot.
+
+// Push all updated accounts into the database
+
+// Skip any account not covered yet by the snapshot
+
+// Push the account to disk
+
+// Ensure we don't write too much data blindly. It's ok to flush, the
+// root will go missing in case of a crash and we'll detect and regen
+// the snapshot.
+
+// Push all the storage slots into the database
+
+// Skip any account not covered yet by the snapshot
+
+// Generation might be mid-account, track that case too
+
+// Skip any slot not covered yet by the snapshot
+
+// Update the snapshot block marker and write any remainder data
+
+// Write out the generator progress marker and report
+
+// Flush all the updates in the single db operation. Ensure the
+// disk layer transition is atomic.
+
+// If snapshot generation hasn't finished yet, port over all the starts and
+// continue where the previous round left off.
+//
+// Note, the `base.genPending` comparison is not used normally, it's checked
+// to allow the tests to play with the marker without triggering this path.
+
+// If the diskLayer we are about to discard is not very old, we skip
+// generation on the next layer (assuming generation will just get canceled
+// before doing meaningful work anyways).
 
 // Release releases resources
-func (t *Tree) Release() {
-	if dl := t.disklayer(); dl != nil {
-		dl.Release()
-	}
-}
+func (t *Tree) Release() { _ = "STUB: not implemented"; return }
 
 // Rebuild wipes all available snapshot data from the persistent database and
 // discard all caches and diff layers. Afterwards, it starts a new snapshot
 // generator with the given root hash.
-func (t *Tree) Rebuild(blockHash, root common.Hash) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
+func (t *Tree) Rebuild(blockHash, root common.Hash) { _ = "STUB: not implemented"; return }
 
-	// Track whether there's a wipe currently running and keep it alive if so
-	var wiper chan struct{}
+// Track whether there's a wipe currently running and keep it alive if so
 
-	// Iterate over and mark all layers stale
-	for _, layer := range t.blockLayers {
-		switch layer := layer.(type) {
-		case *diskLayer:
-			// If the base layer is generating, abort it and save
-			layer.stopGeneration()
-			if stats := layer.genStats; stats != nil {
-				wiper = stats.wiping
-			}
-			// Layer should be inactive now, mark it as stale
-			layer.lock.Lock()
-			layer.stale = true
-			layer.lock.Unlock()
+// Iterate over and mark all layers stale
 
-		case *diffLayer:
-			// If the layer is a simple diff, simply mark as stale
-			layer.lock.Lock()
-			layer.stale.Store(true)
-			layer.lock.Unlock()
+// If the base layer is generating, abort it and save
 
-		default:
-			panic(fmt.Sprintf("unknown layer type: %T", layer))
-		}
-	}
-	// Start generating a new snapshot from scratch on a background thread. The
-	// generator will run a wiper first if there's not one running right now.
-	log.Info("Rebuilding state snapshot")
-	base := generateSnapshot(t.diskdb, t.triedb, t.config.CacheSize, blockHash, root, wiper)
-	t.blockLayers = map[common.Hash]snapshot{
-		blockHash: base,
-	}
-	t.stateLayers = map[common.Hash]map[common.Hash]snapshot{
-		root: {
-			blockHash: base,
-		},
-	}
-}
+// Layer should be inactive now, mark it as stale
+
+// If the layer is a simple diff, simply mark as stale
+
+// Start generating a new snapshot from scratch on a background thread. The
+// generator will run a wiper first if there's not one running right now.
 
 // AccountIterator creates a new account iterator for the specified root hash and
 // seeks to a starting account hash. When [force] is true, a new account
 // iterator is created without acquiring the [snapTree] lock and without
 // confirming that the snapshot on the disk layer is fully generated.
 func (t *Tree) AccountIterator(root common.Hash, seek common.Hash, force bool) (AccountIterator, error) {
-	if !force {
-		ok, err := t.generating()
-		if err != nil {
-			return nil, err
-		}
-		if ok {
-			return nil, ErrNotConstructed
-		}
-	}
-	return newFastAccountIterator(t, root, seek, force)
+	_ = "STUB: not implemented"
+	return *new(AccountIterator), nil
 }
 
 // StorageIterator creates a new storage iterator for the specified root hash and
@@ -827,117 +464,39 @@ func (t *Tree) AccountIterator(root common.Hash, seek common.Hash, force bool) (
 // is true, a new account iterator is created without acquiring the [snapTree]
 // lock and without confirming that the snapshot on the disk layer is fully generated.
 func (t *Tree) StorageIterator(root common.Hash, account common.Hash, seek common.Hash) (StorageIterator, error) {
-	return t.StorageIteratorWithForce(root, account, seek, false)
+	_ = "STUB: not implemented"
+	return *new(StorageIterator), nil
 }
 
 func (t *Tree) StorageIteratorWithForce(root common.Hash, account common.Hash, seek common.Hash, force bool) (StorageIterator, error) {
-	if !force {
-		ok, err := t.generating()
-		if err != nil {
-			return nil, err
-		}
-		if ok {
-			return nil, ErrNotConstructed
-		}
-	}
-	return newFastStorageIterator(t, root, account, seek, force)
+	_ = "STUB: not implemented"
+	return *new(StorageIterator), nil
 }
 
 // Verify iterates the whole state(all the accounts as well as the corresponding storages)
 // with the specific root and compares the re-computed hash with the original one.
-func (t *Tree) Verify(root common.Hash) error {
-	return t.verify(root, false)
-}
+func (t *Tree) Verify(root common.Hash) error { _ = "STUB: not implemented"; return nil }
 
 // verify iterates the whole state(all the accounts as well as the corresponding storages)
 // with the specific root and compares the re-computed hash with the original one.
 // When [force] is true, it is assumed that the caller has confirmed that the
 // snapshot is generated and that they hold the snapTree lock.
-func (t *Tree) verify(root common.Hash, force bool) error {
-	acctIt, err := t.AccountIterator(root, common.Hash{}, force)
-	if err != nil {
-		return err
-	}
-	defer acctIt.Release()
-
-	got, err := generateTrieRoot(nil, "", acctIt, common.Hash{}, stackTrieGenerate, func(db ethdb.KeyValueWriter, accountHash, codeHash common.Hash, stat *generateStats) (common.Hash, error) {
-		storageIt, err := t.StorageIteratorWithForce(root, accountHash, common.Hash{}, force)
-		if err != nil {
-			return common.Hash{}, err
-		}
-		defer storageIt.Release()
-
-		hash, err := generateTrieRoot(nil, "", storageIt, accountHash, stackTrieGenerate, nil, stat, false)
-		if err != nil {
-			return common.Hash{}, err
-		}
-		return hash, nil
-	}, newGenerateStats(), true)
-
-	if err != nil {
-		return err
-	}
-	if got != root {
-		return fmt.Errorf("state root hash mismatch: got %x, want %x", got, root)
-	}
-	return nil
-}
+func (t *Tree) verify(root common.Hash, force bool) error { _ = "STUB: not implemented"; return nil }
 
 // disklayer is an internal helper function to return the disk layer.
 // The lock of snapTree is assumed to be held already.
-func (t *Tree) disklayer() *diskLayer {
-	var snap snapshot
-	for _, s := range t.blockLayers {
-		snap = s
-		break
-	}
-	if snap == nil {
-		return nil
-	}
-	switch layer := snap.(type) {
-	case *diskLayer:
-		return layer
-	case *diffLayer:
-		layer.lock.RLock()
-		defer layer.lock.RUnlock()
-		return layer.origin
-	default:
-		panic(fmt.Sprintf("%T: undefined layer", snap))
-	}
-}
+func (t *Tree) disklayer() *diskLayer { _ = "STUB: not implemented"; return nil }
 
 // diskRoot is a internal helper function to return the disk layer root.
 // The lock of snapTree is assumed to be held already.
-func (t *Tree) diskRoot() common.Hash {
-	disklayer := t.disklayer()
-	if disklayer == nil {
-		return common.Hash{}
-	}
-	return disklayer.Root()
-}
+func (t *Tree) diskRoot() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 // generating is an internal helper function which reports whether the snapshot
 // is still under the construction.
-func (t *Tree) generating() (bool, error) {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	layer := t.disklayer()
-	if layer == nil {
-		return false, errors.New("disk layer is missing")
-	}
-	layer.lock.RLock()
-	defer layer.lock.RUnlock()
-	return layer.genMarker != nil, nil
-}
+func (t *Tree) generating() (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
 // DiskRoot is an external helper function to return the disk layer root.
-func (t *Tree) DiskRoot() common.Hash {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	return t.diskRoot()
-}
+func (t *Tree) DiskRoot() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 // Size returns the memory usage of the diff layers above the disk layer and the
 // dirty nodes buffered in the disk layer. Currently, the implementation uses a
@@ -945,14 +504,6 @@ func (t *Tree) DiskRoot() common.Hash {
 // the second return will always be 0. However, this will be made consistent with
 // the pathdb, which will require a second return.
 func (t *Tree) Size() (diffs common.StorageSize, buf common.StorageSize) {
-	t.lock.RLock()
-	defer t.lock.RUnlock()
-
-	var size common.StorageSize
-	for _, layer := range t.blockLayers {
-		if layer, ok := layer.(*diffLayer); ok {
-			size += common.StorageSize(layer.memory)
-		}
-	}
-	return size, 0
+	_ = "STUB: not implemented"
+	return *new(common.StorageSize), *new(common.StorageSize)
 }

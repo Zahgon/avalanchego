@@ -7,11 +7,10 @@
 package reader
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -41,32 +40,27 @@ var (
 	}
 )
 
-func (x ErrorCode) Enum() *ErrorCode {
-	p := new(ErrorCode)
-	*p = x
-	return p
-}
+func (x ErrorCode) Enum() *ErrorCode { _ = "STUB: not implemented"; return nil }
 
-func (x ErrorCode) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x ErrorCode) String() string { _ = "STUB: not implemented"; return "" }
 
 func (ErrorCode) Descriptor() protoreflect.EnumDescriptor {
-	return file_io_reader_reader_proto_enumTypes[0].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (ErrorCode) Type() protoreflect.EnumType {
-	return &file_io_reader_reader_proto_enumTypes[0]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x ErrorCode) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use ErrorCode.Descriptor instead.
-func (ErrorCode) EnumDescriptor() ([]byte, []int) {
-	return file_io_reader_reader_proto_rawDescGZIP(), []int{0}
-}
+func (ErrorCode) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type ReadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -76,42 +70,21 @@ type ReadRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReadRequest) Reset() {
-	*x = ReadRequest{}
-	mi := &file_io_reader_reader_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReadRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReadRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReadRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReadRequest) ProtoMessage() {}
+func (*ReadRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_io_reader_reader_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReadRequest.ProtoReflect.Descriptor instead.
-func (*ReadRequest) Descriptor() ([]byte, []int) {
-	return file_io_reader_reader_proto_rawDescGZIP(), []int{0}
-}
+func (*ReadRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ReadRequest) GetLength() int32 {
-	if x != nil {
-		return x.Length
-	}
-	return 0
-}
+func (x *ReadRequest) GetLength() int32 { _ = "STUB: not implemented"; return 0 }
 
 type ReadResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -123,49 +96,23 @@ type ReadResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReadResponse) Reset() {
-	*x = ReadResponse{}
-	mi := &file_io_reader_reader_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReadResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReadResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReadResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReadResponse) ProtoMessage() {}
+func (*ReadResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_io_reader_reader_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReadResponse.ProtoReflect.Descriptor instead.
-func (*ReadResponse) Descriptor() ([]byte, []int) {
-	return file_io_reader_reader_proto_rawDescGZIP(), []int{1}
-}
+func (*ReadResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ReadResponse) GetRead() []byte {
-	if x != nil {
-		return x.Read
-	}
-	return nil
-}
+func (x *ReadResponse) GetRead() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ReadResponse) GetError() *Error {
-	if x != nil {
-		return x.Error
-	}
-	return nil
-}
+func (x *ReadResponse) GetError() *Error { _ = "STUB: not implemented"; return nil }
 
 type Error struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -175,49 +122,23 @@ type Error struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Error) Reset() {
-	*x = Error{}
-	mi := &file_io_reader_reader_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Error) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Error) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Error) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Error) ProtoMessage() {}
+func (*Error) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Error) ProtoReflect() protoreflect.Message {
-	mi := &file_io_reader_reader_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Error.ProtoReflect.Descriptor instead.
-func (*Error) Descriptor() ([]byte, []int) {
-	return file_io_reader_reader_proto_rawDescGZIP(), []int{2}
-}
+func (*Error) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Error) GetErrorCode() ErrorCode {
-	if x != nil {
-		return x.ErrorCode
-	}
-	return ErrorCode_ERROR_CODE_UNSPECIFIED
-}
+func (x *Error) GetErrorCode() ErrorCode { _ = "STUB: not implemented"; return *new(ErrorCode) }
 
-func (x *Error) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *Error) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 var File_io_reader_reader_proto protoreflect.FileDescriptor
 
@@ -244,12 +165,7 @@ var (
 	file_io_reader_reader_proto_rawDescData []byte
 )
 
-func file_io_reader_reader_proto_rawDescGZIP() []byte {
-	file_io_reader_reader_proto_rawDescOnce.Do(func() {
-		file_io_reader_reader_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_io_reader_reader_proto_rawDesc), len(file_io_reader_reader_proto_rawDesc)))
-	})
-	return file_io_reader_reader_proto_rawDescData
-}
+func file_io_reader_reader_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_io_reader_reader_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_io_reader_reader_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
@@ -271,27 +187,5 @@ var file_io_reader_reader_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_io_reader_reader_proto_init() }
-func file_io_reader_reader_proto_init() {
-	if File_io_reader_reader_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_io_reader_reader_proto_rawDesc), len(file_io_reader_reader_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   3,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_io_reader_reader_proto_goTypes,
-		DependencyIndexes: file_io_reader_reader_proto_depIdxs,
-		EnumInfos:         file_io_reader_reader_proto_enumTypes,
-		MessageInfos:      file_io_reader_reader_proto_msgTypes,
-	}.Build()
-	File_io_reader_reader_proto = out.File
-	file_io_reader_reader_proto_goTypes = nil
-	file_io_reader_reader_proto_depIdxs = nil
-}
+func init()                             { file_io_reader_reader_proto_init() }
+func file_io_reader_reader_proto_init() { _ = "STUB: not implemented"; return }

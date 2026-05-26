@@ -10,8 +10,6 @@
 package databasemock
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -28,81 +26,41 @@ type IteratorMockRecorder struct {
 }
 
 // NewIterator creates a new mock instance.
-func NewIterator(ctrl *gomock.Controller) *Iterator {
-	mock := &Iterator{ctrl: ctrl}
-	mock.recorder = &IteratorMockRecorder{mock}
-	return mock
-}
+func NewIterator(ctrl *gomock.Controller) *Iterator { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Iterator) EXPECT() *IteratorMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Error mocks base method.
+	return nil
 }
 
-// Error mocks base method.
-func (m *Iterator) Error() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Error")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Iterator) Error() error { _ = "STUB: not implemented"; return nil }
 
 // Error indicates an expected call of Error.
-func (mr *IteratorMockRecorder) Error() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*Iterator)(nil).Error))
-}
+func (mr *IteratorMockRecorder) Error() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Key mocks base method.
-func (m *Iterator) Key() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Key")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *Iterator) Key() []byte { _ = "STUB: not implemented"; return nil }
 
 // Key indicates an expected call of Key.
-func (mr *IteratorMockRecorder) Key() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Key", reflect.TypeOf((*Iterator)(nil).Key))
-}
+func (mr *IteratorMockRecorder) Key() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Next mocks base method.
-func (m *Iterator) Next() bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Next")
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *Iterator) Next() bool { _ = "STUB: not implemented"; return false }
 
 // Next indicates an expected call of Next.
-func (mr *IteratorMockRecorder) Next() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Next", reflect.TypeOf((*Iterator)(nil).Next))
-}
+func (mr *IteratorMockRecorder) Next() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Release mocks base method.
-func (m *Iterator) Release() {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Release")
-}
+func (m *Iterator) Release() { _ = "STUB: not implemented"; return }
 
 // Release indicates an expected call of Release.
-func (mr *IteratorMockRecorder) Release() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Release", reflect.TypeOf((*Iterator)(nil).Release))
-}
+func (mr *IteratorMockRecorder) Release() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Value mocks base method.
-func (m *Iterator) Value() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Value")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *Iterator) Value() []byte { _ = "STUB: not implemented"; return nil }
 
 // Value indicates an expected call of Value.
-func (mr *IteratorMockRecorder) Value() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Value", reflect.TypeOf((*Iterator)(nil).Value))
-}
+func (mr *IteratorMockRecorder) Value() *gomock.Call { _ = "STUB: not implemented"; return nil }

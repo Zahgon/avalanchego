@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -112,47 +112,32 @@ type IWarpMessengerTransactorRaw struct {
 
 // NewIWarpMessenger creates a new instance of IWarpMessenger, bound to a specific deployed contract.
 func NewIWarpMessenger(address common.Address, backend bind.ContractBackend) (*IWarpMessenger, error) {
-	contract, err := bindIWarpMessenger(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &IWarpMessenger{IWarpMessengerCaller: IWarpMessengerCaller{contract: contract}, IWarpMessengerTransactor: IWarpMessengerTransactor{contract: contract}, IWarpMessengerFilterer: IWarpMessengerFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIWarpMessengerCaller creates a new read-only instance of IWarpMessenger, bound to a specific deployed contract.
 func NewIWarpMessengerCaller(address common.Address, caller bind.ContractCaller) (*IWarpMessengerCaller, error) {
-	contract, err := bindIWarpMessenger(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IWarpMessengerCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIWarpMessengerTransactor creates a new write-only instance of IWarpMessenger, bound to a specific deployed contract.
 func NewIWarpMessengerTransactor(address common.Address, transactor bind.ContractTransactor) (*IWarpMessengerTransactor, error) {
-	contract, err := bindIWarpMessenger(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IWarpMessengerTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIWarpMessengerFilterer creates a new log filterer instance of IWarpMessenger, bound to a specific deployed contract.
 func NewIWarpMessengerFilterer(address common.Address, filterer bind.ContractFilterer) (*IWarpMessengerFilterer, error) {
-	contract, err := bindIWarpMessenger(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &IWarpMessengerFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindIWarpMessenger binds a generic wrapper to an already deployed contract.
 func bindIWarpMessenger(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := IWarpMessengerMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -160,18 +145,21 @@ func bindIWarpMessenger(address common.Address, caller bind.ContractCaller, tran
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IWarpMessenger *IWarpMessengerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IWarpMessenger.Contract.IWarpMessengerCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IWarpMessenger *IWarpMessengerRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.IWarpMessengerTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IWarpMessenger *IWarpMessengerRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.IWarpMessengerTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -179,49 +167,45 @@ func (_IWarpMessenger *IWarpMessengerRaw) Transact(opts *bind.TransactOpts, meth
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IWarpMessenger *IWarpMessengerCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IWarpMessenger.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IWarpMessenger *IWarpMessengerTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IWarpMessenger *IWarpMessengerTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32 blockchainID)
 func (_IWarpMessenger *IWarpMessengerCaller) GetBlockchainID(opts *bind.CallOpts) ([32]byte, error) {
-	var out []interface{}
-	err := _IWarpMessenger.contract.Call(opts, &out, "getBlockchainID")
-
-	if err != nil {
-		return *new([32]byte), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new([32]byte)).(*[32]byte)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32 blockchainID)
 func (_IWarpMessenger *IWarpMessengerSession) GetBlockchainID() ([32]byte, error) {
-	return _IWarpMessenger.Contract.GetBlockchainID(&_IWarpMessenger.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetBlockchainID is a free data retrieval call binding the contract method 0x4213cf78.
 //
 // Solidity: function getBlockchainID() view returns(bytes32 blockchainID)
 func (_IWarpMessenger *IWarpMessengerCallerSession) GetBlockchainID() ([32]byte, error) {
-	return _IWarpMessenger.Contract.GetBlockchainID(&_IWarpMessenger.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -231,22 +215,8 @@ func (_IWarpMessenger *IWarpMessengerCaller) GetVerifiedWarpBlockHash(opts *bind
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	var out []interface{}
-	err := _IWarpMessenger.contract.Call(opts, &out, "getVerifiedWarpBlockHash", index)
-
-	outstruct := new(struct {
-		WarpBlockHash WarpBlockHash
-		Valid         bool
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.WarpBlockHash = *abi.ConvertType(out[0], new(WarpBlockHash)).(*WarpBlockHash)
-	outstruct.Valid = *abi.ConvertType(out[1], new(bool)).(*bool)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -256,7 +226,8 @@ func (_IWarpMessenger *IWarpMessengerSession) GetVerifiedWarpBlockHash(index uin
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	return _IWarpMessenger.Contract.GetVerifiedWarpBlockHash(&_IWarpMessenger.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpBlockHash is a free data retrieval call binding the contract method 0xce7f5929.
@@ -266,7 +237,8 @@ func (_IWarpMessenger *IWarpMessengerCallerSession) GetVerifiedWarpBlockHash(ind
 	WarpBlockHash WarpBlockHash
 	Valid         bool
 }, error) {
-	return _IWarpMessenger.Contract.GetVerifiedWarpBlockHash(&_IWarpMessenger.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -276,22 +248,8 @@ func (_IWarpMessenger *IWarpMessengerCaller) GetVerifiedWarpMessage(opts *bind.C
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	var out []interface{}
-	err := _IWarpMessenger.contract.Call(opts, &out, "getVerifiedWarpMessage", index)
-
-	outstruct := new(struct {
-		Message WarpMessage
-		Valid   bool
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.Message = *abi.ConvertType(out[0], new(WarpMessage)).(*WarpMessage)
-	outstruct.Valid = *abi.ConvertType(out[1], new(bool)).(*bool)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -301,7 +259,8 @@ func (_IWarpMessenger *IWarpMessengerSession) GetVerifiedWarpMessage(index uint3
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	return _IWarpMessenger.Contract.GetVerifiedWarpMessage(&_IWarpMessenger.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetVerifiedWarpMessage is a free data retrieval call binding the contract method 0x6f825350.
@@ -311,28 +270,32 @@ func (_IWarpMessenger *IWarpMessengerCallerSession) GetVerifiedWarpMessage(index
 	Message WarpMessage
 	Valid   bool
 }, error) {
-	return _IWarpMessenger.Contract.GetVerifiedWarpMessage(&_IWarpMessenger.CallOpts, index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_IWarpMessenger *IWarpMessengerTransactor) SendWarpMessage(opts *bind.TransactOpts, payload []byte) (*types.Transaction, error) {
-	return _IWarpMessenger.contract.Transact(opts, "sendWarpMessage", payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_IWarpMessenger *IWarpMessengerSession) SendWarpMessage(payload []byte) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.SendWarpMessage(&_IWarpMessenger.TransactOpts, payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SendWarpMessage is a paid mutator transaction binding the contract method 0xee5b48eb.
 //
 // Solidity: function sendWarpMessage(bytes payload) returns(bytes32 messageID)
 func (_IWarpMessenger *IWarpMessengerTransactorSession) SendWarpMessage(payload []byte) (*types.Transaction, error) {
-	return _IWarpMessenger.Contract.SendWarpMessage(&_IWarpMessenger.TransactOpts, payload)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IWarpMessengerSendWarpMessageIterator is returned from FilterSendWarpMessage and is used to iterate over the raw logs and unpacked data for SendWarpMessage events raised by the IWarpMessenger contract.
@@ -352,53 +315,26 @@ type IWarpMessengerSendWarpMessageIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *IWarpMessengerSendWarpMessageIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IWarpMessengerSendWarpMessage)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IWarpMessengerSendWarpMessage)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *IWarpMessengerSendWarpMessageIterator) Error() error {
-	return it.fail
+	_ = "STUB: not implemented"
+
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
+	return nil
 }
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
 func (it *IWarpMessengerSendWarpMessageIterator) Close() error {
-	it.sub.Unsubscribe()
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -414,77 +350,24 @@ type IWarpMessengerSendWarpMessage struct {
 //
 // Solidity: event SendWarpMessage(address indexed sender, bytes32 indexed messageID, bytes message)
 func (_IWarpMessenger *IWarpMessengerFilterer) FilterSendWarpMessage(opts *bind.FilterOpts, sender []common.Address, messageID [][32]byte) (*IWarpMessengerSendWarpMessageIterator, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-	var messageIDRule []interface{}
-	for _, messageIDItem := range messageID {
-		messageIDRule = append(messageIDRule, messageIDItem)
-	}
-
-	logs, sub, err := _IWarpMessenger.contract.FilterLogs(opts, "SendWarpMessage", senderRule, messageIDRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IWarpMessengerSendWarpMessageIterator{contract: _IWarpMessenger.contract, event: "SendWarpMessage", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchSendWarpMessage is a free log subscription operation binding the contract event 0x56600c567728a800c0aa927500f831cb451df66a7af570eb4df4dfbf4674887d.
 //
 // Solidity: event SendWarpMessage(address indexed sender, bytes32 indexed messageID, bytes message)
 func (_IWarpMessenger *IWarpMessengerFilterer) WatchSendWarpMessage(opts *bind.WatchOpts, sink chan<- *IWarpMessengerSendWarpMessage, sender []common.Address, messageID [][32]byte) (event.Subscription, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-	var messageIDRule []interface{}
-	for _, messageIDItem := range messageID {
-		messageIDRule = append(messageIDRule, messageIDItem)
-	}
-
-	logs, sub, err := _IWarpMessenger.contract.WatchLogs(opts, "SendWarpMessage", senderRule, messageIDRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IWarpMessengerSendWarpMessage)
-				if err := _IWarpMessenger.contract.UnpackLog(event, "SendWarpMessage", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseSendWarpMessage is a log parse operation binding the contract event 0x56600c567728a800c0aa927500f831cb451df66a7af570eb4df4dfbf4674887d.
 //
 // Solidity: event SendWarpMessage(address indexed sender, bytes32 indexed messageID, bytes message)
 func (_IWarpMessenger *IWarpMessengerFilterer) ParseSendWarpMessage(log types.Log) (*IWarpMessengerSendWarpMessage, error) {
-	event := new(IWarpMessengerSendWarpMessage)
-	if err := _IWarpMessenger.contract.UnpackLog(event, "SendWarpMessage", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

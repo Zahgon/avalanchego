@@ -10,8 +10,6 @@
 package fxmock
 
 import (
-	reflect "reflect"
-
 	snow "github.com/ava-labs/avalanchego/snow"
 	verify "github.com/ava-labs/avalanchego/vms/components/verify"
 	gomock "go.uber.org/mock/gomock"
@@ -31,53 +29,29 @@ type OwnerMockRecorder struct {
 }
 
 // NewOwner creates a new mock instance.
-func NewOwner(ctrl *gomock.Controller) *Owner {
-	mock := &Owner{ctrl: ctrl}
-	mock.recorder = &OwnerMockRecorder{mock}
-	return mock
-}
+func NewOwner(ctrl *gomock.Controller) *Owner { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Owner) EXPECT() *OwnerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// InitCtx mocks base method.
+	return nil
 }
 
-// InitCtx mocks base method.
-func (m *Owner) InitCtx(arg0 *snow.Context) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "InitCtx", arg0)
-}
+func (m *Owner) InitCtx(arg0 *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InitCtx indicates an expected call of InitCtx.
-func (mr *OwnerMockRecorder) InitCtx(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitCtx", reflect.TypeOf((*Owner)(nil).InitCtx), arg0)
-}
+func (mr *OwnerMockRecorder) InitCtx(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Verify mocks base method.
-func (m *Owner) Verify() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Owner) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
-func (mr *OwnerMockRecorder) Verify() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*Owner)(nil).Verify))
-}
+func (mr *OwnerMockRecorder) Verify() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // isState mocks base method.
-func (m *Owner) isState() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "isState")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Owner) isState() error { _ = "STUB: not implemented"; return nil }
 
 // isState indicates an expected call of isState.
-func (mr *OwnerMockRecorder) isState() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "isState", reflect.TypeOf((*Owner)(nil).isState))
-}
+func (mr *OwnerMockRecorder) isState() *gomock.Call { _ = "STUB: not implemented"; return nil }

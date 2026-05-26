@@ -35,52 +35,11 @@ var (
 
 type Status uint32
 
-func (s Status) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + s.String() + `"`), s.Verify()
-}
+func (s Status) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (s *Status) UnmarshalJSON(b []byte) error {
-	switch string(b) {
-	case `"Unknown"`:
-		*s = Unknown
-	case `"Committed"`:
-		*s = Committed
-	case `"Aborted"`:
-		*s = Aborted
-	case `"Processing"`:
-		*s = Processing
-	case `"Dropped"`:
-		*s = Dropped
-	case "null":
-	default:
-		return errUnknownStatus
-	}
-	return nil
-}
+func (s *Status) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Verify that this is a valid status.
-func (s Status) Verify() error {
-	switch s {
-	case Unknown, Committed, Aborted, Processing, Dropped:
-		return nil
-	default:
-		return errUnknownStatus
-	}
-}
+func (s Status) Verify() error { _ = "STUB: not implemented"; return nil }
 
-func (s Status) String() string {
-	switch s {
-	case Unknown:
-		return "Unknown"
-	case Committed:
-		return "Committed"
-	case Aborted:
-		return "Aborted"
-	case Processing:
-		return "Processing"
-	case Dropped:
-		return "Dropped"
-	default:
-		return "Invalid status"
-	}
-}
+func (s Status) String() string { _ = "STUB: not implemented"; return "" }

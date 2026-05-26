@@ -28,11 +28,9 @@
 package pathdb
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/trie/trienode"
 	"github.com/ava-labs/libevm/trie/triestate"
 )
@@ -57,129 +55,78 @@ type diffLayer struct {
 
 // newDiffLayer creates a new diff layer on top of an existing layer.
 func newDiffLayer(parent layer, root common.Hash, id uint64, block uint64, nodes map[common.Hash]map[string]*trienode.Node, states *triestate.Set) *diffLayer {
-	var (
-		size  int64
-		count int
-	)
-	dl := &diffLayer{
-		root:   root,
-		id:     id,
-		block:  block,
-		nodes:  nodes,
-		states: states,
-		parent: parent,
-	}
-	for _, subset := range nodes {
-		for path, n := range subset {
-			dl.memory += uint64(n.Size() + len(path))
-			size += int64(len(n.Blob) + len(path))
-		}
-		count += len(subset)
-	}
-	if states != nil {
-		dl.memory += uint64(states.Size())
-	}
-	dirtyWriteMeter.Mark(size)
-	diffLayerNodesMeter.Mark(int64(count))
-	diffLayerBytesMeter.Mark(int64(dl.memory))
-	log.Debug("Created new diff layer", "id", id, "block", block, "nodes", count, "size", common.StorageSize(dl.memory))
-	return dl
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // rootHash implements the layer interface, returning the root hash of
 // corresponding state.
 func (dl *diffLayer) rootHash() common.Hash {
-	return dl.root
+	_ = "STUB: not implemented"
+
+	// stateID implements the layer interface, returning the state id of the layer.
+	return *new(common.Hash)
 }
 
-// stateID implements the layer interface, returning the state id of the layer.
 func (dl *diffLayer) stateID() uint64 {
-	return dl.id
+	_ = "STUB: not implemented"
+
+	// parentLayer implements the layer interface, returning the subsequent
+	// layer of the diff layer.
+	return 0
 }
 
-// parentLayer implements the layer interface, returning the subsequent
-// layer of the diff layer.
-func (dl *diffLayer) parentLayer() layer {
-	dl.lock.RLock()
-	defer dl.lock.RUnlock()
-
-	return dl.parent
-}
+func (dl *diffLayer) parentLayer() layer { _ = "STUB: not implemented"; return *new(layer) }
 
 // node retrieves the node with provided node information. It's the internal
 // version of Node function with additional accessed layer tracked. No error
 // will be returned if node is not found.
 func (dl *diffLayer) node(owner common.Hash, path []byte, hash common.Hash, depth int) ([]byte, error) {
+	_ = "STUB: not implemented"
 	// Hold the lock, ensure the parent won't be changed during the
 	// state accessing.
-	dl.lock.RLock()
-	defer dl.lock.RUnlock()
-
-	// If the trie node is known locally, return it
-	subset, ok := dl.nodes[owner]
-	if ok {
-		n, ok := subset[string(path)]
-		if ok {
-			// If the trie node is not hash matched, or marked as removed,
-			// bubble up an error here. It shouldn't happen at all.
-			if n.Hash != hash {
-				dirtyFalseMeter.Mark(1)
-				log.Error("Unexpected trie node in diff layer", "owner", owner, "path", path, "expect", hash, "got", n.Hash)
-				return nil, newUnexpectedNodeError("diff", hash, n.Hash, owner, path, n.Blob)
-			}
-			dirtyHitMeter.Mark(1)
-			dirtyNodeHitDepthHist.Update(int64(depth))
-			dirtyReadMeter.Mark(int64(len(n.Blob)))
-			return n.Blob, nil
-		}
-	}
-	// Trie node unknown to this layer, resolve from parent
-	if diff, ok := dl.parent.(*diffLayer); ok {
-		return diff.node(owner, path, hash, depth+1)
-	}
-	// Failed to resolve through diff layers, fallback to disk layer
-	return dl.parent.Node(owner, path, hash)
+	return nil, nil
 }
+
+// If the trie node is known locally, return it
+
+// If the trie node is not hash matched, or marked as removed,
+// bubble up an error here. It shouldn't happen at all.
+
+// Trie node unknown to this layer, resolve from parent
+
+// Failed to resolve through diff layers, fallback to disk layer
 
 // Node implements the layer interface, retrieving the trie node blob with the
 // provided node information. No error will be returned if the node is not found.
 func (dl *diffLayer) Node(owner common.Hash, path []byte, hash common.Hash) ([]byte, error) {
-	return dl.node(owner, path, hash, 0)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // update implements the layer interface, creating a new layer on top of the
 // existing layer tree with the specified data items.
 func (dl *diffLayer) update(root common.Hash, id uint64, block uint64, nodes map[common.Hash]map[string]*trienode.Node, states *triestate.Set) *diffLayer {
-	return newDiffLayer(dl, root, id, block, nodes, states)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // persist flushes the diff layer and all its parent layers to disk layer.
 func (dl *diffLayer) persist(force bool) (layer, error) {
-	if parent, ok := dl.parentLayer().(*diffLayer); ok {
-		// Hold the lock to prevent any read operation until the new
-		// parent is linked correctly.
-		dl.lock.Lock()
-
-		// The merging of diff layers starts at the bottom-most layer,
-		// therefore we recurse down here, flattening on the way up
-		// (diffToDisk).
-		result, err := parent.persist(force)
-		if err != nil {
-			dl.lock.Unlock()
-			return nil, err
-		}
-		dl.parent = result
-		dl.lock.Unlock()
-	}
-	return diffToDisk(dl, force)
+	_ = "STUB: not implemented"
+	return *new(layer), nil
 }
+
+// Hold the lock to prevent any read operation until the new
+// parent is linked correctly.
+
+// The merging of diff layers starts at the bottom-most layer,
+// therefore we recurse down here, flattening on the way up
+// (diffToDisk).
 
 // diffToDisk merges a bottom-most diff into the persistent disk layer underneath
 // it. The method will panic if called onto a non-bottom-most diff layer.
 func diffToDisk(layer *diffLayer, force bool) (layer, error) {
-	disk, ok := layer.parentLayer().(*diskLayer)
-	if !ok {
-		panic(fmt.Sprintf("unknown layer type: %T", layer.parentLayer()))
-	}
-	return disk.commit(layer, force)
+	_ = "STUB: not implemented"
+	return *new(layer), nil
 }

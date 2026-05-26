@@ -4,8 +4,6 @@
 package sae
 
 import (
-	"time"
-
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/network/p2p"
@@ -24,25 +22,6 @@ func newNetwork(
 	*p2p.Validators,
 	error,
 ) {
-	peers := &p2p.Peers{}
-	const maxValidatorSetStaleness = time.Minute
-	validatorPeers := p2p.NewValidators(
-		snowCtx.Log,
-		snowCtx.SubnetID,
-		snowCtx.ValidatorState,
-		maxValidatorSetStaleness,
-	)
-	const namespace = "p2p"
-	network, err := p2p.NewNetwork(
-		snowCtx.Log,
-		sender,
-		reg,
-		namespace,
-		peers,
-		validatorPeers,
-	)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-	return network, peers, validatorPeers, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil, nil
 }

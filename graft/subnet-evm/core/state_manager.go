@@ -28,13 +28,8 @@
 package core
 
 import (
-	"fmt"
-
-	"github.com/ava-labs/avalanchego/vms/evm/sync/customrawdb"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/ethdb"
 )
 
 // flushWindow is the distance to the [commitInterval] when we start
@@ -60,51 +55,39 @@ type TrieDB interface {
 }
 
 func NewTrieWriter(db TrieDB, config *CacheConfig) TrieWriter {
-	switch {
-	case config.StateScheme == rawdb.PathScheme:
-		// PathDB tracks recent all states implicitly, and should not ever be committed explicitly.
-		// Journaling happens at blockchain shutdown.
-		return noopWriter{}
-	case config.StateScheme == customrawdb.FirewoodScheme || !config.Pruning:
-		// Firewood tracks recent states via config, so tip buffer is not needed in pruning mode.
-		return &noPruningTrieWriter{
-			TrieDB: db,
-		}
-	default:
-		cm := &cappedMemoryTrieWriter{
-			TrieDB:           db,
-			memoryCap:        common.StorageSize(config.TrieDirtyLimit) * 1024 * 1024,
-			targetCommitSize: common.StorageSize(config.TrieDirtyCommitTarget) * 1024 * 1024,
-			imageCap:         4 * 1024 * 1024,
-			commitInterval:   config.CommitInterval,
-			tipBuffer:        NewBoundedBuffer(int(config.StateHistory), db.Dereference),
-		}
-		cm.flushStepSize = (cm.memoryCap - cm.targetCommitSize) / common.StorageSize(flushWindow)
-		return cm
-	}
+	_ = "STUB: not implemented"
+	return *new(TrieWriter)
 }
+
+// PathDB tracks recent all states implicitly, and should not ever be committed explicitly.
+// Journaling happens at blockchain shutdown.
+
+// Firewood tracks recent states via config, so tip buffer is not needed in pruning mode.
 
 type noPruningTrieWriter struct {
 	TrieDB
 }
 
 func (np *noPruningTrieWriter) InsertTrie(block *types.Block) error {
+	_ = "STUB: not implemented"
 	// We don't attempt to [Cap] here because we should never have
 	// a significant amount of [TrieDB.Dirties] (we commit each block).
 	return nil
 }
 
 func (np *noPruningTrieWriter) AcceptTrie(block *types.Block) error {
+	_ = "STUB: not implemented"
 	// We don't need to call [Dereference] on the block root at the end of this
 	// function because it is removed from the [TrieDB.Dirties] map in [Commit].
-	return np.TrieDB.Commit(block.Root(), false)
+	return nil
 }
 
 func (np *noPruningTrieWriter) RejectTrie(block *types.Block) error {
-	return np.TrieDB.Dereference(block.Root())
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (np *noPruningTrieWriter) Shutdown() error { return nil }
+func (np *noPruningTrieWriter) Shutdown() error { _ = "STUB: not implemented"; return nil }
 
 type cappedMemoryTrieWriter struct {
 	TrieDB
@@ -118,99 +101,61 @@ type cappedMemoryTrieWriter struct {
 }
 
 func (cm *cappedMemoryTrieWriter) InsertTrie(block *types.Block) error {
+	_ = "STUB: not implemented"
 	// The use of [Cap] in [InsertTrie] prevents exceeding the configured memory
 	// limit (and OOM) in case there is a large backlog of processing (unaccepted) blocks.
-	_, nodes, imgs := cm.TrieDB.Size() // all memory is contained within the nodes return for hashdb
-	if nodes <= cm.memoryCap && imgs <= cm.imageCap {
-		return nil
-	}
-	if err := cm.TrieDB.Cap(cm.memoryCap - ethdb.IdealBatchSize); err != nil {
-		return fmt.Errorf("failed to cap trie for block %s: %w", block.Hash().Hex(), err)
-	}
-
 	return nil
 }
 
+// all memory is contained within the nodes return for hashdb
+
 func (cm *cappedMemoryTrieWriter) AcceptTrie(block *types.Block) error {
-	root := block.Root()
+	_ = "STUB: not implemented"
+	return nil
 
 	// Attempt to dereference roots at least [tipBufferSize] old (so queries at tip
 	// can still be completed).
 	//
 	// Note: It is safe to dereference roots that have been committed to disk
 	// (they are no-ops).
-	if err := cm.tipBuffer.Insert(root); err != nil {
-		return err
-	}
-
-	// Commit this root if we have reached the [commitInterval].
-	modCommitInterval := block.NumberU64() % cm.commitInterval
-	if modCommitInterval == 0 {
-		if err := cm.TrieDB.Commit(root, true); err != nil {
-			return fmt.Errorf("failed to commit trie for block %s: %w", block.Hash().Hex(), err)
-		}
-		return nil
-	}
-
-	// Write at least [flushStepSize] of the oldest nodes in the trie database
-	// dirty cache to disk as we approach the [commitInterval] to reduce the number of trie nodes
-	// that will need to be written at once on [Commit] (to roughly [targetCommitSize]).
-	//
-	// To reduce the number of useless trie nodes that are committed during this
-	// capping, we only optimistically flush within the [flushWindow]. During
-	// this period, the [targetMemory] decreases stepwise by [flushStepSize]
-	// as we get closer to the commit boundary.
-	//
-	// Most trie nodes are 300B, so we will write at least ~1000 trie nodes in
-	// a single optimistic flush (with the default [flushStepSize]=312KB).
-	distanceFromCommit := cm.commitInterval - modCommitInterval // this cannot be 0
-	if distanceFromCommit > flushWindow {
-		return nil
-	}
-	targetMemory := cm.targetCommitSize + cm.flushStepSize*common.StorageSize(distanceFromCommit)
-	_, nodes, _ := cm.TrieDB.Size()
-	if nodes <= targetMemory {
-		return nil
-	}
-	targetCap := targetMemory - ethdb.IdealBatchSize
-	if err := cm.TrieDB.Cap(targetCap); err != nil {
-		return fmt.Errorf("failed to cap trie for block %s (target=%s): %w", block.Hash().Hex(), targetCap, err)
-	}
-	return nil
 }
 
+// Commit this root if we have reached the [commitInterval].
+
+// Write at least [flushStepSize] of the oldest nodes in the trie database
+// dirty cache to disk as we approach the [commitInterval] to reduce the number of trie nodes
+// that will need to be written at once on [Commit] (to roughly [targetCommitSize]).
+//
+// To reduce the number of useless trie nodes that are committed during this
+// capping, we only optimistically flush within the [flushWindow]. During
+// this period, the [targetMemory] decreases stepwise by [flushStepSize]
+// as we get closer to the commit boundary.
+//
+// Most trie nodes are 300B, so we will write at least ~1000 trie nodes in
+// a single optimistic flush (with the default [flushStepSize]=312KB).
+// this cannot be 0
+
 func (cm *cappedMemoryTrieWriter) RejectTrie(block *types.Block) error {
-	cm.TrieDB.Dereference(block.Root())
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (cm *cappedMemoryTrieWriter) Shutdown() error {
+	_ = "STUB: not implemented"
 	// If [tipBuffer] entry is empty, no need to do any cleanup on
 	// shutdown.
-	last, exists := cm.tipBuffer.Last()
-	if !exists {
-		return nil
-	}
-
-	// Attempt to commit last item added to [dereferenceQueue] on shutdown to avoid
-	// re-processing the state on the next startup.
-	return cm.TrieDB.Commit(last, true)
+	return nil
 }
+
+// Attempt to commit last item added to [dereferenceQueue] on shutdown to avoid
+// re-processing the state on the next startup.
 
 type noopWriter struct{}
 
-func (noopWriter) InsertTrie(*types.Block) error {
-	return nil
-}
+func (noopWriter) InsertTrie(*types.Block) error { _ = "STUB: not implemented"; return nil }
 
-func (noopWriter) AcceptTrie(*types.Block) error {
-	return nil
-}
+func (noopWriter) AcceptTrie(*types.Block) error { _ = "STUB: not implemented"; return nil }
 
-func (noopWriter) RejectTrie(*types.Block) error {
-	return nil
-}
+func (noopWriter) RejectTrie(*types.Block) error { _ = "STUB: not implemented"; return nil }
 
-func (noopWriter) Shutdown() error {
-	return nil
-}
+func (noopWriter) Shutdown() error { _ = "STUB: not implemented"; return nil }

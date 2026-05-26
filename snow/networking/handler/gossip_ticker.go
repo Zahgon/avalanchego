@@ -14,18 +14,11 @@ type gossipTicker struct {
 
 // Stop releases the underlying ticker, if any.
 func (g *gossipTicker) Stop() {
-	g.stop()
+	_ = "STUB: not implemented"
+
+	// newGossipTicker returns a ticker that fires every [frequency]. If
+	// [frequency] is 0, the returned ticker is disabled.
+	return
 }
 
-// newGossipTicker returns a ticker that fires every [frequency]. If
-// [frequency] is 0, the returned ticker is disabled.
-func newGossipTicker(frequency time.Duration) *gossipTicker {
-	if frequency <= 0 {
-		return &gossipTicker{stop: func() {}}
-	}
-	t := time.NewTicker(frequency)
-	return &gossipTicker{
-		C:    t.C,
-		stop: t.Stop,
-	}
-}
+func newGossipTicker(frequency time.Duration) *gossipTicker { _ = "STUB: not implemented"; return nil }

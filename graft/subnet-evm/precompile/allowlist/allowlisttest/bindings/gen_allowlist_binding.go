@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -99,47 +99,32 @@ type IAllowListTransactorRaw struct {
 
 // NewIAllowList creates a new instance of IAllowList, bound to a specific deployed contract.
 func NewIAllowList(address common.Address, backend bind.ContractBackend) (*IAllowList, error) {
-	contract, err := bindIAllowList(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &IAllowList{IAllowListCaller: IAllowListCaller{contract: contract}, IAllowListTransactor: IAllowListTransactor{contract: contract}, IAllowListFilterer: IAllowListFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIAllowListCaller creates a new read-only instance of IAllowList, bound to a specific deployed contract.
 func NewIAllowListCaller(address common.Address, caller bind.ContractCaller) (*IAllowListCaller, error) {
-	contract, err := bindIAllowList(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IAllowListCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIAllowListTransactor creates a new write-only instance of IAllowList, bound to a specific deployed contract.
 func NewIAllowListTransactor(address common.Address, transactor bind.ContractTransactor) (*IAllowListTransactor, error) {
-	contract, err := bindIAllowList(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &IAllowListTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewIAllowListFilterer creates a new log filterer instance of IAllowList, bound to a specific deployed contract.
 func NewIAllowListFilterer(address common.Address, filterer bind.ContractFilterer) (*IAllowListFilterer, error) {
-	contract, err := bindIAllowList(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &IAllowListFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindIAllowList binds a generic wrapper to an already deployed contract.
 func bindIAllowList(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := IAllowListMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -147,18 +132,21 @@ func bindIAllowList(address common.Address, caller bind.ContractCaller, transact
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IAllowList *IAllowListRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IAllowList.Contract.IAllowListCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IAllowList *IAllowListRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IAllowList.Contract.IAllowListTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IAllowList *IAllowListRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IAllowList.Contract.IAllowListTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -166,133 +154,141 @@ func (_IAllowList *IAllowListRaw) Transact(opts *bind.TransactOpts, method strin
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_IAllowList *IAllowListCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _IAllowList.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_IAllowList *IAllowListTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _IAllowList.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_IAllowList *IAllowListTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _IAllowList.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IAllowList *IAllowListCaller) ReadAllowList(opts *bind.CallOpts, addr common.Address) (*big.Int, error) {
-	var out []interface{}
-	err := _IAllowList.contract.Call(opts, &out, "readAllowList", addr)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IAllowList *IAllowListSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _IAllowList.Contract.ReadAllowList(&_IAllowList.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_IAllowList *IAllowListCallerSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _IAllowList.Contract.ReadAllowList(&_IAllowList.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IAllowList *IAllowListTransactor) SetAdmin(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.contract.Transact(opts, "setAdmin", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IAllowList *IAllowListSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetAdmin(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_IAllowList *IAllowListTransactorSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetAdmin(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IAllowList *IAllowListTransactor) SetEnabled(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.contract.Transact(opts, "setEnabled", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IAllowList *IAllowListSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetEnabled(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_IAllowList *IAllowListTransactorSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetEnabled(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IAllowList *IAllowListTransactor) SetManager(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.contract.Transact(opts, "setManager", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IAllowList *IAllowListSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetManager(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_IAllowList *IAllowListTransactorSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetManager(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IAllowList *IAllowListTransactor) SetNone(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.contract.Transact(opts, "setNone", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IAllowList *IAllowListSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetNone(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_IAllowList *IAllowListTransactorSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _IAllowList.Contract.SetNone(&_IAllowList.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IAllowListRoleSetIterator is returned from FilterRoleSet and is used to iterate over the raw logs and unpacked data for RoleSet events raised by the IAllowList contract.
@@ -312,55 +308,25 @@ type IAllowListRoleSetIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *IAllowListRoleSetIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(IAllowListRoleSet)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(IAllowListRoleSet)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *IAllowListRoleSetIterator) Error() error {
-	return it.fail
-}
+	_ = "STUB: not implemented"
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *IAllowListRoleSetIterator) Close() error {
-	it.sub.Unsubscribe()
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
 	return nil
 }
+
+func (it *IAllowListRoleSetIterator) Close() error { _ = "STUB: not implemented"; return nil }
 
 // IAllowListRoleSet represents a RoleSet event raised by the IAllowList contract.
 type IAllowListRoleSet struct {
@@ -375,85 +341,24 @@ type IAllowListRoleSet struct {
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IAllowList *IAllowListFilterer) FilterRoleSet(opts *bind.FilterOpts, role []*big.Int, account []common.Address, sender []common.Address) (*IAllowListRoleSetIterator, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IAllowList.contract.FilterLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return &IAllowListRoleSetIterator{contract: _IAllowList.contract, event: "RoleSet", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchRoleSet is a free log subscription operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IAllowList *IAllowListFilterer) WatchRoleSet(opts *bind.WatchOpts, sink chan<- *IAllowListRoleSet, role []*big.Int, account []common.Address, sender []common.Address) (event.Subscription, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _IAllowList.contract.WatchLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(IAllowListRoleSet)
-				if err := _IAllowList.contract.UnpackLog(event, "RoleSet", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseRoleSet is a log parse operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_IAllowList *IAllowListFilterer) ParseRoleSet(log types.Log) (*IAllowListRoleSet, error) {
-	event := new(IAllowListRoleSet)
-	if err := _IAllowList.contract.UnpackLog(event, "RoleSet", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

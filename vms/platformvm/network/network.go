@@ -9,11 +9,9 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
-	"github.com/ava-labs/avalanchego/network/p2p/acp118"
 	"github.com/ava-labs/avalanchego/network/p2p/gossip"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/snow/validators"
@@ -54,129 +52,26 @@ func New(
 	registerer prometheus.Registerer,
 	config config.Network,
 ) (*Network, error) {
-	validators := p2p.NewValidators(
-		log,
-		subnetID,
-		vdrs,
-		config.MaxValidatorSetStaleness,
-	)
-	peers := &p2p.Peers{}
-	p2pNetwork, err := p2p.NewNetwork(
-		log,
-		appSender,
-		registerer,
-		"p2p",
-		validators,
-		peers,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	gossipMempool, err := newGossipMempool(
-		mempool,
-		registerer,
-		log,
-		txVerifier,
-		config.ExpectedBloomFilterElements,
-		config.ExpectedBloomFilterFalsePositiveProbability,
-		config.MaxBloomFilterFalsePositiveProbability,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	handler, pullGossiper, pushGossiper, err := gossip.NewSystem(
-		nodeID,
-		p2pNetwork,
-		validators,
-		gossipMempool,
-		txMarshaller{},
-		gossip.SystemConfig{
-			Log:               log,
-			Registry:          registerer,
-			Namespace:         "tx_gossip",
-			TargetMessageSize: config.TargetGossipSize,
-			ThrottlingPeriod:  config.PullGossipThrottlingPeriod,
-			RequestPeriod:     config.PullGossipFrequency,
-			PushGossipParams: gossip.BranchingFactor{
-				StakePercentage: config.PushGossipPercentStake,
-				Validators:      config.PushGossipNumValidators,
-				Peers:           config.PushGossipNumPeers,
-			},
-			PushRegossipParams: gossip.BranchingFactor{
-				Validators: config.PushRegossipNumValidators,
-				Peers:      config.PushRegossipNumPeers,
-			},
-			DiscardedPushCacheSize: config.PushGossipDiscardedCacheSize,
-			RegossipPeriod:         config.PushGossipMaxRegossipFrequency,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := p2pNetwork.AddHandler(p2p.TxGossipHandlerID, handler); err != nil {
-		return nil, err
-	}
-
-	// We allow all peers to request warp messaging signatures
-	signatureRequestVerifier := signatureRequestVerifier{
-		stateLock: stateLock,
-		state:     state,
-	}
-	signatureRequestHandler := acp118.NewHandler(signatureRequestVerifier, signer)
-
-	if err := p2pNetwork.AddHandler(acp118.HandlerID, signatureRequestHandler); err != nil {
-		return nil, err
-	}
-
-	return &Network{
-		Network:                   p2pNetwork,
-		log:                       log,
-		mempool:                   gossipMempool,
-		partialSyncPrimaryNetwork: partialSyncPrimaryNetwork,
-		txPushGossiper:            pushGossiper,
-		txPushGossipFrequency:     config.PushGossipFrequency,
-		txPullGossiper:            pullGossiper,
-		txPullGossipFrequency:     config.PullGossipFrequency,
-		peers:                     peers,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (n *Network) PushGossip(ctx context.Context) {
-	gossip.Every(ctx, n.log, n.txPushGossiper, n.txPushGossipFrequency)
-}
+// We allow all peers to request warp messaging signatures
+
+func (n *Network) PushGossip(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 func (n *Network) PullGossip(ctx context.Context) {
+	_ = "STUB: not implemented"
 	// If the node is running partial sync, we do not perform any pull gossip
 	// because we should never be a validator.
-	if n.partialSyncPrimaryNetwork {
-		return
-	}
-
-	gossip.Every(ctx, n.log, n.txPullGossiper, n.txPullGossipFrequency)
+	return
 }
 
 func (n *Network) AppGossip(ctx context.Context, nodeID ids.NodeID, msgBytes []byte) error {
-	if n.partialSyncPrimaryNetwork {
-		n.log.Debug("dropping AppGossip message",
-			zap.String("reason", "primary network is not being fully synced"),
-		)
-		return nil
-	}
-
-	return n.Network.AppGossip(ctx, nodeID, msgBytes)
-}
-
-func (n *Network) IssueTxFromRPC(tx *txs.Tx) error {
-	if err := n.mempool.Add(tx); err != nil {
-		return err
-	}
-	n.txPushGossiper.Add(tx)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (n *Network) Peers() *p2p.Peers {
-	return n.peers
-}
+func (n *Network) IssueTxFromRPC(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
+
+func (n *Network) Peers() *p2p.Peers { _ = "STUB: not implemented"; return nil }

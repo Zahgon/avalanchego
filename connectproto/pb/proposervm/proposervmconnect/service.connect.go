@@ -5,12 +5,11 @@
 package proposervmconnect
 
 import (
-	connect "connectrpc.com/connect"
 	context "context"
-	errors "errors"
-	proposervm "github.com/ava-labs/avalanchego/connectproto/pb/proposervm"
 	http "net/http"
-	strings "strings"
+
+	connect "connectrpc.com/connect"
+	proposervm "github.com/ava-labs/avalanchego/connectproto/pb/proposervm"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -59,22 +58,8 @@ type ProposerVMClient interface {
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewProposerVMClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ProposerVMClient {
-	baseURL = strings.TrimRight(baseURL, "/")
-	proposerVMMethods := proposervm.File_proposervm_service_proto.Services().ByName("ProposerVM").Methods()
-	return &proposerVMClient{
-		getProposedHeight: connect.NewClient[proposervm.GetProposedHeightRequest, proposervm.GetProposedHeightReply](
-			httpClient,
-			baseURL+ProposerVMGetProposedHeightProcedure,
-			connect.WithSchema(proposerVMMethods.ByName("GetProposedHeight")),
-			connect.WithClientOptions(opts...),
-		),
-		getCurrentEpoch: connect.NewClient[proposervm.GetCurrentEpochRequest, proposervm.GetCurrentEpochReply](
-			httpClient,
-			baseURL+ProposerVMGetCurrentEpochProcedure,
-			connect.WithSchema(proposerVMMethods.ByName("GetCurrentEpoch")),
-			connect.WithClientOptions(opts...),
-		),
-	}
+	_ = "STUB: not implemented"
+	return *new(ProposerVMClient)
 }
 
 // proposerVMClient implements ProposerVMClient.
@@ -85,12 +70,14 @@ type proposerVMClient struct {
 
 // GetProposedHeight calls proposervm.ProposerVM.GetProposedHeight.
 func (c *proposerVMClient) GetProposedHeight(ctx context.Context, req *connect.Request[proposervm.GetProposedHeightRequest]) (*connect.Response[proposervm.GetProposedHeightReply], error) {
-	return c.getProposedHeight.CallUnary(ctx, req)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetCurrentEpoch calls proposervm.ProposerVM.GetCurrentEpoch.
 func (c *proposerVMClient) GetCurrentEpoch(ctx context.Context, req *connect.Request[proposervm.GetCurrentEpochRequest]) (*connect.Response[proposervm.GetCurrentEpochReply], error) {
-	return c.getCurrentEpoch.CallUnary(ctx, req)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ProposerVMHandler is an implementation of the proposervm.ProposerVM service.
@@ -109,38 +96,19 @@ type ProposerVMHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewProposerVMHandler(svc ProposerVMHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	proposerVMMethods := proposervm.File_proposervm_service_proto.Services().ByName("ProposerVM").Methods()
-	proposerVMGetProposedHeightHandler := connect.NewUnaryHandler(
-		ProposerVMGetProposedHeightProcedure,
-		svc.GetProposedHeight,
-		connect.WithSchema(proposerVMMethods.ByName("GetProposedHeight")),
-		connect.WithHandlerOptions(opts...),
-	)
-	proposerVMGetCurrentEpochHandler := connect.NewUnaryHandler(
-		ProposerVMGetCurrentEpochProcedure,
-		svc.GetCurrentEpoch,
-		connect.WithSchema(proposerVMMethods.ByName("GetCurrentEpoch")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/proposervm.ProposerVM/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch r.URL.Path {
-		case ProposerVMGetProposedHeightProcedure:
-			proposerVMGetProposedHeightHandler.ServeHTTP(w, r)
-		case ProposerVMGetCurrentEpochProcedure:
-			proposerVMGetCurrentEpochHandler.ServeHTTP(w, r)
-		default:
-			http.NotFound(w, r)
-		}
-	})
+	_ = "STUB: not implemented"
+	return "", *new(http.Handler)
 }
 
 // UnimplementedProposerVMHandler returns CodeUnimplemented from all methods.
 type UnimplementedProposerVMHandler struct{}
 
 func (UnimplementedProposerVMHandler) GetProposedHeight(context.Context, *connect.Request[proposervm.GetProposedHeightRequest]) (*connect.Response[proposervm.GetProposedHeightReply], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("proposervm.ProposerVM.GetProposedHeight is not implemented"))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (UnimplementedProposerVMHandler) GetCurrentEpoch(context.Context, *connect.Request[proposervm.GetCurrentEpochRequest]) (*connect.Response[proposervm.GetCurrentEpochReply], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("proposervm.ProposerVM.GetCurrentEpoch is not implemented"))
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -5,8 +5,6 @@ package evmstate
 
 import (
 	"context"
-	"fmt"
-	"sync"
 
 	"github.com/ava-labs/firewood-go-ethhash/ffi"
 	"github.com/ava-labs/libevm/common"
@@ -14,7 +12,6 @@ import (
 	"github.com/ava-labs/avalanchego/database/merkle/firewood/syncer"
 	"github.com/ava-labs/avalanchego/graft/evm/sync/code"
 	"github.com/ava-labs/avalanchego/graft/evm/sync/types"
-	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
 
 	merklesync "github.com/ava-labs/avalanchego/database/merkle/sync"
@@ -34,53 +31,24 @@ type FirewoodSyncer struct {
 }
 
 func NewFirewoodSyncer(config syncer.Config, db *ffi.Database, target common.Hash, codeQueue *code.Queue, client *p2p.Client) (*FirewoodSyncer, error) {
-	s, err := syncer.NewEVM(
-		config,
-		db,
-		codeQueue,
-		ids.ID(target),
-		client,
-	)
-	if err != nil {
-		return nil, err
-	}
-	f := &FirewoodSyncer{
-		s:         s,
-		cancel:    func() {}, // overwritten in Sync
-		codeQueue: codeQueue,
-	}
-	f.finalizeOnce = sync.OnceValue(f.finish)
-	return f, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (f *FirewoodSyncer) Sync(ctx context.Context) error {
-	ctx, f.cancel = context.WithCancel(ctx)
-	if err := f.s.Sync(ctx); err != nil {
-		return err
-	}
+// overwritten in Sync
 
-	return f.Finalize()
-}
+func (f *FirewoodSyncer) Sync(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (f *FirewoodSyncer) Finalize() error {
-	return f.finalizeOnce()
-}
+func (f *FirewoodSyncer) Finalize() error { _ = "STUB: not implemented"; return nil }
 
 // finish performs the finalization logic for the FirewoodSyncer inside a [sync.Once].
 // This is linked to the [sync.Once] in the constructor, and should not be called directly.
 func (f *FirewoodSyncer) finish() error {
+	_ = "STUB: not implemented"
 	// Ensure the syncer stops work and the code queue closes on exit.
-	f.cancel()
-	if err := f.codeQueue.Finalize(); err != nil {
-		return fmt.Errorf("finalizing code queue: %w", err)
-	}
 	return nil
 }
 
-func (*FirewoodSyncer) ID() string {
-	return "state_firewood_sync"
-}
+func (*FirewoodSyncer) ID() string { _ = "STUB: not implemented"; return "" }
 
-func (*FirewoodSyncer) Name() string {
-	return "Firewood EVM State Syncer"
-}
+func (*FirewoodSyncer) Name() string { _ = "STUB: not implemented"; return "" }

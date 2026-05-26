@@ -28,15 +28,9 @@
 package pathdb
 
 import (
-	"bytes"
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
 	"github.com/ava-labs/libevm/trie/trienode"
 	"github.com/ava-labs/libevm/trie/triestate"
-	"golang.org/x/exp/slices"
 )
 
 // testHasher is a test utility for computing root hash of a batch of state
@@ -53,95 +47,32 @@ type testHasher struct {
 
 // newTestHasher constructs a hasher object with provided states.
 func newTestHasher(owner common.Hash, root common.Hash, cleans map[common.Hash][]byte) (*testHasher, error) {
-	if cleans == nil {
-		cleans = make(map[common.Hash][]byte)
-	}
-	if got, _ := hash(cleans); got != root {
-		return nil, fmt.Errorf("state root mismatched, want: %x, got: %x", root, got)
-	}
-	return &testHasher{
-		owner:   owner,
-		root:    root,
-		dirties: make(map[common.Hash][]byte),
-		cleans:  cleans,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Get returns the value for key stored in the trie.
-func (h *testHasher) Get(key []byte) ([]byte, error) {
-	hash := common.BytesToHash(key)
-	val, ok := h.dirties[hash]
-	if ok {
-		return val, nil
-	}
-	return h.cleans[hash], nil
-}
+func (h *testHasher) Get(key []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Update associates key with value in the trie.
-func (h *testHasher) Update(key, value []byte) error {
-	h.dirties[common.BytesToHash(key)] = common.CopyBytes(value)
-	return nil
-}
+func (h *testHasher) Update(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Delete removes any existing value for key from the trie.
-func (h *testHasher) Delete(key []byte) error {
-	h.dirties[common.BytesToHash(key)] = nil
-	return nil
-}
+func (h *testHasher) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Commit computes the new hash of the states and returns the set with all
 // state changes.
 func (h *testHasher) Commit(collectLeaf bool) (common.Hash, *trienode.NodeSet, error) {
-	var (
-		nodes = make(map[common.Hash][]byte)
-		set   = trienode.NewNodeSet(h.owner)
-	)
-	for hash, val := range h.cleans {
-		nodes[hash] = val
-	}
-	for hash, val := range h.dirties {
-		nodes[hash] = val
-		if bytes.Equal(val, h.cleans[hash]) {
-			continue
-		}
-		if len(val) == 0 {
-			set.AddNode(hash.Bytes(), trienode.NewDeleted())
-		} else {
-			set.AddNode(hash.Bytes(), trienode.New(crypto.Keccak256Hash(val), val))
-		}
-	}
-	root, blob := hash(nodes)
-
-	// Include the dirty root node as well.
-	if root != types.EmptyRootHash && root != h.root {
-		set.AddNode(nil, trienode.New(root, blob))
-	}
-	if root == types.EmptyRootHash && h.root != types.EmptyRootHash {
-		set.AddNode(nil, trienode.NewDeleted())
-	}
-	return root, set, nil
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil, nil
 }
+
+// Include the dirty root node as well.
 
 // hash performs the hash computation upon the provided states.
 func hash(states map[common.Hash][]byte) (common.Hash, []byte) {
-	var hs []common.Hash
-	for hash := range states {
-		hs = append(hs, hash)
-	}
-	slices.SortFunc(hs, common.Hash.Cmp)
-
-	var input []byte
-	for _, hash := range hs {
-		if len(states[hash]) == 0 {
-			continue
-		}
-		input = append(input, hash.Bytes()...)
-		input = append(input, states[hash]...)
-	}
-	if len(input) == 0 {
-		return types.EmptyRootHash, nil
-	}
-	return crypto.Keccak256Hash(input), input
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
 
 type hashLoader struct {
@@ -150,18 +81,18 @@ type hashLoader struct {
 }
 
 func newHashLoader(accounts map[common.Hash][]byte, storages map[common.Hash]map[common.Hash][]byte) *hashLoader {
-	return &hashLoader{
-		accounts: accounts,
-		storages: storages,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // OpenTrie opens the main account trie.
 func (l *hashLoader) OpenTrie(root common.Hash) (triestate.Trie, error) {
-	return newTestHasher(common.Hash{}, root, l.accounts)
+	_ = "STUB: not implemented"
+	return *new(triestate.Trie), nil
 }
 
 // OpenStorageTrie opens the storage trie of an account.
 func (l *hashLoader) OpenStorageTrie(stateRoot common.Hash, addrHash, root common.Hash) (triestate.Trie, error) {
-	return newTestHasher(addrHash, root, l.storages[addrHash])
+	_ = "STUB: not implemented"
+	return *new(triestate.Trie), nil
 }

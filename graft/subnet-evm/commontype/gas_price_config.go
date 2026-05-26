@@ -4,7 +4,6 @@
 package commontype
 
 import (
-	"encoding/binary"
 	"errors"
 
 	"github.com/ava-labs/libevm/common"
@@ -19,13 +18,7 @@ const MinTargetGas uint64 = 1_000_000
 //   - TargetGas: 1_000_000
 //   - MinGasPrice: 1
 //   - TimeToDouble: 60
-func DefaultGasPriceConfig() GasPriceConfig {
-	return GasPriceConfig{
-		TargetGas:    1_000_000,
-		MinGasPrice:  1,
-		TimeToDouble: 60,
-	}
-}
+func DefaultGasPriceConfig() GasPriceConfig { _ = "STUB: not implemented"; return *new(GasPriceConfig) }
 
 var (
 	ErrMinGasPriceTooLow = errors.New("minGasPrice must be greater than 0")
@@ -48,22 +41,7 @@ type GasPriceConfig struct {
 }
 
 // Verify returns an error if the config violates any field constraints.
-func (a *GasPriceConfig) Verify() error {
-	switch {
-	case a.MinGasPrice == 0:
-		return ErrMinGasPriceTooLow
-	case a.ValidatorTargetGas && a.TargetGas != 0:
-		return errTargetGasMustBeZero
-	case !a.ValidatorTargetGas && a.TargetGas < MinTargetGas:
-		return errTargetGasBelowMin
-	case a.StaticPricing && a.TimeToDouble != 0:
-		return errTimeToDoubleMustBeZero
-	case !a.StaticPricing && a.TimeToDouble == 0:
-		return errTimeToDoubleTooLow
-	default:
-		return nil
-	}
-}
+func (a *GasPriceConfig) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Pack encodes the gas price config into a single common.Hash (32 bytes).
 //
@@ -74,39 +52,11 @@ func (a *GasPriceConfig) Verify() error {
 //	h[9]     StaticPricing      (bool)
 //	h[10:18] MinGasPrice        (uint64)
 //	h[18:26] TimeToDouble       (uint64)
-func (a *GasPriceConfig) Pack() common.Hash {
-	var h common.Hash
-	put := binary.BigEndian.PutUint64
-
-	if a.ValidatorTargetGas {
-		h[0] = 1
-	}
-	put(h[1:], a.TargetGas)
-	if a.StaticPricing {
-		h[9] = 1
-	}
-	put(h[10:], a.MinGasPrice)
-	put(h[18:], a.TimeToDouble)
-	return h
-}
+func (a *GasPriceConfig) Pack() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 // UnpackFrom decodes a packed common.Hash into the gas price config fields.
 // See [GasPriceConfig.Pack] for the byte layout.
-func (a *GasPriceConfig) UnpackFrom(h common.Hash) {
-	u64 := binary.BigEndian.Uint64
-
-	a.ValidatorTargetGas = h[0] != 0
-	a.TargetGas = u64(h[1:])
-	a.StaticPricing = h[9] != 0
-	a.MinGasPrice = u64(h[10:])
-	a.TimeToDouble = u64(h[18:])
-}
+func (a *GasPriceConfig) UnpackFrom(h common.Hash) { _ = "STUB: not implemented"; return }
 
 // Equal returns true if both configs are nil or have identical field values.
-func (a *GasPriceConfig) Equal(other *GasPriceConfig) bool {
-	if a == nil || other == nil {
-		return a == other
-	}
-
-	return *a == *other
-}
+func (a *GasPriceConfig) Equal(other *GasPriceConfig) bool { _ = "STUB: not implemented"; return false }

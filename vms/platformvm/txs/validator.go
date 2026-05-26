@@ -31,32 +31,28 @@ type Validator struct {
 }
 
 // StartTime is the time that this validator will enter the validator set
-func (v *Validator) StartTime() time.Time {
-	return time.Unix(int64(v.Start), 0)
-}
+func (v *Validator) StartTime() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // EndTime is the time that this validator will leave the validator set
-func (v *Validator) EndTime() time.Time {
-	return time.Unix(int64(v.End), 0)
-}
+func (v *Validator) EndTime() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // Weight is this validator's weight when sampling
 func (v *Validator) Weight() uint64 {
-	return v.Wght
+	_ = "STUB: not implemented"
+
+	// Verify validates the ID for this validator
+	return 0
 }
 
-// Verify validates the ID for this validator
 func (v *Validator) Verify() error {
+	_ = "STUB: not implemented"
 	// Ensure the validator has some weight
-	if v.Wght == 0 {
-		return ErrWeightTooSmall
-	}
-
 	return nil
 }
 
 // BoundedBy returns true iff staker start and end are a
 // (non-strict) subset of the provided time bound
 func BoundedBy(stakerStart, stakerEnd, lowerBound, upperBound time.Time) bool {
-	return !stakerStart.Before(lowerBound) && !stakerEnd.After(upperBound) && !stakerEnd.Before(stakerStart)
+	_ = "STUB: not implemented"
+	return false
 }

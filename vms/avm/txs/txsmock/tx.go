@@ -10,8 +10,6 @@
 package txsmock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	snow "github.com/ava-labs/avalanchego/snow"
 	set "github.com/ava-labs/avalanchego/utils/set"
@@ -33,107 +31,65 @@ type UnsignedTxMockRecorder struct {
 }
 
 // NewUnsignedTx creates a new mock instance.
-func NewUnsignedTx(ctrl *gomock.Controller) *UnsignedTx {
-	mock := &UnsignedTx{ctrl: ctrl}
-	mock.recorder = &UnsignedTxMockRecorder{mock}
-	return mock
-}
+func NewUnsignedTx(ctrl *gomock.Controller) *UnsignedTx { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *UnsignedTx) EXPECT() *UnsignedTxMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Bytes mocks base method.
+	return nil
 }
 
-// Bytes mocks base method.
-func (m *UnsignedTx) Bytes() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Bytes")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *UnsignedTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // Bytes indicates an expected call of Bytes.
-func (mr *UnsignedTxMockRecorder) Bytes() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bytes", reflect.TypeOf((*UnsignedTx)(nil).Bytes))
-}
+func (mr *UnsignedTxMockRecorder) Bytes() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // InitCtx mocks base method.
-func (m *UnsignedTx) InitCtx(ctx *snow.Context) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "InitCtx", ctx)
-}
+func (m *UnsignedTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InitCtx indicates an expected call of InitCtx.
 func (mr *UnsignedTxMockRecorder) InitCtx(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitCtx", reflect.TypeOf((*UnsignedTx)(nil).InitCtx), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // InputIDs mocks base method.
-func (m *UnsignedTx) InputIDs() set.Set[ids.ID] {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InputIDs")
-	ret0, _ := ret[0].(set.Set[ids.ID])
-	return ret0
-}
+func (m *UnsignedTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // InputIDs indicates an expected call of InputIDs.
-func (mr *UnsignedTxMockRecorder) InputIDs() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InputIDs", reflect.TypeOf((*UnsignedTx)(nil).InputIDs))
-}
+func (mr *UnsignedTxMockRecorder) InputIDs() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // InputUTXOs mocks base method.
-func (m *UnsignedTx) InputUTXOs() []*avax.UTXOID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "InputUTXOs")
-	ret0, _ := ret[0].([]*avax.UTXOID)
-	return ret0
-}
+func (m *UnsignedTx) InputUTXOs() []*avax.UTXOID { _ = "STUB: not implemented"; return nil }
 
 // InputUTXOs indicates an expected call of InputUTXOs.
-func (mr *UnsignedTxMockRecorder) InputUTXOs() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InputUTXOs", reflect.TypeOf((*UnsignedTx)(nil).InputUTXOs))
-}
+func (mr *UnsignedTxMockRecorder) InputUTXOs() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // NumCredentials mocks base method.
-func (m *UnsignedTx) NumCredentials() int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NumCredentials")
-	ret0, _ := ret[0].(int)
-	return ret0
-}
+func (m *UnsignedTx) NumCredentials() int { _ = "STUB: not implemented"; return 0 }
 
 // NumCredentials indicates an expected call of NumCredentials.
 func (mr *UnsignedTxMockRecorder) NumCredentials() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NumCredentials", reflect.TypeOf((*UnsignedTx)(nil).NumCredentials))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetBytes mocks base method.
-func (m *UnsignedTx) SetBytes(unsignedBytes []byte) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetBytes", unsignedBytes)
-}
+func (m *UnsignedTx) SetBytes(unsignedBytes []byte) { _ = "STUB: not implemented"; return }
 
 // SetBytes indicates an expected call of SetBytes.
 func (mr *UnsignedTxMockRecorder) SetBytes(unsignedBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetBytes", reflect.TypeOf((*UnsignedTx)(nil).SetBytes), unsignedBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Visit mocks base method.
-func (m *UnsignedTx) Visit(visitor txs.Visitor) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Visit", visitor)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *UnsignedTx) Visit(visitor txs.Visitor) error { _ = "STUB: not implemented"; return nil }
 
 // Visit indicates an expected call of Visit.
 func (mr *UnsignedTxMockRecorder) Visit(visitor any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Visit", reflect.TypeOf((*UnsignedTx)(nil).Visit), visitor)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -5,12 +5,9 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"sync/atomic"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/rlp"
 
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/graft/evm/message"
@@ -49,120 +46,46 @@ func NewTestClient(
 	codesHandler *handlers.CodeRequestHandler,
 	blocksHandler *handlers.BlockRequestHandler,
 ) *TestClient {
-	return &TestClient{
-		codec:         codec,
-		leafsHandler:  leafHandler,
-		codesHandler:  codesHandler,
-		blocksHandler: blocksHandler,
-	}
-}
-
-func (*TestClient) AddClient(uint64) *p2p.Client {
-	panic("AddClient is not supported in TestClient")
-}
-
-func (*TestClient) StateSyncNodes() []ids.NodeID {
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (*TestClient) AddClient(uint64) *p2p.Client { _ = "STUB: not implemented"; return nil }
+
+func (*TestClient) StateSyncNodes() []ids.NodeID { _ = "STUB: not implemented"; return nil }
+
 func (ml *TestClient) GetLeafs(ctx context.Context, request message.LeafsRequest) (message.LeafsResponse, error) {
-	response, err := ml.leafsHandler.OnLeafsRequest(ctx, ids.GenerateTestNodeID(), 1, request)
-	if err != nil {
-		return message.LeafsResponse{}, err
-	}
-
-	leafResponseIntf, numLeaves, err := parseLeafsResponse(ml.codec, request, response)
-	if err != nil {
-		return message.LeafsResponse{}, err
-	}
-	leafsResponse := leafResponseIntf.(message.LeafsResponse)
-	if ml.GetLeafsIntercept != nil {
-		leafsResponse, err = ml.GetLeafsIntercept(request, leafsResponse)
-	}
-	// Increment the number of leaves received by the test client
-	atomic.AddInt32(&ml.leavesReceived, int32(numLeaves))
-	return leafsResponse, err
+	_ = "STUB: not implemented"
+	return *new(message.LeafsResponse), nil
 }
 
-func (ml *TestClient) LeavesReceived() int32 {
-	return atomic.LoadInt32(&ml.leavesReceived)
-}
+// Increment the number of leaves received by the test client
+
+func (ml *TestClient) LeavesReceived() int32 { _ = "STUB: not implemented"; return 0 }
 
 func (ml *TestClient) GetCode(ctx context.Context, hashes []common.Hash) ([][]byte, error) {
-	if ml.codesHandler == nil {
-		panic("no code handler for test client")
-	}
-	request := message.CodeRequest{Hashes: hashes}
-	response, err := ml.codesHandler.OnCodeRequest(ctx, ids.GenerateTestNodeID(), 1, request)
-	if err != nil {
-		return nil, err
-	}
-
-	codeBytesIntf, lenCode, err := parseCode(ml.codec, request, response)
-	if err != nil {
-		return nil, err
-	}
-	code := codeBytesIntf.([][]byte)
-	if ml.GetCodeIntercept != nil {
-		code, err = ml.GetCodeIntercept(hashes, code)
-	}
-	if err == nil {
-		atomic.AddInt32(&ml.codeReceived, int32(lenCode))
-	}
-	return code, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (ml *TestClient) CodeReceived() int32 {
-	return atomic.LoadInt32(&ml.codeReceived)
-}
+func (ml *TestClient) CodeReceived() int32 { _ = "STUB: not implemented"; return 0 }
 
 func (ml *TestClient) GetBlocks(ctx context.Context, blockHash common.Hash, height uint64, numParents uint16) ([]*types.Block, error) {
-	if ml.blocksHandler == nil {
-		panic("no blocks handler for test client")
-	}
-	request := message.BlockRequest{
-		Hash:    blockHash,
-		Height:  height,
-		Parents: numParents,
-	}
-	response, err := ml.blocksHandler.OnBlockRequest(ctx, ids.GenerateTestNodeID(), 1, request)
-	if err != nil {
-		return nil, err
-	}
-	// Actual client retries until the context is canceled.
-	if response == nil {
-		<-ctx.Done()
-		return nil, ctx.Err()
-	}
-
-	client := &client{blockParser: newTestBlockParser()} // Hack to avoid duplicate code
-	blocksRes, numBlocks, err := client.parseBlocks(ml.codec, request, response)
-	if err != nil {
-		return nil, err
-	}
-	blocks := blocksRes.(types.Blocks)
-	if ml.GetBlocksIntercept != nil {
-		blocks, err = ml.GetBlocksIntercept(request, blocks)
-	}
-	atomic.AddInt32(&ml.blocksReceived, int32(numBlocks))
-	return blocks, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (ml *TestClient) BlocksReceived() int32 {
-	return atomic.LoadInt32(&ml.blocksReceived)
-}
+// Actual client retries until the context is canceled.
+
+// Hack to avoid duplicate code
+
+func (ml *TestClient) BlocksReceived() int32 { _ = "STUB: not implemented"; return 0 }
 
 type testBlockParser struct{}
 
-func newTestBlockParser() *testBlockParser {
-	return &testBlockParser{}
-}
+func newTestBlockParser() *testBlockParser { _ = "STUB: not implemented"; return nil }
 
 func (*testBlockParser) ParseEthBlock(b []byte) (*types.Block, error) {
-	block := new(types.Block)
-	if err := rlp.DecodeBytes(b, block); err != nil {
-		return nil, fmt.Errorf("%w: %w", errUnmarshalResponse, err)
-	}
-
-	return block, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

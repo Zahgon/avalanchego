@@ -6,7 +6,6 @@ package genesis
 import (
 	"time"
 
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/platformvm/reward"
 	"github.com/ava-labs/avalanchego/vms/platformvm/validators/fee"
@@ -48,27 +47,11 @@ type Params struct {
 }
 
 func GetTxFeeConfig(networkID uint32) TxFeeConfig {
-	switch networkID {
-	case constants.MainnetID:
-		return MainnetParams.TxFeeConfig
-	case constants.FujiID:
-		return FujiParams.TxFeeConfig
-	case constants.LocalID:
-		return LocalParams.TxFeeConfig
-	default:
-		return LocalParams.TxFeeConfig
-	}
+	_ = "STUB: not implemented"
+	return *new(TxFeeConfig)
 }
 
 func GetStakingConfig(networkID uint32) StakingConfig {
-	switch networkID {
-	case constants.MainnetID:
-		return MainnetParams.StakingConfig
-	case constants.FujiID:
-		return FujiParams.StakingConfig
-	case constants.LocalID:
-		return LocalParams.StakingConfig
-	default:
-		return LocalParams.StakingConfig
-	}
+	_ = "STUB: not implemented"
+	return *new(StakingConfig)
 }

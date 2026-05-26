@@ -18,14 +18,9 @@ type Client struct {
 	client pb.RuntimeClient
 }
 
-func NewClient(client pb.RuntimeClient) *Client {
-	return &Client{client: client}
-}
+func NewClient(client pb.RuntimeClient) *Client { _ = "STUB: not implemented"; return nil }
 
 func (c *Client) Initialize(ctx context.Context, protocolVersion uint, vmAddr string) error {
-	_, err := c.client.Initialize(ctx, &pb.InitializeRequest{
-		ProtocolVersion: uint32(protocolVersion),
-		Addr:            vmAddr,
-	})
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

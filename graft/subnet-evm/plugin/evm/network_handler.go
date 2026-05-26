@@ -7,7 +7,6 @@ import (
 	"context"
 
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/triedb"
 
 	"github.com/ava-labs/avalanchego/codec"
@@ -43,33 +42,24 @@ func newNetworkHandler(
 	leafRequestHandlers LeafHandlers,
 	syncStats stats.HandlerStats,
 ) *networkHandler {
-	return &networkHandler{
-		leafRequestHandlers: leafRequestHandlers,
-		blockRequestHandler: handlers.NewBlockRequestHandler(provider, networkCodec, syncStats),
-		codeRequestHandler:  handlers.NewCodeRequestHandler(diskDB, networkCodec, syncStats),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (n networkHandler) HandleLeafsRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, leafsRequest message.LeafsRequest) ([]byte, error) {
-	nodeType := leafsRequest.LeafType()
-	// TODO(JonathanOppenheimer):Handle legacy requests where NodeType was not serialized (defaults to 0)
-	// In this interim period, we treat NodeType 0 as StateTrieNode
-	if nodeType == 0 {
-		nodeType = message.StateTrieNode
-	}
-
-	handler, ok := n.leafRequestHandlers[nodeType]
-	if !ok {
-		log.Debug("node type is not recognised, dropping request", "nodeID", nodeID, "requestID", requestID, "nodeType", leafsRequest.LeafType())
-		return nil, nil
-	}
-	return handler.OnLeafsRequest(ctx, nodeID, requestID, leafsRequest)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// TODO(JonathanOppenheimer):Handle legacy requests where NodeType was not serialized (defaults to 0)
+// In this interim period, we treat NodeType 0 as StateTrieNode
+
 func (n networkHandler) HandleBlockRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, blockRequest message.BlockRequest) ([]byte, error) {
-	return n.blockRequestHandler.OnBlockRequest(ctx, nodeID, requestID, blockRequest)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (n networkHandler) HandleCodeRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, codeRequest message.CodeRequest) ([]byte, error) {
-	return n.codeRequestHandler.OnCodeRequest(ctx, nodeID, requestID, codeRequest)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -10,13 +10,10 @@ package hook
 import (
 	"context"
 	"errors"
-	"fmt"
 	"iter"
-	"math"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/state"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/libevm"
@@ -27,9 +24,7 @@ import (
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/saevm/gastime"
-	"github.com/ava-labs/avalanchego/vms/saevm/intmath"
 
-	saeparams "github.com/ava-labs/avalanchego/vms/saevm/params"
 	saetypes "github.com/ava-labs/avalanchego/vms/saevm/types"
 )
 
@@ -166,39 +161,20 @@ type Op struct {
 //
 // If an account has insufficient funds, [core.ErrInsufficientFunds] is
 // returned and the statedb is unchanged.
-func (o *Op) ApplyTo(stateDB *state.StateDB) error {
-	for from, acc := range o.Burn {
-		if acc.MinBalance.Lt(&acc.Amount) {
-			return fmt.Errorf("%w: account %s minimum balance %v < amount to debit %v", errMinBalanceBelowAmount, from, acc.MinBalance, acc.Amount)
-		}
-		if b := stateDB.GetBalance(from); b.Lt(&acc.MinBalance) {
-			return core.ErrInsufficientFunds
-		}
-	}
-	for from, acc := range o.Burn {
-		// We use the state as the source of truth for the current nonce rather
-		// than the value provided by the hook. This prevents any situations,
-		// such as with delegated accounts, where nonces might not be
-		// incremented properly.
-		//
-		// If overflow would have occurred here, the nonce must have already
-		// been increased by a delegated account's execution, so we are already
-		// protected against replay attacks.
-		if nonce := stateDB.GetNonce(from); nonce < math.MaxUint64 {
-			stateDB.SetNonce(from, nonce+1)
-		}
-		stateDB.SubBalance(from, &acc.Amount)
-	}
-	for to, amount := range o.Mint {
-		stateDB.AddBalance(to, &amount)
-	}
-	return nil
-}
+func (o *Op) ApplyTo(stateDB *state.StateDB) error { _ = "STUB: not implemented"; return nil }
+
+// We use the state as the source of truth for the current nonce rather
+// than the value provided by the hook. This prevents any situations,
+// such as with delegated accounts, where nonces might not be
+// incremented properly.
+//
+// If overflow would have occurred here, the nonce must have already
+// been increased by a delegated account's execution, so we are already
+// protected against replay attacks.
 
 // MinimumGasConsumption MUST be used as the implementation for the respective
 // method on [params.RulesHooks]. The concrete type implementing the hooks MUST
 // propagate incoming and return arguments unchanged.
-func MinimumGasConsumption(txLimit uint64) uint64 {
-	_ = (params.RulesHooks)(nil) // keep the import to allow [] doc links
-	return intmath.CeilDiv(txLimit, saeparams.Lambda)
-}
+func MinimumGasConsumption(txLimit uint64) uint64 { _ = "STUB: not implemented"; return 0 }
+
+// keep the import to allow [] doc links

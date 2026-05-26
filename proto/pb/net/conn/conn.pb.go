@@ -7,12 +7,11 @@
 package conn
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -45,32 +44,27 @@ var (
 	}
 )
 
-func (x ErrorCode) Enum() *ErrorCode {
-	p := new(ErrorCode)
-	*p = x
-	return p
-}
+func (x ErrorCode) Enum() *ErrorCode { _ = "STUB: not implemented"; return nil }
 
-func (x ErrorCode) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x ErrorCode) String() string { _ = "STUB: not implemented"; return "" }
 
 func (ErrorCode) Descriptor() protoreflect.EnumDescriptor {
-	return file_net_conn_conn_proto_enumTypes[0].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (ErrorCode) Type() protoreflect.EnumType {
-	return &file_net_conn_conn_proto_enumTypes[0]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x ErrorCode) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use ErrorCode.Descriptor instead.
-func (ErrorCode) EnumDescriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{0}
-}
+func (ErrorCode) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type ReadRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -80,42 +74,21 @@ type ReadRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReadRequest) Reset() {
-	*x = ReadRequest{}
-	mi := &file_net_conn_conn_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReadRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReadRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReadRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReadRequest) ProtoMessage() {}
+func (*ReadRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReadRequest.ProtoReflect.Descriptor instead.
-func (*ReadRequest) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{0}
-}
+func (*ReadRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ReadRequest) GetLength() int32 {
-	if x != nil {
-		return x.Length
-	}
-	return 0
-}
+func (x *ReadRequest) GetLength() int32 { _ = "STUB: not implemented"; return 0 }
 
 type ReadResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -127,49 +100,23 @@ type ReadResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReadResponse) Reset() {
-	*x = ReadResponse{}
-	mi := &file_net_conn_conn_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReadResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReadResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReadResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReadResponse) ProtoMessage() {}
+func (*ReadResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReadResponse.ProtoReflect.Descriptor instead.
-func (*ReadResponse) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{1}
-}
+func (*ReadResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ReadResponse) GetRead() []byte {
-	if x != nil {
-		return x.Read
-	}
-	return nil
-}
+func (x *ReadResponse) GetRead() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ReadResponse) GetError() *Error {
-	if x != nil {
-		return x.Error
-	}
-	return nil
-}
+func (x *ReadResponse) GetError() *Error { _ = "STUB: not implemented"; return nil }
 
 type WriteRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -179,42 +126,21 @@ type WriteRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteRequest) Reset() {
-	*x = WriteRequest{}
-	mi := &file_net_conn_conn_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteRequest) ProtoMessage() {}
+func (*WriteRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteRequest.ProtoReflect.Descriptor instead.
-func (*WriteRequest) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{2}
-}
+func (*WriteRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteRequest) GetPayload() []byte {
-	if x != nil {
-		return x.Payload
-	}
-	return nil
-}
+func (x *WriteRequest) GetPayload() []byte { _ = "STUB: not implemented"; return nil }
 
 type WriteResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -226,49 +152,23 @@ type WriteResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteResponse) Reset() {
-	*x = WriteResponse{}
-	mi := &file_net_conn_conn_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteResponse) ProtoMessage() {}
+func (*WriteResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteResponse.ProtoReflect.Descriptor instead.
-func (*WriteResponse) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{3}
-}
+func (*WriteResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteResponse) GetLength() int32 {
-	if x != nil {
-		return x.Length
-	}
-	return 0
-}
+func (x *WriteResponse) GetLength() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *WriteResponse) GetError() string {
-	if x != nil && x.Error != nil {
-		return *x.Error
-	}
-	return ""
-}
+func (x *WriteResponse) GetError() string { _ = "STUB: not implemented"; return "" }
 
 type SetDeadlineRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -278,42 +178,21 @@ type SetDeadlineRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SetDeadlineRequest) Reset() {
-	*x = SetDeadlineRequest{}
-	mi := &file_net_conn_conn_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SetDeadlineRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SetDeadlineRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SetDeadlineRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SetDeadlineRequest) ProtoMessage() {}
+func (*SetDeadlineRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SetDeadlineRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SetDeadlineRequest.ProtoReflect.Descriptor instead.
-func (*SetDeadlineRequest) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{4}
-}
+func (*SetDeadlineRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SetDeadlineRequest) GetTime() []byte {
-	if x != nil {
-		return x.Time
-	}
-	return nil
-}
+func (x *SetDeadlineRequest) GetTime() []byte { _ = "STUB: not implemented"; return nil }
 
 type Error struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -323,49 +202,23 @@ type Error struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Error) Reset() {
-	*x = Error{}
-	mi := &file_net_conn_conn_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Error) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Error) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Error) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Error) ProtoMessage() {}
+func (*Error) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Error) ProtoReflect() protoreflect.Message {
-	mi := &file_net_conn_conn_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Error.ProtoReflect.Descriptor instead.
-func (*Error) Descriptor() ([]byte, []int) {
-	return file_net_conn_conn_proto_rawDescGZIP(), []int{5}
-}
+func (*Error) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Error) GetErrorCode() ErrorCode {
-	if x != nil {
-		return x.ErrorCode
-	}
-	return ErrorCode_ERROR_CODE_UNSPECIFIED
-}
+func (x *Error) GetErrorCode() ErrorCode { _ = "STUB: not implemented"; return *new(ErrorCode) }
 
-func (x *Error) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *Error) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 var File_net_conn_conn_proto protoreflect.FileDescriptor
 
@@ -406,12 +259,7 @@ var (
 	file_net_conn_conn_proto_rawDescData []byte
 )
 
-func file_net_conn_conn_proto_rawDescGZIP() []byte {
-	file_net_conn_conn_proto_rawDescOnce.Do(func() {
-		file_net_conn_conn_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_net_conn_conn_proto_rawDesc), len(file_net_conn_conn_proto_rawDesc)))
-	})
-	return file_net_conn_conn_proto_rawDescData
-}
+func file_net_conn_conn_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_net_conn_conn_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_net_conn_conn_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
@@ -447,28 +295,5 @@ var file_net_conn_conn_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_net_conn_conn_proto_init() }
-func file_net_conn_conn_proto_init() {
-	if File_net_conn_conn_proto != nil {
-		return
-	}
-	file_net_conn_conn_proto_msgTypes[3].OneofWrappers = []any{}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_net_conn_conn_proto_rawDesc), len(file_net_conn_conn_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   6,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_net_conn_conn_proto_goTypes,
-		DependencyIndexes: file_net_conn_conn_proto_depIdxs,
-		EnumInfos:         file_net_conn_conn_proto_enumTypes,
-		MessageInfos:      file_net_conn_conn_proto_msgTypes,
-	}.Build()
-	File_net_conn_conn_proto = out.File
-	file_net_conn_conn_proto_goTypes = nil
-	file_net_conn_conn_proto_depIdxs = nil
-}
+func init()                          { file_net_conn_conn_proto_init() }
+func file_net_conn_conn_proto_init() { _ = "STUB: not implemented"; return }

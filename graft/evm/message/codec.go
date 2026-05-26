@@ -5,9 +5,7 @@ package message
 
 import (
 	"github.com/ava-labs/avalanchego/codec"
-	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/utils/units"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 const (
@@ -39,48 +37,17 @@ func init() {
 }
 
 func newCodec(codecType CodecType) codec.Manager {
+	_ = "STUB: not implemented"
 	// Codec-specific configuration: skip count and LeafsRequest type.
-	var (
-		deprecatedSkipCount int
-		leafsRequestType    any
-	)
-	switch codecType {
-	case CorethCodecType:
-		deprecatedSkipCount = 3 // deprecated gossip types and sync summary type
-		leafsRequestType = CorethLeafsRequest{}
-	case SubnetEVMCodecType:
-		deprecatedSkipCount = 2 // deprecated gossip types
-		leafsRequestType = SubnetEVMLeafsRequest{}
-	default:
-		panic("unknown codec type")
-	}
-
-	mgr := codec.NewManager(maxMessageSize)
-	c := linearcodec.NewDefault()
-
-	// Skip registrations to maintain type ID compatibility after removing deprecated types.
-	c.SkipRegistrations(deprecatedSkipCount)
-
-	errs := wrappers.Errs{}
-	errs.Add(
-		c.RegisterType(BlockRequest{}),
-		c.RegisterType(BlockResponse{}),
-		c.RegisterType(leafsRequestType),
-		c.RegisterType(LeafsResponse{}),
-		c.RegisterType(CodeRequest{}),
-		c.RegisterType(CodeResponse{}),
-	)
-
-	// Skip 3 registrations for deprecated Warp types:
-	// MessageSignatureRequest, BlockSignatureRequest, SignatureResponse
-	// See https://github.com/ava-labs/coreth/pull/999
-	c.SkipRegistrations(3)
-
-	errs.Add(mgr.RegisterCodec(Version, c))
-
-	if errs.Errored() {
-		panic(errs.Err)
-	}
-
-	return mgr
+	return *new(codec.Manager)
 }
+
+// deprecated gossip types and sync summary type
+
+// deprecated gossip types
+
+// Skip registrations to maintain type ID compatibility after removing deprecated types.
+
+// Skip 3 registrations for deprecated Warp types:
+// MessageSignatureRequest, BlockSignatureRequest, SignatureResponse
+// See https://github.com/ava-labs/coreth/pull/999

@@ -5,7 +5,6 @@ package timer
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 
@@ -93,188 +92,70 @@ func NewAdaptiveTimeoutManager(
 	config *AdaptiveTimeoutConfig,
 	reg prometheus.Registerer,
 ) (AdaptiveTimeoutManager, error) {
-	switch {
-	case config.InitialTimeout > config.MaximumTimeout:
-		return nil, fmt.Errorf("%w: (%s) > (%s)", errInitialTimeoutAboveMaximum, config.InitialTimeout, config.MaximumTimeout)
-	case config.InitialTimeout < config.MinimumTimeout:
-		return nil, fmt.Errorf("%w: (%s) < (%s)", errInitialTimeoutBelowMinimum, config.InitialTimeout, config.MinimumTimeout)
-	case config.TimeoutCoefficient < 1:
-		return nil, fmt.Errorf("%w: %f", errTooSmallTimeoutCoefficient, config.TimeoutCoefficient)
-	case config.TimeoutHalflife <= 0:
-		return nil, errNonPositiveHalflife
-	}
-
-	tm := &adaptiveTimeoutManager{
-		networkTimeoutMetric: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: "current_timeout",
-			Help: "Duration of current network timeout in nanoseconds",
-		}),
-		avgLatency: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: "average_latency",
-			Help: "Average network latency in nanoseconds",
-		}),
-		numTimeouts: prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "timeouts",
-			Help: "Number of timed out requests",
-		}),
-		numPendingTimeouts: prometheus.NewGauge(prometheus.GaugeOpts{
-			Name: "pending_timeouts",
-			Help: "Number of pending timeouts",
-		}),
-		minimumTimeout:     config.MinimumTimeout,
-		maximumTimeout:     config.MaximumTimeout,
-		currentTimeout:     config.InitialTimeout,
-		timeoutCoefficient: config.TimeoutCoefficient,
-		timeoutHeap: heap.NewMap[ids.RequestID, *adaptiveTimeout](func(a, b *adaptiveTimeout) bool {
-			return a.deadline.Before(b.deadline)
-		}),
-	}
-	tm.timer = NewTimer(tm.timeout)
-	tm.averager = math.NewAverager(float64(config.InitialTimeout), config.TimeoutHalflife, tm.clock.Time())
-
-	err := errors.Join(
-		reg.Register(tm.networkTimeoutMetric),
-		reg.Register(tm.avgLatency),
-		reg.Register(tm.numTimeouts),
-		reg.Register(tm.numPendingTimeouts),
-	)
-	return tm, err
+	_ = "STUB: not implemented"
+	return *new(AdaptiveTimeoutManager), nil
 }
 
 func (tm *adaptiveTimeoutManager) TimeoutDuration() time.Duration {
-	tm.lock.Lock()
-	defer tm.lock.Unlock()
-
-	return tm.currentTimeout
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-func (tm *adaptiveTimeoutManager) Dispatch() {
-	tm.timer.Dispatch()
-}
+func (tm *adaptiveTimeoutManager) Dispatch() { _ = "STUB: not implemented"; return }
 
-func (tm *adaptiveTimeoutManager) Stop() {
-	tm.timer.Stop()
-}
+func (tm *adaptiveTimeoutManager) Stop() { _ = "STUB: not implemented"; return }
 
 func (tm *adaptiveTimeoutManager) Put(id ids.RequestID, measureLatency bool, timeoutHandler func()) {
-	tm.lock.Lock()
-	defer tm.lock.Unlock()
-
-	tm.put(id, measureLatency, timeoutHandler)
+	_ = "STUB: not implemented"
+	return
 }
 
 // Assumes [tm.lock] is held
 func (tm *adaptiveTimeoutManager) put(id ids.RequestID, measureLatency bool, handler func()) {
-	now := tm.clock.Time()
-	tm.remove(id, now)
-
-	timeout := &adaptiveTimeout{
-		id:             id,
-		handler:        handler,
-		duration:       tm.currentTimeout,
-		deadline:       now.Add(tm.currentTimeout),
-		measureLatency: measureLatency,
-	}
-	tm.timeoutHeap.Push(id, timeout)
-	tm.numPendingTimeouts.Set(float64(tm.timeoutHeap.Len()))
-
-	tm.setNextTimeoutTime()
+	_ = "STUB: not implemented"
+	return
 }
 
-func (tm *adaptiveTimeoutManager) Remove(id ids.RequestID) {
-	tm.lock.Lock()
-	defer tm.lock.Unlock()
-
-	tm.remove(id, tm.clock.Time())
-}
+func (tm *adaptiveTimeoutManager) Remove(id ids.RequestID) { _ = "STUB: not implemented"; return }
 
 // Assumes [tm.lock] is held
 func (tm *adaptiveTimeoutManager) remove(id ids.RequestID, now time.Time) {
+	_ = "STUB: not implemented"
 	// Observe the response time to update average network response time.
-	timeout, exists := tm.timeoutHeap.Remove(id)
-	if !exists {
-		return
-	}
-
-	if timeout.measureLatency {
-		timeoutRegisteredAt := timeout.deadline.Add(-1 * timeout.duration)
-		latency := now.Sub(timeoutRegisteredAt)
-		tm.observeLatencyAndUpdateTimeout(latency, now)
-	}
-	tm.numPendingTimeouts.Set(float64(tm.timeoutHeap.Len()))
+	return
 }
 
 // Assumes [tm.lock] is not held.
-func (tm *adaptiveTimeoutManager) timeout() {
-	tm.lock.Lock()
-	defer tm.lock.Unlock()
+func (tm *adaptiveTimeoutManager) timeout() { _ = "STUB: not implemented"; return }
 
-	now := tm.clock.Time()
-	for {
-		// getNextTimeoutHandler returns nil once there is nothing left to remove
-		timeoutHandler := tm.getNextTimeoutHandler(now)
-		if timeoutHandler == nil {
-			break
-		}
-		tm.numTimeouts.Inc()
+// getNextTimeoutHandler returns nil once there is nothing left to remove
 
-		// Don't execute a callback with a lock held
-		tm.lock.Unlock()
-		timeoutHandler()
-		tm.lock.Lock()
-	}
-	tm.setNextTimeoutTime()
-}
+// Don't execute a callback with a lock held
 
 func (tm *adaptiveTimeoutManager) ObserveLatency(latency time.Duration) {
-	tm.lock.Lock()
-	defer tm.lock.Unlock()
-
-	tm.observeLatencyAndUpdateTimeout(latency, tm.clock.Time())
+	_ = "STUB: not implemented"
+	return
 }
 
 // Assumes [tm.lock] is held
 func (tm *adaptiveTimeoutManager) observeLatencyAndUpdateTimeout(latency time.Duration, now time.Time) {
-	tm.averager.Observe(float64(latency), now)
-	avgLatency := tm.averager.Read()
-	tm.currentTimeout = time.Duration(tm.timeoutCoefficient * avgLatency)
-	if tm.currentTimeout > tm.maximumTimeout {
-		tm.currentTimeout = tm.maximumTimeout
-	} else if tm.currentTimeout < tm.minimumTimeout {
-		tm.currentTimeout = tm.minimumTimeout
-	}
-	// Update the metrics
-	tm.networkTimeoutMetric.Set(float64(tm.currentTimeout))
-	tm.avgLatency.Set(avgLatency)
+	_ = "STUB: not implemented"
+	return
 }
+
+// Update the metrics
 
 // Returns the handler function associated with the next timeout.
 // If there are no timeouts, or if the next timeout is after [now],
 // returns nil.
 // Assumes [tm.lock] is held
 func (tm *adaptiveTimeoutManager) getNextTimeoutHandler(now time.Time) func() {
-	_, nextTimeout, ok := tm.timeoutHeap.Peek()
-	if !ok {
-		return nil
-	}
-	if nextTimeout.deadline.After(now) {
-		return nil
-	}
-	tm.remove(nextTimeout.id, now)
-	return nextTimeout.handler
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Calculate the time of the next timeout and set
 // the timer to fire at that time.
-func (tm *adaptiveTimeoutManager) setNextTimeoutTime() {
-	_, nextTimeout, ok := tm.timeoutHeap.Peek()
-	if !ok {
-		// There are no pending timeouts
-		tm.timer.Cancel()
-		return
-	}
+func (tm *adaptiveTimeoutManager) setNextTimeoutTime() { _ = "STUB: not implemented"; return }
 
-	now := tm.clock.Time()
-	timeToNextTimeout := nextTimeout.deadline.Sub(now)
-	tm.timer.SetTimeoutIn(timeToNextTimeout)
-}
+// There are no pending timeouts

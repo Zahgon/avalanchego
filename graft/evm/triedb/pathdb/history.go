@@ -28,14 +28,8 @@
 package pathdb
 
 import (
-	"bytes"
-	"encoding/binary"
-	"errors"
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/trie/triestate"
-	"golang.org/x/exp/slices"
 )
 
 // State history records the state changes involved in executing a block. The
@@ -155,24 +149,10 @@ type accountIndex struct {
 }
 
 // encode packs account index into byte stream.
-func (i *accountIndex) encode() []byte {
-	var buf [accountIndexSize]byte
-	copy(buf[:], i.address.Bytes())
-	buf[common.AddressLength] = i.length
-	binary.BigEndian.PutUint32(buf[common.AddressLength+1:], i.offset)
-	binary.BigEndian.PutUint32(buf[common.AddressLength+5:], i.storageOffset)
-	binary.BigEndian.PutUint32(buf[common.AddressLength+9:], i.storageSlots)
-	return buf[:]
-}
+func (i *accountIndex) encode() []byte { _ = "STUB: not implemented"; return nil }
 
 // decode unpacks account index from byte stream.
-func (i *accountIndex) decode(blob []byte) {
-	i.address = common.BytesToAddress(blob[:common.AddressLength])
-	i.length = blob[common.AddressLength]
-	i.offset = binary.BigEndian.Uint32(blob[common.AddressLength+1:])
-	i.storageOffset = binary.BigEndian.Uint32(blob[common.AddressLength+5:])
-	i.storageSlots = binary.BigEndian.Uint32(blob[common.AddressLength+9:])
-}
+func (i *accountIndex) decode(blob []byte) { _ = "STUB: not implemented"; return }
 
 // slotIndex describes the metadata belonging to a storage slot.
 type slotIndex struct {
@@ -182,20 +162,10 @@ type slotIndex struct {
 }
 
 // encode packs slot index into byte stream.
-func (i *slotIndex) encode() []byte {
-	var buf [slotIndexSize]byte
-	copy(buf[:common.HashLength], i.hash.Bytes())
-	buf[common.HashLength] = i.length
-	binary.BigEndian.PutUint32(buf[common.HashLength+1:], i.offset)
-	return buf[:]
-}
+func (i *slotIndex) encode() []byte { _ = "STUB: not implemented"; return nil }
 
 // decode unpack slot index from the byte stream.
-func (i *slotIndex) decode(blob []byte) {
-	i.hash = common.BytesToHash(blob[:common.HashLength])
-	i.length = blob[common.HashLength]
-	i.offset = binary.BigEndian.Uint32(blob[common.HashLength+1:])
-}
+func (i *slotIndex) decode(blob []byte) { _ = "STUB: not implemented"; return }
 
 // meta describes the meta data of state history object.
 type meta struct {
@@ -207,44 +177,10 @@ type meta struct {
 }
 
 // encode packs the meta object into byte stream.
-func (m *meta) encode() []byte {
-	buf := make([]byte, historyMetaSize+len(m.incomplete)*common.AddressLength)
-	buf[0] = m.version
-	copy(buf[1:1+common.HashLength], m.parent.Bytes())
-	copy(buf[1+common.HashLength:1+2*common.HashLength], m.root.Bytes())
-	binary.BigEndian.PutUint64(buf[1+2*common.HashLength:historyMetaSize], m.block)
-	for i, h := range m.incomplete {
-		copy(buf[i*common.AddressLength+historyMetaSize:], h.Bytes())
-	}
-	return buf[:]
-}
+func (m *meta) encode() []byte { _ = "STUB: not implemented"; return nil }
 
 // decode unpacks the meta object from byte stream.
-func (m *meta) decode(blob []byte) error {
-	if len(blob) < 1 {
-		return fmt.Errorf("no version tag")
-	}
-	switch blob[0] {
-	case stateHistoryVersion:
-		if len(blob) < historyMetaSize {
-			return fmt.Errorf("invalid state history meta, len: %d", len(blob))
-		}
-		if (len(blob)-historyMetaSize)%common.AddressLength != 0 {
-			return fmt.Errorf("corrupted state history meta, len: %d", len(blob))
-		}
-		m.version = blob[0]
-		m.parent = common.BytesToHash(blob[1 : 1+common.HashLength])
-		m.root = common.BytesToHash(blob[1+common.HashLength : 1+2*common.HashLength])
-		m.block = binary.BigEndian.Uint64(blob[1+2*common.HashLength : historyMetaSize])
-		for pos := historyMetaSize; pos < len(blob); {
-			m.incomplete = append(m.incomplete, common.BytesToAddress(blob[pos:pos+common.AddressLength]))
-			pos += common.AddressLength
-		}
-		return nil
-	default:
-		return fmt.Errorf("unknown version %d", blob[0])
-	}
-}
+func (m *meta) decode(blob []byte) error { _ = "STUB: not implemented"; return nil }
 
 // history represents a set of state changes belong to a block along with
 // the metadata including the state roots involved in the state transition.
@@ -261,82 +197,28 @@ type history struct {
 
 // newHistory constructs the state history object with provided state change set.
 func newHistory(root common.Hash, parent common.Hash, block uint64, states *triestate.Set) *history {
-	var (
-		accountList []common.Address
-		storageList = make(map[common.Address][]common.Hash)
-		incomplete  []common.Address
-	)
-	for addr := range states.Accounts {
-		accountList = append(accountList, addr)
-	}
-	slices.SortFunc(accountList, common.Address.Cmp)
-
-	for addr, slots := range states.Storages {
-		slist := make([]common.Hash, 0, len(slots))
-		for slotHash := range slots {
-			slist = append(slist, slotHash)
-		}
-		slices.SortFunc(slist, common.Hash.Cmp)
-		storageList[addr] = slist
-	}
-	for addr := range states.Incomplete {
-		incomplete = append(incomplete, addr)
-	}
-	slices.SortFunc(incomplete, common.Address.Cmp)
-
-	return &history{
-		meta: &meta{
-			version:    stateHistoryVersion,
-			parent:     parent,
-			root:       root,
-			block:      block,
-			incomplete: incomplete,
-		},
-		accounts:    states.Accounts,
-		accountList: accountList,
-		storages:    states.Storages,
-		storageList: storageList,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // encode serializes the state history and returns four byte streams represent
 // concatenated account/storage data, account/storage indexes respectively.
 func (h *history) encode() ([]byte, []byte, []byte, []byte) {
-	var (
-		slotNumber     uint32 // the number of processed slots
-		accountData    []byte // the buffer for concatenated account data
-		storageData    []byte // the buffer for concatenated storage data
-		accountIndexes []byte // the buffer for concatenated account index
-		storageIndexes []byte // the buffer for concatenated storage index
-	)
-	for _, addr := range h.accountList {
-		accIndex := accountIndex{
-			address: addr,
-			length:  uint8(len(h.accounts[addr])),
-			offset:  uint32(len(accountData)),
-		}
-		slots, exist := h.storages[addr]
-		if exist {
-			// Encode storage slots in order
-			for _, slotHash := range h.storageList[addr] {
-				sIndex := slotIndex{
-					hash:   slotHash,
-					length: uint8(len(slots[slotHash])),
-					offset: uint32(len(storageData)),
-				}
-				storageData = append(storageData, slots[slotHash]...)
-				storageIndexes = append(storageIndexes, sIndex.encode()...)
-			}
-			// Fill up the storage meta in account index
-			accIndex.storageOffset = slotNumber
-			accIndex.storageSlots = uint32(len(slots))
-			slotNumber += uint32(len(slots))
-		}
-		accountData = append(accountData, h.accounts[addr]...)
-		accountIndexes = append(accountIndexes, accIndex.encode()...)
-	}
-	return accountData, storageData, accountIndexes, storageIndexes
+	_ = "STUB: not implemented"
+	return nil,
+
+		// the number of processed slots
+		nil, nil, nil
 }
+
+// the buffer for concatenated account data
+// the buffer for concatenated storage data
+// the buffer for concatenated account index
+// the buffer for concatenated storage index
+
+// Encode storage slots in order
+
+// Fill up the storage meta in account index
 
 // decoder wraps the byte streams for decoding with extra meta fields.
 type decoder struct {
@@ -362,136 +244,40 @@ type decoder struct {
 //
 // - empty account data: all accounts were not present
 // - empty storage set: no slots are modified
-func (r *decoder) verify() error {
-	if len(r.accountIndexes)%accountIndexSize != 0 || len(r.accountIndexes) == 0 {
-		return fmt.Errorf("invalid account index, len: %d", len(r.accountIndexes))
-	}
-	if len(r.storageIndexes)%slotIndexSize != 0 {
-		return fmt.Errorf("invalid storage index, len: %d", len(r.storageIndexes))
-	}
-	return nil
-}
+func (r *decoder) verify() error { _ = "STUB: not implemented"; return nil }
 
 // readAccount parses the account from the byte stream with specified position.
 func (r *decoder) readAccount(pos int) (accountIndex, []byte, error) {
+	_ = "STUB: not implemented"
 	// Decode account index from the index byte stream.
-	var index accountIndex
-	if (pos+1)*accountIndexSize > len(r.accountIndexes) {
-		return accountIndex{}, nil, errors.New("account data buffer is corrupted")
-	}
-	index.decode(r.accountIndexes[pos*accountIndexSize : (pos+1)*accountIndexSize])
-
-	// Perform validation before parsing account data, ensure
-	// - account is sorted in order in byte stream
-	// - account data is strictly encoded with no gap inside
-	// - account data is not out-of-slice
-	if r.lastAccount != nil { // zero address is possible
-		if bytes.Compare(r.lastAccount.Bytes(), index.address.Bytes()) >= 0 {
-			return accountIndex{}, nil, errors.New("account is not in order")
-		}
-	}
-	if index.offset != r.lastAccountRead {
-		return accountIndex{}, nil, errors.New("account data buffer is gaped")
-	}
-	last := index.offset + uint32(index.length)
-	if uint32(len(r.accountData)) < last {
-		return accountIndex{}, nil, errors.New("account data buffer is corrupted")
-	}
-	data := r.accountData[index.offset:last]
-
-	r.lastAccount = &index.address
-	r.lastAccountRead = last
-
-	return index, data, nil
+	return *new(accountIndex), nil, nil
 }
+
+// Perform validation before parsing account data, ensure
+// - account is sorted in order in byte stream
+// - account data is strictly encoded with no gap inside
+// - account data is not out-of-slice
+// zero address is possible
 
 // readStorage parses the storage slots from the byte stream with specified account.
 func (r *decoder) readStorage(accIndex accountIndex) ([]common.Hash, map[common.Hash][]byte, error) {
-	var (
-		last    common.Hash
-		list    []common.Hash
-		storage = make(map[common.Hash][]byte)
-	)
-	for j := 0; j < int(accIndex.storageSlots); j++ {
-		var (
-			index slotIndex
-			start = (accIndex.storageOffset + uint32(j)) * uint32(slotIndexSize)
-			end   = (accIndex.storageOffset + uint32(j+1)) * uint32(slotIndexSize)
-		)
-		// Perform validation before parsing storage slot data, ensure
-		// - slot index is not out-of-slice
-		// - slot data is not out-of-slice
-		// - slot is sorted in order in byte stream
-		// - slot indexes is strictly encoded with no gap inside
-		// - slot data is strictly encoded with no gap inside
-		if start != r.lastSlotIndexRead {
-			return nil, nil, errors.New("storage index buffer is gapped")
-		}
-		if uint32(len(r.storageIndexes)) < end {
-			return nil, nil, errors.New("storage index buffer is corrupted")
-		}
-		index.decode(r.storageIndexes[start:end])
-
-		if bytes.Compare(last.Bytes(), index.hash.Bytes()) >= 0 {
-			return nil, nil, errors.New("storage slot is not in order")
-		}
-		if index.offset != r.lastSlotDataRead {
-			return nil, nil, errors.New("storage data buffer is gapped")
-		}
-		sEnd := index.offset + uint32(index.length)
-		if uint32(len(r.storageData)) < sEnd {
-			return nil, nil, errors.New("storage data buffer is corrupted")
-		}
-		storage[index.hash] = r.storageData[r.lastSlotDataRead:sEnd]
-		list = append(list, index.hash)
-
-		last = index.hash
-		r.lastSlotIndexRead = end
-		r.lastSlotDataRead = sEnd
-	}
-	return list, storage, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
+
+// Perform validation before parsing storage slot data, ensure
+// - slot index is not out-of-slice
+// - slot data is not out-of-slice
+// - slot is sorted in order in byte stream
+// - slot indexes is strictly encoded with no gap inside
+// - slot data is strictly encoded with no gap inside
 
 // decode deserializes the account and storage data from the provided byte stream.
 func (h *history) decode(accountData, storageData, accountIndexes, storageIndexes []byte) error {
-	var (
-		accounts    = make(map[common.Address][]byte)
-		storages    = make(map[common.Address]map[common.Hash][]byte)
-		accountList []common.Address
-		storageList = make(map[common.Address][]common.Hash)
-
-		r = &decoder{
-			accountData:    accountData,
-			storageData:    storageData,
-			accountIndexes: accountIndexes,
-			storageIndexes: storageIndexes,
-		}
-	)
-	if err := r.verify(); err != nil {
-		return err
-	}
-	for i := 0; i < len(accountIndexes)/accountIndexSize; i++ {
-		// Resolve account first
-		accIndex, accData, err := r.readAccount(i)
-		if err != nil {
-			return err
-		}
-		accounts[accIndex.address] = accData
-		accountList = append(accountList, accIndex.address)
-
-		// Resolve storage slots
-		slotList, slotData, err := r.readStorage(accIndex)
-		if err != nil {
-			return err
-		}
-		if len(slotList) > 0 {
-			storageList[accIndex.address] = slotList
-			storages[accIndex.address] = slotData
-		}
-	}
-	h.accounts = accounts
-	h.accountList = accountList
-	h.storages = storages
-	h.storageList = storageList
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Resolve account first
+
+// Resolve storage slots

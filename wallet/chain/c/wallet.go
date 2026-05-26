@@ -5,7 +5,6 @@ package c
 
 import (
 	"math/big"
-	"time"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/ethclient"
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/atomic"
@@ -68,13 +67,8 @@ func NewWallet(
 	ethClient *ethclient.Client,
 	backend Backend,
 ) Wallet {
-	return &wallet{
-		Backend:    backend,
-		builder:    builder,
-		signer:     signer,
-		avaxClient: avaxClient,
-		ethClient:  ethClient,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type wallet struct {
@@ -85,29 +79,17 @@ type wallet struct {
 	ethClient  *ethclient.Client
 }
 
-func (w *wallet) Builder() Builder {
-	return w.builder
-}
+func (w *wallet) Builder() Builder { _ = "STUB: not implemented"; return *new(Builder) }
 
-func (w *wallet) Signer() Signer {
-	return w.signer
-}
+func (w *wallet) Signer() Signer { _ = "STUB: not implemented"; return *new(Signer) }
 
 func (w *wallet) IssueImportTx(
 	chainID ids.ID,
 	to ethcommon.Address,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	baseFee, err := w.baseFee(options)
-	if err != nil {
-		return nil, err
-	}
-
-	utx, err := w.builder.NewImportTx(chainID, to, baseFee, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedAtomicTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueExportTx(
@@ -115,83 +97,27 @@ func (w *wallet) IssueExportTx(
 	outputs []*secp256k1fx.TransferOutput,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	baseFee, err := w.baseFee(options)
-	if err != nil {
-		return nil, err
-	}
-
-	utx, err := w.builder.NewExportTx(chainID, outputs, baseFee, options...)
-	if err != nil {
-		return nil, err
-	}
-	return w.IssueUnsignedAtomicTx(utx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueUnsignedAtomicTx(
 	utx atomic.UnsignedAtomicTx,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	ops := common.NewOptions(options)
-	ctx := ops.Context()
-	tx, err := SignUnsignedAtomic(ctx, w.signer, utx)
-	if err != nil {
-		return nil, err
-	}
-
-	return tx, w.IssueAtomicTx(tx, options...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *wallet) IssueAtomicTx(
 	tx *atomic.Tx,
 	options ...common.Option,
 ) error {
-	ops := common.NewOptions(options)
-	ctx := ops.Context()
-	startTime := time.Now()
-	txID, err := w.avaxClient.IssueTx(ctx, tx.SignedBytes())
-	if err != nil {
-		return err
-	}
-
-	issuanceDuration := time.Since(startTime)
-	if f := ops.IssuanceHandler(); f != nil {
-		f(common.IssuanceReceipt{
-			ChainAlias: Alias,
-			TxID:       txID,
-			Duration:   issuanceDuration,
-		})
-	}
-
-	if ops.AssumeDecided() {
-		return w.Backend.AcceptAtomicTx(ctx, tx)
-	}
-
-	if err := w.avaxClient.AwaitTxAccepted(ctx, txID, ops.PollFrequency()); err != nil {
-		return err
-	}
-
-	if f := ops.ConfirmationHandler(); f != nil {
-		totalDuration := time.Since(startTime)
-		confirmationDuration := totalDuration - issuanceDuration
-
-		f(common.ConfirmationReceipt{
-			ChainAlias:           Alias,
-			TxID:                 txID,
-			TotalDuration:        totalDuration,
-			ConfirmationDuration: confirmationDuration,
-		})
-	}
-
-	return w.Backend.AcceptAtomicTx(ctx, tx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (w *wallet) baseFee(options []common.Option) (*big.Int, error) {
-	ops := common.NewOptions(options)
-	baseFee := ops.BaseFee(nil)
-	if baseFee != nil {
-		return baseFee, nil
-	}
-
-	ctx := ops.Context()
-	return w.ethClient.EstimateBaseFee(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -9,7 +9,6 @@ import (
 	"github.com/ava-labs/firewood-go-ethhash/ffi"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/state"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/trie/trienode"
 	"github.com/ava-labs/libevm/triedb/database"
 )
@@ -42,18 +41,8 @@ type reconstructedAccountTrie struct {
 // it outlives the trie.
 // computeRootOnHash controls whether Hash and Commit update the cached root.
 func newReconstructedAccountTrie(recon *ffi.Reconstructed, computeRootOnHash bool) (*reconstructedAccountTrie, error) {
-	if recon == nil {
-		return nil, errNilReconstructed
-	}
-	return &reconstructedAccountTrie{
-		baseTrie: baseTrie{
-			reader:    &reconstructedReader{reconstructed: recon},
-			root:      common.Hash(recon.Root()),
-			dirtyKeys: make(map[string][]byte),
-		},
-		recon:             recon,
-		computeRootOnHash: computeRootOnHash,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Hash applies the accumulated ops to the reconstructed trie and returns a root.
@@ -64,32 +53,20 @@ func newReconstructedAccountTrie(recon *ffi.Reconstructed, computeRootOnHash boo
 // If there are no changes since the last call, the cached root is returned.
 // On error, the zero hash is returned.
 func (r *reconstructedAccountTrie) Hash() common.Hash {
-	hash, err := r.hash()
-	if err != nil {
-		log.Error("Failed to hash reconstructed trie", "error", err)
-		return common.Hash{}
-	}
-	return hash
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 func (r *reconstructedAccountTrie) hash() (common.Hash, error) {
-	if r.hasChanges {
-		// Reconstruct() mutates the receiver in place with the new state.
-		if err := r.recon.Reconstruct(r.updateOps); err != nil {
-			return common.Hash{}, err
-		}
-		if r.computeRootOnHash {
-			r.root = common.Hash(r.recon.Root())
-		}
-		// Unlike accountTrie, updateOps must be cleared because Reconstruct()
-		// is incremental (mutates in place), whereas createProposals() replays
-		// all ops from the parent root each time.
-		r.updateOps = nil
-		r.dirtyKeys = make(map[string][]byte)
-		r.hasChanges = false
-	}
-	return r.root, nil
+	_ = "STUB: not implemented"
+
+	// Reconstruct() mutates the receiver in place with the new state.
+	return *new(common.Hash), nil
 }
+
+// Unlike accountTrie, updateOps must be cleared because Reconstruct()
+// is incremental (mutates in place), whereas createProposals() replays
+// all ops from the parent root each time.
 
 // Commit applies the accumulated ops to the reconstructed trie and returns a
 // root with an empty [trienode.NodeSet]. If computeRootOnHash is true, the
@@ -98,11 +75,8 @@ func (r *reconstructedAccountTrie) hash() (common.Hash, error) {
 // returned unchanged. No persistence occurs; reconstructed views exist only in
 // memory and are not committed to the Firewood database.
 func (r *reconstructedAccountTrie) Commit(bool) (common.Hash, *trienode.NodeSet, error) {
-	hash, err := r.hash()
-	if err != nil {
-		return common.Hash{}, nil, err
-	}
-	return hash, trienode.NewNodeSet(common.Hash{}), nil
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil, nil
 }
 
 var _ database.Reader = (*reconstructedReader)(nil)
@@ -116,5 +90,6 @@ type reconstructedReader struct {
 
 // Node retrieves the value at the given path from the reconstructed view.
 func (r *reconstructedReader) Node(_ common.Hash, path []byte, _ common.Hash) ([]byte, error) {
-	return r.reconstructed.Get(path)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

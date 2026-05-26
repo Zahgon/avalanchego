@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
 )
@@ -44,46 +42,26 @@ type State struct {
 }
 
 func (vm *State) GetMinimumHeight(ctx context.Context) (uint64, error) {
-	if vm.GetMinimumHeightF != nil {
-		return vm.GetMinimumHeightF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetMinimumHeight, errMinimumHeight)
-	}
-	return 0, errMinimumHeight
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (vm *State) GetCurrentHeight(ctx context.Context) (uint64, error) {
-	if vm.GetCurrentHeightF != nil {
-		return vm.GetCurrentHeightF(ctx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetCurrentHeight, errCurrentHeight)
-	}
-	return 0, errCurrentHeight
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (vm *State) GetSubnetID(ctx context.Context, chainID ids.ID) (ids.ID, error) {
-	if vm.GetSubnetIDF != nil {
-		return vm.GetSubnetIDF(ctx, chainID)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetSubnetID, errSubnetID)
-	}
-	return ids.Empty, errSubnetID
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (vm *State) GetWarpValidatorSets(
 	ctx context.Context,
 	height uint64,
 ) (map[ids.ID]validators.WarpSet, error) {
-	if vm.GetWarpValidatorSetsF != nil {
-		return vm.GetWarpValidatorSetsF(ctx, height)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetWarpValidatorSets, errGetWarpValidatorSets)
-	}
-	return nil, errGetWarpValidatorSets
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (vm *State) GetValidatorSet(
@@ -91,24 +69,14 @@ func (vm *State) GetValidatorSet(
 	height uint64,
 	subnetID ids.ID,
 ) (map[ids.NodeID]*validators.GetValidatorOutput, error) {
-	if vm.GetValidatorSetF != nil {
-		return vm.GetValidatorSetF(ctx, height, subnetID)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetValidatorSet, errGetValidatorSet)
-	}
-	return nil, errGetValidatorSet
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (vm *State) GetCurrentValidatorSet(
 	ctx context.Context,
 	subnetID ids.ID,
 ) (map[ids.ID]*validators.GetCurrentValidatorOutput, uint64, error) {
-	if vm.GetCurrentValidatorSetF != nil {
-		return vm.GetCurrentValidatorSetF(ctx, subnetID)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetCurrentValidatorSet, errGetCurrentValidatorSet)
-	}
-	return nil, 0, errGetCurrentValidatorSet
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }

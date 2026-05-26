@@ -5,27 +5,12 @@ package metervm
 
 import (
 	"context"
-	"time"
 
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
 
 func (vm *blockVM) BuildBlockWithContext(ctx context.Context, blockCtx *block.Context) (snowman.Block, error) {
-	if vm.buildBlockVM == nil {
-		return vm.BuildBlock(ctx)
-	}
-
-	start := time.Now()
-	blk, err := vm.buildBlockVM.BuildBlockWithContext(ctx, blockCtx)
-	duration := float64(time.Since(start))
-	if err != nil {
-		vm.blockMetrics.buildBlockWithContextErr.Observe(duration)
-		return nil, err
-	}
-	vm.blockMetrics.buildBlockWithContext.Observe(duration)
-	return &meterBlock{
-		Block: blk,
-		vm:    vm,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }

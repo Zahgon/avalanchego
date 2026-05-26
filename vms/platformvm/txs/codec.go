@@ -4,15 +4,11 @@
 package txs
 
 import (
-	"errors"
 	"math"
 
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
-	"github.com/ava-labs/avalanchego/vms/platformvm/signer"
-	"github.com/ava-labs/avalanchego/vms/platformvm/stakeable"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 const CodecVersion = 0
@@ -65,67 +61,25 @@ func init() {
 // RegisterApricotTypes registers the type information for transactions that
 // were valid during the Apricot series of upgrades.
 func RegisterApricotTypes(targetCodec linearcodec.Codec) error {
-	errs := wrappers.Errs{}
+	_ = "STUB: not implemented"
+	return nil
 
 	// The secp256k1fx is registered here because this is the same place it is
 	// registered in the AVM. This ensures that the typeIDs match up for utxos
 	// in shared memory.
-	errs.Add(targetCodec.RegisterType(&secp256k1fx.TransferInput{}))
-	targetCodec.SkipRegistrations(1)
-	errs.Add(targetCodec.RegisterType(&secp256k1fx.TransferOutput{}))
-	targetCodec.SkipRegistrations(1)
-	errs.Add(
-		targetCodec.RegisterType(&secp256k1fx.Credential{}),
-		targetCodec.RegisterType(&secp256k1fx.Input{}),
-		targetCodec.RegisterType(&secp256k1fx.OutputOwners{}),
-
-		targetCodec.RegisterType(&AddValidatorTx{}),
-		targetCodec.RegisterType(&AddSubnetValidatorTx{}),
-		targetCodec.RegisterType(&AddDelegatorTx{}),
-		targetCodec.RegisterType(&CreateChainTx{}),
-		targetCodec.RegisterType(&CreateSubnetTx{}),
-		targetCodec.RegisterType(&ImportTx{}),
-		targetCodec.RegisterType(&ExportTx{}),
-		targetCodec.RegisterType(&AdvanceTimeTx{}),
-		targetCodec.RegisterType(&RewardValidatorTx{}),
-
-		targetCodec.RegisterType(&stakeable.LockIn{}),
-		targetCodec.RegisterType(&stakeable.LockOut{}),
-	)
-	return errs.Err
 }
 
 // RegisterBanffTypes registers the type information for transactions that were
 // valid during the Banff series of upgrades.
-func RegisterBanffTypes(targetCodec linearcodec.Codec) error {
-	return errors.Join(
-		targetCodec.RegisterType(&RemoveSubnetValidatorTx{}),
-		targetCodec.RegisterType(&TransformSubnetTx{}),
-		targetCodec.RegisterType(&AddPermissionlessValidatorTx{}),
-		targetCodec.RegisterType(&AddPermissionlessDelegatorTx{}),
-
-		targetCodec.RegisterType(&signer.Empty{}),
-		targetCodec.RegisterType(&signer.ProofOfPossession{}),
-	)
-}
+func RegisterBanffTypes(targetCodec linearcodec.Codec) error { _ = "STUB: not implemented"; return nil }
 
 // RegisterDurangoTypes registers the type information for transactions that
 // were valid during the Durango series of upgrades.
 func RegisterDurangoTypes(targetCodec linearcodec.Codec) error {
-	return errors.Join(
-		targetCodec.RegisterType(&TransferSubnetOwnershipTx{}),
-		targetCodec.RegisterType(&BaseTx{}),
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterEtnaTypes registers the type information for transactions that
 // were valid during the Etna series of upgrades.
-func RegisterEtnaTypes(targetCodec linearcodec.Codec) error {
-	return errors.Join(
-		targetCodec.RegisterType(&ConvertSubnetToL1Tx{}),
-		targetCodec.RegisterType(&RegisterL1ValidatorTx{}),
-		targetCodec.RegisterType(&SetL1ValidatorWeightTx{}),
-		targetCodec.RegisterType(&IncreaseL1ValidatorBalanceTx{}),
-		targetCodec.RegisterType(&DisableL1ValidatorTx{}),
-	)
-}
+func RegisterEtnaTypes(targetCodec linearcodec.Codec) error { _ = "STUB: not implemented"; return nil }

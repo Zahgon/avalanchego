@@ -6,9 +6,7 @@ package dynamicip
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/netip"
-	"strings"
 )
 
 const (
@@ -38,14 +36,6 @@ type Resolver interface {
 // [OpenDNSName], [IFConfigName], [IFConfigCoName], [IFConfigMeName].
 // If [resolverService] isn't one of the above, returns an error
 func NewResolver(resolverName string) (Resolver, error) {
-	switch strings.ToLower(resolverName) {
-	case OpenDNSName:
-		return newOpenDNSResolver(), nil
-	case IFConfigName, IFConfigCoName:
-		return &ifConfigResolver{url: ifConfigCoURL}, nil
-	case IFConfigMeName:
-		return &ifConfigResolver{url: ifConfigMeURL}, nil
-	default:
-		return nil, fmt.Errorf("%w: %s", errUnknownResolver, resolverName)
-	}
+	_ = "STUB: not implemented"
+	return *new(Resolver), nil
 }

@@ -5,11 +5,9 @@ package message
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
 
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
@@ -39,13 +37,6 @@ type AcceptImplFn func(Syncable) (block.StateSyncMode, error)
 
 // ParseSyncableSummary unmarshals `summaryBytes` into `summary` and returns its ID.
 func ParseSyncableSummary(c codec.Manager, summaryBytes []byte, summary any) (ids.ID, error) {
-	if _, err := c.Unmarshal(summaryBytes, summary); err != nil {
-		return ids.Empty, fmt.Errorf("%w: %w", errParseSyncableSummary, err)
-	}
-
-	summaryID, err := ids.ToID(crypto.Keccak256(summaryBytes))
-	if err != nil {
-		return ids.Empty, fmt.Errorf("%w: %w", errComputeSummaryID, err)
-	}
-	return summaryID, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

@@ -36,26 +36,17 @@ type signer struct {
 }
 
 func New(kc keychain.Keychain, backend Backend) Signer {
-	return &signer{
-		kc:      kc,
-		backend: backend,
-	}
+	_ = "STUB: not implemented"
+	return *new(Signer)
 }
 
-func (s *signer) Sign(ctx context.Context, tx *txs.Tx) error {
-	return tx.Unsigned.Visit(&visitor{
-		kc:      s.kc,
-		backend: s.backend,
-		ctx:     ctx,
-		tx:      tx,
-	})
-}
+func (s *signer) Sign(ctx context.Context, tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 func SignUnsigned(
 	ctx context.Context,
 	signer Signer,
 	utx txs.UnsignedTx,
 ) (*txs.Tx, error) {
-	tx := &txs.Tx{Unsigned: utx}
-	return tx, signer.Sign(ctx, tx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

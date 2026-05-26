@@ -4,13 +4,7 @@
 package e2e
 
 import (
-	"errors"
-	"flag"
-	"fmt"
-	"os"
 	"time"
-
-	"github.com/spf13/cast"
 
 	"github.com/ava-labs/avalanchego/tests/fixture/tmpnet"
 	"github.com/ava-labs/avalanchego/tests/fixture/tmpnet/flags"
@@ -44,85 +38,40 @@ type FlagVars struct {
 }
 
 func (v *FlagVars) NetworkCmd() (NetworkCmd, error) {
-	cmd := EmptyNetworkCmd
-	count := 0
-	if v.startNetwork {
-		cmd = StartNetworkCmd
-		count++
-	}
-	if v.stopNetwork {
-		cmd = StopNetworkCmd
-		count++
-	}
-	if v.restartNetwork {
-		cmd = RestartNetworkCmd
-		count++
-	}
-	if v.reuseNetwork {
-		cmd = ReuseNetworkCmd
-		count++
-	}
-	if count > 1 {
-		return EmptyNetworkCmd, errors.New("only one of --start-network, --stop-network, --restart-network, or --reuse-network can be specified")
-	}
-
-	return cmd, nil
+	_ = "STUB: not implemented"
+	return *new(NetworkCmd), nil
 }
 
-func (v *FlagVars) RootNetworkDir() string {
-	return v.startNetworkVars.RootNetworkDir
-}
+func (v *FlagVars) RootNetworkDir() string { _ = "STUB: not implemented"; return "" }
 
-func (v *FlagVars) NetworkOwner() string {
-	return v.startNetworkVars.NetworkOwner
-}
+func (v *FlagVars) NetworkOwner() string { _ = "STUB: not implemented"; return "" }
 
-func (v *FlagVars) NodeCount() (int, error) {
-	return v.startNetworkVars.GetNodeCount()
-}
+func (v *FlagVars) NodeCount() (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (v *FlagVars) NodeRuntimeConfig() (*tmpnet.NodeRuntimeConfig, error) {
-	return v.startNetworkVars.GetNodeRuntimeConfig()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (v *FlagVars) StartMetricsCollector() bool {
-	return v.collectorVars.StartMetricsCollector
-}
+func (v *FlagVars) StartMetricsCollector() bool { _ = "STUB: not implemented"; return false }
 
-func (v *FlagVars) StartLogsCollector() bool {
-	return v.collectorVars.StartLogsCollector
-}
+func (v *FlagVars) StartLogsCollector() bool { _ = "STUB: not implemented"; return false }
 
-func (v *FlagVars) CheckMetricsCollected() bool {
-	return v.checkMetricsCollected
-}
+func (v *FlagVars) CheckMetricsCollected() bool { _ = "STUB: not implemented"; return false }
 
-func (v *FlagVars) CheckLogsCollected() bool {
-	return v.checkLogsCollected
-}
+func (v *FlagVars) CheckLogsCollected() bool { _ = "STUB: not implemented"; return false }
 
-func (v *FlagVars) NetworkDir() string {
-	if !v.reuseNetwork {
-		return ""
-	}
-	if len(v.networkDir) > 0 {
-		return v.networkDir
-	}
-	return os.Getenv(tmpnet.NetworkDirEnvName)
-}
+func (v *FlagVars) NetworkDir() string { _ = "STUB: not implemented"; return "" }
 
 func (v *FlagVars) NetworkShutdownDelay() time.Duration {
-	if v.StartMetricsCollector() {
-		// Only return a non-zero value if we want to ensure the collectors have
-		// a chance to collect the metrics at the end of the test.
-		return tmpnet.NetworkShutdownDelay
-	}
-	return 0
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-func (v *FlagVars) ActivateLatest() bool {
-	return v.activateLatest
-}
+// Only return a non-zero value if we want to ensure the collectors have
+// a chance to collect the metrics at the end of the test.
+
+func (v *FlagVars) ActivateLatest() bool { _ = "STUB: not implemented"; return false }
 
 type DefaultOption func(*DefaultOptions)
 
@@ -131,110 +80,25 @@ type DefaultOptions struct {
 	nodeCount int
 }
 
-func newDefaultOptions(ops []DefaultOption) *DefaultOptions {
-	o := &DefaultOptions{}
-	for _, op := range ops {
-		op(o)
-	}
-	return o
-}
+func newDefaultOptions(ops []DefaultOption) *DefaultOptions { _ = "STUB: not implemented"; return nil }
 
-func (d *DefaultOptions) Owner() string {
-	return d.owner
-}
+func (d *DefaultOptions) Owner() string { _ = "STUB: not implemented"; return "" }
 
-func (d *DefaultOptions) NodeCount() int {
-	if d.nodeCount <= 0 {
-		return tmpnet.DefaultNodeCount
-	}
-
-	return d.nodeCount
-}
+func (d *DefaultOptions) NodeCount() int { _ = "STUB: not implemented"; return 0 }
 
 func WithDefaultOwner(owner string) DefaultOption {
-	return func(d *DefaultOptions) {
-		d.owner = owner
-	}
+	_ = "STUB: not implemented"
+	return *new(DefaultOption)
 }
 
 func WithDefaultNodeCount(nodeCount int) DefaultOption {
-	return func(d *DefaultOptions) {
-		d.nodeCount = nodeCount
-	}
+	_ = "STUB: not implemented"
+	return *new(DefaultOption)
 }
 
-func RegisterFlags(ops ...DefaultOption) *FlagVars {
-	vars := FlagVars{}
-
-	flag.BoolVar(
-		&vars.startNetwork,
-		"start-network",
-		false,
-		"[optional] start a new network and exit without executing any tests. The new network cannot be reused with --reuse-network.",
-	)
-
-	options := newDefaultOptions(ops)
-	vars.startNetworkVars = flags.NewStartNetworkFlagVars(
-		options.Owner(),
-		options.NodeCount(),
-	)
-
-	vars.collectorVars = flags.NewCollectorFlagVars()
-
-	SetCheckCollectionFlags(
-		&vars.checkMetricsCollected,
-		&vars.checkLogsCollected,
-	)
-
-	flag.StringVar(
-		&vars.networkDir,
-		"network-dir",
-		tmpnet.GetEnvWithDefault(tmpnet.NetworkDirEnvName, ""),
-		fmt.Sprintf("[optional] the dir containing the configuration of an existing network. Will only be used if --reuse-network, --restart-network or --stop-network are specified. Also possible to configure via the %s env variable.", tmpnet.NetworkDirEnvName),
-	)
-
-	flag.BoolVar(
-		&vars.reuseNetwork,
-		"reuse-network",
-		false,
-		"[optional] run tests against an existing network previously started with --reuse-network. If a network is not already running, create a new one and leave it running for subsequent usage.",
-	)
-
-	flag.BoolVar(
-		&vars.restartNetwork,
-		"restart-network",
-		false,
-		"[optional] like --reuse-network except an already running network is restarted before running tests to ensure the network represents the current state of binaries on disk.",
-	)
-
-	flag.BoolVar(
-		&vars.stopNetwork,
-		"stop-network",
-		false,
-		"[optional] stop an existing network started with --reuse-network and exit without executing any tests.",
-	)
-
-	flag.BoolVar(
-		&vars.activateLatest,
-		"activate-latest",
-		false,
-		"[optional] activate all upgrades up to and including the latest upgrade",
-	)
-
-	return &vars
-}
+func RegisterFlags(ops ...DefaultOption) *FlagVars { _ = "STUB: not implemented"; return nil }
 
 func SetCheckCollectionFlags(checkMetricsCollected *bool, checkLogsCollected *bool) {
-	flag.BoolVar(
-		checkMetricsCollected,
-		"check-metrics-collected",
-		cast.ToBool(tmpnet.GetEnvWithDefault("TMPNET_CHECK_METRICS_COLLECTED", "false")),
-		"[optional] whether to check that metrics have been collected from nodes of the temporary network.",
-	)
-	flag.BoolVar(
-		checkLogsCollected,
-		"check-logs-collected",
-		cast.ToBool(tmpnet.GetEnvWithDefault("TMPNET_CHECK_LOGS_COLLECTED", "false")),
-		"[optional] whether to check that logs have been collected from nodes of the temporary network.",
-	)
+	_ = "STUB: not implemented"
+	return
 }

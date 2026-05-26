@@ -29,9 +29,6 @@ package eth
 
 import (
 	"time"
-
-	"github.com/ava-labs/libevm/common/bitutil"
-	"github.com/ava-labs/libevm/core/rawdb"
 )
 
 const (
@@ -54,32 +51,4 @@ const (
 
 // startBloomHandlers starts a batch of goroutines to accept bloom bit database
 // retrievals from possibly a range of filters and serving the data to satisfy.
-func (eth *Ethereum) startBloomHandlers(sectionSize uint64) {
-	for i := 0; i < bloomServiceThreads; i++ {
-		go func() {
-			for {
-				select {
-				case <-eth.closeBloomHandler:
-					return
-
-				case request := <-eth.bloomRequests:
-					task := <-request
-					task.Bitsets = make([][]byte, len(task.Sections))
-					for i, section := range task.Sections {
-						head := rawdb.ReadCanonicalHash(eth.chainDb, (section+1)*sectionSize-1)
-						if compVector, err := rawdb.ReadBloomBits(eth.chainDb, task.Bit, section, head); err == nil {
-							if blob, err := bitutil.DecompressBytes(compVector, int(sectionSize/8)); err == nil {
-								task.Bitsets[i] = blob
-							} else {
-								task.Error = err
-							}
-						} else {
-							task.Error = err
-						}
-					}
-					request <- task
-				}
-			}
-		}()
-	}
-}
+func (eth *Ethereum) startBloomHandlers(sectionSize uint64) { _ = "STUB: not implemented"; return }

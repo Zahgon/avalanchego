@@ -6,12 +6,10 @@ package simplex
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 	"time"
 
 	"github.com/ava-labs/simplex"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/proto/pb/p2p"
@@ -60,221 +58,57 @@ type Engine struct {
 // NewEngine creates a new simplex engine. The VM must be initialized before
 // calling this function.
 func NewEngine(ctx context.Context, config *Config) (*Engine, error) {
-	if config.Params == nil {
-		return nil, errNilSimplexParameters
-	}
-
-	signer, verifier, err := NewBLSAuth(config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create BLS auth: %w", err)
-	}
-
-	return newEngineWithSignerVerifier(ctx, config, signer, verifier)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func newEngineWithSignerVerifier(ctx context.Context, config *Config, signer BLSSigner, verifier BLSVerifier) (*Engine, error) {
-	if config.Params == nil {
-		return nil, errNilSimplexParameters
-	}
-
-	qcDeserializer := &QCDeserializer{
-		verifier: &verifier,
-	}
-
-	signatureAggregator := &SignatureAggregator{
-		verifier: &verifier,
-	}
-	comm, err := NewComm(config)
-	if err != nil {
-		return nil, err
-	}
-
-	bt := newBlockTracker(config.VM)
-
-	storage, err := newStorage(ctx, config, qcDeserializer, bt)
-	if err != nil {
-		return nil, err
-	}
-
-	if storage.NumBlocks() == 0 {
-		return nil, errors.New("storage has no blocks")
-	}
-
-	lastBlock, _, err := storage.Retrieve(storage.NumBlocks() - 1)
-	if err != nil {
-		return nil, fmt.Errorf("couldn't find last block at height %d: %w", storage.NumBlocks()-1, err)
-	}
-
-	simplexBlock, ok := lastBlock.(*Block)
-	if !ok {
-		return nil, fmt.Errorf("expected last block to be of type *Block but got %T", lastBlock)
-	}
-
-	// Initialize the blockTracker with the last block fetched from Storage.
-	bt.init(simplexBlock)
-
-	blockBuilder := &BlockBuilder{
-		vm:           config.VM,
-		blockTracker: bt,
-		log:          config.Log,
-	}
-
-	blockDeserializer := &blockDeserializer{
-		parser:       config.VM,
-		blockTracker: bt,
-	}
-
-	epochConfig := simplex.EpochConfig{
-		MaxProposalWait:     config.Params.MaxNetworkDelay,
-		MaxRebroadcastWait:  config.Params.MaxRebroadcastWait,
-		QCDeserializer:      qcDeserializer,
-		Logger:              config.Log,
-		ID:                  config.Ctx.NodeID[:],
-		Signer:              &signer,
-		Verifier:            &verifier,
-		BlockDeserializer:   blockDeserializer,
-		SignatureAggregator: signatureAggregator,
-		Comm:                comm,
-		Storage:             storage,
-		WAL:                 config.WAL,
-		BlockBuilder:        blockBuilder,
-		Epoch:               simplexBlock.metadata.Epoch,
-		StartTime:           time.Now(),
-		ReplicationEnabled:  true,
-	}
-
-	epoch, err := simplex.NewEpoch(epochConfig)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Engine{
-		AllGetsServer:               common.NewNoOpAllGetsServer(config.Log),
-		StateSummaryFrontierHandler: common.NewNoOpStateSummaryFrontierHandler(config.Log),
-		AcceptedStateSummaryHandler: common.NewNoOpAcceptedStateSummaryHandler(config.Log),
-		AcceptedFrontierHandler:     common.NewNoOpAcceptedFrontierHandler(config.Log),
-		AcceptedHandler:             common.NewNoOpAcceptedHandler(config.Log),
-		AncestorsHandler:            common.NewNoOpAncestorsHandler(config.Log),
-		PutHandler:                  common.NewNoOpPutHandler(config.Log),
-		QueryHandler:                common.NewNoOpQueryHandler(config.Log),
-		ChitsHandler:                common.NewNoOpChitsHandler(config.Log),
-		AppHandler:                  config.VM,
-		Connector:                   config.VM,
-		vm:                          config.VM,
-
-		epoch:              epoch,
-		blockDeserializer:  blockDeserializer,
-		quorumDeserializer: qcDeserializer,
-		logger:             config.Log,
-
-		tickInterval: getTickInterval(config.Params),
-		shutdown:     make(chan struct{}, 1),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (e *Engine) Start(_ context.Context, _ uint32) error {
-	e.logger.Info(
-		"Starting simplex engine",
-		zap.Duration("TickInterval", e.tickInterval),
-		zap.Duration("MaxProposalWait", e.epoch.MaxProposalWait),
-		zap.Duration("MaxRebroadcastWait", e.epoch.MaxRebroadcastWait),
-	)
-	if err := e.epoch.Start(); err != nil {
-		return fmt.Errorf("failed to start simplex epoch: %w", err)
-	}
+// Initialize the blockTracker with the last block fetched from Storage.
 
-	go e.tick()
-	return nil
-}
+func (e *Engine) Start(_ context.Context, _ uint32) error { _ = "STUB: not implemented"; return nil }
 
 // getTickInterval defines a reasonable tick interval for simplex to advance time.
 func getTickInterval(params *simplexparams.Parameters) time.Duration {
-	tick := min(int64(params.MaxNetworkDelay), int64(params.MaxRebroadcastWait)) / 10
-	return time.Duration(tick)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 // tick periodically advances the engine's time.
-func (e *Engine) tick() {
-	ticker := time.NewTicker(e.tickInterval)
-	defer ticker.Stop()
-
-	for {
-		select {
-		case tick := <-ticker.C:
-			e.epoch.AdvanceTime(tick)
-		case <-e.shutdown:
-			return
-		}
-	}
-}
+func (e *Engine) tick() { _ = "STUB: not implemented"; return }
 
 func (e *Engine) Simplex(ctx context.Context, nodeID ids.NodeID, msg *p2p.Simplex) error {
-	simplexMsg, err := e.p2pToSimplexMessage(ctx, msg)
-	if err != nil {
-		e.logger.Debug("failed to convert p2p message to simplex message", zap.Error(err))
-		return nil
-	}
-
-	return e.epoch.HandleMessage(simplexMsg, nodeID[:])
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (e *Engine) p2pToSimplexMessage(ctx context.Context, msg *p2p.Simplex) (*simplex.Message, error) {
-	if msg == nil {
-		return nil, errNilField
-	}
-
-	switch {
-	case msg.GetBlockProposal() != nil:
-		return blockProposalFromP2P(ctx, msg.GetBlockProposal(), e.blockDeserializer)
-	case msg.GetEmptyNotarization() != nil:
-		return emptyNotarizationMessageFromP2P(msg.GetEmptyNotarization(), e.quorumDeserializer)
-	case msg.GetVote() != nil:
-		return voteFromP2P(msg.GetVote())
-	case msg.GetEmptyVote() != nil:
-		return emptyVoteFromP2P(msg.GetEmptyVote())
-	case msg.GetNotarization() != nil:
-		return notarizationMessageFromP2P(msg.GetNotarization(), e.quorumDeserializer)
-	case msg.GetFinalizeVote() != nil:
-		return finalizeVoteFromP2P(msg.GetFinalizeVote())
-	case msg.GetFinalization() != nil:
-		return finalizationMessageFromP2P(msg.GetFinalization(), e.quorumDeserializer)
-	case msg.GetReplicationRequest() != nil:
-		return replicationRequestFromP2P(msg.GetReplicationRequest()), nil
-	case msg.GetReplicationResponse() != nil:
-		return replicationResponseFromP2P(ctx, msg.GetReplicationResponse(), e.blockDeserializer, e.quorumDeserializer)
-	default:
-		return nil, errUnknownMessageType
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Gossip is a no-op because there is no need for the Simplex engine
 // to periodically pull/push messages from the network.
 // This is all handled internally inside of Simplex consensus.
 func (*Engine) Gossip(_ context.Context) error {
+	_ = "STUB: not implemented"
+
+	// Notify is a no-op because the Simplex engine does not need to be notified of any events from the VM.
+	// This is because the Simplex instance listens to the VM events by directly calling `WaitForEvent` when needed.
 	return nil
 }
 
-// Notify is a no-op because the Simplex engine does not need to be notified of any events from the VM.
-// This is because the Simplex instance listens to the VM events by directly calling `WaitForEvent` when needed.
 func (*Engine) Notify(_ context.Context, _ common.Message) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (e *Engine) HealthCheck(ctx context.Context) (interface{}, error) {
-	vmIntf, vmErr := e.vm.HealthCheck(ctx)
-	intf := map[string]interface{}{
-		"consensus": struct{}{},
-		"vm":        vmIntf,
-	}
-
-	return intf, vmErr
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (e *Engine) Shutdown(_ context.Context) error {
-	e.shutdownOnce.Do(func() {
-		e.epoch.Stop()
-		e.logger.Info("Stopped simplex engine")
-		close(e.shutdown)
-	})
-	return nil
-}
+func (e *Engine) Shutdown(_ context.Context) error { _ = "STUB: not implemented"; return nil }

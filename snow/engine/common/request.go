@@ -4,8 +4,6 @@
 package common
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -14,6 +12,4 @@ type Request struct {
 	RequestID uint32
 }
 
-func (r Request) MarshalText() ([]byte, error) {
-	return fmt.Appendf(nil, "%s:%d", r.NodeID, r.RequestID), nil
-}
+func (r Request) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }

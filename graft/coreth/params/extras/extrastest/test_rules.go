@@ -4,26 +4,13 @@
 package extrastest
 
 import (
-	"fmt"
-
-	"github.com/ava-labs/libevm/common"
-
-	"github.com/ava-labs/avalanchego/graft/coreth/params"
 	"github.com/ava-labs/avalanchego/graft/coreth/params/extras"
-	"github.com/ava-labs/avalanchego/graft/coreth/params/paramstest"
-	"github.com/ava-labs/avalanchego/upgrade"
 	"github.com/ava-labs/avalanchego/upgrade/upgradetest"
 )
 
-func ForkToRules(fork upgradetest.Fork) *extras.Rules {
-	chainConfig, ok := paramstest.ForkToChainConfig[fork]
-	if !ok {
-		panic(fmt.Sprintf("unknown fork: %s", fork))
-	}
-	return params.GetRulesExtra(chainConfig.Rules(common.Big0, params.IsMergeTODO, 0))
-}
+func ForkToRules(fork upgradetest.Fork) *extras.Rules { _ = "STUB: not implemented"; return nil }
 
 func ForkToAvalancheRules(fork upgradetest.Fork) extras.AvalancheRules {
-	networkUpgrades := extras.GetNetworkUpgrades(upgradetest.GetConfig(fork))
-	return networkUpgrades.GetAvalancheRules(uint64(upgrade.InitiallyActiveTime.Unix()))
+	_ = "STUB: not implemented"
+	return *new(extras.AvalancheRules)
 }

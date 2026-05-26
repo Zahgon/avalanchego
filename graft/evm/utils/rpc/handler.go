@@ -5,10 +5,6 @@ package rpc
 
 import (
 	"net/http"
-
-	"github.com/gorilla/rpc/v2"
-
-	"github.com/ava-labs/avalanchego/utils/json"
 )
 
 // NewHandler returns a new Handler for a service where:
@@ -16,8 +12,6 @@ import (
 //     [service] should be a gorilla RPC service (see https://www.gorillatoolkit.org/pkg/rpc/v2)
 //   - The name of the service is [name]
 func NewHandler(name string, service interface{}) (http.Handler, error) {
-	server := rpc.NewServer()
-	server.RegisterCodec(json.NewCodec(), "application/json")
-	server.RegisterCodec(json.NewCodec(), "application/json;charset=UTF-8")
-	return server, server.RegisterService(service, name)
+	_ = "STUB: not implemented"
+	return *new(http.Handler), nil
 }

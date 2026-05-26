@@ -7,7 +7,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/onsi/ginkgo/v2"
 	"go.uber.org/zap/zapcore"
 
 	"github.com/ava-labs/avalanchego/tests"
@@ -20,16 +19,18 @@ var _ tests.TestContext = (*GinkgoTestContext)(nil)
 type ginkgoWriteCloser struct{}
 
 func (*ginkgoWriteCloser) Write(p []byte) (n int, err error) {
+	_ = "STUB: not implemented"
 	// Add a leading space to better differentiate from other ginkgo output
-	_, _ = ginkgo.GinkgoWriter.Write([]byte(" "))
-	return ginkgo.GinkgoWriter.Write(p)
+	return 0, nil
 }
 
 func (*ginkgoWriteCloser) Close() error {
+	_ = "STUB: not implemented"
+
+	// Define a simple encoder config appropriate for logging with ginkgo
 	return nil
 }
 
-// Define a simple encoder config appropriate for logging with ginkgo
 var ginkgoEncoderConfig = zapcore.EncoderConfig{
 	// Time, name and caller are omitted for consistency with previous output.
 	TimeKey:        "",
@@ -44,14 +45,8 @@ var ginkgoEncoderConfig = zapcore.EncoderConfig{
 
 // NewGinkgoLogger returns a logger with limited output
 func newGinkgoLogger(cfg zapcore.Encoder) logging.Logger {
-	return logging.NewLogger(
-		"",
-		logging.NewWrappedCore(
-			logging.Info,
-			&ginkgoWriteCloser{},
-			cfg,
-		),
-	)
+	_ = "STUB: not implemented"
+	return *new(logging.Logger)
 }
 
 type GinkgoTestContext struct {
@@ -61,79 +56,61 @@ type GinkgoTestContext struct {
 // NewEventHandlerTestContext provides a logger with full output to
 // account for the limited context otherwise provided in an event
 // handler e.g. SynchronizedBeforeSuite.
-func NewEventHandlerTestContext() *GinkgoTestContext {
-	return &GinkgoTestContext{
-		logger: newGinkgoLogger(logging.Auto.ConsoleEncoder()),
-	}
-}
+func NewEventHandlerTestContext() *GinkgoTestContext { _ = "STUB: not implemented"; return nil }
 
 // NewTestContext provides a logger with limited output to account for
 // the context already provided by ginkgo for test logging.
-func NewTestContext() *GinkgoTestContext {
-	return &GinkgoTestContext{
-		logger: newGinkgoLogger(
-			zapcore.NewConsoleEncoder(ginkgoEncoderConfig),
-		),
-	}
-}
+func NewTestContext() *GinkgoTestContext { _ = "STUB: not implemented"; return nil }
 
 func (*GinkgoTestContext) Errorf(format string, args ...interface{}) {
-	ginkgo.GinkgoT().Errorf(format, args...)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (*GinkgoTestContext) FailNow() {
-	ginkgo.GinkgoT().FailNow()
-}
+func (*GinkgoTestContext) FailNow() { _ = "STUB: not implemented"; return }
 
 func (tc *GinkgoTestContext) Log() logging.Logger {
-	return tc.logger
+	_ = "STUB: not implemented"
+	return *new(logging.Logger)
 }
 
 func (*GinkgoTestContext) Cleanup() {
+	_ = "STUB: not implemented"
 	// No-op - ginkgo does this automatically
+	return
 }
 
-func (*GinkgoTestContext) DeferCleanup(cleanup func()) {
-	ginkgo.DeferCleanup(cleanup)
-}
+func (*GinkgoTestContext) DeferCleanup(cleanup func()) { _ = "STUB: not implemented"; return }
 
-func (*GinkgoTestContext) By(text string, callback ...func()) {
-	ginkgo.By(text, callback...)
-}
+func (*GinkgoTestContext) By(text string, callback ...func()) { _ = "STUB: not implemented"; return }
 
 // Helper simplifying use of a timed context by canceling the context on ginkgo teardown.
 func (tc *GinkgoTestContext) ContextWithTimeout(duration time.Duration) context.Context {
-	return tests.ContextWithTimeout(tc, duration)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Helper simplifying use of a timed context configured with the default timeout.
 func (tc *GinkgoTestContext) DefaultContext() context.Context {
-	return tests.DefaultContext(tc)
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Helper simplifying use via an option of a timed context configured with the default timeout.
 func (tc *GinkgoTestContext) WithDefaultContext() common.Option {
-	return tests.WithDefaultContext(tc)
+	_ = "STUB: not implemented"
+	return *new(common.Option)
 }
 
 func (*GinkgoTestContext) GetDefaultContextParent() context.Context {
-	return context.Background()
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Re-implementation of testify/require.Eventually that is compatible with ginkgo. testify's
 // version calls the condition function with a goroutine and ginkgo assertions don't work
 // properly in goroutines.
 func (*GinkgoTestContext) Eventually(condition func() bool, waitFor time.Duration, tick time.Duration, msg string) {
-	ticker := time.NewTicker(tick)
-	defer ticker.Stop()
-
-	ctx, cancel := context.WithTimeout(context.Background(), waitFor)
-	defer cancel()
-	for !condition() {
-		select {
-		case <-ctx.Done():
-			ginkgo.GinkgoT().Fatal(msg)
-		case <-ticker.C:
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }

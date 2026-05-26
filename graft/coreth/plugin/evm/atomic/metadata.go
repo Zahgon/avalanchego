@@ -5,7 +5,6 @@ package atomic
 
 import (
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 type Metadata struct {
@@ -15,23 +14,17 @@ type Metadata struct {
 }
 
 // Initialize set the bytes and ID
-func (md *Metadata) Initialize(unsignedBytes, bytes []byte) {
-	md.id = hashing.ComputeHash256Array(bytes)
-	md.unsignedBytes = unsignedBytes
-	md.bytes = bytes
-}
+func (md *Metadata) Initialize(unsignedBytes, bytes []byte) { _ = "STUB: not implemented"; return }
 
 // ID returns the unique ID of this data
 func (md *Metadata) ID() ids.ID {
-	return md.id
+	_ = "STUB: not implemented"
+
+	// UnsignedBytes returns the unsigned binary representation of this data
+	return *new(ids.ID)
 }
 
-// UnsignedBytes returns the unsigned binary representation of this data
-func (md *Metadata) Bytes() []byte {
-	return md.unsignedBytes
-}
+func (md *Metadata) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // Bytes returns the binary representation of this data
-func (md *Metadata) SignedBytes() []byte {
-	return md.bytes
-}
+func (md *Metadata) SignedBytes() []byte { _ = "STUB: not implemented"; return nil }

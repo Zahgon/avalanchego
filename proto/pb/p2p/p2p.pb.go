@@ -7,11 +7,10 @@
 package p2p
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -45,32 +44,27 @@ var (
 	}
 )
 
-func (x EngineType) Enum() *EngineType {
-	p := new(EngineType)
-	*p = x
-	return p
-}
+func (x EngineType) Enum() *EngineType { _ = "STUB: not implemented"; return nil }
 
-func (x EngineType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x EngineType) String() string { _ = "STUB: not implemented"; return "" }
 
 func (EngineType) Descriptor() protoreflect.EnumDescriptor {
-	return file_p2p_p2p_proto_enumTypes[0].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (EngineType) Type() protoreflect.EnumType {
-	return &file_p2p_p2p_proto_enumTypes[0]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x EngineType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use EngineType.Descriptor instead.
-func (EngineType) EnumDescriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{0}
-}
+func (EngineType) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 // Represents peer-to-peer messages.
 // Only one type can be non-null.
@@ -113,276 +107,91 @@ type Message struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Message) Reset() {
-	*x = Message{}
-	mi := &file_p2p_p2p_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Message) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Message) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Message) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Message) ProtoMessage() {}
+func (*Message) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
-func (*Message) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{0}
-}
+func (*Message) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 func (x *Message) GetMessage() isMessage_Message {
-	if x != nil {
-		return x.Message
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(isMessage_Message)
 }
 
-func (x *Message) GetCompressedZstd() []byte {
-	if x != nil {
-		if x, ok := x.Message.(*Message_CompressedZstd); ok {
-			return x.CompressedZstd
-		}
-	}
-	return nil
-}
+func (x *Message) GetCompressedZstd() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPing() *Ping {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Ping); ok {
-			return x.Ping
-		}
-	}
-	return nil
-}
+func (x *Message) GetPing() *Ping { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPong() *Pong {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Pong); ok {
-			return x.Pong
-		}
-	}
-	return nil
-}
+func (x *Message) GetPong() *Pong { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetHandshake() *Handshake {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Handshake); ok {
-			return x.Handshake
-		}
-	}
-	return nil
-}
+func (x *Message) GetHandshake() *Handshake { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetGetPeerList() *GetPeerList {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetPeerList); ok {
-			return x.GetPeerList
-		}
-	}
-	return nil
-}
+func (x *Message) GetGetPeerList() *GetPeerList { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPeerList_() *PeerList {
-	if x != nil {
-		if x, ok := x.Message.(*Message_PeerList_); ok {
-			return x.PeerList_
-		}
-	}
-	return nil
-}
+func (x *Message) GetPeerList_() *PeerList { _ = "STUB: not implemented"; return nil }
 
 func (x *Message) GetGetStateSummaryFrontier() *GetStateSummaryFrontier {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetStateSummaryFrontier); ok {
-			return x.GetStateSummaryFrontier
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *Message) GetStateSummaryFrontier_() *StateSummaryFrontier {
-	if x != nil {
-		if x, ok := x.Message.(*Message_StateSummaryFrontier_); ok {
-			return x.StateSummaryFrontier_
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *Message) GetGetAcceptedStateSummary() *GetAcceptedStateSummary {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetAcceptedStateSummary); ok {
-			return x.GetAcceptedStateSummary
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *Message) GetAcceptedStateSummary_() *AcceptedStateSummary {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AcceptedStateSummary_); ok {
-			return x.AcceptedStateSummary_
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *Message) GetGetAcceptedFrontier() *GetAcceptedFrontier {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetAcceptedFrontier); ok {
-			return x.GetAcceptedFrontier
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *Message) GetAcceptedFrontier_() *AcceptedFrontier {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AcceptedFrontier_); ok {
-			return x.AcceptedFrontier_
-		}
-	}
-	return nil
-}
+func (x *Message) GetAcceptedFrontier_() *AcceptedFrontier { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetGetAccepted() *GetAccepted {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetAccepted); ok {
-			return x.GetAccepted
-		}
-	}
-	return nil
-}
+func (x *Message) GetGetAccepted() *GetAccepted { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAccepted_() *Accepted {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Accepted_); ok {
-			return x.Accepted_
-		}
-	}
-	return nil
-}
+func (x *Message) GetAccepted_() *Accepted { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetGetAncestors() *GetAncestors {
-	if x != nil {
-		if x, ok := x.Message.(*Message_GetAncestors); ok {
-			return x.GetAncestors
-		}
-	}
-	return nil
-}
+func (x *Message) GetGetAncestors() *GetAncestors { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAncestors_() *Ancestors {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Ancestors_); ok {
-			return x.Ancestors_
-		}
-	}
-	return nil
-}
+func (x *Message) GetAncestors_() *Ancestors { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetGet() *Get {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Get); ok {
-			return x.Get
-		}
-	}
-	return nil
-}
+func (x *Message) GetGet() *Get { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPut() *Put {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Put); ok {
-			return x.Put
-		}
-	}
-	return nil
-}
+func (x *Message) GetPut() *Put { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPushQuery() *PushQuery {
-	if x != nil {
-		if x, ok := x.Message.(*Message_PushQuery); ok {
-			return x.PushQuery
-		}
-	}
-	return nil
-}
+func (x *Message) GetPushQuery() *PushQuery { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetPullQuery() *PullQuery {
-	if x != nil {
-		if x, ok := x.Message.(*Message_PullQuery); ok {
-			return x.PullQuery
-		}
-	}
-	return nil
-}
+func (x *Message) GetPullQuery() *PullQuery { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetChits() *Chits {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Chits); ok {
-			return x.Chits
-		}
-	}
-	return nil
-}
+func (x *Message) GetChits() *Chits { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAppRequest() *AppRequest {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AppRequest); ok {
-			return x.AppRequest
-		}
-	}
-	return nil
-}
+func (x *Message) GetAppRequest() *AppRequest { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAppResponse() *AppResponse {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AppResponse); ok {
-			return x.AppResponse
-		}
-	}
-	return nil
-}
+func (x *Message) GetAppResponse() *AppResponse { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAppGossip() *AppGossip {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AppGossip); ok {
-			return x.AppGossip
-		}
-	}
-	return nil
-}
+func (x *Message) GetAppGossip() *AppGossip { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetAppError() *AppError {
-	if x != nil {
-		if x, ok := x.Message.(*Message_AppError); ok {
-			return x.AppError
-		}
-	}
-	return nil
-}
+func (x *Message) GetAppError() *AppError { _ = "STUB: not implemented"; return nil }
 
-func (x *Message) GetSimplex() *Simplex {
-	if x != nil {
-		if x, ok := x.Message.(*Message_Simplex); ok {
-			return x.Simplex
-		}
-	}
-	return nil
-}
+func (x *Message) GetSimplex() *Simplex { _ = "STUB: not implemented"; return nil }
 
 type isMessage_Message interface {
 	isMessage_Message()
@@ -501,61 +310,65 @@ type Message_Simplex struct {
 	Simplex *Simplex `protobuf:"bytes,36,opt,name=simplex,proto3,oneof"`
 }
 
-func (*Message_CompressedZstd) isMessage_Message() {}
+func (*Message_CompressedZstd) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Ping) isMessage_Message() {}
+func (*Message_Ping) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Pong) isMessage_Message() {}
+func (*Message_Pong) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Handshake) isMessage_Message() {}
+func (*Message_Handshake) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetPeerList) isMessage_Message() {}
+func (*Message_GetPeerList) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_PeerList_) isMessage_Message() {}
+func (*Message_PeerList_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetStateSummaryFrontier) isMessage_Message() {}
+func (*Message_GetStateSummaryFrontier) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_StateSummaryFrontier_) isMessage_Message() {}
+func (*Message_StateSummaryFrontier_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetAcceptedStateSummary) isMessage_Message() {}
+func (*Message_GetAcceptedStateSummary) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AcceptedStateSummary_) isMessage_Message() {}
+func (*Message_AcceptedStateSummary_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetAcceptedFrontier) isMessage_Message() {}
+func (*Message_GetAcceptedFrontier) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AcceptedFrontier_) isMessage_Message() {}
+func (*Message_AcceptedFrontier_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetAccepted) isMessage_Message() {}
+func (*Message_GetAccepted) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Accepted_) isMessage_Message() {}
+func (*Message_Accepted_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_GetAncestors) isMessage_Message() {}
+func (*Message_GetAncestors) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Ancestors_) isMessage_Message() {}
+func (*Message_Ancestors_) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Get) isMessage_Message() {}
+func (*Message_Get) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Put) isMessage_Message() {}
+func (*Message_Put) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_PushQuery) isMessage_Message() {}
+func (*Message_PushQuery) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_PullQuery) isMessage_Message() {}
+func (*Message_PullQuery) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Chits) isMessage_Message() {}
+func (*Message_Chits) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AppRequest) isMessage_Message() {}
+func (*Message_AppRequest) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AppResponse) isMessage_Message() {}
+func (*Message_AppResponse) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AppGossip) isMessage_Message() {}
+func (*Message_AppGossip) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_AppError) isMessage_Message() {}
+func (*Message_AppError) isMessage_Message() { _ = "STUB: not implemented"; return }
 
-func (*Message_Simplex) isMessage_Message() {}
+func (*Message_Simplex) isMessage_Message() {
+	_ = "STUB: not implemented"
 
-// Ping reports a peer's perceived uptime percentage.
-//
-// Peers should respond to Ping with a Pong.
+	// Ping reports a peer's perceived uptime percentage.
+	//
+	// Peers should respond to Ping with a Pong.
+	return
+}
+
 type Ping struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Uptime percentage on the primary network [0, 100]
@@ -564,42 +377,21 @@ type Ping struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Ping) Reset() {
-	*x = Ping{}
-	mi := &file_p2p_p2p_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Ping) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Ping) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Ping) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Ping) ProtoMessage() {}
+func (*Ping) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Ping) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Ping.ProtoReflect.Descriptor instead.
-func (*Ping) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{1}
-}
+func (*Ping) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Ping) GetUptime() uint32 {
-	if x != nil {
-		return x.Uptime
-	}
-	return 0
-}
+func (x *Ping) GetUptime() uint32 { _ = "STUB: not implemented"; return 0 }
 
 // Pong is sent in response to a Ping.
 type Pong struct {
@@ -608,35 +400,19 @@ type Pong struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Pong) Reset() {
-	*x = Pong{}
-	mi := &file_p2p_p2p_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Pong) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Pong) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Pong) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Pong) ProtoMessage() {}
+func (*Pong) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Pong) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Pong.ProtoReflect.Descriptor instead.
-func (*Pong) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{2}
-}
+func (*Pong) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 // Handshake is the first outbound message sent to a peer when a connection is
 // established to start the p2p handshake.
@@ -679,133 +455,47 @@ type Handshake struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Handshake) Reset() {
-	*x = Handshake{}
-	mi := &file_p2p_p2p_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Handshake) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Handshake) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Handshake) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Handshake) ProtoMessage() {}
+func (*Handshake) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Handshake) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Handshake.ProtoReflect.Descriptor instead.
-func (*Handshake) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{3}
-}
+func (*Handshake) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Handshake) GetNetworkId() uint32 {
-	if x != nil {
-		return x.NetworkId
-	}
-	return 0
-}
+func (x *Handshake) GetNetworkId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Handshake) GetMyTime() uint64 {
-	if x != nil {
-		return x.MyTime
-	}
-	return 0
-}
+func (x *Handshake) GetMyTime() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Handshake) GetIpAddr() []byte {
-	if x != nil {
-		return x.IpAddr
-	}
-	return nil
-}
+func (x *Handshake) GetIpAddr() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetIpPort() uint32 {
-	if x != nil {
-		return x.IpPort
-	}
-	return 0
-}
+func (x *Handshake) GetIpPort() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Handshake) GetUpgradeTime() uint64 {
-	if x != nil {
-		return x.UpgradeTime
-	}
-	return 0
-}
+func (x *Handshake) GetUpgradeTime() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Handshake) GetIpSigningTime() uint64 {
-	if x != nil {
-		return x.IpSigningTime
-	}
-	return 0
-}
+func (x *Handshake) GetIpSigningTime() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Handshake) GetIpNodeIdSig() []byte {
-	if x != nil {
-		return x.IpNodeIdSig
-	}
-	return nil
-}
+func (x *Handshake) GetIpNodeIdSig() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetTrackedSubnets() [][]byte {
-	if x != nil {
-		return x.TrackedSubnets
-	}
-	return nil
-}
+func (x *Handshake) GetTrackedSubnets() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetClient() *Client {
-	if x != nil {
-		return x.Client
-	}
-	return nil
-}
+func (x *Handshake) GetClient() *Client { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetSupportedAcps() []uint32 {
-	if x != nil {
-		return x.SupportedAcps
-	}
-	return nil
-}
+func (x *Handshake) GetSupportedAcps() []uint32 { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetObjectedAcps() []uint32 {
-	if x != nil {
-		return x.ObjectedAcps
-	}
-	return nil
-}
+func (x *Handshake) GetObjectedAcps() []uint32 { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetKnownPeers() *BloomFilter {
-	if x != nil {
-		return x.KnownPeers
-	}
-	return nil
-}
+func (x *Handshake) GetKnownPeers() *BloomFilter { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetIpBlsSig() []byte {
-	if x != nil {
-		return x.IpBlsSig
-	}
-	return nil
-}
+func (x *Handshake) GetIpBlsSig() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Handshake) GetAllSubnets() bool {
-	if x != nil {
-		return x.AllSubnets
-	}
-	return false
-}
+func (x *Handshake) GetAllSubnets() bool { _ = "STUB: not implemented"; return false }
 
 // Metadata about a peer's P2P client used to determine compatibility
 type Client struct {
@@ -820,63 +510,27 @@ type Client struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Client) Reset() {
-	*x = Client{}
-	mi := &file_p2p_p2p_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Client) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Client) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Client) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Client) ProtoMessage() {}
+func (*Client) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Client) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Client.ProtoReflect.Descriptor instead.
-func (*Client) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{4}
-}
+func (*Client) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Client) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
+func (x *Client) GetName() string { _ = "STUB: not implemented"; return "" }
 
-func (x *Client) GetMajor() uint32 {
-	if x != nil {
-		return x.Major
-	}
-	return 0
-}
+func (x *Client) GetMajor() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Client) GetMinor() uint32 {
-	if x != nil {
-		return x.Minor
-	}
-	return 0
-}
+func (x *Client) GetMinor() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Client) GetPatch() uint32 {
-	if x != nil {
-		return x.Patch
-	}
-	return 0
-}
+func (x *Client) GetPatch() uint32 { _ = "STUB: not implemented"; return 0 }
 
 // BloomFilter with a random salt to prevent consistent hash collisions
 type BloomFilter struct {
@@ -887,49 +541,23 @@ type BloomFilter struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BloomFilter) Reset() {
-	*x = BloomFilter{}
-	mi := &file_p2p_p2p_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BloomFilter) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BloomFilter) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BloomFilter) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BloomFilter) ProtoMessage() {}
+func (*BloomFilter) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BloomFilter) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BloomFilter.ProtoReflect.Descriptor instead.
-func (*BloomFilter) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{5}
-}
+func (*BloomFilter) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BloomFilter) GetFilter() []byte {
-	if x != nil {
-		return x.Filter
-	}
-	return nil
-}
+func (x *BloomFilter) GetFilter() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BloomFilter) GetSalt() []byte {
-	if x != nil {
-		return x.Salt
-	}
-	return nil
-}
+func (x *BloomFilter) GetSalt() []byte { _ = "STUB: not implemented"; return nil }
 
 // ClaimedIpPort contains metadata needed to connect to a peer
 type ClaimedIpPort struct {
@@ -950,77 +578,31 @@ type ClaimedIpPort struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ClaimedIpPort) Reset() {
-	*x = ClaimedIpPort{}
-	mi := &file_p2p_p2p_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ClaimedIpPort) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ClaimedIpPort) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ClaimedIpPort) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ClaimedIpPort) ProtoMessage() {}
+func (*ClaimedIpPort) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ClaimedIpPort) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ClaimedIpPort.ProtoReflect.Descriptor instead.
-func (*ClaimedIpPort) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{6}
-}
+func (*ClaimedIpPort) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ClaimedIpPort) GetX509Certificate() []byte {
-	if x != nil {
-		return x.X509Certificate
-	}
-	return nil
-}
+func (x *ClaimedIpPort) GetX509Certificate() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ClaimedIpPort) GetIpAddr() []byte {
-	if x != nil {
-		return x.IpAddr
-	}
-	return nil
-}
+func (x *ClaimedIpPort) GetIpAddr() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ClaimedIpPort) GetIpPort() uint32 {
-	if x != nil {
-		return x.IpPort
-	}
-	return 0
-}
+func (x *ClaimedIpPort) GetIpPort() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ClaimedIpPort) GetTimestamp() uint64 {
-	if x != nil {
-		return x.Timestamp
-	}
-	return 0
-}
+func (x *ClaimedIpPort) GetTimestamp() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ClaimedIpPort) GetSignature() []byte {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
+func (x *ClaimedIpPort) GetSignature() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ClaimedIpPort) GetTxId() []byte {
-	if x != nil {
-		return x.TxId
-	}
-	return nil
-}
+func (x *ClaimedIpPort) GetTxId() []byte { _ = "STUB: not implemented"; return nil }
 
 // GetPeerList contains a bloom filter of the currently known validator IPs.
 //
@@ -1036,49 +618,23 @@ type GetPeerList struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetPeerList) Reset() {
-	*x = GetPeerList{}
-	mi := &file_p2p_p2p_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetPeerList) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetPeerList) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetPeerList) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetPeerList) ProtoMessage() {}
+func (*GetPeerList) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetPeerList) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetPeerList.ProtoReflect.Descriptor instead.
-func (*GetPeerList) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{7}
-}
+func (*GetPeerList) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetPeerList) GetKnownPeers() *BloomFilter {
-	if x != nil {
-		return x.KnownPeers
-	}
-	return nil
-}
+func (x *GetPeerList) GetKnownPeers() *BloomFilter { _ = "STUB: not implemented"; return nil }
 
-func (x *GetPeerList) GetAllSubnets() bool {
-	if x != nil {
-		return x.AllSubnets
-	}
-	return false
-}
+func (x *GetPeerList) GetAllSubnets() bool { _ = "STUB: not implemented"; return false }
 
 // PeerList contains network-level metadata for a set of validators.
 //
@@ -1096,42 +652,21 @@ type PeerList struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *PeerList) Reset() {
-	*x = PeerList{}
-	mi := &file_p2p_p2p_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PeerList) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PeerList) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PeerList) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PeerList) ProtoMessage() {}
+func (*PeerList) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PeerList) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PeerList.ProtoReflect.Descriptor instead.
-func (*PeerList) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{8}
-}
+func (*PeerList) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PeerList) GetClaimedIpPorts() []*ClaimedIpPort {
-	if x != nil {
-		return x.ClaimedIpPorts
-	}
-	return nil
-}
+func (x *PeerList) GetClaimedIpPorts() []*ClaimedIpPort { _ = "STUB: not implemented"; return nil }
 
 // GetStateSummaryFrontier requests a peer's most recently accepted state
 // summary
@@ -1147,56 +682,28 @@ type GetStateSummaryFrontier struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetStateSummaryFrontier) Reset() {
-	*x = GetStateSummaryFrontier{}
-	mi := &file_p2p_p2p_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetStateSummaryFrontier) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetStateSummaryFrontier) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetStateSummaryFrontier) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetStateSummaryFrontier) ProtoMessage() {}
+func (*GetStateSummaryFrontier) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetStateSummaryFrontier) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetStateSummaryFrontier.ProtoReflect.Descriptor instead.
 func (*GetStateSummaryFrontier) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{9}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetStateSummaryFrontier) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetStateSummaryFrontier) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetStateSummaryFrontier) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *GetStateSummaryFrontier) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetStateSummaryFrontier) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *GetStateSummaryFrontier) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // StateSummaryFrontier is sent in response to a GetStateSummaryFrontier request
 type StateSummaryFrontier struct {
@@ -1211,56 +718,28 @@ type StateSummaryFrontier struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StateSummaryFrontier) Reset() {
-	*x = StateSummaryFrontier{}
-	mi := &file_p2p_p2p_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StateSummaryFrontier) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StateSummaryFrontier) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StateSummaryFrontier) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StateSummaryFrontier) ProtoMessage() {}
+func (*StateSummaryFrontier) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StateSummaryFrontier) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StateSummaryFrontier.ProtoReflect.Descriptor instead.
 func (*StateSummaryFrontier) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{10}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *StateSummaryFrontier) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *StateSummaryFrontier) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *StateSummaryFrontier) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *StateSummaryFrontier) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *StateSummaryFrontier) GetSummary() []byte {
-	if x != nil {
-		return x.Summary
-	}
-	return nil
-}
+func (x *StateSummaryFrontier) GetSummary() []byte { _ = "STUB: not implemented"; return nil }
 
 // GetAcceptedStateSummary requests a set of state summaries at a set of
 // block heights
@@ -1278,63 +757,30 @@ type GetAcceptedStateSummary struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAcceptedStateSummary) Reset() {
-	*x = GetAcceptedStateSummary{}
-	mi := &file_p2p_p2p_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAcceptedStateSummary) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAcceptedStateSummary) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAcceptedStateSummary) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAcceptedStateSummary) ProtoMessage() {}
+func (*GetAcceptedStateSummary) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAcceptedStateSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAcceptedStateSummary.ProtoReflect.Descriptor instead.
 func (*GetAcceptedStateSummary) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{11}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetAcceptedStateSummary) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetAcceptedStateSummary) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetAcceptedStateSummary) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *GetAcceptedStateSummary) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAcceptedStateSummary) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *GetAcceptedStateSummary) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAcceptedStateSummary) GetHeights() []uint64 {
-	if x != nil {
-		return x.Heights
-	}
-	return nil
-}
+func (x *GetAcceptedStateSummary) GetHeights() []uint64 { _ = "STUB: not implemented"; return nil }
 
 // AcceptedStateSummary is sent in response to GetAcceptedStateSummary
 type AcceptedStateSummary struct {
@@ -1349,56 +795,28 @@ type AcceptedStateSummary struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AcceptedStateSummary) Reset() {
-	*x = AcceptedStateSummary{}
-	mi := &file_p2p_p2p_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AcceptedStateSummary) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AcceptedStateSummary) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AcceptedStateSummary) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AcceptedStateSummary) ProtoMessage() {}
+func (*AcceptedStateSummary) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AcceptedStateSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AcceptedStateSummary.ProtoReflect.Descriptor instead.
 func (*AcceptedStateSummary) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{12}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *AcceptedStateSummary) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AcceptedStateSummary) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AcceptedStateSummary) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AcceptedStateSummary) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AcceptedStateSummary) GetSummaryIds() [][]byte {
-	if x != nil {
-		return x.SummaryIds
-	}
-	return nil
-}
+func (x *AcceptedStateSummary) GetSummaryIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
 // GetAcceptedFrontier requests the accepted frontier from a peer.
 //
@@ -1415,56 +833,28 @@ type GetAcceptedFrontier struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAcceptedFrontier) Reset() {
-	*x = GetAcceptedFrontier{}
-	mi := &file_p2p_p2p_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAcceptedFrontier) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAcceptedFrontier) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAcceptedFrontier) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAcceptedFrontier) ProtoMessage() {}
+func (*GetAcceptedFrontier) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAcceptedFrontier) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAcceptedFrontier.ProtoReflect.Descriptor instead.
 func (*GetAcceptedFrontier) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{13}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetAcceptedFrontier) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetAcceptedFrontier) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetAcceptedFrontier) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *GetAcceptedFrontier) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAcceptedFrontier) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *GetAcceptedFrontier) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // AcceptedFrontier contains the remote peer's last accepted frontier.
 //
@@ -1481,56 +871,25 @@ type AcceptedFrontier struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AcceptedFrontier) Reset() {
-	*x = AcceptedFrontier{}
-	mi := &file_p2p_p2p_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AcceptedFrontier) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AcceptedFrontier) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AcceptedFrontier) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AcceptedFrontier) ProtoMessage() {}
+func (*AcceptedFrontier) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AcceptedFrontier) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AcceptedFrontier.ProtoReflect.Descriptor instead.
-func (*AcceptedFrontier) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{14}
-}
+func (*AcceptedFrontier) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AcceptedFrontier) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AcceptedFrontier) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AcceptedFrontier) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AcceptedFrontier) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AcceptedFrontier) GetContainerId() []byte {
-	if x != nil {
-		return x.ContainerId
-	}
-	return nil
-}
+func (x *AcceptedFrontier) GetContainerId() []byte { _ = "STUB: not implemented"; return nil }
 
 // GetAccepted sends a request with the sender's accepted frontier to a remote
 // peer.
@@ -1550,63 +909,27 @@ type GetAccepted struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAccepted) Reset() {
-	*x = GetAccepted{}
-	mi := &file_p2p_p2p_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAccepted) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAccepted) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAccepted) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAccepted) ProtoMessage() {}
+func (*GetAccepted) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAccepted) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAccepted.ProtoReflect.Descriptor instead.
-func (*GetAccepted) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{15}
-}
+func (*GetAccepted) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetAccepted) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetAccepted) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetAccepted) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *GetAccepted) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAccepted) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *GetAccepted) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAccepted) GetContainerIds() [][]byte {
-	if x != nil {
-		return x.ContainerIds
-	}
-	return nil
-}
+func (x *GetAccepted) GetContainerIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
 // Accepted is sent in response to GetAccepted. The sending peer responds with
 // a subset of container ids from the GetAccepted request that the sending peer
@@ -1624,56 +947,25 @@ type Accepted struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Accepted) Reset() {
-	*x = Accepted{}
-	mi := &file_p2p_p2p_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Accepted) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Accepted) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Accepted) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Accepted) ProtoMessage() {}
+func (*Accepted) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Accepted) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Accepted.ProtoReflect.Descriptor instead.
-func (*Accepted) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{16}
-}
+func (*Accepted) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Accepted) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Accepted) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Accepted) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *Accepted) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Accepted) GetContainerIds() [][]byte {
-	if x != nil {
-		return x.ContainerIds
-	}
-	return nil
-}
+func (x *Accepted) GetContainerIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
 // GetAncestors requests the ancestors for a given container.
 //
@@ -1694,69 +986,31 @@ type GetAncestors struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetAncestors) Reset() {
-	*x = GetAncestors{}
-	mi := &file_p2p_p2p_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetAncestors) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetAncestors) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetAncestors) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetAncestors) ProtoMessage() {}
+func (*GetAncestors) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetAncestors) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetAncestors.ProtoReflect.Descriptor instead.
-func (*GetAncestors) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{17}
-}
+func (*GetAncestors) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetAncestors) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetAncestors) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetAncestors) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *GetAncestors) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAncestors) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *GetAncestors) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetAncestors) GetContainerId() []byte {
-	if x != nil {
-		return x.ContainerId
-	}
-	return nil
-}
+func (x *GetAncestors) GetContainerId() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *GetAncestors) GetEngineType() EngineType {
-	if x != nil {
-		return x.EngineType
-	}
-	return EngineType_ENGINE_TYPE_UNSPECIFIED
+	_ = "STUB: not implemented"
+	return *new(EngineType)
 }
 
 // Ancestors is sent in response to GetAncestors.
@@ -1775,56 +1029,25 @@ type Ancestors struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Ancestors) Reset() {
-	*x = Ancestors{}
-	mi := &file_p2p_p2p_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Ancestors) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Ancestors) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Ancestors) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Ancestors) ProtoMessage() {}
+func (*Ancestors) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Ancestors) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Ancestors.ProtoReflect.Descriptor instead.
-func (*Ancestors) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{18}
-}
+func (*Ancestors) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Ancestors) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Ancestors) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Ancestors) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *Ancestors) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Ancestors) GetContainers() [][]byte {
-	if x != nil {
-		return x.Containers
-	}
-	return nil
-}
+func (x *Ancestors) GetContainers() [][]byte { _ = "STUB: not implemented"; return nil }
 
 // Get requests a container from a remote peer.
 //
@@ -1843,63 +1066,27 @@ type Get struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Get) Reset() {
-	*x = Get{}
-	mi := &file_p2p_p2p_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Get) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Get) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Get) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Get) ProtoMessage() {}
+func (*Get) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Get) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Get.ProtoReflect.Descriptor instead.
-func (*Get) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{19}
-}
+func (*Get) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Get) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Get) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Get) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *Get) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Get) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *Get) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Get) GetContainerId() []byte {
-	if x != nil {
-		return x.ContainerId
-	}
-	return nil
-}
+func (x *Get) GetContainerId() []byte { _ = "STUB: not implemented"; return nil }
 
 // Put is sent in response to Get with the requested block.
 type Put struct {
@@ -1914,56 +1101,25 @@ type Put struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Put) Reset() {
-	*x = Put{}
-	mi := &file_p2p_p2p_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Put) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Put) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Put) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Put) ProtoMessage() {}
+func (*Put) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Put) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Put.ProtoReflect.Descriptor instead.
-func (*Put) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{20}
-}
+func (*Put) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Put) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Put) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Put) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *Put) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Put) GetContainer() []byte {
-	if x != nil {
-		return x.Container
-	}
-	return nil
-}
+func (x *Put) GetContainer() []byte { _ = "STUB: not implemented"; return nil }
 
 // PushQuery requests the preferences of a remote peer given a container.
 //
@@ -1984,70 +1140,29 @@ type PushQuery struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *PushQuery) Reset() {
-	*x = PushQuery{}
-	mi := &file_p2p_p2p_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PushQuery) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PushQuery) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PushQuery) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PushQuery) ProtoMessage() {}
+func (*PushQuery) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PushQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PushQuery.ProtoReflect.Descriptor instead.
-func (*PushQuery) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{21}
-}
+func (*PushQuery) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PushQuery) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *PushQuery) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PushQuery) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *PushQuery) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *PushQuery) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *PushQuery) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *PushQuery) GetContainer() []byte {
-	if x != nil {
-		return x.Container
-	}
-	return nil
-}
+func (x *PushQuery) GetContainer() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PushQuery) GetRequestedHeight() uint64 {
-	if x != nil {
-		return x.RequestedHeight
-	}
-	return 0
-}
+func (x *PushQuery) GetRequestedHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // PullQuery requests the preferences of a remote peer given a container id.
 //
@@ -2068,70 +1183,29 @@ type PullQuery struct {
 	sizeCache       protoimpl.SizeCache
 }
 
-func (x *PullQuery) Reset() {
-	*x = PullQuery{}
-	mi := &file_p2p_p2p_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PullQuery) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PullQuery) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PullQuery) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PullQuery) ProtoMessage() {}
+func (*PullQuery) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PullQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PullQuery.ProtoReflect.Descriptor instead.
-func (*PullQuery) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{22}
-}
+func (*PullQuery) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PullQuery) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *PullQuery) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PullQuery) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *PullQuery) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *PullQuery) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *PullQuery) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *PullQuery) GetContainerId() []byte {
-	if x != nil {
-		return x.ContainerId
-	}
-	return nil
-}
+func (x *PullQuery) GetContainerId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PullQuery) GetRequestedHeight() uint64 {
-	if x != nil {
-		return x.RequestedHeight
-	}
-	return 0
-}
+func (x *PullQuery) GetRequestedHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Chits contains the preferences of a peer in response to a PushQuery or
 // PullQuery message.
@@ -2153,77 +1227,31 @@ type Chits struct {
 	sizeCache      protoimpl.SizeCache
 }
 
-func (x *Chits) Reset() {
-	*x = Chits{}
-	mi := &file_p2p_p2p_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Chits) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Chits) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Chits) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Chits) ProtoMessage() {}
+func (*Chits) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Chits) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Chits.ProtoReflect.Descriptor instead.
-func (*Chits) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{23}
-}
+func (*Chits) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Chits) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Chits) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Chits) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *Chits) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Chits) GetPreferredId() []byte {
-	if x != nil {
-		return x.PreferredId
-	}
-	return nil
-}
+func (x *Chits) GetPreferredId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Chits) GetAcceptedId() []byte {
-	if x != nil {
-		return x.AcceptedId
-	}
-	return nil
-}
+func (x *Chits) GetAcceptedId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Chits) GetPreferredIdAtHeight() []byte {
-	if x != nil {
-		return x.PreferredIdAtHeight
-	}
-	return nil
-}
+func (x *Chits) GetPreferredIdAtHeight() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Chits) GetAcceptedHeight() uint64 {
-	if x != nil {
-		return x.AcceptedHeight
-	}
-	return 0
-}
+func (x *Chits) GetAcceptedHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // AppRequest is a VM-defined request.
 //
@@ -2243,63 +1271,27 @@ type AppRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppRequest) Reset() {
-	*x = AppRequest{}
-	mi := &file_p2p_p2p_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppRequest) ProtoMessage() {}
+func (*AppRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppRequest.ProtoReflect.Descriptor instead.
-func (*AppRequest) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{24}
-}
+func (*AppRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppRequest) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AppRequest) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppRequest) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppRequest) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppRequest) GetDeadline() uint64 {
-	if x != nil {
-		return x.Deadline
-	}
-	return 0
-}
+func (x *AppRequest) GetDeadline() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppRequest) GetAppBytes() []byte {
-	if x != nil {
-		return x.AppBytes
-	}
-	return nil
-}
+func (x *AppRequest) GetAppBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // AppResponse is a VM-defined response sent in response to AppRequest
 type AppResponse struct {
@@ -2314,56 +1306,25 @@ type AppResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppResponse) Reset() {
-	*x = AppResponse{}
-	mi := &file_p2p_p2p_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppResponse) ProtoMessage() {}
+func (*AppResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppResponse.ProtoReflect.Descriptor instead.
-func (*AppResponse) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{25}
-}
+func (*AppResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppResponse) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AppResponse) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppResponse) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppResponse) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppResponse) GetAppBytes() []byte {
-	if x != nil {
-		return x.AppBytes
-	}
-	return nil
-}
+func (x *AppResponse) GetAppBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // AppError is a VM-defined error sent in response to AppRequest
 type AppError struct {
@@ -2380,63 +1341,27 @@ type AppError struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppError) Reset() {
-	*x = AppError{}
-	mi := &file_p2p_p2p_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppError) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppError) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppError) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppError) ProtoMessage() {}
+func (*AppError) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppError) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppError.ProtoReflect.Descriptor instead.
-func (*AppError) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{26}
-}
+func (*AppError) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppError) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AppError) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppError) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *AppError) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppError) GetErrorCode() int32 {
-	if x != nil {
-		return x.ErrorCode
-	}
-	return 0
-}
+func (x *AppError) GetErrorCode() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *AppError) GetErrorMessage() string {
-	if x != nil {
-		return x.ErrorMessage
-	}
-	return ""
-}
+func (x *AppError) GetErrorMessage() string { _ = "STUB: not implemented"; return "" }
 
 // AppGossip is a VM-defined message
 type AppGossip struct {
@@ -2449,49 +1374,23 @@ type AppGossip struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AppGossip) Reset() {
-	*x = AppGossip{}
-	mi := &file_p2p_p2p_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *AppGossip) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *AppGossip) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *AppGossip) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*AppGossip) ProtoMessage() {}
+func (*AppGossip) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *AppGossip) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use AppGossip.ProtoReflect.Descriptor instead.
-func (*AppGossip) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{27}
-}
+func (*AppGossip) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *AppGossip) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *AppGossip) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *AppGossip) GetAppBytes() []byte {
-	if x != nil {
-		return x.AppBytes
-	}
-	return nil
-}
+func (x *AppGossip) GetAppBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type Simplex struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
@@ -2512,128 +1411,48 @@ type Simplex struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Simplex) Reset() {
-	*x = Simplex{}
-	mi := &file_p2p_p2p_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Simplex) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Simplex) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Simplex) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Simplex) ProtoMessage() {}
+func (*Simplex) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Simplex) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Simplex.ProtoReflect.Descriptor instead.
-func (*Simplex) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{28}
-}
+func (*Simplex) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Simplex) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *Simplex) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
 func (x *Simplex) GetMessage() isSimplex_Message {
-	if x != nil {
-		return x.Message
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(isSimplex_Message)
 }
 
-func (x *Simplex) GetBlockProposal() *BlockProposal {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_BlockProposal); ok {
-			return x.BlockProposal
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetBlockProposal() *BlockProposal { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetVote() *Vote {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_Vote); ok {
-			return x.Vote
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetVote() *Vote { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetEmptyVote() *EmptyVote {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_EmptyVote); ok {
-			return x.EmptyVote
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetEmptyVote() *EmptyVote { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetFinalizeVote() *Vote {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_FinalizeVote); ok {
-			return x.FinalizeVote
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetFinalizeVote() *Vote { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetNotarization() *QuorumCertificate {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_Notarization); ok {
-			return x.Notarization
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetNotarization() *QuorumCertificate { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetEmptyNotarization() *EmptyNotarization {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_EmptyNotarization); ok {
-			return x.EmptyNotarization
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetEmptyNotarization() *EmptyNotarization { _ = "STUB: not implemented"; return nil }
 
-func (x *Simplex) GetFinalization() *QuorumCertificate {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_Finalization); ok {
-			return x.Finalization
-		}
-	}
-	return nil
-}
+func (x *Simplex) GetFinalization() *QuorumCertificate { _ = "STUB: not implemented"; return nil }
 
 func (x *Simplex) GetReplicationRequest() *ReplicationRequest {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_ReplicationRequest); ok {
-			return x.ReplicationRequest
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *Simplex) GetReplicationResponse() *ReplicationResponse {
-	if x != nil {
-		if x, ok := x.Message.(*Simplex_ReplicationResponse); ok {
-			return x.ReplicationResponse
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -2677,23 +1496,23 @@ type Simplex_ReplicationResponse struct {
 	ReplicationResponse *ReplicationResponse `protobuf:"bytes,10,opt,name=replication_response,json=replicationResponse,proto3,oneof"`
 }
 
-func (*Simplex_BlockProposal) isSimplex_Message() {}
+func (*Simplex_BlockProposal) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_Vote) isSimplex_Message() {}
+func (*Simplex_Vote) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_EmptyVote) isSimplex_Message() {}
+func (*Simplex_EmptyVote) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_FinalizeVote) isSimplex_Message() {}
+func (*Simplex_FinalizeVote) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_Notarization) isSimplex_Message() {}
+func (*Simplex_Notarization) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_EmptyNotarization) isSimplex_Message() {}
+func (*Simplex_EmptyNotarization) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_Finalization) isSimplex_Message() {}
+func (*Simplex_Finalization) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_ReplicationRequest) isSimplex_Message() {}
+func (*Simplex_ReplicationRequest) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
-func (*Simplex_ReplicationResponse) isSimplex_Message() {}
+func (*Simplex_ReplicationResponse) isSimplex_Message() { _ = "STUB: not implemented"; return }
 
 type BlockProposal struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2703,49 +1522,23 @@ type BlockProposal struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockProposal) Reset() {
-	*x = BlockProposal{}
-	mi := &file_p2p_p2p_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockProposal) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockProposal) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockProposal) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockProposal) ProtoMessage() {}
+func (*BlockProposal) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockProposal) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockProposal.ProtoReflect.Descriptor instead.
-func (*BlockProposal) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{29}
-}
+func (*BlockProposal) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BlockProposal) GetBlock() []byte {
-	if x != nil {
-		return x.Block
-	}
-	return nil
-}
+func (x *BlockProposal) GetBlock() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *BlockProposal) GetVote() *Vote {
-	if x != nil {
-		return x.Vote
-	}
-	return nil
-}
+func (x *BlockProposal) GetVote() *Vote { _ = "STUB: not implemented"; return nil }
 
 type ProtocolMetadata struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2764,70 +1557,29 @@ type ProtocolMetadata struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ProtocolMetadata) Reset() {
-	*x = ProtocolMetadata{}
-	mi := &file_p2p_p2p_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ProtocolMetadata) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ProtocolMetadata) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ProtocolMetadata) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ProtocolMetadata) ProtoMessage() {}
+func (*ProtocolMetadata) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ProtocolMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ProtocolMetadata.ProtoReflect.Descriptor instead.
-func (*ProtocolMetadata) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{30}
-}
+func (*ProtocolMetadata) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ProtocolMetadata) GetVersion() uint32 {
-	if x != nil {
-		return x.Version
-	}
-	return 0
-}
+func (x *ProtocolMetadata) GetVersion() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ProtocolMetadata) GetEpoch() uint64 {
-	if x != nil {
-		return x.Epoch
-	}
-	return 0
-}
+func (x *ProtocolMetadata) GetEpoch() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ProtocolMetadata) GetRound() uint64 {
-	if x != nil {
-		return x.Round
-	}
-	return 0
-}
+func (x *ProtocolMetadata) GetRound() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ProtocolMetadata) GetSeq() uint64 {
-	if x != nil {
-		return x.Seq
-	}
-	return 0
-}
+func (x *ProtocolMetadata) GetSeq() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ProtocolMetadata) GetPrev() []byte {
-	if x != nil {
-		return x.Prev
-	}
-	return nil
-}
+func (x *ProtocolMetadata) GetPrev() []byte { _ = "STUB: not implemented"; return nil }
 
 type EmptyVoteMetadata struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2839,49 +1591,23 @@ type EmptyVoteMetadata struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EmptyVoteMetadata) Reset() {
-	*x = EmptyVoteMetadata{}
-	mi := &file_p2p_p2p_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *EmptyVoteMetadata) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *EmptyVoteMetadata) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *EmptyVoteMetadata) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*EmptyVoteMetadata) ProtoMessage() {}
+func (*EmptyVoteMetadata) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *EmptyVoteMetadata) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use EmptyVoteMetadata.ProtoReflect.Descriptor instead.
-func (*EmptyVoteMetadata) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{31}
-}
+func (*EmptyVoteMetadata) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *EmptyVoteMetadata) GetEpoch() uint64 {
-	if x != nil {
-		return x.Epoch
-	}
-	return 0
-}
+func (x *EmptyVoteMetadata) GetEpoch() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *EmptyVoteMetadata) GetRound() uint64 {
-	if x != nil {
-		return x.Round
-	}
-	return 0
-}
+func (x *EmptyVoteMetadata) GetRound() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type BlockHeader struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
@@ -2892,49 +1618,23 @@ type BlockHeader struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *BlockHeader) Reset() {
-	*x = BlockHeader{}
-	mi := &file_p2p_p2p_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *BlockHeader) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *BlockHeader) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *BlockHeader) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*BlockHeader) ProtoMessage() {}
+func (*BlockHeader) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *BlockHeader) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use BlockHeader.ProtoReflect.Descriptor instead.
-func (*BlockHeader) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{32}
-}
+func (*BlockHeader) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *BlockHeader) GetMetadata() *ProtocolMetadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
+func (x *BlockHeader) GetMetadata() *ProtocolMetadata { _ = "STUB: not implemented"; return nil }
 
-func (x *BlockHeader) GetDigest() []byte {
-	if x != nil {
-		return x.Digest
-	}
-	return nil
-}
+func (x *BlockHeader) GetDigest() []byte { _ = "STUB: not implemented"; return nil }
 
 type Signature struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -2946,49 +1646,23 @@ type Signature struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Signature) Reset() {
-	*x = Signature{}
-	mi := &file_p2p_p2p_proto_msgTypes[33]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Signature) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Signature) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Signature) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Signature) ProtoMessage() {}
+func (*Signature) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Signature) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[33]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Signature.ProtoReflect.Descriptor instead.
-func (*Signature) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{33}
-}
+func (*Signature) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Signature) GetSigner() []byte {
-	if x != nil {
-		return x.Signer
-	}
-	return nil
-}
+func (x *Signature) GetSigner() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Signature) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *Signature) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 type Vote struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -2998,49 +1672,23 @@ type Vote struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Vote) Reset() {
-	*x = Vote{}
-	mi := &file_p2p_p2p_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Vote) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Vote) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Vote) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Vote) ProtoMessage() {}
+func (*Vote) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Vote) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[34]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Vote.ProtoReflect.Descriptor instead.
-func (*Vote) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{34}
-}
+func (*Vote) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Vote) GetBlockHeader() *BlockHeader {
-	if x != nil {
-		return x.BlockHeader
-	}
-	return nil
-}
+func (x *Vote) GetBlockHeader() *BlockHeader { _ = "STUB: not implemented"; return nil }
 
-func (x *Vote) GetSignature() *Signature {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
+func (x *Vote) GetSignature() *Signature { _ = "STUB: not implemented"; return nil }
 
 type EmptyVote struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -3050,49 +1698,23 @@ type EmptyVote struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EmptyVote) Reset() {
-	*x = EmptyVote{}
-	mi := &file_p2p_p2p_proto_msgTypes[35]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *EmptyVote) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *EmptyVote) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *EmptyVote) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*EmptyVote) ProtoMessage() {}
+func (*EmptyVote) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *EmptyVote) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[35]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use EmptyVote.ProtoReflect.Descriptor instead.
-func (*EmptyVote) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{35}
-}
+func (*EmptyVote) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *EmptyVote) GetMetadata() *EmptyVoteMetadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
+func (x *EmptyVote) GetMetadata() *EmptyVoteMetadata { _ = "STUB: not implemented"; return nil }
 
-func (x *EmptyVote) GetSignature() *Signature {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
+func (x *EmptyVote) GetSignature() *Signature { _ = "STUB: not implemented"; return nil }
 
 type QuorumCertificate struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
@@ -3102,49 +1724,23 @@ type QuorumCertificate struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *QuorumCertificate) Reset() {
-	*x = QuorumCertificate{}
-	mi := &file_p2p_p2p_proto_msgTypes[36]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *QuorumCertificate) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *QuorumCertificate) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *QuorumCertificate) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*QuorumCertificate) ProtoMessage() {}
+func (*QuorumCertificate) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *QuorumCertificate) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[36]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use QuorumCertificate.ProtoReflect.Descriptor instead.
-func (*QuorumCertificate) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{36}
-}
+func (*QuorumCertificate) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *QuorumCertificate) GetBlockHeader() *BlockHeader {
-	if x != nil {
-		return x.BlockHeader
-	}
-	return nil
-}
+func (x *QuorumCertificate) GetBlockHeader() *BlockHeader { _ = "STUB: not implemented"; return nil }
 
-func (x *QuorumCertificate) GetQuorumCertificate() []byte {
-	if x != nil {
-		return x.QuorumCertificate
-	}
-	return nil
-}
+func (x *QuorumCertificate) GetQuorumCertificate() []byte { _ = "STUB: not implemented"; return nil }
 
 type EmptyNotarization struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
@@ -3154,49 +1750,23 @@ type EmptyNotarization struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *EmptyNotarization) Reset() {
-	*x = EmptyNotarization{}
-	mi := &file_p2p_p2p_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *EmptyNotarization) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *EmptyNotarization) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *EmptyNotarization) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*EmptyNotarization) ProtoMessage() {}
+func (*EmptyNotarization) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *EmptyNotarization) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use EmptyNotarization.ProtoReflect.Descriptor instead.
-func (*EmptyNotarization) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{37}
-}
+func (*EmptyNotarization) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *EmptyNotarization) GetMetadata() *EmptyVoteMetadata {
-	if x != nil {
-		return x.Metadata
-	}
-	return nil
-}
+func (x *EmptyNotarization) GetMetadata() *EmptyVoteMetadata { _ = "STUB: not implemented"; return nil }
 
-func (x *EmptyNotarization) GetQuorumCertificate() []byte {
-	if x != nil {
-		return x.QuorumCertificate
-	}
-	return nil
-}
+func (x *EmptyNotarization) GetQuorumCertificate() []byte { _ = "STUB: not implemented"; return nil }
 
 type ReplicationRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -3206,49 +1776,23 @@ type ReplicationRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReplicationRequest) Reset() {
-	*x = ReplicationRequest{}
-	mi := &file_p2p_p2p_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReplicationRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReplicationRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReplicationRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReplicationRequest) ProtoMessage() {}
+func (*ReplicationRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReplicationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReplicationRequest.ProtoReflect.Descriptor instead.
-func (*ReplicationRequest) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{38}
-}
+func (*ReplicationRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ReplicationRequest) GetSeqs() []uint64 {
-	if x != nil {
-		return x.Seqs
-	}
-	return nil
-}
+func (x *ReplicationRequest) GetSeqs() []uint64 { _ = "STUB: not implemented"; return nil }
 
-func (x *ReplicationRequest) GetLatestRound() uint64 {
-	if x != nil {
-		return x.LatestRound
-	}
-	return 0
-}
+func (x *ReplicationRequest) GetLatestRound() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type ReplicationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -3258,49 +1802,26 @@ type ReplicationResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReplicationResponse) Reset() {
-	*x = ReplicationResponse{}
-	mi := &file_p2p_p2p_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ReplicationResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ReplicationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ReplicationResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ReplicationResponse) ProtoMessage() {}
+func (*ReplicationResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ReplicationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ReplicationResponse.ProtoReflect.Descriptor instead.
 func (*ReplicationResponse) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{39}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *ReplicationResponse) GetData() []*QuorumRound {
-	if x != nil {
-		return x.Data
-	}
-	return nil
-}
+func (x *ReplicationResponse) GetData() []*QuorumRound { _ = "STUB: not implemented"; return nil }
 
-func (x *ReplicationResponse) GetLatestRound() *QuorumRound {
-	if x != nil {
-		return x.LatestRound
-	}
-	return nil
-}
+func (x *ReplicationResponse) GetLatestRound() *QuorumRound { _ = "STUB: not implemented"; return nil }
 
 // QuorumRound represents a round that has acheived quorum on either
 // (empty notarization), (block & notarization), or (block, finalization certificate)
@@ -3314,63 +1835,30 @@ type QuorumRound struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *QuorumRound) Reset() {
-	*x = QuorumRound{}
-	mi := &file_p2p_p2p_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *QuorumRound) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *QuorumRound) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *QuorumRound) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*QuorumRound) ProtoMessage() {}
+func (*QuorumRound) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *QuorumRound) ProtoReflect() protoreflect.Message {
-	mi := &file_p2p_p2p_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use QuorumRound.ProtoReflect.Descriptor instead.
-func (*QuorumRound) Descriptor() ([]byte, []int) {
-	return file_p2p_p2p_proto_rawDescGZIP(), []int{40}
-}
+func (*QuorumRound) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *QuorumRound) GetBlock() []byte {
-	if x != nil {
-		return x.Block
-	}
-	return nil
-}
+func (x *QuorumRound) GetBlock() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *QuorumRound) GetNotarization() *QuorumCertificate {
-	if x != nil {
-		return x.Notarization
-	}
-	return nil
-}
+func (x *QuorumRound) GetNotarization() *QuorumCertificate { _ = "STUB: not implemented"; return nil }
 
 func (x *QuorumRound) GetEmptyNotarization() *EmptyNotarization {
-	if x != nil {
-		return x.EmptyNotarization
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (x *QuorumRound) GetFinalization() *QuorumCertificate {
-	if x != nil {
-		return x.Finalization
-	}
-	return nil
-}
+func (x *QuorumRound) GetFinalization() *QuorumCertificate { _ = "STUB: not implemented"; return nil }
 
 var File_p2p_p2p_proto protoreflect.FileDescriptor
 
@@ -3635,12 +2123,7 @@ var (
 	file_p2p_p2p_proto_rawDescData []byte
 )
 
-func file_p2p_p2p_proto_rawDescGZIP() []byte {
-	file_p2p_p2p_proto_rawDescOnce.Do(func() {
-		file_p2p_p2p_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_p2p_p2p_proto_rawDesc), len(file_p2p_p2p_proto_rawDesc)))
-	})
-	return file_p2p_p2p_proto_rawDescData
-}
+func file_p2p_p2p_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_p2p_p2p_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_p2p_p2p_proto_msgTypes = make([]protoimpl.MessageInfo, 41)
@@ -3748,66 +2231,5 @@ var file_p2p_p2p_proto_depIdxs = []int32{
 	0,  // [0:52] is the sub-list for field type_name
 }
 
-func init() { file_p2p_p2p_proto_init() }
-func file_p2p_p2p_proto_init() {
-	if File_p2p_p2p_proto != nil {
-		return
-	}
-	file_p2p_p2p_proto_msgTypes[0].OneofWrappers = []any{
-		(*Message_CompressedZstd)(nil),
-		(*Message_Ping)(nil),
-		(*Message_Pong)(nil),
-		(*Message_Handshake)(nil),
-		(*Message_GetPeerList)(nil),
-		(*Message_PeerList_)(nil),
-		(*Message_GetStateSummaryFrontier)(nil),
-		(*Message_StateSummaryFrontier_)(nil),
-		(*Message_GetAcceptedStateSummary)(nil),
-		(*Message_AcceptedStateSummary_)(nil),
-		(*Message_GetAcceptedFrontier)(nil),
-		(*Message_AcceptedFrontier_)(nil),
-		(*Message_GetAccepted)(nil),
-		(*Message_Accepted_)(nil),
-		(*Message_GetAncestors)(nil),
-		(*Message_Ancestors_)(nil),
-		(*Message_Get)(nil),
-		(*Message_Put)(nil),
-		(*Message_PushQuery)(nil),
-		(*Message_PullQuery)(nil),
-		(*Message_Chits)(nil),
-		(*Message_AppRequest)(nil),
-		(*Message_AppResponse)(nil),
-		(*Message_AppGossip)(nil),
-		(*Message_AppError)(nil),
-		(*Message_Simplex)(nil),
-	}
-	file_p2p_p2p_proto_msgTypes[28].OneofWrappers = []any{
-		(*Simplex_BlockProposal)(nil),
-		(*Simplex_Vote)(nil),
-		(*Simplex_EmptyVote)(nil),
-		(*Simplex_FinalizeVote)(nil),
-		(*Simplex_Notarization)(nil),
-		(*Simplex_EmptyNotarization)(nil),
-		(*Simplex_Finalization)(nil),
-		(*Simplex_ReplicationRequest)(nil),
-		(*Simplex_ReplicationResponse)(nil),
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_p2p_p2p_proto_rawDesc), len(file_p2p_p2p_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   41,
-			NumExtensions: 0,
-			NumServices:   0,
-		},
-		GoTypes:           file_p2p_p2p_proto_goTypes,
-		DependencyIndexes: file_p2p_p2p_proto_depIdxs,
-		EnumInfos:         file_p2p_p2p_proto_enumTypes,
-		MessageInfos:      file_p2p_p2p_proto_msgTypes,
-	}.Build()
-	File_p2p_p2p_proto = out.File
-	file_p2p_p2p_proto_goTypes = nil
-	file_p2p_p2p_proto_depIdxs = nil
-}
+func init()                    { file_p2p_p2p_proto_init() }
+func file_p2p_p2p_proto_init() { _ = "STUB: not implemented"; return }

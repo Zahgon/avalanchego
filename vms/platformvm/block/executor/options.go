@@ -5,19 +5,12 @@ package executor
 
 import (
 	"errors"
-	"fmt"
 
-	"go.uber.org/zap"
-
-	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/uptime"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/platformvm/block"
-	"github.com/ava-labs/avalanchego/vms/platformvm/reward"
 	"github.com/ava-labs/avalanchego/vms/platformvm/state"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs"
-	"github.com/ava-labs/avalanchego/vms/platformvm/txs/executor"
 )
 
 var (
@@ -45,143 +38,58 @@ type options struct {
 }
 
 func (*options) BanffAbortBlock(*block.BanffAbortBlock) error {
-	return snowman.ErrNotOracle
-}
-
-func (*options) BanffCommitBlock(*block.BanffCommitBlock) error {
-	return snowman.ErrNotOracle
-}
-
-func (o *options) BanffProposalBlock(b *block.BanffProposalBlock) error {
-	timestamp := b.Timestamp()
-	blkID := b.ID()
-	nextHeight := b.Height() + 1
-
-	commitBlock, err := block.NewBanffCommitBlock(timestamp, blkID, nextHeight)
-	if err != nil {
-		return fmt.Errorf(
-			"failed to create commit block: %w",
-			err,
-		)
-	}
-
-	abortBlock, err := block.NewBanffAbortBlock(timestamp, blkID, nextHeight)
-	if err != nil {
-		return fmt.Errorf(
-			"failed to create abort block: %w",
-			err,
-		)
-	}
-
-	prefersCommit, err := o.prefersCommit(b.Tx)
-	if err != nil {
-		o.log.Debug("falling back to prefer commit",
-			zap.Error(err),
-		)
-		// We fall back to commit here to err on the side of over-rewarding
-		// rather than under-rewarding.
-		//
-		// Invariant: We must not return the error here, because the error would
-		// be treated as fatal. Errors can occur here due to a malicious block
-		// proposer or even in unusual virtuous cases.
-		prefersCommit = true
-	}
-
-	if prefersCommit {
-		o.preferredBlock = commitBlock
-		o.alternateBlock = abortBlock
-	} else {
-		o.preferredBlock = abortBlock
-		o.alternateBlock = commitBlock
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (*options) BanffCommitBlock(*block.BanffCommitBlock) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+func (o *options) BanffProposalBlock(b *block.BanffProposalBlock) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+// We fall back to commit here to err on the side of over-rewarding
+// rather than under-rewarding.
+//
+// Invariant: We must not return the error here, because the error would
+// be treated as fatal. Errors can occur here due to a malicious block
+// proposer or even in unusual virtuous cases.
+
 func (*options) BanffStandardBlock(*block.BanffStandardBlock) error {
-	return snowman.ErrNotOracle
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*options) ApricotAbortBlock(*block.ApricotAbortBlock) error {
-	return snowman.ErrNotOracle
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*options) ApricotCommitBlock(*block.ApricotCommitBlock) error {
-	return snowman.ErrNotOracle
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *options) ApricotProposalBlock(b *block.ApricotProposalBlock) error {
-	blkID := b.ID()
-	nextHeight := b.Height() + 1
-
-	var err error
-	o.preferredBlock, err = block.NewApricotCommitBlock(blkID, nextHeight)
-	if err != nil {
-		return fmt.Errorf(
-			"failed to create commit block: %w",
-			err,
-		)
-	}
-
-	o.alternateBlock, err = block.NewApricotAbortBlock(blkID, nextHeight)
-	if err != nil {
-		return fmt.Errorf(
-			"failed to create abort block: %w",
-			err,
-		)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*options) ApricotStandardBlock(*block.ApricotStandardBlock) error {
-	return snowman.ErrNotOracle
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*options) ApricotAtomicBlock(*block.ApricotAtomicBlock) error {
-	return snowman.ErrNotOracle
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *options) prefersCommit(tx *txs.Tx) (bool, error) {
-	unsignedTx, ok := tx.Unsigned.(*txs.RewardValidatorTx)
-	if !ok {
-		return false, fmt.Errorf("%w: %T", errUnexpectedProposalTxType, tx.Unsigned)
-	}
-
-	stakerTx, _, err := o.state.GetTx(unsignedTx.TxID)
-	if err != nil {
-		return false, fmt.Errorf("%w: %w", errFailedFetchingStakerTx, err)
-	}
-
-	staker, ok := stakerTx.Unsigned.(txs.Staker)
-	if !ok {
-		return false, fmt.Errorf("%w: %T", errUnexpectedStakerTxType, stakerTx.Unsigned)
-	}
-
-	nodeID := staker.NodeID()
-	primaryNetworkValidator, err := o.state.GetCurrentValidator(
-		constants.PrimaryNetworkID,
-		nodeID,
-	)
-	if err != nil {
-		return false, fmt.Errorf("%w: %w", errFailedFetchingPrimaryStaker, err)
-	}
-
-	expectedUptimePercentage := o.primaryUptimePercentage
-	if subnetID := staker.SubnetID(); subnetID != constants.PrimaryNetworkID {
-		transformSubnet, err := executor.GetTransformSubnetTx(o.state, subnetID)
-		if err != nil {
-			return false, fmt.Errorf("%w: %w", errFailedFetchingSubnetTransformation, err)
-		}
-
-		expectedUptimePercentage = float64(transformSubnet.UptimeRequirement) / reward.PercentDenominator
-	}
-
-	uptime, err := o.uptimes.CalculateUptimePercentFrom(
-		nodeID,
-		primaryNetworkValidator.StartTime,
-	)
-	if err != nil {
-		return false, fmt.Errorf("%w: %w", errFailedCalculatingUptime, err)
-	}
-
-	return uptime >= expectedUptimePercentage, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }

@@ -10,8 +10,8 @@ package nativeminter
 import (
 	"math/big"
 
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
+	"github.com/ava-labs/libevm/common"
 )
 
 const (
@@ -24,14 +24,12 @@ const (
 // PackNativeCoinMintedEvent packs the event into the appropriate arguments for NativeCoinMinted.
 // It returns topic hashes and the encoded non-indexed data.
 func PackNativeCoinMintedEvent(sender common.Address, recipient common.Address, amount *big.Int) ([]common.Hash, []byte, error) {
-	return NativeMinterABI.PackEvent("NativeCoinMinted", sender, recipient, amount)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // UnpackNativeCoinMintedEventData attempts to unpack non-indexed [dataBytes].
 func UnpackNativeCoinMintedEventData(dataBytes []byte) (*big.Int, error) {
-	var eventData = struct {
-		Amount *big.Int
-	}{}
-	err := NativeMinterABI.UnpackIntoInterface(&eventData, "NativeCoinMinted", dataBytes)
-	return eventData.Amount, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }

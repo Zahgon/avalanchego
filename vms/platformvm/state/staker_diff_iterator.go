@@ -6,7 +6,6 @@ package state
 import (
 	"github.com/ava-labs/avalanchego/utils/heap"
 	"github.com/ava-labs/avalanchego/utils/iterator"
-	"github.com/ava-labs/avalanchego/vms/platformvm/txs"
 )
 
 var (
@@ -48,67 +47,23 @@ type stakerDiffIterator struct {
 }
 
 func NewStakerDiffIterator(currentIterator, pendingIterator iterator.Iterator[*Staker]) StakerDiffIterator {
-	mutableCurrentIterator := newMutableStakerIterator(currentIterator)
-	return &stakerDiffIterator{
-		currentIteratorExhausted: !mutableCurrentIterator.Next(),
-		currentIterator:          mutableCurrentIterator,
-		pendingIteratorExhausted: !pendingIterator.Next(),
-		pendingIterator:          pendingIterator,
-	}
+	_ = "STUB: not implemented"
+	return *new(StakerDiffIterator)
 }
 
-func (it *stakerDiffIterator) Next() bool {
-	switch {
-	case it.currentIteratorExhausted && it.pendingIteratorExhausted:
-		return false
-	case it.currentIteratorExhausted:
-		it.advancePending()
-	case it.pendingIteratorExhausted:
-		it.advanceCurrent()
-	default:
-		nextStakerRemoved := it.currentIterator.Value()
-		nextStakerAdded := it.pendingIterator.Value()
-		// If the next operations share the same time, we default to adding the
-		// staker to the current staker set. This means that we default to
-		// advancing the pending iterator.
-		if nextStakerRemoved.EndTime.Before(nextStakerAdded.StartTime) {
-			it.advanceCurrent()
-		} else {
-			it.advancePending()
-		}
-	}
-	return true
-}
+func (it *stakerDiffIterator) Next() bool { _ = "STUB: not implemented"; return false }
 
-func (it *stakerDiffIterator) Value() (*Staker, bool) {
-	return it.modifiedStaker, it.isAdded
-}
+// If the next operations share the same time, we default to adding the
+// staker to the current staker set. This means that we default to
+// advancing the pending iterator.
 
-func (it *stakerDiffIterator) Release() {
-	it.currentIteratorExhausted = true
-	it.currentIterator.Release()
-	it.pendingIteratorExhausted = true
-	it.pendingIterator.Release()
-	it.modifiedStaker = nil
-}
+func (it *stakerDiffIterator) Value() (*Staker, bool) { _ = "STUB: not implemented"; return nil, false }
 
-func (it *stakerDiffIterator) advanceCurrent() {
-	it.modifiedStaker = it.currentIterator.Value()
-	it.isAdded = false
-	it.currentIteratorExhausted = !it.currentIterator.Next()
-}
+func (it *stakerDiffIterator) Release() { _ = "STUB: not implemented"; return }
 
-func (it *stakerDiffIterator) advancePending() {
-	it.modifiedStaker = it.pendingIterator.Value()
-	it.isAdded = true
-	it.pendingIteratorExhausted = !it.pendingIterator.Next()
+func (it *stakerDiffIterator) advanceCurrent() { _ = "STUB: not implemented"; return }
 
-	toRemove := *it.modifiedStaker
-	toRemove.NextTime = toRemove.EndTime
-	toRemove.Priority = txs.PendingToCurrentPriorities[toRemove.Priority]
-	it.currentIteratorExhausted = false
-	it.currentIterator.Add(&toRemove)
-}
+func (it *stakerDiffIterator) advancePending() { _ = "STUB: not implemented"; return }
 
 type mutableStakerIterator struct {
 	iteratorExhausted bool
@@ -117,49 +72,26 @@ type mutableStakerIterator struct {
 }
 
 func newMutableStakerIterator(iterator iterator.Iterator[*Staker]) *mutableStakerIterator {
-	return &mutableStakerIterator{
-		iteratorExhausted: !iterator.Next(),
-		iterator:          iterator,
-		heap:              heap.NewQueue((*Staker).Less),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Add should not be called until after Next has been called at least once.
-func (it *mutableStakerIterator) Add(staker *Staker) {
-	it.heap.Push(staker)
-}
+func (it *mutableStakerIterator) Add(staker *Staker) { _ = "STUB: not implemented"; return }
 
 func (it *mutableStakerIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// The only time the heap should be empty - is when the iterator is
 	// exhausted or uninitialized.
-	if it.heap.Len() > 0 {
-		it.heap.Pop()
-	}
-
-	// If the iterator is exhausted, the only elements left to iterate over are
-	// in the heap.
-	if it.iteratorExhausted {
-		return it.heap.Len() > 0
-	}
-
-	// If the heap doesn't contain the next staker to return, we need to move
-	// the next element from the iterator into the heap.
-	nextIteratorStaker := it.iterator.Value()
-	peek, ok := it.heap.Peek()
-	if !ok || nextIteratorStaker.Less(peek) {
-		it.Add(nextIteratorStaker)
-		it.iteratorExhausted = !it.iterator.Next()
-	}
-	return true
+	return false
 }
 
-func (it *mutableStakerIterator) Value() *Staker {
-	peek, _ := it.heap.Peek()
-	return peek
-}
+// If the iterator is exhausted, the only elements left to iterate over are
+// in the heap.
 
-func (it *mutableStakerIterator) Release() {
-	it.iteratorExhausted = true
-	it.iterator.Release()
-	it.heap = heap.NewQueue((*Staker).Less)
-}
+// If the heap doesn't contain the next staker to return, we need to move
+// the next element from the iterator into the heap.
+
+func (it *mutableStakerIterator) Value() *Staker { _ = "STUB: not implemented"; return nil }
+
+func (it *mutableStakerIterator) Release() { _ = "STUB: not implemented"; return }

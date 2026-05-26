@@ -7,11 +7,10 @@
 package platformvm
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -32,58 +31,38 @@ type L1ValidatorRegistrationJustification struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *L1ValidatorRegistrationJustification) Reset() {
-	*x = L1ValidatorRegistrationJustification{}
-	mi := &file_platformvm_platformvm_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *L1ValidatorRegistrationJustification) Reset() { _ = "STUB: not implemented"; return }
 
 func (x *L1ValidatorRegistrationJustification) String() string {
-	return protoimpl.X.MessageStringOf(x)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func (*L1ValidatorRegistrationJustification) ProtoMessage() {}
+func (*L1ValidatorRegistrationJustification) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *L1ValidatorRegistrationJustification) ProtoReflect() protoreflect.Message {
-	mi := &file_platformvm_platformvm_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use L1ValidatorRegistrationJustification.ProtoReflect.Descriptor instead.
 func (*L1ValidatorRegistrationJustification) Descriptor() ([]byte, []int) {
-	return file_platformvm_platformvm_proto_rawDescGZIP(), []int{0}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *L1ValidatorRegistrationJustification) GetPreimage() isL1ValidatorRegistrationJustification_Preimage {
-	if x != nil {
-		return x.Preimage
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(isL1ValidatorRegistrationJustification_Preimage)
 }
 
 func (x *L1ValidatorRegistrationJustification) GetConvertSubnetToL1TxData() *SubnetIDIndex {
-	if x != nil {
-		if x, ok := x.Preimage.(*L1ValidatorRegistrationJustification_ConvertSubnetToL1TxData); ok {
-			return x.ConvertSubnetToL1TxData
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *L1ValidatorRegistrationJustification) GetRegisterL1ValidatorMessage() []byte {
-	if x != nil {
-		if x, ok := x.Preimage.(*L1ValidatorRegistrationJustification_RegisterL1ValidatorMessage); ok {
-			return x.RegisterL1ValidatorMessage
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -107,9 +86,13 @@ type L1ValidatorRegistrationJustification_RegisterL1ValidatorMessage struct {
 }
 
 func (*L1ValidatorRegistrationJustification_ConvertSubnetToL1TxData) isL1ValidatorRegistrationJustification_Preimage() {
+	_ = "STUB: not implemented"
+	return
 }
 
 func (*L1ValidatorRegistrationJustification_RegisterL1ValidatorMessage) isL1ValidatorRegistrationJustification_Preimage() {
+	_ = "STUB: not implemented"
+	return
 }
 
 type SubnetIDIndex struct {
@@ -120,49 +103,23 @@ type SubnetIDIndex struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SubnetIDIndex) Reset() {
-	*x = SubnetIDIndex{}
-	mi := &file_platformvm_platformvm_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SubnetIDIndex) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SubnetIDIndex) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SubnetIDIndex) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SubnetIDIndex) ProtoMessage() {}
+func (*SubnetIDIndex) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SubnetIDIndex) ProtoReflect() protoreflect.Message {
-	mi := &file_platformvm_platformvm_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SubnetIDIndex.ProtoReflect.Descriptor instead.
-func (*SubnetIDIndex) Descriptor() ([]byte, []int) {
-	return file_platformvm_platformvm_proto_rawDescGZIP(), []int{1}
-}
+func (*SubnetIDIndex) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SubnetIDIndex) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *SubnetIDIndex) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SubnetIDIndex) GetIndex() uint32 {
-	if x != nil {
-		return x.Index
-	}
-	return 0
-}
+func (x *SubnetIDIndex) GetIndex() uint32 { _ = "STUB: not implemented"; return 0 }
 
 var File_platformvm_platformvm_proto protoreflect.FileDescriptor
 
@@ -184,12 +141,7 @@ var (
 	file_platformvm_platformvm_proto_rawDescData []byte
 )
 
-func file_platformvm_platformvm_proto_rawDescGZIP() []byte {
-	file_platformvm_platformvm_proto_rawDescOnce.Do(func() {
-		file_platformvm_platformvm_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_platformvm_platformvm_proto_rawDesc), len(file_platformvm_platformvm_proto_rawDesc)))
-	})
-	return file_platformvm_platformvm_proto_rawDescData
-}
+func file_platformvm_platformvm_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_platformvm_platformvm_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_platformvm_platformvm_proto_goTypes = []any{
@@ -205,30 +157,5 @@ var file_platformvm_platformvm_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_platformvm_platformvm_proto_init() }
-func file_platformvm_platformvm_proto_init() {
-	if File_platformvm_platformvm_proto != nil {
-		return
-	}
-	file_platformvm_platformvm_proto_msgTypes[0].OneofWrappers = []any{
-		(*L1ValidatorRegistrationJustification_ConvertSubnetToL1TxData)(nil),
-		(*L1ValidatorRegistrationJustification_RegisterL1ValidatorMessage)(nil),
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_platformvm_platformvm_proto_rawDesc), len(file_platformvm_platformvm_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   2,
-			NumExtensions: 0,
-			NumServices:   0,
-		},
-		GoTypes:           file_platformvm_platformvm_proto_goTypes,
-		DependencyIndexes: file_platformvm_platformvm_proto_depIdxs,
-		MessageInfos:      file_platformvm_platformvm_proto_msgTypes,
-	}.Build()
-	File_platformvm_platformvm_proto = out.File
-	file_platformvm_platformvm_proto_goTypes = nil
-	file_platformvm_platformvm_proto_depIdxs = nil
-}
+func init()                                  { file_platformvm_platformvm_proto_init() }
+func file_platformvm_platformvm_proto_init() { _ = "STUB: not implemented"; return }

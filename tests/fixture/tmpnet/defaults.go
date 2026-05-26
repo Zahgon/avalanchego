@@ -6,8 +6,6 @@ package tmpnet
 import (
 	"time"
 
-	"github.com/ava-labs/avalanchego/config"
-	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs/executor"
 )
 
@@ -36,39 +34,19 @@ const (
 )
 
 // Flags suggested for temporary networks. Applied by default.
-func DefaultTmpnetFlags() FlagsMap {
-	return FlagsMap{
-		config.NetworkPeerListPullGossipFreqKey: "250ms",
-		config.NetworkMaxReconnectDelayKey:      "1s",
-		config.HealthCheckFreqKey:               "2s",
-		config.AdminAPIEnabledKey:               "true",
-		config.IndexEnabledKey:                  "true",
-		// Disable disk checks by default since temporary networks often run in
-		// resource-constrained environments that commonly have low disk space.
-		config.SystemTrackerRequiredAvailableDiskSpacePercentageKey: "0",
-		config.SystemTrackerWarningAvailableDiskSpacePercentageKey:  "0",
-	}
-}
+func DefaultTmpnetFlags() FlagsMap { _ = "STUB: not implemented"; return *new(FlagsMap) }
+
+// Disable disk checks by default since temporary networks often run in
+// resource-constrained environments that commonly have low disk space.
 
 // Flags suggested for e2e testing
-func DefaultE2EFlags() FlagsMap {
-	return FlagsMap{
-		config.ProposerVMUseCurrentHeightKey: "true",
-		// Reducing this from the 1s default speeds up tx acceptance
-		config.ProposerVMMinBlockDelayKey: "0s",
-		config.LogLevelKey:                logging.Debug.String(),
-	}
-}
+func DefaultE2EFlags() FlagsMap { _ = "STUB: not implemented"; return *new(FlagsMap) }
+
+// Reducing this from the 1s default speeds up tx acceptance
 
 // A set of chain configurations appropriate for testing.
-func DefaultChainConfigs() map[string]ConfigMap {
-	return map[string]ConfigMap{
-		// Supply only non-default configuration to ensure that default
-		// values will be used. Available C-Chain configuration options are
-		// defined in the `github.com/ava-labs/avalanchego/graft/coreth/evm` package.
-		"C": {
-			"warp-api-enabled": true,
-			"log-level":        logging.Trace.String(),
-		},
-	}
-}
+func DefaultChainConfigs() map[string]ConfigMap { _ = "STUB: not implemented"; return nil }
+
+// Supply only non-default configuration to ensure that default
+// values will be used. Available C-Chain configuration options are
+// defined in the `github.com/ava-labs/avalanchego/graft/coreth/evm` package.

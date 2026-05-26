@@ -15,11 +15,6 @@ func newContext(
 	cfg *config.Config,
 	feeAssetID ids.ID,
 ) *builder.Context {
-	return &builder.Context{
-		NetworkID:        ctx.NetworkID,
-		BlockchainID:     ctx.XChainID,
-		AVAXAssetID:      feeAssetID,
-		BaseTxFee:        cfg.TxFee,
-		CreateAssetTxFee: cfg.CreateAssetTxFee,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

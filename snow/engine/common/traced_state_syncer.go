@@ -18,16 +18,11 @@ type tracedStateSyncer struct {
 }
 
 func TraceStateSyncer(stateSyncer StateSyncer, tracer trace.Tracer) StateSyncer {
-	return &tracedStateSyncer{
-		Engine:      TraceEngine(stateSyncer, tracer),
-		stateSyncer: stateSyncer,
-		tracer:      tracer,
-	}
+	_ = "STUB: not implemented"
+	return *new(StateSyncer)
 }
 
 func (e *tracedStateSyncer) IsEnabled(ctx context.Context) (bool, error) {
-	ctx, span := e.tracer.Start(ctx, "tracedStateSyncer.IsEnabled")
-	defer span.End()
-
-	return e.stateSyncer.IsEnabled(ctx)
+	_ = "STUB: not implemented"
+	return false, nil
 }

@@ -21,13 +21,7 @@ var extras ethtypes.ExtraPayloads[*HeaderExtra, *ethtypes.NOOPBlockBodyHooks, no
 //
 // Without a call to Register, none of the functionality of this package will
 // work, and most will simply panic.
-func Register() {
-	extras = ethtypes.RegisterExtras[
-		HeaderExtra, *HeaderExtra,
-		ethtypes.NOOPBlockBodyHooks, *ethtypes.NOOPBlockBodyHooks,
-		noopStateAccountExtras,
-	]()
-}
+func Register() { _ = "STUB: not implemented"; return }
 
 // WithTempRegisteredExtras runs `fn` with temporary registration otherwise
 // equivalent to a call to [RegisterExtras], but limited to the life of `fn`.
@@ -36,22 +30,18 @@ func Register() {
 // `evm.WithTempRegisteredLibEVMExtras()` instead as it calls this along with
 // all other temporary-registration functions.
 func WithTempRegisteredExtras(lock libevm.ExtrasLock, fn func() error) error {
-	old := extras
-	defer func() { extras = old }()
-
-	return ethtypes.WithTempRegisteredExtras[HeaderExtra, ethtypes.NOOPBlockBodyHooks, noopStateAccountExtras](
-		lock,
-		func(e ethtypes.ExtraPayloads[*HeaderExtra, *ethtypes.NOOPBlockBodyHooks, noopStateAccountExtras]) error {
-			extras = e
-			return fn()
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type noopStateAccountExtras struct{}
 
 // EncodeRLP implements the [rlp.Encoder] interface.
-func (noopStateAccountExtras) EncodeRLP(io.Writer) error { return nil }
+func (noopStateAccountExtras) EncodeRLP(io.Writer) error {
+	_ = "STUB: not implemented"
 
-// DecodeRLP implements the [rlp.Decoder] interface.
-func (*noopStateAccountExtras) DecodeRLP(*rlp.Stream) error { return nil }
+	// DecodeRLP implements the [rlp.Decoder] interface.
+	return nil
+}
+
+func (*noopStateAccountExtras) DecodeRLP(*rlp.Stream) error { _ = "STUB: not implemented"; return nil }

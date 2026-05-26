@@ -10,8 +10,6 @@
 package resourcemock
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -28,70 +26,41 @@ type UserMockRecorder struct {
 }
 
 // NewUser creates a new mock instance.
-func NewUser(ctrl *gomock.Controller) *User {
-	mock := &User{ctrl: ctrl}
-	mock.recorder = &UserMockRecorder{mock}
-	return mock
-}
+func NewUser(ctrl *gomock.Controller) *User { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *User) EXPECT() *UserMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AvailableDiskBytes mocks base method.
+	return nil
 }
 
-// AvailableDiskBytes mocks base method.
-func (m *User) AvailableDiskBytes() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AvailableDiskBytes")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *User) AvailableDiskBytes() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // AvailableDiskBytes indicates an expected call of AvailableDiskBytes.
 func (mr *UserMockRecorder) AvailableDiskBytes() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AvailableDiskBytes", reflect.TypeOf((*User)(nil).AvailableDiskBytes))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AvailableDiskPercentage mocks base method.
-func (m *User) AvailableDiskPercentage() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AvailableDiskPercentage")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *User) AvailableDiskPercentage() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // AvailableDiskPercentage indicates an expected call of AvailableDiskPercentage.
 func (mr *UserMockRecorder) AvailableDiskPercentage() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AvailableDiskPercentage", reflect.TypeOf((*User)(nil).AvailableDiskPercentage))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CPUUsage mocks base method.
-func (m *User) CPUUsage() float64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CPUUsage")
-	ret0, _ := ret[0].(float64)
-	return ret0
-}
+func (m *User) CPUUsage() float64 { _ = "STUB: not implemented"; return 0 }
 
 // CPUUsage indicates an expected call of CPUUsage.
-func (mr *UserMockRecorder) CPUUsage() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CPUUsage", reflect.TypeOf((*User)(nil).CPUUsage))
-}
+func (mr *UserMockRecorder) CPUUsage() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // DiskUsage mocks base method.
-func (m *User) DiskUsage() (float64, float64) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DiskUsage")
-	ret0, _ := ret[0].(float64)
-	ret1, _ := ret[1].(float64)
-	return ret0, ret1
-}
+func (m *User) DiskUsage() (float64, float64) { _ = "STUB: not implemented"; return 0, 0 }
 
 // DiskUsage indicates an expected call of DiskUsage.
-func (mr *UserMockRecorder) DiskUsage() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DiskUsage", reflect.TypeOf((*User)(nil).DiskUsage))
-}
+func (mr *UserMockRecorder) DiskUsage() *gomock.Call { _ = "STUB: not implemented"; return nil }

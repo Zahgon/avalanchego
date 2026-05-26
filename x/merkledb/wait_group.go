@@ -11,15 +11,6 @@ type waitGroup struct {
 	wg *sync.WaitGroup
 }
 
-func (wg *waitGroup) Add(delta int) {
-	if wg.wg == nil {
-		wg.wg = new(sync.WaitGroup)
-	}
-	wg.wg.Add(delta)
-}
+func (wg *waitGroup) Add(delta int) { _ = "STUB: not implemented"; return }
 
-func (wg *waitGroup) Wait() {
-	if wg.wg != nil {
-		wg.wg.Wait()
-	}
-}
+func (wg *waitGroup) Wait() { _ = "STUB: not implemented"; return }

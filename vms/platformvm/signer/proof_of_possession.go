@@ -4,11 +4,9 @@
 package signer
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
-	"github.com/ava-labs/avalanchego/utils/formatting"
 )
 
 var (
@@ -29,43 +27,13 @@ type ProofOfPossession struct {
 }
 
 func NewProofOfPossession(sk bls.Signer) (*ProofOfPossession, error) {
-	pk := sk.PublicKey()
-	pkBytes := bls.PublicKeyToCompressedBytes(pk)
-	sig, err := sk.SignProofOfPossession(pkBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	sigBytes := bls.SignatureToBytes(sig)
-
-	pop := &ProofOfPossession{
-		publicKey: pk,
-	}
-	copy(pop.PublicKey[:], pkBytes)
-	copy(pop.ProofOfPossession[:], sigBytes)
-	return pop, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (p *ProofOfPossession) Verify() error {
-	publicKey, err := bls.PublicKeyFromCompressedBytes(p.PublicKey[:])
-	if err != nil {
-		return err
-	}
-	signature, err := bls.SignatureFromBytes(p.ProofOfPossession[:])
-	if err != nil {
-		return err
-	}
-	if !bls.VerifyProofOfPossession(publicKey, signature, p.PublicKey[:]) {
-		return ErrInvalidProofOfPossession
-	}
+func (p *ProofOfPossession) Verify() error { _ = "STUB: not implemented"; return nil }
 
-	p.publicKey = publicKey
-	return nil
-}
-
-func (p *ProofOfPossession) Key() *bls.PublicKey {
-	return p.publicKey
-}
+func (p *ProofOfPossession) Key() *bls.PublicKey { _ = "STUB: not implemented"; return nil }
 
 type jsonProofOfPossession struct {
 	PublicKey         string `json:"publicKey"`
@@ -73,43 +41,8 @@ type jsonProofOfPossession struct {
 }
 
 func (p *ProofOfPossession) MarshalJSON() ([]byte, error) {
-	pk, err := formatting.Encode(formatting.HexNC, p.PublicKey[:])
-	if err != nil {
-		return nil, err
-	}
-	pop, err := formatting.Encode(formatting.HexNC, p.ProofOfPossession[:])
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(jsonProofOfPossession{
-		PublicKey:         pk,
-		ProofOfPossession: pop,
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (p *ProofOfPossession) UnmarshalJSON(b []byte) error {
-	jsonBLS := jsonProofOfPossession{}
-	err := json.Unmarshal(b, &jsonBLS)
-	if err != nil {
-		return err
-	}
-
-	pkBytes, err := formatting.Decode(formatting.HexNC, jsonBLS.PublicKey)
-	if err != nil {
-		return err
-	}
-	pk, err := bls.PublicKeyFromCompressedBytes(pkBytes)
-	if err != nil {
-		return err
-	}
-
-	popBytes, err := formatting.Decode(formatting.HexNC, jsonBLS.ProofOfPossession)
-	if err != nil {
-		return err
-	}
-
-	copy(p.PublicKey[:], pkBytes)
-	copy(p.ProofOfPossession[:], popBytes)
-	p.publicKey = pk
-	return nil
-}
+func (p *ProofOfPossession) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }

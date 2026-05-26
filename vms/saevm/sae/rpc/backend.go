@@ -4,8 +4,6 @@
 package rpc
 
 import (
-	"errors"
-
 	"github.com/ava-labs/libevm/accounts"
 	"github.com/ava-labs/libevm/eth/filters"
 	"github.com/ava-labs/libevm/eth/tracers"
@@ -27,7 +25,8 @@ type GethBackends interface {
 // GethBackends returns the [GethBackends] that back all JSON-RPC namespace
 // handlers registered by [Provider.Server].
 func (p *Provider) GethBackends() GethBackends {
-	return p.backend
+	_ = "STUB: not implemented"
+	return *new(GethBackends)
 }
 
 var _ GethBackends = (*backend)(nil)
@@ -44,10 +43,4 @@ type backend struct {
 	*bloomIndexer
 }
 
-func (b *backend) close() error {
-	return errors.Join(
-		b.accountManager.Close(),
-		b.Estimator.Close(),
-		b.bloomIndexer.Close(),
-	)
-}
+func (b *backend) close() error { _ = "STUB: not implemented"; return nil }

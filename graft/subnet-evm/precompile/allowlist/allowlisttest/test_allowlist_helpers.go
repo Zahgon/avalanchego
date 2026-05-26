@@ -9,11 +9,9 @@ import (
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/stretchr/testify/require"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/allowlist"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contracts/utilstest"
 
 	sim "github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient/simulated"
 )
@@ -31,40 +29,30 @@ type AllowListContract interface {
 
 // VerifyRole checks that the given address has the expected role in the allow list.
 func VerifyRole(t *testing.T, contract AllowListContract, address common.Address, expectedRole allowlist.Role) {
-	t.Helper()
-	role, err := contract.ReadAllowList(nil, address)
-	require.NoError(t, err)
-	require.Equal(t, expectedRole.Big(), role)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetAsEnabled sets the given address as Enabled in the allow list.
 func SetAsEnabled(t *testing.T, b *sim.Backend, contract AllowListContract, auth *bind.TransactOpts, address common.Address) {
-	t.Helper()
-	tx, err := contract.SetEnabled(auth, address)
-	require.NoError(t, err)
-	utilstest.WaitReceiptSuccessful(t, b, tx)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetAsAdmin sets the given address as Admin in the allow list.
 func SetAsAdmin(t *testing.T, b *sim.Backend, contract AllowListContract, auth *bind.TransactOpts, address common.Address) {
-	t.Helper()
-	tx, err := contract.SetAdmin(auth, address)
-	require.NoError(t, err)
-	utilstest.WaitReceiptSuccessful(t, b, tx)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetAsManager sets the given address as Manager in the allow list.
 func SetAsManager(t *testing.T, b *sim.Backend, contract AllowListContract, auth *bind.TransactOpts, address common.Address) {
-	t.Helper()
-	tx, err := contract.SetManager(auth, address)
-	require.NoError(t, err)
-	utilstest.WaitReceiptSuccessful(t, b, tx)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetAsNone revokes the role of the given address in the allow list.
 func SetAsNone(t *testing.T, b *sim.Backend, contract AllowListContract, auth *bind.TransactOpts, address common.Address) {
-	t.Helper()
-	tx, err := contract.SetNone(auth, address)
-	require.NoError(t, err)
-	utilstest.WaitReceiptSuccessful(t, b, tx)
+	_ = "STUB: not implemented"
+	return
 }

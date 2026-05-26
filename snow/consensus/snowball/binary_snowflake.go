@@ -3,17 +3,11 @@
 
 package snowball
 
-import "fmt"
-
 var _ Binary = (*binarySnowflake)(nil)
 
 func newBinarySnowflake(alphaPreference int, terminationConditions []terminationCondition, choice int) binarySnowflake {
-	return binarySnowflake{
-		binarySlush:           newBinarySlush(choice),
-		alphaPreference:       alphaPreference,
-		terminationConditions: terminationConditions,
-		confidence:            make([]int, len(terminationConditions)),
-	}
+	_ = "STUB: not implemented"
+	return *new(binarySnowflake)
 }
 
 // binarySnowflake is the implementation of a binary snowflake instance
@@ -44,53 +38,22 @@ type binarySnowflake struct {
 	finalized bool
 }
 
-func (sf *binarySnowflake) RecordPoll(count, choice int) {
-	if sf.finalized {
-		return // This instance is already decided.
-	}
+func (sf *binarySnowflake) RecordPoll(count, choice int) { _ = "STUB: not implemented"; return }
 
-	if count < sf.alphaPreference {
-		sf.RecordUnsuccessfulPoll()
-		return
-	}
+// This instance is already decided.
 
-	// If I am changing my preference, reset confidence counters
-	// before recording a successful poll on the slush instance.
-	if choice != sf.Preference() {
-		clear(sf.confidence)
-	}
-	sf.binarySlush.RecordSuccessfulPoll(choice)
+// If I am changing my preference, reset confidence counters
+// before recording a successful poll on the slush instance.
 
-	for i, terminationCondition := range sf.terminationConditions {
-		// If I did not reach this alpha threshold, I did not
-		// reach any more alpha thresholds.
-		// Clear the remaining confidence counters.
-		if count < terminationCondition.alphaConfidence {
-			clear(sf.confidence[i:])
-			return
-		}
+// If I did not reach this alpha threshold, I did not
+// reach any more alpha thresholds.
+// Clear the remaining confidence counters.
 
-		// I reached this alpha threshold, increment the confidence counter
-		// and check if I can finalize.
-		sf.confidence[i]++
-		if sf.confidence[i] >= terminationCondition.beta {
-			sf.finalized = true
-			return
-		}
-	}
-}
+// I reached this alpha threshold, increment the confidence counter
+// and check if I can finalize.
 
-func (sf *binarySnowflake) RecordUnsuccessfulPoll() {
-	clear(sf.confidence)
-}
+func (sf *binarySnowflake) RecordUnsuccessfulPoll() { _ = "STUB: not implemented"; return }
 
-func (sf *binarySnowflake) Finalized() bool {
-	return sf.finalized
-}
+func (sf *binarySnowflake) Finalized() bool { _ = "STUB: not implemented"; return false }
 
-func (sf *binarySnowflake) String() string {
-	return fmt.Sprintf("SF(Confidence = %v, Finalized = %v, %s)",
-		sf.confidence,
-		sf.finalized,
-		&sf.binarySlush)
-}
+func (sf *binarySnowflake) String() string { _ = "STUB: not implemented"; return "" }

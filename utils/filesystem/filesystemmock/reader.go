@@ -11,7 +11,6 @@ package filesystemmock
 
 import (
 	fs "io/fs"
-	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,28 +28,20 @@ type ReaderMockRecorder struct {
 }
 
 // NewReader creates a new mock instance.
-func NewReader(ctrl *gomock.Controller) *Reader {
-	mock := &Reader{ctrl: ctrl}
-	mock.recorder = &ReaderMockRecorder{mock}
-	return mock
-}
+func NewReader(ctrl *gomock.Controller) *Reader { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Reader) EXPECT() *ReaderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ReadDir mocks base method.
+	return nil
 }
 
-// ReadDir mocks base method.
 func (m *Reader) ReadDir(arg0 string) ([]fs.DirEntry, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReadDir", arg0)
-	ret0, _ := ret[0].([]fs.DirEntry)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadDir indicates an expected call of ReadDir.
-func (mr *ReaderMockRecorder) ReadDir(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadDir", reflect.TypeOf((*Reader)(nil).ReadDir), arg0)
-}
+func (mr *ReaderMockRecorder) ReadDir(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }

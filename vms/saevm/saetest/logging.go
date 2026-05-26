@@ -5,12 +5,9 @@ package saetest
 
 import (
 	"context"
-	"runtime"
-	"slices"
 	"testing"
 
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
@@ -32,36 +29,26 @@ type logger struct {
 var _ logging.Logger = (*logger)(nil)
 
 func (l *logger) With(fields ...zap.Field) logging.Logger {
-	return &logger{
-		level:   l.level,
-		handler: l.handler,
-		with:    slices.Concat(l.with, fields),
-	}
+	_ = "STUB: not implemented"
+	return *new(logging.Logger)
 }
 
 func (l *logger) log(lvl logging.Level, msg string, fields ...zap.Field) {
-	if lvl < l.level {
-		return
-	}
-	l.handler.log(lvl, msg, slices.Concat(l.with, fields)...)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (l *logger) Debug(msg string, fs ...zap.Field) { l.log(logging.Debug, msg, fs...) }
-func (l *logger) Trace(msg string, fs ...zap.Field) { l.log(logging.Trace, msg, fs...) }
-func (l *logger) Info(msg string, fs ...zap.Field)  { l.log(logging.Info, msg, fs...) }
-func (l *logger) Warn(msg string, fs ...zap.Field)  { l.log(logging.Warn, msg, fs...) }
-func (l *logger) Error(msg string, fs ...zap.Field) { l.log(logging.Error, msg, fs...) }
-func (l *logger) Fatal(msg string, fs ...zap.Field) { l.log(logging.Fatal, msg, fs...) }
+func (l *logger) Debug(msg string, fs ...zap.Field) { _ = "STUB: not implemented"; return }
+func (l *logger) Trace(msg string, fs ...zap.Field) { _ = "STUB: not implemented"; return }
+func (l *logger) Info(msg string, fs ...zap.Field)  { _ = "STUB: not implemented"; return }
+func (l *logger) Warn(msg string, fs ...zap.Field)  { _ = "STUB: not implemented"; return }
+func (l *logger) Error(msg string, fs ...zap.Field) { _ = "STUB: not implemented"; return }
+func (l *logger) Fatal(msg string, fs ...zap.Field) { _ = "STUB: not implemented"; return }
 
 // NewLogRecorder constructs a new [LogRecorder] at the specified level.
-func NewLogRecorder(level logging.Level) *LogRecorder {
-	r := new(LogRecorder)
-	r.logger = &logger{
-		handler: r, // yes, the recursion is gross, but that's composition for you ¯\_(ツ)_/¯
-		level:   level,
-	}
-	return r
-}
+func NewLogRecorder(level logging.Level) *LogRecorder { _ = "STUB: not implemented"; return nil }
+
+// yes, the recursion is gross, but that's composition for you ¯\_(ツ)_/¯
 
 // A LogRecorder is a [logging.Logger] that stores all logs as [LogRecord]
 // entries for inspection.
@@ -78,32 +65,23 @@ type LogRecord struct {
 }
 
 func (l *LogRecorder) log(lvl logging.Level, msg string, fields ...zap.Field) {
-	l.Records = append(l.Records, &LogRecord{
-		Level:  lvl,
-		Msg:    msg,
-		Fields: fields,
-	})
+	_ = "STUB: not implemented"
+	return
 }
 
 // Filter returns the recorded logs for which `fn` returns true.
 func (l *LogRecorder) Filter(fn func(*LogRecord) bool) []*LogRecord {
-	var out []*LogRecord
-	for _, r := range l.Records {
-		if fn(r) {
-			out = append(out, r)
-		}
-	}
-	return out
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // At returns all recorded logs at the specified [logging.Level].
-func (l *LogRecorder) At(lvl logging.Level) []*LogRecord {
-	return l.Filter(func(r *LogRecord) bool { return r.Level == lvl })
-}
+func (l *LogRecorder) At(lvl logging.Level) []*LogRecord { _ = "STUB: not implemented"; return nil }
 
 // AtLeast returns all recorded logs at or above the specified [logging.Level].
 func (l *LogRecorder) AtLeast(lvl logging.Level) []*LogRecord {
-	return l.Filter(func(r *LogRecord) bool { return r.Level >= lvl })
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewTBLogger constructs a logger that propagates logs to [testing.TB]. WARNING
@@ -113,13 +91,11 @@ func (l *LogRecorder) AtLeast(lvl logging.Level) []*LogRecord {
 //
 //nolint:thelper // The outputs include the logging site while the TB site is most useful if here
 func NewTBLogger(tb testing.TB, level logging.Level) *TBLogger {
-	l := &TBLogger{tb: tb}
-	l.logger = &logger{
-		handler: l, // TODO(arr4n) remove the recursion here and in [LogRecorder]
-		level:   min(level, logging.Warn),
-	}
-	return l
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// TODO(arr4n) remove the recursion here and in [LogRecorder]
 
 // TBLogger is a [logging.Logger] that propagates logs to [testing.TB].
 type TBLogger struct {
@@ -132,36 +108,13 @@ type TBLogger struct {
 // [context.CancelFunc] after logs >= [logging.Error], and during [testing.TB]
 // cleanup.
 func (l *TBLogger) CancelOnError(ctx context.Context) context.Context {
-	ctx, cancel := context.WithCancel(ctx)
-	l.onError = append(l.onError, cancel)
-	l.tb.Cleanup(cancel)
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func (l *TBLogger) log(lvl logging.Level, msg string, fields ...zap.Field) {
-	var to func(string, ...any)
-	switch {
-	case lvl == logging.Warn || lvl == logging.Error: // because @ARR4N says warnings in tests are errors
-		to = l.tb.Errorf
-	case lvl >= logging.Fatal:
-		to = l.tb.Fatalf
-	default:
-		to = l.tb.Logf
-	}
-
-	defer func() {
-		if lvl < logging.Error {
-			return
-		}
-		for _, fn := range l.onError {
-			fn()
-		}
-	}()
-
-	enc := zapcore.NewMapObjectEncoder()
-	for _, f := range fields {
-		f.AddTo(enc)
-	}
-	_, file, line, _ := runtime.Caller(3)
-	to("[Log@%s] %s %v - %s:%d", lvl, msg, enc.Fields, file, line)
+	_ = "STUB: not implemented"
+	return
 }
+
+// because @ARR4N says warnings in tests are errors

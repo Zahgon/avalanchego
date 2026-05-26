@@ -7,11 +7,10 @@
 package signer
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -27,35 +26,19 @@ type PublicKeyRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PublicKeyRequest) Reset() {
-	*x = PublicKeyRequest{}
-	mi := &file_signer_signer_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PublicKeyRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PublicKeyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PublicKeyRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PublicKeyRequest) ProtoMessage() {}
+func (*PublicKeyRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PublicKeyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PublicKeyRequest.ProtoReflect.Descriptor instead.
-func (*PublicKeyRequest) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{0}
-}
+func (*PublicKeyRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type PublicKeyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -64,42 +47,21 @@ type PublicKeyResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PublicKeyResponse) Reset() {
-	*x = PublicKeyResponse{}
-	mi := &file_signer_signer_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PublicKeyResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PublicKeyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PublicKeyResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PublicKeyResponse) ProtoMessage() {}
+func (*PublicKeyResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PublicKeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PublicKeyResponse.ProtoReflect.Descriptor instead.
-func (*PublicKeyResponse) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{1}
-}
+func (*PublicKeyResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PublicKeyResponse) GetPublicKey() []byte {
-	if x != nil {
-		return x.PublicKey
-	}
-	return nil
-}
+func (x *PublicKeyResponse) GetPublicKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type SignRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -108,42 +70,21 @@ type SignRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignRequest) Reset() {
-	*x = SignRequest{}
-	mi := &file_signer_signer_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignRequest) ProtoMessage() {}
+func (*SignRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignRequest.ProtoReflect.Descriptor instead.
-func (*SignRequest) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{2}
-}
+func (*SignRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SignRequest) GetMessage() []byte {
-	if x != nil {
-		return x.Message
-	}
-	return nil
-}
+func (x *SignRequest) GetMessage() []byte { _ = "STUB: not implemented"; return nil }
 
 type SignResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -152,42 +93,21 @@ type SignResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignResponse) Reset() {
-	*x = SignResponse{}
-	mi := &file_signer_signer_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignResponse) ProtoMessage() {}
+func (*SignResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignResponse.ProtoReflect.Descriptor instead.
-func (*SignResponse) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{3}
-}
+func (*SignResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SignResponse) GetSignature() []byte {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
+func (x *SignResponse) GetSignature() []byte { _ = "STUB: not implemented"; return nil }
 
 type SignProofOfPossessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -196,42 +116,24 @@ type SignProofOfPossessionRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignProofOfPossessionRequest) Reset() {
-	*x = SignProofOfPossessionRequest{}
-	mi := &file_signer_signer_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignProofOfPossessionRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignProofOfPossessionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignProofOfPossessionRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignProofOfPossessionRequest) ProtoMessage() {}
+func (*SignProofOfPossessionRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignProofOfPossessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignProofOfPossessionRequest.ProtoReflect.Descriptor instead.
 func (*SignProofOfPossessionRequest) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{4}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *SignProofOfPossessionRequest) GetMessage() []byte {
-	if x != nil {
-		return x.Message
-	}
-	return nil
-}
+func (x *SignProofOfPossessionRequest) GetMessage() []byte { _ = "STUB: not implemented"; return nil }
 
 type SignProofOfPossessionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -240,40 +142,25 @@ type SignProofOfPossessionResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignProofOfPossessionResponse) Reset() {
-	*x = SignProofOfPossessionResponse{}
-	mi := &file_signer_signer_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignProofOfPossessionResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignProofOfPossessionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignProofOfPossessionResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignProofOfPossessionResponse) ProtoMessage() {}
+func (*SignProofOfPossessionResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignProofOfPossessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_signer_signer_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignProofOfPossessionResponse.ProtoReflect.Descriptor instead.
 func (*SignProofOfPossessionResponse) Descriptor() ([]byte, []int) {
-	return file_signer_signer_proto_rawDescGZIP(), []int{5}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *SignProofOfPossessionResponse) GetSignature() []byte {
-	if x != nil {
-		return x.Signature
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -304,12 +191,7 @@ var (
 	file_signer_signer_proto_rawDescData []byte
 )
 
-func file_signer_signer_proto_rawDescGZIP() []byte {
-	file_signer_signer_proto_rawDescOnce.Do(func() {
-		file_signer_signer_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_signer_signer_proto_rawDesc), len(file_signer_signer_proto_rawDesc)))
-	})
-	return file_signer_signer_proto_rawDescData
-}
+func file_signer_signer_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_signer_signer_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_signer_signer_proto_goTypes = []any{
@@ -334,26 +216,5 @@ var file_signer_signer_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_signer_signer_proto_init() }
-func file_signer_signer_proto_init() {
-	if File_signer_signer_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_signer_signer_proto_rawDesc), len(file_signer_signer_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   6,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_signer_signer_proto_goTypes,
-		DependencyIndexes: file_signer_signer_proto_depIdxs,
-		MessageInfos:      file_signer_signer_proto_msgTypes,
-	}.Build()
-	File_signer_signer_proto = out.File
-	file_signer_signer_proto_goTypes = nil
-	file_signer_signer_proto_depIdxs = nil
-}
+func init()                          { file_signer_signer_proto_init() }
+func file_signer_signer_proto_init() { _ = "STUB: not implemented"; return }

@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/avalanche"
 	"github.com/ava-labs/avalanchego/snow/engine/avalanche/vertex"
@@ -27,16 +25,9 @@ type Builder struct {
 	BuildStopVtxF func(ctx context.Context, parentIDs []ids.ID) (avalanche.Vertex, error)
 }
 
-func (b *Builder) Default(cant bool) {
-	b.CantBuildVtx = cant
-}
+func (b *Builder) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (b *Builder) BuildStopVtx(ctx context.Context, parentIDs []ids.ID) (avalanche.Vertex, error) {
-	if b.BuildStopVtxF != nil {
-		return b.BuildStopVtxF(ctx, parentIDs)
-	}
-	if b.T != nil {
-		require.False(b.T, b.CantBuildVtx, errBuild)
-	}
-	return nil, errBuild
+	_ = "STUB: not implemented"
+	return *new(avalanche.Vertex), nil
 }

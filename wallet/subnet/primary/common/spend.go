@@ -16,16 +16,6 @@ func MatchOwners(
 	addrs set.Set[ids.ShortID],
 	minIssuanceTime uint64,
 ) ([]uint32, bool) {
-	if owners.Locktime > minIssuanceTime {
-		return nil, false
-	}
-
-	sigs := make([]uint32, 0, owners.Threshold)
-	for i := uint32(0); i < uint32(len(owners.Addrs)) && uint32(len(sigs)) < owners.Threshold; i++ {
-		addr := owners.Addrs[i]
-		if addrs.Contains(addr) {
-			sigs = append(sigs, i)
-		}
-	}
-	return sigs, uint32(len(sigs)) == owners.Threshold
+	_ = "STUB: not implemented"
+	return nil, false
 }

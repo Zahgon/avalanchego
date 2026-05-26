@@ -4,12 +4,9 @@
 package syncer
 
 import (
-	"bytes"
 	"context"
-	"errors"
 
 	"github.com/ava-labs/firewood-go-ethhash/ffi"
-	"github.com/ava-labs/libevm/core/types"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/database/merkle/sync"
@@ -38,110 +35,62 @@ type Config struct {
 }
 
 func New(config Config, db *ffi.Database, targetRoot ids.ID, proofClient *p2p.Client) (*sync.Syncer[*RangeProof, struct{}], error) {
-	return newWithDB(
-		config,
-		&database{db},
-		targetRoot,
-		proofClient,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func newWithDB(config Config, db sync.DB[*RangeProof, struct{}], targetRoot ids.ID, proofClient *p2p.Client) (*sync.Syncer[*RangeProof, struct{}], error) {
-	if config.Registerer == nil {
-		config.Registerer = prometheus.NewRegistry()
-	}
-	if config.Log == nil {
-		config.Log = logging.NoLog{}
-	}
-	if config.SimultaneousWorkLimit == 0 {
-		config.SimultaneousWorkLimit = defaultSimultaneousWorkLimit
-	}
-	return sync.NewSyncer(
-		db,
-		sync.Config[*RangeProof, struct{}]{
-			RangeProofMarshaler:   rangeProofMarshaler{},
-			ChangeProofMarshaler:  changeProofMarshaler{},
-			EmptyRoot:             ids.ID(types.EmptyRootHash),
-			ProofClient:           proofClient,
-			SimultaneousWorkLimit: config.SimultaneousWorkLimit,
-			Log:                   config.Log,
-			TargetRoot:            targetRoot,
-			StateSyncNodes:        config.StateSyncNodes,
-		},
-		config.Registerer,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (db *database) GetMerkleRoot(context.Context) (ids.ID, error) {
-	return ids.ID(db.db.Root()), nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (db *database) GetRangeProofAtRoot(_ context.Context, rootID ids.ID, start maybe.Maybe[[]byte], end maybe.Maybe[[]byte], maxLength int) (*RangeProof, error) {
-	proof, err := db.db.RangeProof(ffi.Hash(rootID), start, end, uint32(maxLength))
-	if err != nil {
-		return nil, err
-	}
-
-	return &RangeProof{
-		rp: proof,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (*database) VerifyRangeProof(_ context.Context, proof *RangeProof, start maybe.Maybe[[]byte], end maybe.Maybe[[]byte], expectedEndRootID ids.ID, maxLength int) error {
+	_ = "STUB: not implemented"
 	// Extra data must be provided at commit time.
 	// TODO: remove this once the FFI no longer requires it.
-	proof.root = expectedEndRootID
-	proof.maxLength = maxLength
-
-	return proof.rp.Verify(ffi.Hash(expectedEndRootID), start, end, uint32(maxLength))
+	return nil
 }
 
 func (db *database) CommitRangeProof(_ context.Context, start, end maybe.Maybe[[]byte], proof *RangeProof) (maybe.Maybe[[]byte], error) {
-	_, err := db.db.VerifyAndCommitRangeProof(proof.rp, start, end, ffi.Hash(proof.root), uint32(proof.maxLength))
-	if err != nil {
-		return maybe.Nothing[[]byte](), err
-	}
-
-	nextKeyRange, err := proof.rp.FindNextKey()
-	if err != nil {
-		return maybe.Nothing[[]byte](), err
-	}
-	// No error indicates the range is complete.
-	if nextKeyRange == nil {
-		return maybe.Nothing[[]byte](), nil
-	}
-
-	nextKey := nextKeyRange.StartKey()
-	if err := nextKeyRange.Free(); err != nil {
-		return maybe.Nothing[[]byte](), err
-	}
-
-	// TODO: This will eventually be handled by `FindNextKey`.
-	if (end.HasValue() && bytes.Compare(nextKey, end.Value()) > 0) || (start.HasValue() && bytes.Equal(nextKey, start.Value())) {
-		return maybe.Nothing[[]byte](), nil
-	}
-
-	return maybe.Some(nextKey), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// No error indicates the range is complete.
+
+// TODO: This will eventually be handled by `FindNextKey`.
 
 // TODO: Use change proofs to optimize syncing.
 // Returning the sentinel error suggests to the server handler to serve a full range proof instead.
 func (*database) GetChangeProof(context.Context, ids.ID, ids.ID, maybe.Maybe[[]byte], maybe.Maybe[[]byte], int) (struct{}, error) {
-	return struct{}{}, sync.ErrInsufficientHistory
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // TODO: implement this method.
 func (*database) VerifyChangeProof(context.Context, struct{}, maybe.Maybe[[]byte], maybe.Maybe[[]byte], ids.ID, int) error {
-	return errors.New("change proofs are not implemented")
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // TODO: implement this method.
 func (*database) CommitChangeProof(context.Context, maybe.Maybe[[]byte], struct{}) (maybe.Maybe[[]byte], error) {
-	return maybe.Nothing[[]byte](), errors.New("change proofs are not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (db *database) Clear() error {
+	_ = "STUB: not implemented"
 	// Prefix delete key of length 0.
-	_, err := db.db.Update([]ffi.BatchOp{ffi.PrefixDelete([]byte{})})
-	return err
+	return nil
 }

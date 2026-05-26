@@ -30,15 +30,4 @@ const (
 	StateSyncDynamic
 )
 
-func (s StateSyncMode) String() string {
-	switch s {
-	case StateSyncSkipped:
-		return "Skipped"
-	case StateSyncStatic:
-		return "Static"
-	case StateSyncDynamic:
-		return "Dynamic"
-	default:
-		return "Unknown"
-	}
-}
+func (s StateSyncMode) String() string { _ = "STUB: not implemented"; return "" }

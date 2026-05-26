@@ -3,12 +3,6 @@
 
 package version
 
-import (
-	"fmt"
-	"runtime"
-	"strings"
-)
-
 // GitCommit is set in the build script at compile time
 var GitCommit string
 
@@ -25,21 +19,10 @@ type Versions struct {
 	Go     string `json:"go"`
 }
 
-func GetVersions() *Versions {
-	return &Versions{
-		Application: Current.String(),
-		Database:    CurrentDatabase,
-		RPCChainVM:  uint64(RPCChainVMProtocol),
-		Commit:      GitCommit,
-		Go:          strings.TrimPrefix(runtime.Version(), "go"),
-	}
-}
+func GetVersions() *Versions { _ = "STUB: not implemented"; return nil }
 
 func (v *Versions) String() string {
+	_ = "STUB: not implemented"
 	// This format maintains consistency with previous --version output
-	versionString := fmt.Sprintf("%s [database=%s, rpcchainvm=%d, ", v.Application, v.Database, v.RPCChainVM)
-	if len(v.Commit) > 0 {
-		versionString += fmt.Sprintf("commit=%s, ", v.Commit)
-	}
-	return versionString + fmt.Sprintf("go=%s]", v.Go)
+	return ""
 }

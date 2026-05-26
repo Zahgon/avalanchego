@@ -25,18 +25,13 @@ type TestVertex struct {
 	BytesV      []byte
 }
 
-func (v *TestVertex) Parents() ([]Vertex, error) {
-	return v.ParentsV, v.ParentsErrV
-}
+func (v *TestVertex) Parents() ([]Vertex, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (v *TestVertex) Height() (uint64, error) {
-	return v.HeightV, v.HeightErrV
-}
+func (v *TestVertex) Height() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (v *TestVertex) Txs(context.Context) ([]snowstorm.Tx, error) {
-	return v.TxsV, v.TxsErrV
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (v *TestVertex) Bytes() []byte {
-	return v.BytesV
-}
+func (v *TestVertex) Bytes() []byte { _ = "STUB: not implemented"; return nil }

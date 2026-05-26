@@ -20,18 +20,10 @@ type statelessHeader struct {
 	bytes []byte
 }
 
-func (h *statelessHeader) ChainID() ids.ID {
-	return h.Chain
-}
+func (h *statelessHeader) ChainID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (h *statelessHeader) ParentID() ids.ID {
-	return h.Parent
-}
+func (h *statelessHeader) ParentID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (h *statelessHeader) BodyID() ids.ID {
-	return h.Body
-}
+func (h *statelessHeader) BodyID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (h *statelessHeader) Bytes() []byte {
-	return h.bytes
-}
+func (h *statelessHeader) Bytes() []byte { _ = "STUB: not implemented"; return nil }

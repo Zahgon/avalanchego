@@ -14,15 +14,4 @@ const (
 	Rejected
 )
 
-func (s Status) String() string {
-	switch s {
-	case Undecided:
-		return "Undecided"
-	case Accepted:
-		return "Accepted"
-	case Rejected:
-		return "Rejected"
-	default:
-		return "Unknown"
-	}
-}
+func (s Status) String() string { _ = "STUB: not implemented"; return "" }

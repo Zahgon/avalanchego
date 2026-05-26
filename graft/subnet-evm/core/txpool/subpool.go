@@ -62,12 +62,7 @@ type LazyTransaction struct {
 // originally, silently saving it will cause more trouble down the line (and
 // indeed seems to have caused a memory bloat in the original implementation
 // which did just that).
-func (ltx *LazyTransaction) Resolve() *types.Transaction {
-	if ltx.Tx != nil {
-		return ltx.Tx
-	}
-	return ltx.Pool.Get(ltx.Hash)
-}
+func (ltx *LazyTransaction) Resolve() *types.Transaction { _ = "STUB: not implemented"; return nil }
 
 // LazyResolver is a minimal interface needed for a transaction pool to satisfy
 // resolving lazy transactions. It's mostly a helper to avoid the entire sub-

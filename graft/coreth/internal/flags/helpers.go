@@ -28,13 +28,10 @@
 package flags
 
 import (
-	"fmt"
 	"os"
 	"regexp"
 	"strings"
 
-	"github.com/ava-labs/avalanchego/graft/coreth/internal/version"
-	"github.com/ava-labs/libevm/params"
 	"github.com/mattn/go-isatty"
 	"github.com/urfave/cli/v2"
 )
@@ -44,28 +41,10 @@ import (
 var usecolor = (isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd())) && os.Getenv("TERM") != "dumb"
 
 // NewApp creates an app with sane defaults.
-func NewApp(usage string) *cli.App {
-	git, _ := version.VCS()
-	app := cli.NewApp()
-	app.EnableBashCompletion = true
-	app.Version = params.VersionWithCommit(git.Commit, git.Date)
-	app.Usage = usage
-	app.Copyright = "Copyright 2013-2024 The go-ethereum Authors"
-	app.Before = func(ctx *cli.Context) error {
-		MigrateGlobalFlags(ctx)
-		return nil
-	}
-	return app
-}
+func NewApp(usage string) *cli.App { _ = "STUB: not implemented"; return nil }
 
 // Merge merges the given flag slices.
-func Merge(groups ...[]cli.Flag) []cli.Flag {
-	var ret []cli.Flag
-	for _, group := range groups {
-		ret = append(ret, group...)
-	}
-	return ret
-}
+func Merge(groups ...[]cli.Flag) []cli.Flag { _ = "STUB: not implemented"; return nil }
 
 var migrationApplied = map[*cli.Command]struct{}{}
 
@@ -84,67 +63,27 @@ var migrationApplied = map[*cli.Command]struct{}{}
 // will return true even if --lightkdf is set as a global option.
 //
 // This function may become unnecessary when https://github.com/urfave/cli/pull/1245 is merged.
-func MigrateGlobalFlags(ctx *cli.Context) {
-	var iterate func(cs []*cli.Command, fn func(*cli.Command))
-	iterate = func(cs []*cli.Command, fn func(*cli.Command)) {
-		for _, cmd := range cs {
-			if _, ok := migrationApplied[cmd]; ok {
-				continue
-			}
-			migrationApplied[cmd] = struct{}{}
-			fn(cmd)
-			iterate(cmd.Subcommands, fn)
-		}
-	}
+func MigrateGlobalFlags(ctx *cli.Context) { _ = "STUB: not implemented"; return }
 
-	// This iterates over all commands and wraps their action function.
-	iterate(ctx.App.Commands, func(cmd *cli.Command) {
-		if cmd.Action == nil {
-			return
-		}
-
-		action := cmd.Action
-		cmd.Action = func(ctx *cli.Context) error {
-			doMigrateFlags(ctx)
-			return action(ctx)
-		}
-	})
-}
+// This iterates over all commands and wraps their action function.
 
 func doMigrateFlags(ctx *cli.Context) {
+	_ = "STUB: not implemented"
 	// Figure out if there are any aliases of commands. If there are, we want
 	// to ignore them when iterating over the flags.
-	aliases := make(map[string]bool)
-	for _, fl := range ctx.Command.Flags {
-		for _, alias := range fl.Names()[1:] {
-			aliases[alias] = true
-		}
-	}
-	for _, name := range ctx.FlagNames() {
-		for _, parent := range ctx.Lineage()[1:] {
-			if parent.IsSet(name) {
-				// When iterating across the lineage, we will be served both
-				// the 'canon' and alias formats of all commands. In most cases,
-				// it's fine to set it in the ctx multiple times (one for each
-				// name), however, the Slice-flags are not fine.
-				// The slice-flags accumulate, so if we set it once as
-				// "foo" and once as alias "F", then both will be present in the slice.
-				if _, isAlias := aliases[name]; isAlias {
-					continue
-				}
-				// If it is a string-slice, we need to set it as
-				// "alfa, beta, gamma" instead of "[alfa beta gamma]", in order
-				// for the backing StringSlice to parse it properly.
-				if result := parent.StringSlice(name); len(result) > 0 {
-					ctx.Set(name, strings.Join(result, ","))
-				} else {
-					ctx.Set(name, parent.String(name))
-				}
-				break
-			}
-		}
-	}
+	return
 }
+
+// When iterating across the lineage, we will be served both
+// the 'canon' and alias formats of all commands. In most cases,
+// it's fine to set it in the ctx multiple times (one for each
+// name), however, the Slice-flags are not fine.
+// The slice-flags accumulate, so if we set it once as
+// "foo" and once as alias "F", then both will be present in the slice.
+
+// If it is a string-slice, we need to set it as
+// "alfa, beta, gamma" instead of "[alfa beta gamma]", in order
+// for the backing StringSlice to parse it properly.
 
 func init() {
 	if usecolor {
@@ -159,77 +98,8 @@ func init() {
 }
 
 // FlagString prints a single flag in help.
-func FlagString(f cli.Flag) string {
-	df, ok := f.(cli.DocGenerationFlag)
-	if !ok {
-		return ""
-	}
-	needsPlaceholder := df.TakesValue()
-	placeholder := ""
-	if needsPlaceholder {
-		placeholder = "value"
-	}
+func FlagString(f cli.Flag) string { _ = "STUB: not implemented"; return "" }
 
-	namesText := cli.FlagNamePrefixer(df.Names(), placeholder)
+func indent(s string, nspace int) string { _ = "STUB: not implemented"; return "" }
 
-	defaultValueString := ""
-	if s := df.GetDefaultText(); s != "" {
-		defaultValueString = " (default: " + s + ")"
-	}
-	envHint := strings.TrimSpace(cli.FlagEnvHinter(df.GetEnvVars(), ""))
-	if envHint != "" {
-		envHint = " (" + envHint[1:len(envHint)-1] + ")"
-	}
-	usage := strings.TrimSpace(df.GetUsage())
-	usage = wordWrap(usage, 80)
-	usage = indent(usage, 10)
-
-	if usecolor {
-		return fmt.Sprintf("\n    \u001B[32m%-35s%-35s\u001B[0m%s\n%s", namesText, defaultValueString, envHint, usage)
-	} else {
-		return fmt.Sprintf("\n    %-35s%-35s%s\n%s", namesText, defaultValueString, envHint, usage)
-	}
-}
-
-func indent(s string, nspace int) string {
-	ind := strings.Repeat(" ", nspace)
-	return ind + strings.ReplaceAll(s, "\n", "\n"+ind)
-}
-
-func wordWrap(s string, width int) string {
-	var (
-		output     strings.Builder
-		lineLength = 0
-	)
-
-	for {
-		sp := strings.IndexByte(s, ' ')
-		var word string
-		if sp == -1 {
-			word = s
-		} else {
-			word = s[:sp]
-		}
-		wlen := len(word)
-		over := lineLength+wlen >= width
-		if over {
-			output.WriteByte('\n')
-			lineLength = 0
-		} else {
-			if lineLength != 0 {
-				output.WriteByte(' ')
-				lineLength++
-			}
-		}
-
-		output.WriteString(word)
-		lineLength += wlen
-
-		if sp == -1 {
-			break
-		}
-		s = s[wlen+1:]
-	}
-
-	return output.String()
-}
+func wordWrap(s string, width int) string { _ = "STUB: not implemented"; return "" }

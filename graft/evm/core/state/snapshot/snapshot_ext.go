@@ -4,27 +4,18 @@
 package snapshot
 
 import (
-	"time"
-
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/ethdb"
-
-	"github.com/ava-labs/avalanchego/graft/evm/utils"
 )
 
 func (t *Tree) DiskAccountIterator(seek common.Hash) AccountIterator {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	return t.disklayer().AccountIterator(seek)
+	_ = "STUB: not implemented"
+	return *new(AccountIterator)
 }
 
 func (t *Tree) DiskStorageIterator(account common.Hash, seek common.Hash) StorageIterator {
-	t.lock.Lock()
-	defer t.lock.Unlock()
-
-	it, _ := t.disklayer().StorageIterator(account, seek)
-	return it
+	_ = "STUB: not implemented"
+	return *new(StorageIterator)
 }
 
 type SnapshotIterable interface {
@@ -40,33 +31,15 @@ type SnapshotIterable interface {
 // NewDiskLayer creates a diskLayer for direct access to the contents of the on-disk
 // snapshot. Does not perform any validation.
 func NewDiskLayer(diskdb ethdb.KeyValueStore) SnapshotIterable {
-	return &diskLayer{
-		diskdb:  diskdb,
-		created: time.Now(),
-
-		// state sync uses iterators to access data, so this cache is not used.
-		// initializing it out of caution.
-		cache: utils.NewMeteredCache(32*1024, "", 0),
-	}
+	_ = "STUB: not implemented"
+	return *new(SnapshotIterable)
 }
+
+// state sync uses iterators to access data, so this cache is not used.
+// initializing it out of caution.
 
 // NewTestTree creates a *Tree with a pre-populated diskLayer
 func NewTestTree(diskdb ethdb.KeyValueStore, blockHash, root common.Hash) *Tree {
-	base := &diskLayer{
-		diskdb:    diskdb,
-		root:      root,
-		blockHash: blockHash,
-		cache:     utils.NewMeteredCache(128*256, "", 0),
-		created:   time.Now(),
-	}
-	return &Tree{
-		blockLayers: map[common.Hash]snapshot{
-			blockHash: base,
-		},
-		stateLayers: map[common.Hash]map[common.Hash]snapshot{
-			root: {
-				blockHash: base,
-			},
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

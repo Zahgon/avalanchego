@@ -13,11 +13,8 @@
 package escrow
 
 import (
-	"slices"
-
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
 	"github.com/holiman/uint256"
 )
 
@@ -27,48 +24,31 @@ const (
 )
 
 // CreationCode returns the EVM bytecode for deploying the Escrow.sol contract.
-func CreationCode() []byte {
-	return common.FromHex(creation)
-}
+func CreationCode() []byte { _ = "STUB: not implemented"; return nil }
 
 // ByteCode returns the deployed EVM bytecode of the Escrow.sol contract.
-func ByteCode() []byte {
-	return common.FromHex(deployed)
-}
+func ByteCode() []byte { _ = "STUB: not implemented"; return nil }
 
 // CallDataToDeposit returns the transaction call data to deposit native token
 // for the given recipient.
-func CallDataToDeposit(recipient common.Address) []byte {
-	return callDataWithAddr("deposit(address)", recipient)
-}
+func CallDataToDeposit(recipient common.Address) []byte { _ = "STUB: not implemented"; return nil }
 
 // CallDataForBalance returns the transaction call data to retrieve the balance
 // in escrow for the given beneficiary.
-func CallDataForBalance(beneficiary common.Address) []byte {
-	return callDataWithAddr("balance(address)", beneficiary)
-}
+func CallDataForBalance(beneficiary common.Address) []byte { _ = "STUB: not implemented"; return nil }
 
 func callDataWithAddr(sig string, addr common.Address) []byte {
-	return slices.Concat(
-		crypto.Keccak256([]byte(sig))[:4],
-		make([]byte, 12), addr[:],
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CallDataToWithdraw returns the transaction call data to withdraw the
 // caller's escrowed balance.
-func CallDataToWithdraw() []byte {
-	return crypto.Keccak256([]byte("withdraw()"))[:4]
-}
+func CallDataToWithdraw() []byte { _ = "STUB: not implemented"; return nil }
 
 // DepositEvent returns the [types.Log] emitted by a successful transaction with
 // [CallDataToDeposit] data.
 func DepositEvent(recipient common.Address, amount *uint256.Int) *types.Log {
-	return &types.Log{
-		Topics: []common.Hash{crypto.Keccak256Hash([]byte("Deposit(address,uint256)"))},
-		Data: slices.Concat(
-			make([]byte, 12), recipient[:],
-			amount.PaddedBytes(32),
-		),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -5,4 +5,4 @@ package throttling
 
 type ReleaseFunc func()
 
-func noopRelease() {}
+func noopRelease() { _ = "STUB: not implemented"; return }

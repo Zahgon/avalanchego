@@ -6,7 +6,6 @@ package customrawdb
 import (
 	"errors"
 
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
 )
 
@@ -19,16 +18,13 @@ var errStateSchemeConflict = errors.New("state scheme conflict")
 
 // ParseStateScheme parses the state scheme from the provided string.
 func ParseStateScheme(provided string, db ethdb.Database) (string, error) {
+	_ = "STUB: not implemented"
 	// Check for custom scheme
-	if provided == FirewoodScheme {
-		if diskScheme := rawdb.ReadStateScheme(db); diskScheme != "" {
-			// Valid scheme on db mismatched
-			return "", errStateSchemeConflict
-		}
-		// If no conflicting scheme is found, is valid.
-		return FirewoodScheme, nil
-	}
-
-	// Check for valid eth scheme
-	return rawdb.ParseStateScheme(provided, db)
+	return "", nil
 }
+
+// Valid scheme on db mismatched
+
+// If no conflicting scheme is found, is valid.
+
+// Check for valid eth scheme

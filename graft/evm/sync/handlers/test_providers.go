@@ -20,13 +20,12 @@ type TestBlockProvider struct {
 }
 
 func (t *TestBlockProvider) GetBlock(hash common.Hash, number uint64) *types.Block {
-	return t.GetBlockFn(hash, number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type TestSnapshotProvider struct {
 	Snapshot *snapshot.Tree
 }
 
-func (t *TestSnapshotProvider) Snapshots() *snapshot.Tree {
-	return t.Snapshot
-}
+func (t *TestSnapshotProvider) Snapshots() *snapshot.Tree { _ = "STUB: not implemented"; return nil }

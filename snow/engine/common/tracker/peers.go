@@ -5,11 +5,9 @@ package tracker
 
 import (
 	"context"
-	"errors"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"golang.org/x/exp/maps"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
@@ -48,82 +46,47 @@ type lockedPeers struct {
 	peers Peers
 }
 
-func NewPeers() Peers {
-	return &lockedPeers{
-		peers: &peerData{
-			validators: make(map[ids.NodeID]uint64),
-		},
-	}
-}
+func NewPeers() Peers { _ = "STUB: not implemented"; return *new(Peers) }
 
 func (p *lockedPeers) OnValidatorAdded(nodeID ids.NodeID, pk *bls.PublicKey, txID ids.ID, weight uint64) {
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	p.peers.OnValidatorAdded(nodeID, pk, txID, weight)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *lockedPeers) OnValidatorRemoved(nodeID ids.NodeID, weight uint64) {
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	p.peers.OnValidatorRemoved(nodeID, weight)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *lockedPeers) OnValidatorWeightChanged(nodeID ids.NodeID, oldWeight, newWeight uint64) {
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	p.peers.OnValidatorWeightChanged(nodeID, oldWeight, newWeight)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *lockedPeers) Connected(ctx context.Context, nodeID ids.NodeID, version *version.Application) error {
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	return p.peers.Connected(ctx, nodeID, version)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *lockedPeers) Disconnected(ctx context.Context, nodeID ids.NodeID) error {
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	return p.peers.Disconnected(ctx, nodeID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (p *lockedPeers) ConnectedWeight() uint64 {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
+func (p *lockedPeers) ConnectedWeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-	return p.peers.ConnectedWeight()
-}
-
-func (p *lockedPeers) ConnectedPercent() float64 {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.peers.ConnectedPercent()
-}
+func (p *lockedPeers) ConnectedPercent() float64 { _ = "STUB: not implemented"; return 0 }
 
 func (p *lockedPeers) SampleValidator() (ids.NodeID, bool) {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.peers.SampleValidator()
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), false
 }
 
-func (p *lockedPeers) GetValidators() set.Set[ids.NodeID] {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.peers.GetValidators()
-}
+func (p *lockedPeers) GetValidators() set.Set[ids.NodeID] { _ = "STUB: not implemented"; return nil }
 
 func (p *lockedPeers) ConnectedValidators() set.Set[ids.NodeID] {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.peers.ConnectedValidators()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type meteredPeers struct {
@@ -135,66 +98,33 @@ type meteredPeers struct {
 }
 
 func NewMeteredPeers(reg prometheus.Registerer) (Peers, error) {
-	percentConnected := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "percent_connected",
-		Help: "Percent of connected stake",
-	})
-	totalWeight := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "total_weight",
-		Help: "Total stake",
-	})
-	numValidators := prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "num_validators",
-		Help: "Total number of validators",
-	})
-	err := errors.Join(
-		reg.Register(percentConnected),
-		reg.Register(totalWeight),
-		reg.Register(numValidators),
-	)
-	return &lockedPeers{
-		peers: &meteredPeers{
-			Peers: &peerData{
-				validators: make(map[ids.NodeID]uint64),
-			},
-			percentConnected: percentConnected,
-			totalWeight:      totalWeight,
-			numValidators:    numValidators,
-		},
-	}, err
+	_ = "STUB: not implemented"
+	return *new(Peers), nil
 }
 
 func (p *meteredPeers) OnValidatorAdded(nodeID ids.NodeID, pk *bls.PublicKey, txID ids.ID, weight uint64) {
-	p.Peers.OnValidatorAdded(nodeID, pk, txID, weight)
-	p.numValidators.Inc()
-	p.totalWeight.Add(float64(weight))
-	p.percentConnected.Set(p.Peers.ConnectedPercent())
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *meteredPeers) OnValidatorRemoved(nodeID ids.NodeID, weight uint64) {
-	p.Peers.OnValidatorRemoved(nodeID, weight)
-	p.numValidators.Dec()
-	p.totalWeight.Sub(float64(weight))
-	p.percentConnected.Set(p.Peers.ConnectedPercent())
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *meteredPeers) OnValidatorWeightChanged(nodeID ids.NodeID, oldWeight, newWeight uint64) {
-	p.Peers.OnValidatorWeightChanged(nodeID, oldWeight, newWeight)
-	p.totalWeight.Sub(float64(oldWeight))
-	p.totalWeight.Add(float64(newWeight))
-	p.percentConnected.Set(p.Peers.ConnectedPercent())
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *meteredPeers) Connected(ctx context.Context, nodeID ids.NodeID, version *version.Application) error {
-	err := p.Peers.Connected(ctx, nodeID, version)
-	p.percentConnected.Set(p.Peers.ConnectedPercent())
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *meteredPeers) Disconnected(ctx context.Context, nodeID ids.NodeID) error {
-	err := p.Peers.Disconnected(ctx, nodeID)
-	p.percentConnected.Set(p.Peers.ConnectedPercent())
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type peerData struct {
@@ -212,74 +142,44 @@ type peerData struct {
 }
 
 func (p *peerData) OnValidatorAdded(nodeID ids.NodeID, _ *bls.PublicKey, _ ids.ID, weight uint64) {
-	p.validators[nodeID] = weight
-	p.totalWeight += weight
-	if p.connectedPeers.Contains(nodeID) {
-		p.connectedWeight += weight
-		p.connectedValidators.Add(nodeID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *peerData) OnValidatorRemoved(nodeID ids.NodeID, weight uint64) {
-	delete(p.validators, nodeID)
-	p.totalWeight -= weight
-	if p.connectedPeers.Contains(nodeID) {
-		p.connectedWeight -= weight
-		p.connectedValidators.Remove(nodeID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *peerData) OnValidatorWeightChanged(nodeID ids.NodeID, oldWeight, newWeight uint64) {
-	p.validators[nodeID] = newWeight
-	p.totalWeight -= oldWeight
-	p.totalWeight += newWeight
-	if p.connectedPeers.Contains(nodeID) {
-		p.connectedWeight -= oldWeight
-		p.connectedWeight += newWeight
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (p *peerData) Connected(_ context.Context, nodeID ids.NodeID, _ *version.Application) error {
-	if weight, ok := p.validators[nodeID]; ok {
-		p.connectedWeight += weight
-		p.connectedValidators.Add(nodeID)
-	}
-	p.connectedPeers.Add(nodeID)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (p *peerData) Disconnected(_ context.Context, nodeID ids.NodeID) error {
-	if weight, ok := p.validators[nodeID]; ok {
-		p.connectedWeight -= weight
-		p.connectedValidators.Remove(nodeID)
-	}
-	p.connectedPeers.Remove(nodeID)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (p *peerData) ConnectedWeight() uint64 {
-	return p.connectedWeight
-}
+func (p *peerData) ConnectedWeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (p *peerData) ConnectedPercent() float64 {
-	if p.totalWeight == 0 {
-		return 1
-	}
-	return float64(p.connectedWeight) / float64(p.totalWeight)
-}
+func (p *peerData) ConnectedPercent() float64 { _ = "STUB: not implemented"; return 0 }
 
 func (p *peerData) SampleValidator() (ids.NodeID, bool) {
-	return p.connectedValidators.Peek()
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), false
 }
 
-func (p *peerData) GetValidators() set.Set[ids.NodeID] {
-	return set.Of(maps.Keys(p.validators)...)
-}
+func (p *peerData) GetValidators() set.Set[ids.NodeID] { _ = "STUB: not implemented"; return nil }
 
 func (p *peerData) ConnectedValidators() set.Set[ids.NodeID] {
+	_ = "STUB: not implemented"
 	// The set is copied to avoid future changes from being reflected in the
 	// returned set.
-	copied := set.NewSet[ids.NodeID](len(p.connectedValidators))
-	copied.Union(p.connectedValidators)
-	return copied
+	return nil
 }

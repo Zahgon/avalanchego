@@ -24,11 +24,7 @@ type atomic struct {
 	handler utils.Atomic[common.AppHandler]
 }
 
-func NewAtomic(h common.AppHandler) Atomic {
-	a := &atomic{}
-	a.handler.Set(h)
-	return a
-}
+func NewAtomic(h common.AppHandler) Atomic { _ = "STUB: not implemented"; return *new(Atomic) }
 
 func (a *atomic) AppRequest(
 	ctx context.Context,
@@ -37,14 +33,8 @@ func (a *atomic) AppRequest(
 	deadline time.Time,
 	msg []byte,
 ) error {
-	h := a.handler.Get()
-	return h.AppRequest(
-		ctx,
-		nodeID,
-		requestID,
-		deadline,
-		msg,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (a *atomic) AppRequestFailed(
@@ -53,13 +43,8 @@ func (a *atomic) AppRequestFailed(
 	requestID uint32,
 	appErr *common.AppError,
 ) error {
-	h := a.handler.Get()
-	return h.AppRequestFailed(
-		ctx,
-		nodeID,
-		requestID,
-		appErr,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (a *atomic) AppResponse(
@@ -68,13 +53,8 @@ func (a *atomic) AppResponse(
 	requestID uint32,
 	msg []byte,
 ) error {
-	h := a.handler.Get()
-	return h.AppResponse(
-		ctx,
-		nodeID,
-		requestID,
-		msg,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (a *atomic) AppGossip(
@@ -82,14 +62,8 @@ func (a *atomic) AppGossip(
 	nodeID ids.NodeID,
 	msg []byte,
 ) error {
-	h := a.handler.Get()
-	return h.AppGossip(
-		ctx,
-		nodeID,
-		msg,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (a *atomic) Set(h common.AppHandler) {
-	a.handler.Set(h)
-}
+func (a *atomic) Set(h common.AppHandler) { _ = "STUB: not implemented"; return }

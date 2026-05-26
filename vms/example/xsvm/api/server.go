@@ -12,8 +12,6 @@ import (
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/builder"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/chain"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/genesis"
-	"github.com/ava-labs/avalanchego/vms/example/xsvm/state"
-	"github.com/ava-labs/avalanchego/vms/example/xsvm/tx"
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
 
@@ -37,13 +35,8 @@ func NewServer(
 	chain chain.Chain,
 	builder builder.Builder,
 ) Server {
-	return &server{
-		ctx:     ctx,
-		genesis: genesis,
-		state:   state,
-		chain:   chain,
-		builder: builder,
-	}
+	_ = "STUB: not implemented"
+	return *new(Server)
 }
 
 type server struct {
@@ -61,9 +54,7 @@ type NetworkReply struct {
 }
 
 func (s *server) Network(_ *http.Request, _ *struct{}, reply *NetworkReply) error {
-	reply.NetworkID = s.ctx.NetworkID
-	reply.SubnetID = s.ctx.SubnetID
-	reply.ChainID = s.ctx.ChainID
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -72,7 +63,7 @@ type GenesisReply struct {
 }
 
 func (s *server) Genesis(_ *http.Request, _ *struct{}, reply *GenesisReply) error {
-	reply.Genesis = s.genesis
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -85,9 +76,8 @@ type NonceReply struct {
 }
 
 func (s *server) Nonce(_ *http.Request, args *NonceArgs, reply *NonceReply) error {
-	nonce, err := state.GetNonce(s.state, args.Address)
-	reply.Nonce = nonce
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type BalanceArgs struct {
@@ -100,9 +90,8 @@ type BalanceReply struct {
 }
 
 func (s *server) Balance(_ *http.Request, args *BalanceArgs, reply *BalanceReply) error {
-	balance, err := state.GetBalance(s.state, args.Address, args.AssetID)
-	reply.Balance = balance
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type LoanArgs struct {
@@ -114,9 +103,8 @@ type LoanReply struct {
 }
 
 func (s *server) Loan(_ *http.Request, args *LoanArgs, reply *LoanReply) error {
-	amount, err := state.GetLoan(s.state, args.ChainID)
-	reply.Amount = amount
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type IssueTxArgs struct {
@@ -128,22 +116,8 @@ type IssueTxReply struct {
 }
 
 func (s *server) IssueTx(r *http.Request, args *IssueTxArgs, reply *IssueTxReply) error {
-	newTx, err := tx.Parse(args.Tx)
-	if err != nil {
-		return err
-	}
-
-	ctx := r.Context()
-	s.ctx.Lock.Lock()
-	err = s.builder.AddTx(ctx, newTx)
-	s.ctx.Lock.Unlock()
-	if err != nil {
-		return err
-	}
-
-	txID, err := newTx.ID()
-	reply.TxID = txID
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type LastAcceptedReply struct {
@@ -152,12 +126,8 @@ type LastAcceptedReply struct {
 }
 
 func (s *server) LastAccepted(_ *http.Request, _ *struct{}, reply *LastAcceptedReply) error {
-	s.ctx.Lock.RLock()
-	reply.BlockID = s.chain.LastAccepted()
-	s.ctx.Lock.RUnlock()
-	blkBytes, err := state.GetBlock(s.state, reply.BlockID)
-	reply.BlockBytes = blkBytes
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type BlockArgs struct {
@@ -169,9 +139,8 @@ type BlockReply struct {
 }
 
 func (s *server) Block(_ *http.Request, args *BlockArgs, reply *BlockReply) error {
-	blkBytes, err := state.GetBlock(s.state, args.BlockID)
-	reply.BlockBytes = blkBytes
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type MessageArgs struct {
@@ -184,12 +153,6 @@ type MessageReply struct {
 }
 
 func (s *server) Message(_ *http.Request, args *MessageArgs, reply *MessageReply) error {
-	message, err := state.GetMessage(s.state, args.TxID)
-	if err != nil {
-		return err
-	}
-
-	reply.Message = message
-	reply.Signature, err = s.ctx.WarpSigner.Sign(message)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

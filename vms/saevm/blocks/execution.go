@@ -6,26 +6,20 @@ package blocks
 import (
 	"context"
 	"errors"
-	"fmt"
 	"math/big"
-	"slices"
 	"sync/atomic"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/params"
-	"github.com/ava-labs/libevm/trie"
 	"github.com/holiman/uint256"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/saevm/gastime"
 	"github.com/ava-labs/avalanchego/vms/saevm/proxytime"
 
-	saeparams "github.com/ava-labs/avalanchego/vms/saevm/params"
 	saetypes "github.com/ava-labs/avalanchego/vms/saevm/types"
 )
 
@@ -33,7 +27,8 @@ import (
 // transactions, with the highest-known gas time. This MAY be at any resolution
 // but MUST be monotonic.
 func (b *Block) SetInterimExecutionTime(t *proxytime.Time[gas.Gas]) {
-	b.interimExecutionTime.Store(t.Clone())
+	_ = "STUB: not implemented"
+	return
 }
 
 //go:generate go run github.com/StephenButtolph/canoto/canoto $GOFILE
@@ -62,12 +57,8 @@ type ephemeralExecutionResults struct {
 }
 
 func (e *executionResults) setBaseFee(bf *big.Int) error {
-	if bf == nil { // genesis blocks
-		return nil
-	}
-	if overflow := e.baseFee.SetFromBig(bf); overflow {
-		return fmt.Errorf("base fee %v overflows 256 bits", bf)
-	}
+	_ = "STUB: not implemented"
+	// genesis blocks
 	return nil
 }
 
@@ -95,34 +86,14 @@ func (b *Block) MarkExecuted(
 	stateRootPost common.Hash,
 	lastExecuted *atomic.Pointer[Block],
 ) error {
-	if it := b.interimExecutionTime.Load(); it != nil && byGas.Compare(it) < 0 {
-		// The final execution time is scaled to the new gas target but interim
-		// times are not, which can result in rounding errors. Scaling always
-		// rounds up, to maintain a monotonic clock, but we confirm for safety.
-		// The logger used in tests will also convert this to a failure.
-		b.log.Error("Final execution gas time before last interim time",
-			zap.Stringer("interim_time", it),
-			zap.Stringer("final_time", byGas.Time),
-		)
-	}
-
-	e := &executionResults{
-		byGas:         *byGas.Clone(),
-		receiptRoot:   types.DeriveSha(receipts, trie.NewStackTrie(nil)),
-		stateRootPost: stateRootPost,
-		ephemeralExecutionResults: ephemeralExecutionResults{
-			byWall:   byWall,
-			receipts: slices.Clone(receipts),
-		},
-	}
-	if err := e.setBaseFee(baseFee); err != nil {
-		return err
-	}
-
-	batch := db.NewBatch()
-	rawdb.WriteReceipts(batch, b.Hash(), b.NumberU64(), receipts)
-	return b.markExecuted(batch, xdb, e, true, lastExecuted)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// The final execution time is scaled to the new gas target but interim
+// times are not, which can result in rounding errors. Scaling always
+// rounds up, to maintain a monotonic clock, but we confirm for safety.
+// The logger used in tests will also convert this to a failure.
 
 var errMarkBlockExecutedAgain = errors.New("block re-marked as executed")
 
@@ -136,177 +107,122 @@ var errMarkBlockExecutedAgain = errors.New("block re-marked as executed")
 // The batch is `Write()`n (yeah, it's a word now) after all disk artefacts are
 // persisted.
 func (b *Block) markExecuted(batch ethdb.Batch, xdb saetypes.ExecutionResults, e *executionResults, setAsHeadBlock bool, lastExecuted *atomic.Pointer[Block]) error {
-	if err := b.markExecutedOnDisk(batch, xdb, e, setAsHeadBlock); err != nil {
-		return err
-	}
-	return b.markExecutedAfterDiskArtefacts(e, lastExecuted)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (b *Block) markExecutedOnDisk(batch ethdb.Batch, xdb saetypes.ExecutionResults, e *executionResults, setAsHeadBlock bool) error {
-	n := b.NumberU64()
-	if err := xdb.Put(n, e.MarshalCanoto()); err != nil {
-		return err
-	}
-	if err := xdb.Sync(n, n); err != nil {
-		return err
-	}
-	if setAsHeadBlock {
-		b.SetAsHeadBlock(batch)
-	}
-	return batch.Write()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (b *Block) markExecutedAfterDiskArtefacts(e *executionResults, lastExecuted *atomic.Pointer[Block]) error {
+	_ = "STUB: not implemented"
 	// Memory
-	if !b.execution.CompareAndSwap(nil, e) {
-		// This is fatal because we corrupted the database's head block if we
-		// got here by [Block.MarkExecuted] being called twice (an invalid use
-		// of the API).
-		b.log.Fatal("Block re-marked as executed")
-		return fmt.Errorf("%w: height %d", errMarkBlockExecutedAgain, b.Height())
-	}
-	// Internal indicator
-	if lastExecuted != nil {
-		lastExecuted.Store(b)
-	}
-	// External indicator
-	close(b.executed)
 	return nil
 }
+
+// This is fatal because we corrupted the database's head block if we
+// got here by [Block.MarkExecuted] being called twice (an invalid use
+// of the API).
+
+// Internal indicator
+
+// External indicator
 
 // SetAsHeadBlock calls all necessary [rawdb] write methods for setting the
 // block as head. Said writes are not atomic and an [ethdb.Batch] SHOULD be used
 // if this is a desired property.
-func (b *Block) SetAsHeadBlock(kv ethdb.KeyValueWriter) {
-	h := b.Hash()
-	rawdb.WriteHeadBlockHash(kv, h)
-	rawdb.WriteHeadHeaderHash(kv, h)
-}
+func (b *Block) SetAsHeadBlock(kv ethdb.KeyValueWriter) { _ = "STUB: not implemented"; return }
 
 // WaitUntilExecuted blocks until [Block.MarkExecuted] is called or the
 // [context.Context] is cancelled.
-func (b *Block) WaitUntilExecuted(ctx context.Context) error {
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	case <-b.executed:
-		return nil
-	}
-}
+func (b *Block) WaitUntilExecuted(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Executed reports whether [Block.MarkExecuted] has been called without
 // resulting in an error.
-func (b *Block) Executed() bool {
-	return b.execution.Load() != nil
-}
+func (b *Block) Executed() bool { _ = "STUB: not implemented"; return false }
 
 // executionArtefact blocks until [Block.MarkExecuted] has been called and then
 // returns the requested value. A warning is logged if the caller is blocked for
 // longer than [saeparams.MaxQueueWallTime].
 func executionArtefact[T any](b *Block, desc string, get func(*executionResults) T) T {
-	select {
-	case <-b.executed:
-	case <-time.After(saeparams.MaxQueueWallTime):
-		b.log.Warn("blocking on execution artefact longer than expected",
-			zap.String("artefact", desc),
-			zap.Duration("waited", saeparams.MaxQueueWallTime),
-		)
-		<-b.executed
-	}
-
-	return get(b.execution.Load())
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
-func (e *executionResults) executedByGasTime() *gastime.Time    { return e.byGas.Clone() }
-func (e *executionResults) executedByWallTime() time.Time       { return e.byWall }
-func (e *executionResults) cloneBaseFee() *uint256.Int          { return e.baseFee.Clone() }
-func (e *executionResults) cloneReceiptsSlice() types.Receipts  { return slices.Clone(e.receipts) }
-func (e *executionResults) postExecutionStateRoot() common.Hash { return e.stateRootPost }
-
-// ExecutedByGasTime blocks until [Block.MarkExecuted] has been called and
-// returns a clone of the gas time passed to it.
-func (b *Block) ExecutedByGasTime() *gastime.Time {
-	return executionArtefact(b, "execution (gas) time", (*executionResults).executedByGasTime)
+func (e *executionResults) executedByGasTime() *gastime.Time { _ = "STUB: not implemented"; return nil }
+func (e *executionResults) executedByWallTime() time.Time {
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
+func (e *executionResults) cloneBaseFee() *uint256.Int { _ = "STUB: not implemented"; return nil }
+func (e *executionResults) cloneReceiptsSlice() types.Receipts {
+	_ = "STUB: not implemented"
+	return *new(types.Receipts)
+}
+func (e *executionResults) postExecutionStateRoot() common.Hash {
+	_ = "STUB: not implemented"
+	return *
+
+	// ExecutedByGasTime blocks until [Block.MarkExecuted] has been called and
+	// returns a clone of the gas time passed to it.
+	new(common.Hash)
+}
+
+func (b *Block) ExecutedByGasTime() *gastime.Time { _ = "STUB: not implemented"; return nil }
 
 // ExecutedByWallTime blocks until [Block.MarkExecuted] has been called and
 // returns the wall time passed to it.
-func (b *Block) ExecutedByWallTime() time.Time {
-	return executionArtefact(b, "execution (wall) time", (*executionResults).executedByWallTime)
-}
+func (b *Block) ExecutedByWallTime() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // ExecutedBaseFee blocks until [Block.MarkExecuted] has been called and returns
 // a clone of the base fee passed to it.
-func (b *Block) ExecutedBaseFee() *uint256.Int {
-	return executionArtefact(b, "baseFee", (*executionResults).cloneBaseFee)
-}
+func (b *Block) ExecutedBaseFee() *uint256.Int { _ = "STUB: not implemented"; return nil }
 
 // Receipts blocks until [Block.MarkExecuted] has been called and returns the
 // receipts passed to it.
-func (b *Block) Receipts() types.Receipts {
-	return executionArtefact(b, "receipts", (*executionResults).cloneReceiptsSlice)
-}
+func (b *Block) Receipts() types.Receipts { _ = "STUB: not implemented"; return *new(types.Receipts) }
 
 // PostExecutionStateRoot blocks until [Block.MarkExecuted] has been called and
 // returns the state root passed to it.
 func (b *Block) PostExecutionStateRoot() common.Hash {
-	return executionArtefact(b, "state root", (*executionResults).postExecutionStateRoot)
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 // RestoreExecutionArtefacts reloads post-execution artefacts persisted by
 // [Block.MarkExecuted] such that the block is in an equivalent state to when
 // said function was originally called.
 func (b *Block) RestoreExecutionArtefacts(db ethdb.Database, xdb saetypes.ExecutionResults, chainConfig *params.ChainConfig) error {
-	e, err := loadExecutionResults(xdb, b.NumberU64())
-	if err != nil {
-		return err
-	}
-	e.receipts = rawdb.ReadRawReceipts(db, b.Hash(), b.NumberU64())
-	if err := e.receipts.DeriveFields(
-		chainConfig,
-		b.Hash(),
-		b.NumberU64(),
-		b.BuildTime(),
-		e.baseFee.ToBig(),
-		nil, // SAE does not support blob transactions.
-		b.Transactions(),
-	); err != nil {
-		return fmt.Errorf("deriving receipt fields: %v", err)
-	}
-	return b.markExecutedAfterDiskArtefacts(e, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// SAE does not support blob transactions.
+
 func loadExecutionResults(xdb saetypes.ExecutionResults, blockNum uint64) (*executionResults, error) {
-	buf, err := xdb.Get(blockNum)
-	if err != nil {
-		return nil, err
-	}
-	e := new(executionResults)
-	if err := e.UnmarshalCanoto(buf); err != nil {
-		return nil, err
-	}
-	return e, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func persistedExecutionArtefact[T any](xdb saetypes.ExecutionResults, blockNum uint64, get func(*executionResults) T) (T, error) {
-	e, err := loadExecutionResults(xdb, blockNum)
-	if err != nil {
-		var zero T
-		return zero, err
-	}
-	return get(e), nil
+	_ = "STUB: not implemented"
+	return *new(T), nil
 }
 
 // PostExecutionStateRoot mirrors the behaviour of
 // [Block.RestoreExecutionArtefacts], without requiring a full [Block], and only
 // returning the state root after execution.
 func PostExecutionStateRoot(xdb saetypes.ExecutionResults, blockNum uint64) (common.Hash, error) {
-	return persistedExecutionArtefact(xdb, blockNum, (*executionResults).postExecutionStateRoot)
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
 
 // ExecutionBaseFee mirrors the behaviour of [Block.RestoreExecutionArtefacts],
 // without requiring a full [Block], and only returning the base fee when the
 // block was executed (as against the worst-case prediction).
 func ExecutionBaseFee(xdb saetypes.ExecutionResults, blockNum uint64) (*uint256.Int, error) {
-	return persistedExecutionArtefact(xdb, blockNum, (*executionResults).cloneBaseFee)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

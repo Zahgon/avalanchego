@@ -10,7 +10,6 @@
 package trackermock
 
 import (
-	reflect "reflect"
 	time "time"
 
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -30,55 +29,41 @@ type TrackerMockRecorder struct {
 }
 
 // NewTracker creates a new mock instance.
-func NewTracker(ctrl *gomock.Controller) *Tracker {
-	mock := &Tracker{ctrl: ctrl}
-	mock.recorder = &TrackerMockRecorder{mock}
-	return mock
-}
+func NewTracker(ctrl *gomock.Controller) *Tracker { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Tracker) EXPECT() *TrackerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// TimeUntilUsage mocks base method.
+	return nil
 }
 
-// TimeUntilUsage mocks base method.
 func (m *Tracker) TimeUntilUsage(nodeID ids.NodeID, now time.Time, value float64) time.Duration {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TimeUntilUsage", nodeID, now, value)
-	ret0, _ := ret[0].(time.Duration)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 // TimeUntilUsage indicates an expected call of TimeUntilUsage.
 func (mr *TrackerMockRecorder) TimeUntilUsage(nodeID, now, value any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TimeUntilUsage", reflect.TypeOf((*Tracker)(nil).TimeUntilUsage), nodeID, now, value)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // TotalUsage mocks base method.
-func (m *Tracker) TotalUsage() float64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TotalUsage")
-	ret0, _ := ret[0].(float64)
-	return ret0
-}
+func (m *Tracker) TotalUsage() float64 { _ = "STUB: not implemented"; return 0 }
 
 // TotalUsage indicates an expected call of TotalUsage.
-func (mr *TrackerMockRecorder) TotalUsage() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TotalUsage", reflect.TypeOf((*Tracker)(nil).TotalUsage))
-}
+func (mr *TrackerMockRecorder) TotalUsage() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Usage mocks base method.
 func (m *Tracker) Usage(nodeID ids.NodeID, now time.Time) float64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Usage", nodeID, now)
-	ret0, _ := ret[0].(float64)
-	return ret0
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // Usage indicates an expected call of Usage.
 func (mr *TrackerMockRecorder) Usage(nodeID, now any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Usage", reflect.TypeOf((*Tracker)(nil).Usage), nodeID, now)
+	_ = "STUB: not implemented"
+	return nil
 }

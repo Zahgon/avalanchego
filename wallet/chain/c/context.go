@@ -9,8 +9,6 @@ import (
 	"github.com/ava-labs/avalanchego/api/info"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/avm"
 )
 
@@ -23,9 +21,8 @@ type Context struct {
 }
 
 func NewContextFromURI(ctx context.Context, uri string) (*Context, error) {
-	infoClient := info.NewClient(uri)
-	xChainClient := avm.NewClient(uri, "X")
-	return NewContextFromClients(ctx, infoClient, xChainClient)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewContextFromClients(
@@ -33,37 +30,8 @@ func NewContextFromClients(
 	infoClient *info.Client,
 	xChainClient *avm.Client,
 ) (*Context, error) {
-	networkID, err := infoClient.GetNetworkID(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	blockchainID, err := infoClient.GetBlockchainID(ctx, Alias)
-	if err != nil {
-		return nil, err
-	}
-
-	avaxAsset, err := xChainClient.GetAssetDescription(ctx, "AVAX")
-	if err != nil {
-		return nil, err
-	}
-
-	return &Context{
-		NetworkID:    networkID,
-		BlockchainID: blockchainID,
-		AVAXAssetID:  avaxAsset.AssetID,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func newSnowContext(c *Context) (*snow.Context, error) {
-	lookup := ids.NewAliaser()
-	return &snow.Context{
-		NetworkID:   c.NetworkID,
-		SubnetID:    constants.PrimaryNetworkID,
-		ChainID:     c.BlockchainID,
-		CChainID:    c.BlockchainID,
-		AVAXAssetID: c.AVAXAssetID,
-		Log:         logging.NoLog{},
-		BCLookup:    lookup,
-	}, lookup.Alias(c.BlockchainID, Alias)
-}
+func newSnowContext(c *Context) (*snow.Context, error) { _ = "STUB: not implemented"; return nil, nil }

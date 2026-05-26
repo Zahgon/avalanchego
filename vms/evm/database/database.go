@@ -23,51 +23,54 @@ type database struct {
 	db avalanchegodb.Database
 }
 
-func New(db avalanchegodb.Database) ethdb.KeyValueStore { return database{db} }
+func New(db avalanchegodb.Database) ethdb.KeyValueStore {
+	_ = "STUB: not implemented"
+	return *new(ethdb.KeyValueStore)
+}
 
-func (database) Stat(string) (string, error) { return "", errStatNotSupported }
+func (database) Stat(string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (db database) NewBatch() ethdb.Batch { return batch{batch: db.db.NewBatch()} }
+func (db database) NewBatch() ethdb.Batch { _ = "STUB: not implemented"; return *new(ethdb.Batch) }
 
-func (db database) Has(key []byte) (bool, error) { return db.db.Has(key) }
+func (db database) Has(key []byte) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-func (db database) Get(key []byte) ([]byte, error) { return db.db.Get(key) }
+func (db database) Get(key []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (db database) Put(key, value []byte) error { return db.db.Put(key, value) }
+func (db database) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (db database) Delete(key []byte) error { return db.db.Delete(key) }
+func (db database) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (db database) Compact(start, limit []byte) error { return db.db.Compact(start, limit) }
+func (db database) Compact(start, limit []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (db database) Close() error { return db.db.Close() }
+func (db database) Close() error { _ = "STUB: not implemented"; return nil }
 
-func (db database) NewBatchWithSize(int) ethdb.Batch { return db.NewBatch() }
+func (db database) NewBatchWithSize(int) ethdb.Batch {
+	_ = "STUB: not implemented"
+	return *new(ethdb.Batch)
+}
 
 func (database) NewSnapshot() (ethdb.Snapshot, error) {
-	return nil, errSnapshotNotSupported
+	_ = "STUB: not implemented"
+	return *new(ethdb.Snapshot), nil
 }
 
 func (db database) NewIterator(prefix []byte, start []byte) ethdb.Iterator {
-	newStart := make([]byte, len(prefix)+len(start))
-	copy(newStart, prefix)
-	copy(newStart[len(prefix):], start)
-	start = newStart
-
-	return db.db.NewIteratorWithStartAndPrefix(start, prefix)
+	_ = "STUB: not implemented"
+	return *new(ethdb.Iterator)
 }
 
 type batch struct {
 	batch avalanchegodb.Batch
 }
 
-func (b batch) Put(key, value []byte) error { return b.batch.Put(key, value) }
+func (b batch) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b batch) Delete(key []byte) error { return b.batch.Delete(key) }
+func (b batch) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b batch) ValueSize() int { return b.batch.Size() }
+func (b batch) ValueSize() int { _ = "STUB: not implemented"; return 0 }
 
-func (b batch) Write() error { return b.batch.Write() }
+func (b batch) Write() error { _ = "STUB: not implemented"; return nil }
 
-func (b batch) Reset() { b.batch.Reset() }
+func (b batch) Reset() { _ = "STUB: not implemented"; return }
 
-func (b batch) Replay(w ethdb.KeyValueWriter) error { return b.batch.Replay(w) }
+func (b batch) Replay(w ethdb.KeyValueWriter) error { _ = "STUB: not implemented"; return nil }

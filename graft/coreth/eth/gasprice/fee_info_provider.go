@@ -31,8 +31,6 @@ import (
 	"context"
 	"math/big"
 
-	"github.com/ava-labs/avalanchego/graft/coreth/core"
-	"github.com/ava-labs/avalanchego/graft/evm/rpc"
 	"github.com/ava-labs/libevm/core/types"
 	lru "github.com/hashicorp/golang-lru"
 )
@@ -58,81 +56,32 @@ type feeInfo struct {
 // newFeeInfoProvider returns a bounded buffer with [size] slots to
 // store [*feeInfo] for the most recently accepted blocks.
 func newFeeInfoProvider(backend OracleBackend, size int) (*feeInfoProvider, error) {
-	fc := &feeInfoProvider{
-		backend: backend,
-	}
-	if size == 0 {
-		// if size is zero, we return early as there is no
-		// reason for a goroutine to subscribe to the chain's
-		// accepted event.
-		fc.cache, _ = lru.New(size)
-		return fc, nil
-	}
-
-	fc.cache, _ = lru.New(size + feeCacheExtraSlots)
-	// subscribe to the chain accepted event
-	acceptedEvent := make(chan core.ChainEvent, 1)
-	backend.SubscribeChainAcceptedEvent(acceptedEvent)
-	go func() {
-		for ev := range acceptedEvent {
-			fc.addHeader(context.Background(), ev.Block.Header(), ev.Block.Transactions())
-			if fc.newHeaderAdded != nil {
-				fc.newHeaderAdded()
-			}
-		}
-	}()
-	return fc, fc.populateCache(size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// if size is zero, we return early as there is no
+// reason for a goroutine to subscribe to the chain's
+// accepted event.
+
+// subscribe to the chain accepted event
 
 // addHeader processes header into a feeInfo struct and caches the result.
 func (f *feeInfoProvider) addHeader(ctx context.Context, header *types.Header, txs []*types.Transaction) (*feeInfo, error) {
-	tips := make([]*big.Int, 0, len(txs))
-	for _, tx := range txs {
-		tip, err := tx.EffectiveGasTip(header.BaseFee)
-		if err != nil {
-			return nil, err
-		}
-		tips = append(tips, tip)
-	}
-
-	feeInfo := &feeInfo{
-		timestamp: header.Time,
-		baseFee:   header.BaseFee,
-		tips:      tips,
-	}
-	f.cache.Add(header.Number.Uint64(), feeInfo)
-	return feeInfo, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // get returns the feeInfo for block with [number] if present in the cache
 // and a boolean representing if it was found.
 func (f *feeInfoProvider) get(number uint64) (*feeInfo, bool) {
+	_ = "STUB: not implemented"
 	// Note: use Peek on LRU to use it as a bounded buffer.
-	feeInfoIntf, ok := f.cache.Peek(number)
-	if ok {
-		return feeInfoIntf.(*feeInfo), ok
-	}
-	return nil, ok
+	return nil, false
 }
 
 // populateCache populates [f] with [size] blocks up to last accepted.
 // Note: assumes [size] is greater than zero.
-func (f *feeInfoProvider) populateCache(size int) error {
-	lastAccepted := f.backend.LastAcceptedBlock().NumberU64()
-	lowerBlockNumber := uint64(0)
-	if uint64(size-1) <= lastAccepted { // Note: "size-1" because we need a total of size blocks.
-		lowerBlockNumber = lastAccepted - uint64(size-1)
-	}
+func (f *feeInfoProvider) populateCache(size int) error { _ = "STUB: not implemented"; return nil }
 
-	for i := lowerBlockNumber; i <= lastAccepted; i++ {
-		block, err := f.backend.BlockByNumber(context.Background(), rpc.BlockNumber(i))
-		if err != nil {
-			return err
-		}
-		_, err = f.addHeader(context.Background(), block.Header(), block.Transactions())
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
+// Note: "size-1" because we need a total of size blocks.

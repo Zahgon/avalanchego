@@ -11,8 +11,6 @@ import (
 	_ "embed"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/sampler"
 )
 
 var (
@@ -36,23 +34,10 @@ type Bootstrapper struct {
 }
 
 // GetBootstrappers returns all default bootstrappers for the provided network.
-func GetBootstrappers(networkID uint32) []Bootstrapper {
-	networkName := constants.NetworkIDToNetworkName[networkID]
-	return bootstrappersPerNetwork[networkName]
-}
+func GetBootstrappers(networkID uint32) []Bootstrapper { _ = "STUB: not implemented"; return nil }
 
 // SampleBootstrappers returns the some beacons this node should connect to
 func SampleBootstrappers(networkID uint32, count int) []Bootstrapper {
-	bootstrappers := GetBootstrappers(networkID)
-	count = min(count, len(bootstrappers))
-
-	s := sampler.NewUniform()
-	s.Initialize(uint64(len(bootstrappers)))
-	indices, _ := s.Sample(count)
-
-	sampled := make([]Bootstrapper, 0, len(indices))
-	for _, index := range indices {
-		sampled = append(sampled, bootstrappers[int(index)])
-	}
-	return sampled
+	_ = "STUB: not implemented"
+	return nil
 }

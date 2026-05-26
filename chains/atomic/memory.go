@@ -4,13 +4,10 @@
 package atomic
 
 import (
-	"bytes"
 	"sync"
 
 	"github.com/ava-labs/avalanchego/database"
-	"github.com/ava-labs/avalanchego/database/prefixdb"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 type rcLock struct {
@@ -31,18 +28,11 @@ type Memory struct {
 	db    database.Database
 }
 
-func NewMemory(db database.Database) *Memory {
-	return &Memory{
-		locks: make(map[ids.ID]*rcLock),
-		db:    db,
-	}
-}
+func NewMemory(db database.Database) *Memory { _ = "STUB: not implemented"; return nil }
 
 func (m *Memory) NewSharedMemory(chainID ids.ID) SharedMemory {
-	return &sharedMemory{
-		m:           m,
-		thisChainID: chainID,
-	}
+	_ = "STUB: not implemented"
+	return *new(SharedMemory)
 }
 
 // GetSharedDatabase returns a new locked prefix db on top of an existing
@@ -51,9 +41,8 @@ func (m *Memory) NewSharedMemory(chainID ids.ID) SharedMemory {
 // Invariant: ReleaseSharedDatabase must be called after to free the database
 // associated with [sharedID]
 func (m *Memory) GetSharedDatabase(db database.Database, sharedID ids.ID) database.Database {
-	lock := m.makeLock(sharedID)
-	lock.Lock()
-	return prefixdb.NewNested(sharedID[:], db)
+	_ = "STUB: not implemented"
+	return *new(database.Database)
 }
 
 // ReleaseSharedDatabase unlocks the provided DB
@@ -61,55 +50,21 @@ func (m *Memory) GetSharedDatabase(db database.Database, sharedID ids.ID) databa
 // Note: ReleaseSharedDatabase must be called only after a corresponding call to
 // GetSharedDatabase. If ReleaseSharedDatabase is called without a corresponding
 // one-to-one call with GetSharedDatabase, it will panic.
-func (m *Memory) ReleaseSharedDatabase(sharedID ids.ID) {
-	lock := m.releaseLock(sharedID)
-	lock.Unlock()
-}
+func (m *Memory) ReleaseSharedDatabase(sharedID ids.ID) { _ = "STUB: not implemented"; return }
 
 // makeLock returns the lock associated with [sharedID], or creates a new one if
 // it doesn't exist yet, and increments the reference count.
-func (m *Memory) makeLock(sharedID ids.ID) *sync.Mutex {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	rc, exists := m.locks[sharedID]
-	if !exists {
-		rc = &rcLock{}
-		m.locks[sharedID] = rc
-	}
-	rc.count++
-	return &rc.lock
-}
+func (m *Memory) makeLock(sharedID ids.ID) *sync.Mutex { _ = "STUB: not implemented"; return nil }
 
 // releaseLock returns the lock associated with [sharedID] and decrements its
 // reference count. If this brings the count to 0, it will remove the lock from
 // the internal map of locks. If there is no lock associated with [sharedID],
 // releaseLock will panic.
-func (m *Memory) releaseLock(sharedID ids.ID) *sync.Mutex {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	rc, exists := m.locks[sharedID]
-	if !exists {
-		panic("attempting to free an unknown lock")
-	}
-	rc.count--
-	if rc.count == 0 {
-		delete(m.locks, sharedID)
-	}
-	return &rc.lock
-}
+func (m *Memory) releaseLock(sharedID ids.ID) *sync.Mutex { _ = "STUB: not implemented"; return nil }
 
 // sharedID calculates the ID of the shared memory space
 func sharedID(id1, id2 ids.ID) ids.ID {
+	_ = "STUB: not implemented"
 	// Swap IDs locally to ensure id1 <= id2.
-	if bytes.Compare(id1[:], id2[:]) == 1 {
-		id1, id2 = id2, id1
-	}
-
-	combinedBytes, err := Codec.Marshal(CodecVersion, [2]ids.ID{id1, id2})
-	if err != nil {
-		panic(err)
-	}
-	return hashing.ComputeHash256Array(combinedBytes)
+	return *new(ids.ID)
 }

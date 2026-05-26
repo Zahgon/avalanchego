@@ -14,13 +14,15 @@ import (
 
 // ShouldCommitTrieDB returns whether or not to commit the state trie to disk.
 func ShouldCommitTrieDB(blockNum, commitInterval uint64) bool {
-	return blockNum%commitInterval == 0
+	_ = "STUB: not implemented"
+	return false
 }
 
 // LastCommittedTrieDBHeight returns the largest value <= the argument at which
 // [ShouldCommitTrieDB] would have returned true.
 func LastCommittedTrieDBHeight(atOrBefore, commitInterval uint64) uint64 {
-	return atOrBefore - atOrBefore%commitInterval
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // A StateDBOpener opens a [state.StateDB] at the given root.

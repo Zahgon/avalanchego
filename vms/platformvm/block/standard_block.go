@@ -4,7 +4,6 @@
 package block
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
@@ -23,12 +22,11 @@ type BanffStandardBlock struct {
 }
 
 func (b *BanffStandardBlock) Timestamp() time.Time {
-	return time.Unix(int64(b.Time), 0)
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
-func (b *BanffStandardBlock) Visit(v Visitor) error {
-	return v.BanffStandardBlock(b)
-}
+func (b *BanffStandardBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 func NewBanffStandardBlock(
 	timestamp time.Time,
@@ -36,17 +34,8 @@ func NewBanffStandardBlock(
 	height uint64,
 	txs []*txs.Tx,
 ) (*BanffStandardBlock, error) {
-	blk := &BanffStandardBlock{
-		Time: uint64(timestamp.Unix()),
-		ApricotStandardBlock: ApricotStandardBlock{
-			CommonBlock: CommonBlock{
-				PrntID: parentID,
-				Hght:   height,
-			},
-			Transactions: txs,
-		},
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type ApricotStandardBlock struct {
@@ -55,28 +44,15 @@ type ApricotStandardBlock struct {
 }
 
 func (b *ApricotStandardBlock) initialize(bytes []byte) error {
-	b.CommonBlock.initialize(bytes)
-	for _, tx := range b.Transactions {
-		if err := tx.Initialize(txs.Codec); err != nil {
-			return fmt.Errorf("failed to initialize tx: %w", err)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (b *ApricotStandardBlock) InitCtx(ctx *snow.Context) {
-	for _, tx := range b.Transactions {
-		tx.Unsigned.InitCtx(ctx)
-	}
-}
+func (b *ApricotStandardBlock) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (b *ApricotStandardBlock) Txs() []*txs.Tx {
-	return b.Transactions
-}
+func (b *ApricotStandardBlock) Txs() []*txs.Tx { _ = "STUB: not implemented"; return nil }
 
-func (b *ApricotStandardBlock) Visit(v Visitor) error {
-	return v.ApricotStandardBlock(b)
-}
+func (b *ApricotStandardBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 // NewApricotStandardBlock is kept for testing purposes only.
 // Following Banff activation and subsequent code cleanup, Apricot Standard blocks
@@ -86,12 +62,6 @@ func NewApricotStandardBlock(
 	height uint64,
 	txs []*txs.Tx,
 ) (*ApricotStandardBlock, error) {
-	blk := &ApricotStandardBlock{
-		CommonBlock: CommonBlock{
-			PrntID: parentID,
-			Hght:   height,
-		},
-		Transactions: txs,
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

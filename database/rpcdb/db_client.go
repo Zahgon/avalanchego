@@ -5,14 +5,10 @@ package rpcdb
 
 import (
 	"context"
-	"encoding/json"
 	"sync"
-
-	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/set"
 
 	rpcdbpb "github.com/ava-labs/avalanchego/proto/pb/rpcdb"
 )
@@ -32,114 +28,64 @@ type DatabaseClient struct {
 
 // NewClient returns a database instance connected to a remote database instance
 func NewClient(client rpcdbpb.DatabaseClient) *DatabaseClient {
-	return &DatabaseClient{client: client}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Has attempts to return if the database has a key with the provided value.
 func (db *DatabaseClient) Has(key []byte) (bool, error) {
-	resp, err := db.client.Has(context.Background(), &rpcdbpb.HasRequest{
-		Key: key,
-	})
-	if err != nil {
-		return false, err
-	}
-	return resp.Has, ErrEnumToError[resp.Err]
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // Get attempts to return the value that was mapped to the key that was provided
 func (db *DatabaseClient) Get(key []byte) ([]byte, error) {
-	resp, err := db.client.Get(context.Background(), &rpcdbpb.GetRequest{
-		Key: key,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return resp.Value, ErrEnumToError[resp.Err]
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Put attempts to set the value this key maps to
-func (db *DatabaseClient) Put(key, value []byte) error {
-	resp, err := db.client.Put(context.Background(), &rpcdbpb.PutRequest{
-		Key:   key,
-		Value: value,
-	})
-	if err != nil {
-		return err
-	}
-	return ErrEnumToError[resp.Err]
-}
+func (db *DatabaseClient) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Delete attempts to remove any mapping from the key
-func (db *DatabaseClient) Delete(key []byte) error {
-	resp, err := db.client.Delete(context.Background(), &rpcdbpb.DeleteRequest{
-		Key: key,
-	})
-	if err != nil {
-		return err
-	}
-	return ErrEnumToError[resp.Err]
-}
+func (db *DatabaseClient) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // NewBatch returns a new batch
 func (db *DatabaseClient) NewBatch() database.Batch {
-	return &batch{db: db}
+	_ = "STUB: not implemented"
+	return *new(database.Batch)
 }
 
 func (db *DatabaseClient) NewIterator() database.Iterator {
-	return db.NewIteratorWithStartAndPrefix(nil, nil)
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 func (db *DatabaseClient) NewIteratorWithStart(start []byte) database.Iterator {
-	return db.NewIteratorWithStartAndPrefix(start, nil)
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 func (db *DatabaseClient) NewIteratorWithPrefix(prefix []byte) database.Iterator {
-	return db.NewIteratorWithStartAndPrefix(nil, prefix)
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // NewIteratorWithStartAndPrefix returns a new empty iterator
 func (db *DatabaseClient) NewIteratorWithStartAndPrefix(start, prefix []byte) database.Iterator {
-	resp, err := db.client.NewIteratorWithStartAndPrefix(context.Background(), &rpcdbpb.NewIteratorWithStartAndPrefixRequest{
-		Start:  start,
-		Prefix: prefix,
-	})
-	if err != nil {
-		return &database.IteratorError{
-			Err: err,
-		}
-	}
-	return newIterator(db, resp.Id)
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // Compact attempts to optimize the space utilization in the provided range
-func (db *DatabaseClient) Compact(start, limit []byte) error {
-	resp, err := db.client.Compact(context.Background(), &rpcdbpb.CompactRequest{
-		Start: start,
-		Limit: limit,
-	})
-	if err != nil {
-		return err
-	}
-	return ErrEnumToError[resp.Err]
-}
+func (db *DatabaseClient) Compact(start, limit []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Close attempts to close the database
-func (db *DatabaseClient) Close() error {
-	db.closed.Set(true)
-	resp, err := db.client.Close(context.Background(), &rpcdbpb.CloseRequest{})
-	if err != nil {
-		return err
-	}
-	return ErrEnumToError[resp.Err]
-}
+func (db *DatabaseClient) Close() error { _ = "STUB: not implemented"; return nil }
 
 func (db *DatabaseClient) HealthCheck(ctx context.Context) (interface{}, error) {
-	health, err := db.client.HealthCheck(ctx, &emptypb.Empty{})
-	if err != nil {
-		return nil, err
-	}
-
-	return json.RawMessage(health.Details), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type batch struct {
@@ -148,39 +94,9 @@ type batch struct {
 	db *DatabaseClient
 }
 
-func (b *batch) Write() error {
-	request := &rpcdbpb.WriteBatchRequest{}
-	keySet := set.NewSet[string](len(b.Ops))
-	for i := len(b.Ops) - 1; i >= 0; i-- {
-		op := b.Ops[i]
-		key := string(op.Key)
-		if keySet.Contains(key) {
-			continue
-		}
-		keySet.Add(key)
+func (b *batch) Write() error { _ = "STUB: not implemented"; return nil }
 
-		if op.Delete {
-			request.Deletes = append(request.Deletes, &rpcdbpb.DeleteRequest{
-				Key: op.Key,
-			})
-		} else {
-			request.Puts = append(request.Puts, &rpcdbpb.PutRequest{
-				Key:   op.Key,
-				Value: op.Value,
-			})
-		}
-	}
-
-	resp, err := b.db.client.WriteBatch(context.Background(), request)
-	if err != nil {
-		return err
-	}
-	return ErrEnumToError[resp.Err]
-}
-
-func (b *batch) Inner() database.Batch {
-	return b
-}
+func (b *batch) Inner() database.Batch { _ = "STUB: not implemented"; return *new(database.Batch) }
 
 type iterator struct {
 	db *DatabaseClient
@@ -199,151 +115,32 @@ type iterator struct {
 	onClosed chan struct{}
 }
 
-func newIterator(db *DatabaseClient, id uint64) *iterator {
-	it := &iterator{
-		db:             db,
-		id:             id,
-		fetchedData:    make(chan []*rpcdbpb.PutRequest),
-		reqUpdateError: make(chan chan struct{}),
-		onClose:        make(chan struct{}),
-		onClosed:       make(chan struct{}),
-	}
-	go it.fetch()
-	return it
-}
+func newIterator(db *DatabaseClient, id uint64) *iterator { _ = "STUB: not implemented"; return nil }
 
 // Invariant: fetch is the only thread with access to send requests to the
 // server's iterator. This is needed because iterators are not thread safe and
 // the server expects the client (us) to only ever issue one request at a time
 // for a given iterator id.
-func (it *iterator) fetch() {
-	defer func() {
-		resp, err := it.db.client.IteratorRelease(context.Background(), &rpcdbpb.IteratorReleaseRequest{
-			Id: it.id,
-		})
-		if err != nil {
-			it.setError(err)
-		} else {
-			it.setError(ErrEnumToError[resp.Err])
-		}
-
-		close(it.fetchedData)
-		close(it.onClosed)
-	}()
-
-	for {
-		resp, err := it.db.client.IteratorNext(context.Background(), &rpcdbpb.IteratorNextRequest{
-			Id: it.id,
-		})
-		if err != nil {
-			it.setError(err)
-			return
-		}
-
-		if len(resp.Data) == 0 {
-			return
-		}
-
-		for {
-			select {
-			case it.fetchedData <- resp.Data:
-			case onUpdated := <-it.reqUpdateError:
-				it.updateError()
-				close(onUpdated)
-				continue
-			case <-it.onClose:
-				return
-			}
-			break
-		}
-	}
-}
+func (it *iterator) fetch() { _ = "STUB: not implemented"; return }
 
 // Next attempts to move the iterator to the next element and returns if this
 // succeeded
-func (it *iterator) Next() bool {
-	if it.db.closed.Get() {
-		it.data = nil
-		it.setError(database.ErrClosed)
-		return false
-	}
-	if len(it.data) > 1 {
-		it.data[0] = nil
-		it.data = it.data[1:]
-		return true
-	}
-
-	it.data = <-it.fetchedData
-	return len(it.data) > 0
-}
+func (it *iterator) Next() bool { _ = "STUB: not implemented"; return false }
 
 // Error returns any that occurred while iterating
-func (it *iterator) Error() error {
-	if err := it.getError(); err != nil {
-		return err
-	}
-
-	onUpdated := make(chan struct{})
-	select {
-	case it.reqUpdateError <- onUpdated:
-		<-onUpdated
-	case <-it.onClosed:
-	}
-
-	return it.getError()
-}
+func (it *iterator) Error() error { _ = "STUB: not implemented"; return nil }
 
 // Key returns the key of the current element
-func (it *iterator) Key() []byte {
-	if len(it.data) == 0 {
-		return nil
-	}
-	return it.data[0].Key
-}
+func (it *iterator) Key() []byte { _ = "STUB: not implemented"; return nil }
 
 // Value returns the value of the current element
-func (it *iterator) Value() []byte {
-	if len(it.data) == 0 {
-		return nil
-	}
-	return it.data[0].Value
-}
+func (it *iterator) Value() []byte { _ = "STUB: not implemented"; return nil }
 
 // Release frees any resources held by the iterator
-func (it *iterator) Release() {
-	it.once.Do(func() {
-		close(it.onClose)
-		<-it.onClosed
-	})
-}
+func (it *iterator) Release() { _ = "STUB: not implemented"; return }
 
-func (it *iterator) updateError() {
-	resp, err := it.db.client.IteratorError(context.Background(), &rpcdbpb.IteratorErrorRequest{
-		Id: it.id,
-	})
-	if err != nil {
-		it.setError(err)
-	} else {
-		it.setError(ErrEnumToError[resp.Err])
-	}
-}
+func (it *iterator) updateError() { _ = "STUB: not implemented"; return }
 
-func (it *iterator) setError(err error) {
-	if err == nil {
-		return
-	}
+func (it *iterator) setError(err error) { _ = "STUB: not implemented"; return }
 
-	it.errLock.Lock()
-	defer it.errLock.Unlock()
-
-	if it.err == nil {
-		it.err = err
-	}
-}
-
-func (it *iterator) getError() error {
-	it.errLock.RLock()
-	defer it.errLock.RUnlock()
-
-	return it.err
-}
+func (it *iterator) getError() error { _ = "STUB: not implemented"; return nil }

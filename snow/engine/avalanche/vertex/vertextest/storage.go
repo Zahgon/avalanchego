@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/avalanche"
 	"github.com/ava-labs/avalanchego/snow/engine/avalanche/vertex"
@@ -31,37 +29,16 @@ type Storage struct {
 	StopVertexAcceptedF                          func(context.Context) (bool, error)
 }
 
-func (s *Storage) Default(cant bool) {
-	s.CantGetVtx = cant
-	s.CantEdge = cant
-}
+func (s *Storage) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (s *Storage) GetVtx(ctx context.Context, vtxID ids.ID) (avalanche.Vertex, error) {
-	if s.GetVtxF != nil {
-		return s.GetVtxF(ctx, vtxID)
-	}
-	if s.T != nil {
-		require.False(s.T, s.CantGetVtx, errGet)
-	}
-	return nil, errGet
+	_ = "STUB: not implemented"
+	return *new(avalanche.Vertex), nil
 }
 
-func (s *Storage) Edge(ctx context.Context) []ids.ID {
-	if s.EdgeF != nil {
-		return s.EdgeF(ctx)
-	}
-	if s.T != nil {
-		require.False(s.T, s.CantEdge, errEdge)
-	}
-	return nil
-}
+func (s *Storage) Edge(ctx context.Context) []ids.ID { _ = "STUB: not implemented"; return nil }
 
 func (s *Storage) StopVertexAccepted(ctx context.Context) (bool, error) {
-	if s.StopVertexAcceptedF != nil {
-		return s.StopVertexAcceptedF(ctx)
-	}
-	if s.T != nil {
-		require.False(s.T, s.CantStopVertexAccepted, errStopVertexAccepted)
-	}
+	_ = "STUB: not implemented"
 	return false, nil
 }

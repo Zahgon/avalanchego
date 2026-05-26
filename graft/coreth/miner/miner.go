@@ -57,21 +57,20 @@ type Miner struct {
 }
 
 func New(eth Backend, config *Config, chainConfig *params.ChainConfig, mux *event.TypeMux, engine consensus.Engine, clock *mockable.Clock) *Miner {
-	return &Miner{
-		worker: newWorker(config, chainConfig, engine, eth, mux, clock),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (miner *Miner) SetEtherbase(addr common.Address) {
-	miner.worker.setEtherbase(addr)
-}
+func (miner *Miner) SetEtherbase(addr common.Address) { _ = "STUB: not implemented"; return }
 
 func (miner *Miner) GenerateBlock(predicateContext *precompileconfig.PredicateContext) (*types.Block, error) {
-	return miner.worker.commitNewWork(predicateContext)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SubscribePendingLogs starts delivering logs from pending transactions
 // to the given channel.
 func (miner *Miner) SubscribePendingLogs(ch chan<- []*types.Log) event.Subscription {
-	return miner.worker.pendingLogsFeed.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }

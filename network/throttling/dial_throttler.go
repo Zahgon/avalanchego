@@ -26,20 +26,13 @@ type dialThrottler struct {
 
 type noDialThrottler struct{}
 
-func (t dialThrottler) Acquire(ctx context.Context) error {
-	return t.limiter.Wait(ctx)
-}
+func (t dialThrottler) Acquire(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 func NewDialThrottler(throttleLimit int) DialThrottler {
-	return dialThrottler{
-		limiter: rate.NewLimiter(rate.Limit(throttleLimit), throttleLimit),
-	}
+	_ = "STUB: not implemented"
+	return *new(DialThrottler)
 }
 
-func NewNoDialThrottler() DialThrottler {
-	return noDialThrottler{}
-}
+func NewNoDialThrottler() DialThrottler { _ = "STUB: not implemented"; return *new(DialThrottler) }
 
-func (noDialThrottler) Acquire(context.Context) error {
-	return nil
-}
+func (noDialThrottler) Acquire(context.Context) error { _ = "STUB: not implemented"; return nil }

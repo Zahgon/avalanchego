@@ -8,7 +8,6 @@ package tx
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/holiman/uint256"
@@ -20,8 +19,6 @@ import (
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/upgrade/ap5"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/saevm/hook"
@@ -106,60 +103,37 @@ type Credential interface {
 
 // ID returns the unique hash of the transaction.
 func (t *Tx) ID() ids.ID {
+	_ = "STUB: not implemented"
 	// TODO(StephenButtolph): Optimize ID by caching previously calculated
 	// values.
-	bytes, err := t.Bytes()
-	// This error can happen, but only with invalid transactions. To avoid
-	// polluting the interface, we represent all invalid transactions with
-	// the zero ID.
-	if err != nil {
-		return ids.ID{}
-	}
-	return hashing.ComputeHash256Array(bytes)
+	return *new(ids.ID)
 }
+
+// This error can happen, but only with invalid transactions. To avoid
+// polluting the interface, we represent all invalid transactions with
+// the zero ID.
 
 // Bytes returns the canonical binary format of the transaction.
 func (t *Tx) Bytes() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// TODO(StephenButtolph): Optimize Bytes by caching previously calculated
 	// values.
-	return c.Marshal(codecVersion, t)
+	return nil, nil
 }
 
 // InputIDs returns the one-time-use inputs consumed by this transaction.
 //
 // [Import] transactions return consumed UTXO IDs.
 // [Export] transactions return Account+Nonce pairs.
-func (t *Tx) InputIDs() set.Set[ids.ID] {
-	return t.Unsigned.inputIDs()
-}
+func (t *Tx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // AsOp converts the transaction into a [hook.Op] that can be processed by SAE.
 //
 // The operation only includes state changes that impact Ethereum-native state.
 // It does not include non-AVAX balance changes or shared memory modifications.
 func (t *Tx) AsOp(avaxAssetID ids.ID) (hook.Op, error) {
-	gas, err := gasUsed(t.Unsigned)
-	if err != nil {
-		return hook.Op{}, fmt.Errorf("calculating gas used: %w", err)
-	}
-
-	burned, err := t.Unsigned.burned(avaxAssetID)
-	if err != nil {
-		return hook.Op{}, fmt.Errorf("calculating amount burned: %w", err)
-	}
-
-	op, err := t.Unsigned.asOp(avaxAssetID)
-	if err != nil {
-		return hook.Op{}, fmt.Errorf("converting to operation: %w", err)
-	}
-
-	return hook.Op{
-		ID:        t.ID(),
-		Gas:       gas,
-		GasFeeCap: gasPrice(burned, gas),
-		Burn:      op.burn,
-		Mint:      op.mint,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(hook.Op), nil
 }
 
 const (
@@ -174,30 +148,13 @@ const (
 )
 
 func gasUsed(t Unsigned) (gas.Gas, error) {
+	_ = "STUB: not implemented"
 	// We MUST provide a pointer to t so that the returned size includes the
 	// type ID.
-	numBytes, err := c.Size(codecVersion, &t)
-	if err != nil {
-		return 0, err
-	}
-	bytesGas, err := math.Mul(gas.Gas(numBytes), gasPerByte) //#nosec G115 -- Known non-negative
-	if err != nil {
-		return 0, err
-	}
-	numSigs, err := t.numSigs()
-	if err != nil {
-		return 0, err
-	}
-	sigsGas, err := math.Mul(gas.Gas(numSigs), gasPerSig)
-	if err != nil {
-		return 0, err
-	}
-	dynamicGas, err := math.Add(bytesGas, sigsGas)
-	if err != nil {
-		return 0, err
-	}
-	return math.Add(intrinsicGas, dynamicGas)
+	return *new(gas.Gas), nil
 }
+
+//#nosec G115 -- Known non-negative
 
 const _x2cRate = 1_000_000_000
 
@@ -207,24 +164,15 @@ var x2cRate = uint256.NewInt(_x2cRate)
 
 // scaleAVAX converts an amount denominated in nAVAX into the C-Chain's aAVAX
 // denomination.
-func scaleAVAX(nAVAX uint64) uint256.Int {
-	var aAVAX uint256.Int
-	aAVAX.SetUint64(nAVAX)
-	aAVAX.Mul(&aAVAX, x2cRate)
-	return aAVAX
-}
+func scaleAVAX(nAVAX uint64) uint256.Int { _ = "STUB: not implemented"; return *new(uint256.Int) }
 
 // gasPrice takes in the cost, in nAVAX, and the gas and returns the price per
 // gas in aAVAX/gas. It assumes gas is non-zero.
 //
 // The result is rounded down to the nearest aAVAX/gas.
 func gasPrice(cost uint64, gas gas.Gas) uint256.Int {
-	var u uint256.Int
-	u.SetUint64(uint64(gas))
-
-	p := scaleAVAX(cost)
-	p.Div(&p, &u)
-	return p
+	_ = "STUB: not implemented"
+	return *new(uint256.Int)
 }
 
 // SanityCheck verifies that the transaction's structural invariants hold
@@ -233,19 +181,19 @@ func gasPrice(cost uint64, gas gas.Gas) uint256.Int {
 //
 // It does not verify signatures, whether UTXOs exist, or whether the
 // transaction performs a valid EVM state transition.
-func (t *Tx) SanityCheck(ctx *snow.Context) error {
-	return t.Unsigned.sanityCheck(ctx)
-}
+func (t *Tx) SanityCheck(ctx *snow.Context) error { _ = "STUB: not implemented"; return nil }
 
 // VerifyCredentials verifies that the transaction is properly authorized.
 func (t *Tx) VerifyCredentials(sm chainsatomic.SharedMemory) error {
-	return t.Unsigned.verifyCredentials(sm, t.Creds)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AtomicRequests returns shared-memory modifications that this transaction
 // should perform on the peer chainID during execution.
 func (t *Tx) AtomicRequests() (chainID ids.ID, r *chainsatomic.Requests, err error) {
-	return t.Unsigned.atomicRequests(t.ID())
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil, nil
 }
 
 // TransferNonAVAX transfers the non-AVAX balances requested by this
@@ -253,22 +201,18 @@ func (t *Tx) AtomicRequests() (chainID ids.ID, r *chainsatomic.Requests, err err
 //
 // Non-AVAX transfers were only allowed prior to the Banff upgrade.
 func (t *Tx) TransferNonAVAX(avaxAssetID ids.ID, statedb *extstate.StateDB) error {
-	return t.Unsigned.transferNonAVAX(avaxAssetID, statedb)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Parse deserializes a [Tx] from its canonical binary format.
-func Parse(b []byte) (*Tx, error) {
-	var tx Tx
-	if _, err := c.Unmarshal(b, &tx); err != nil {
-		return nil, err
-	}
-	return &tx, nil
-}
+func Parse(b []byte) (*Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // UnsignedBytes serializes an [Unsigned] to the canonical binary format that
 // should be used to sign a [Tx].
 func UnsignedBytes(u Unsigned) ([]byte, error) {
+	_ = "STUB: not implemented"
 	// We MUST provide a pointer to an interface so that the returned slice is
 	// prefixed with the type ID.
-	return c.Marshal(codecVersion, &u)
+	return nil, nil
 }

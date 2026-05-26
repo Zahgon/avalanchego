@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/snow/validators"
 	"github.com/ava-labs/avalanchego/vms/platformvm/txs"
-	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
 
 const (
@@ -27,12 +26,8 @@ func VerifyWarpMessages(
 	pChainHeight uint64,
 	tx txs.UnsignedTx,
 ) error {
-	return tx.Visit(&warpVerifier{
-		context:        ctx,
-		networkID:      networkID,
-		validatorState: validatorState,
-		pChainHeight:   pChainHeight,
-	})
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type warpVerifier struct {
@@ -43,106 +38,88 @@ type warpVerifier struct {
 }
 
 func (*warpVerifier) AddValidatorTx(*txs.AddValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) AddSubnetValidatorTx(*txs.AddSubnetValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) AddDelegatorTx(*txs.AddDelegatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (*warpVerifier) CreateChainTx(*txs.CreateChainTx) error {
-	return nil
-}
+func (*warpVerifier) CreateChainTx(*txs.CreateChainTx) error { _ = "STUB: not implemented"; return nil }
 
 func (*warpVerifier) CreateSubnetTx(*txs.CreateSubnetTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (*warpVerifier) ImportTx(*txs.ImportTx) error {
-	return nil
-}
+func (*warpVerifier) ImportTx(*txs.ImportTx) error { _ = "STUB: not implemented"; return nil }
 
-func (*warpVerifier) ExportTx(*txs.ExportTx) error {
-	return nil
-}
+func (*warpVerifier) ExportTx(*txs.ExportTx) error { _ = "STUB: not implemented"; return nil }
 
-func (*warpVerifier) AdvanceTimeTx(*txs.AdvanceTimeTx) error {
-	return nil
-}
+func (*warpVerifier) AdvanceTimeTx(*txs.AdvanceTimeTx) error { _ = "STUB: not implemented"; return nil }
 
 func (*warpVerifier) RewardValidatorTx(*txs.RewardValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) RemoveSubnetValidatorTx(*txs.RemoveSubnetValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) TransformSubnetTx(*txs.TransformSubnetTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) AddPermissionlessValidatorTx(*txs.AddPermissionlessValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) AddPermissionlessDelegatorTx(*txs.AddPermissionlessDelegatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) TransferSubnetOwnershipTx(*txs.TransferSubnetOwnershipTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (*warpVerifier) BaseTx(*txs.BaseTx) error {
-	return nil
-}
+func (*warpVerifier) BaseTx(*txs.BaseTx) error { _ = "STUB: not implemented"; return nil }
 
 func (*warpVerifier) ConvertSubnetToL1Tx(*txs.ConvertSubnetToL1Tx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) IncreaseL1ValidatorBalanceTx(*txs.IncreaseL1ValidatorBalanceTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (*warpVerifier) DisableL1ValidatorTx(*txs.DisableL1ValidatorTx) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (w *warpVerifier) RegisterL1ValidatorTx(tx *txs.RegisterL1ValidatorTx) error {
-	return w.verify(tx.Message)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (w *warpVerifier) SetL1ValidatorWeightTx(tx *txs.SetL1ValidatorWeightTx) error {
-	return w.verify(tx.Message)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (w *warpVerifier) verify(message []byte) error {
-	msg, err := warp.ParseMessage(message)
-	if err != nil {
-		return err
-	}
-
-	validators, err := warp.GetCanonicalValidatorSetFromChainID(
-		w.context,
-		w.validatorState,
-		w.pChainHeight,
-		msg.SourceChainID,
-	)
-	if err != nil {
-		return err
-	}
-
-	return msg.Signature.Verify(
-		&msg.UnsignedMessage,
-		w.networkID,
-		validators,
-		WarpQuorumNumerator,
-		WarpQuorumDenominator,
-	)
-}
+func (w *warpVerifier) verify(message []byte) error { _ = "STUB: not implemented"; return nil }

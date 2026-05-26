@@ -6,94 +6,50 @@
 package cmputils
 
 import (
-	"fmt"
-	"math/big"
-	"reflect"
-	"sync/atomic"
-
-	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/ava-labs/libevm/core/state"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/trie"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
 // BigInts returns a [cmp.Comparer] for [big.Int] pointers. A nil pointer is not
 // equal to zero.
-func BigInts() cmp.Option {
-	return ComparerWithNilCheck(func(a, b *big.Int) bool {
-		return a.Cmp(b) == 0
-	})
-}
+func BigInts() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // HexutilBigs returns a [cmp.Comparer] for [hexutil.Big] pointers. A nil
 // pointer is not equal to zero.
-func HexutilBigs() cmp.Option {
-	return ComparerWithNilCheck(func(a, b *hexutil.Big) bool {
-		return (*big.Int)(a).Cmp((*big.Int)(b)) == 0
-	})
-}
+func HexutilBigs() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // BlocksByHash returns a [cmp.Comparer] for [types.Block] pointers, equating
 // them by hash alone.
-func BlocksByHash() cmp.Option {
-	return ComparerWithNilCheck(func(b, c *types.Block) bool {
-		return b.Hash() == c.Hash()
-	})
-}
+func BlocksByHash() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // TransactionsByHash returns a [cmp.Comparer] for [types.Transaction] pointers,
 // equating them by hash alone.
-func TransactionsByHash() cmp.Option {
-	return ComparerWithNilCheck(func(t, u *types.Transaction) bool {
-		return t.Hash() == u.Hash()
-	})
-}
+func TransactionsByHash() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // Receipts returns a set of [cmp.Options] for comparing [types.Receipt] values.
-func Receipts() cmp.Option {
-	return cmp.Options{
-		IfIn[types.Receipt](BigInts()),
-	}
-}
+func Receipts() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // ReceiptsByTxHash returns a [cmp.Comparer] for [types.Receipt] pointers,
 // equating them by transaction hash alone.
-func ReceiptsByTxHash() cmp.Option {
-	return ComparerWithNilCheck(func(r, s *types.Receipt) bool {
-		return r.TxHash == s.TxHash
-	})
-}
+func ReceiptsByTxHash() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // CmpByMerkleRoots returns a [cmp.Comparer] for [types.DerivableList] values,
 // equating them by their Merkle roots.
 func CmpByMerkleRoots[T types.DerivableList]() cmp.Option {
-	return cmp.Comparer(func(a, b T) bool {
-		return types.DeriveSha(a, trie.NewStackTrie(nil)) == types.DeriveSha(b, trie.NewStackTrie(nil))
-	})
+	_ = "STUB: not implemented"
+	return *new(cmp.Option)
 }
 
 // Blocks returns a set of [cmp.Options] for comparing [types.Block] values.
 // The [Headers] option MUST be used alongside this but isn't included
 // automatically, to avoid duplication.
-func Blocks() cmp.Option {
-	return cmp.Options{
-		cmp.AllowUnexported(types.Block{}),
-		cmpopts.IgnoreFields(types.Block{}, "hash", "size", "extra"),
-		IfIn[types.Block](TransactionsByHash()),
-	}
-}
+func Blocks() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
 
 // Headers returns a set of [cmp.Options] for comparing [type.Headers] values.
-func Headers() cmp.Option {
-	return cmp.Options{
-		cmpopts.IgnoreFields(types.Header{}, "extra"),
-		// Without the [IfIn] filter, any other use of [BigInts] will result in
-		// ambiguous comparers as [cmp] can't deduplicate them.
-		IfIn[types.Header](BigInts()),
-	}
-}
+func Headers() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }
+
+// Without the [IfIn] filter, any other use of [BigInts] will result in
+// ambiguous comparers as [cmp] can't deduplicate them.
 
 // LoadAtomicPointers returns a set of [cmp.Transformer] options that convert
 // [atomic.Pointer] instances of `T` into their underlying `*T`. If the atomic
@@ -101,43 +57,25 @@ func Headers() cmp.Option {
 // returned options are NOT safe for concurrent use with said atomic as its lock
 // is copied when passed as an argument to the transformer.
 func LoadAtomicPointers[T any]() cmp.Options {
-	return cmp.Options{
-		// Although accepting an [atomic.Pointer] value copies a lock, this is
-		// unavoidable but OK in tests given the non-concurrency documentation
-		// above.
-		cmp.Transformer("atomicOf_"+typeName[T](), func(p atomic.Pointer[T]) *T { //nolint:govet
-			return p.Load()
-		}),
-		cmp.Transformer("pointerOfAtomicOf_"+typeName[T](), func(p *atomic.Pointer[T]) *T {
-			return p.Load()
-		}),
-	}
+	_ = "STUB: not implemented"
+
+	// Although accepting an [atomic.Pointer] value copies a lock, this is
+	// unavoidable but OK in tests given the non-concurrency documentation
+	// above.
+	return *new(cmp.Options)
 }
+
+//nolint:govet
 
 // NilSlicesAreEmpty returns a [cmp.Transformer] that converts `S(nil)` values
 // into `S{}`, for use when [cmpopts.EquateEmpty] is too general.
 func NilSlicesAreEmpty[S ~[]E, E any]() cmp.Option {
-	name := fmt.Sprintf("nilSliceOf_%s_isEmpty", typeName[E]())
-	return cmp.Transformer(name, func(s S) S {
-		if s == nil {
-			return S{}
-		}
-		return s
-	})
+	_ = "STUB: not implemented"
+	return *new(cmp.Option)
 }
 
-func typeName[T any]() string {
-	t := reflect.TypeFor[T]()
-	if t.Kind() == reflect.Pointer {
-		return "pointerTo_" + t.Elem().String()
-	}
-	return t.String()
-}
+func typeName[T any]() string { _ = "STUB: not implemented"; return "" }
 
 // StateDBs returns a [cmp.Transformer] that converts [state.StateDB] instances
 // into [state.Dump] equivalents.
-func StateDBs() cmp.Option {
-	return cmp.Transformer("StateDB.RawDump", func(db *state.StateDB) state.Dump {
-		return db.RawDump(&state.DumpConfig{})
-	})
-}
+func StateDBs() cmp.Option { _ = "STUB: not implemented"; return *new(cmp.Option) }

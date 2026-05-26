@@ -5,12 +5,10 @@ package node
 
 import (
 	"sync"
-	"sync/atomic"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/networking/router"
 	"github.com/ava-labs/avalanchego/snow/validators"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/version"
 )
 
@@ -26,20 +24,8 @@ type beaconManager struct {
 }
 
 func (b *beaconManager) Connected(nodeID ids.NodeID, nodeVersion *version.Application, subnetID ids.ID) {
-	_, isBeacon := b.beacons.GetValidator(constants.PrimaryNetworkID, nodeID)
-	if isBeacon &&
-		constants.PrimaryNetworkID == subnetID &&
-		atomic.AddInt64(&b.numConns, 1) >= b.requiredConns {
-		b.onceOnSufficientlyConnected.Do(func() {
-			close(b.onSufficientlyConnected)
-		})
-	}
-	b.ExternalHandler.Connected(nodeID, nodeVersion, subnetID)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (b *beaconManager) Disconnected(nodeID ids.NodeID) {
-	if _, isBeacon := b.beacons.GetValidator(constants.PrimaryNetworkID, nodeID); isBeacon {
-		atomic.AddInt64(&b.numConns, -1)
-	}
-	b.ExternalHandler.Disconnected(nodeID)
-}
+func (b *beaconManager) Disconnected(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }

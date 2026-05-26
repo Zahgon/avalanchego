@@ -11,7 +11,6 @@ package messagemock
 
 import (
 	netip "net/netip"
-	reflect "reflect"
 	time "time"
 
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -35,387 +34,313 @@ type OutboundMsgBuilderMockRecorder struct {
 
 // NewOutboundMsgBuilder creates a new mock instance.
 func NewOutboundMsgBuilder(ctrl *gomock.Controller) *OutboundMsgBuilder {
-	mock := &OutboundMsgBuilder{ctrl: ctrl}
-	mock.recorder = &OutboundMsgBuilderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *OutboundMsgBuilder) EXPECT() *OutboundMsgBuilderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Accepted mocks base method.
+	return nil
 }
 
-// Accepted mocks base method.
 func (m *OutboundMsgBuilder) Accepted(chainID ids.ID, requestID uint32, containerIDs []ids.ID) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Accepted", chainID, requestID, containerIDs)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Accepted indicates an expected call of Accepted.
 func (mr *OutboundMsgBuilderMockRecorder) Accepted(chainID, requestID, containerIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Accepted", reflect.TypeOf((*OutboundMsgBuilder)(nil).Accepted), chainID, requestID, containerIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AcceptedFrontier mocks base method.
 func (m *OutboundMsgBuilder) AcceptedFrontier(chainID ids.ID, requestID uint32, containerID ids.ID) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AcceptedFrontier", chainID, requestID, containerID)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AcceptedFrontier indicates an expected call of AcceptedFrontier.
 func (mr *OutboundMsgBuilderMockRecorder) AcceptedFrontier(chainID, requestID, containerID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AcceptedFrontier", reflect.TypeOf((*OutboundMsgBuilder)(nil).AcceptedFrontier), chainID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AcceptedStateSummary mocks base method.
 func (m *OutboundMsgBuilder) AcceptedStateSummary(chainID ids.ID, requestID uint32, summaryIDs []ids.ID) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AcceptedStateSummary", chainID, requestID, summaryIDs)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AcceptedStateSummary indicates an expected call of AcceptedStateSummary.
 func (mr *OutboundMsgBuilderMockRecorder) AcceptedStateSummary(chainID, requestID, summaryIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AcceptedStateSummary", reflect.TypeOf((*OutboundMsgBuilder)(nil).AcceptedStateSummary), chainID, requestID, summaryIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Ancestors mocks base method.
 func (m *OutboundMsgBuilder) Ancestors(chainID ids.ID, requestID uint32, containers [][]byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Ancestors", chainID, requestID, containers)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Ancestors indicates an expected call of Ancestors.
 func (mr *OutboundMsgBuilderMockRecorder) Ancestors(chainID, requestID, containers any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ancestors", reflect.TypeOf((*OutboundMsgBuilder)(nil).Ancestors), chainID, requestID, containers)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppError mocks base method.
 func (m *OutboundMsgBuilder) AppError(chainID ids.ID, requestID uint32, errorCode int32, errorMessage string) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppError", chainID, requestID, errorCode, errorMessage)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppError indicates an expected call of AppError.
 func (mr *OutboundMsgBuilderMockRecorder) AppError(chainID, requestID, errorCode, errorMessage any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppError", reflect.TypeOf((*OutboundMsgBuilder)(nil).AppError), chainID, requestID, errorCode, errorMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppGossip mocks base method.
 func (m *OutboundMsgBuilder) AppGossip(chainID ids.ID, msg []byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppGossip", chainID, msg)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppGossip indicates an expected call of AppGossip.
 func (mr *OutboundMsgBuilderMockRecorder) AppGossip(chainID, msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppGossip", reflect.TypeOf((*OutboundMsgBuilder)(nil).AppGossip), chainID, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest mocks base method.
 func (m *OutboundMsgBuilder) AppRequest(chainID ids.ID, requestID uint32, deadline time.Duration, msg []byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppRequest", chainID, requestID, deadline, msg)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppRequest indicates an expected call of AppRequest.
 func (mr *OutboundMsgBuilderMockRecorder) AppRequest(chainID, requestID, deadline, msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppRequest", reflect.TypeOf((*OutboundMsgBuilder)(nil).AppRequest), chainID, requestID, deadline, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppResponse mocks base method.
 func (m *OutboundMsgBuilder) AppResponse(chainID ids.ID, requestID uint32, msg []byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppResponse", chainID, requestID, msg)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AppResponse indicates an expected call of AppResponse.
 func (mr *OutboundMsgBuilderMockRecorder) AppResponse(chainID, requestID, msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppResponse", reflect.TypeOf((*OutboundMsgBuilder)(nil).AppResponse), chainID, requestID, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Chits mocks base method.
 func (m *OutboundMsgBuilder) Chits(chainID ids.ID, requestID uint32, preferredID, preferredIDAtHeight, acceptedID ids.ID, acceptedHeight uint64) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Chits", chainID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Chits indicates an expected call of Chits.
 func (mr *OutboundMsgBuilderMockRecorder) Chits(chainID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Chits", reflect.TypeOf((*OutboundMsgBuilder)(nil).Chits), chainID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Get mocks base method.
 func (m *OutboundMsgBuilder) Get(chainID ids.ID, requestID uint32, deadline time.Duration, containerID ids.ID) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", chainID, requestID, deadline, containerID)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Get indicates an expected call of Get.
 func (mr *OutboundMsgBuilderMockRecorder) Get(chainID, requestID, deadline, containerID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*OutboundMsgBuilder)(nil).Get), chainID, requestID, deadline, containerID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAccepted mocks base method.
 func (m *OutboundMsgBuilder) GetAccepted(chainID ids.ID, requestID uint32, deadline time.Duration, containerIDs []ids.ID) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAccepted", chainID, requestID, deadline, containerIDs)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAccepted indicates an expected call of GetAccepted.
 func (mr *OutboundMsgBuilderMockRecorder) GetAccepted(chainID, requestID, deadline, containerIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccepted", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetAccepted), chainID, requestID, deadline, containerIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAcceptedFrontier mocks base method.
 func (m *OutboundMsgBuilder) GetAcceptedFrontier(chainID ids.ID, requestID uint32, deadline time.Duration) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAcceptedFrontier", chainID, requestID, deadline)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAcceptedFrontier indicates an expected call of GetAcceptedFrontier.
 func (mr *OutboundMsgBuilderMockRecorder) GetAcceptedFrontier(chainID, requestID, deadline any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAcceptedFrontier", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetAcceptedFrontier), chainID, requestID, deadline)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAcceptedStateSummary mocks base method.
 func (m *OutboundMsgBuilder) GetAcceptedStateSummary(chainID ids.ID, requestID uint32, deadline time.Duration, heights []uint64) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAcceptedStateSummary", chainID, requestID, deadline, heights)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAcceptedStateSummary indicates an expected call of GetAcceptedStateSummary.
 func (mr *OutboundMsgBuilderMockRecorder) GetAcceptedStateSummary(chainID, requestID, deadline, heights any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAcceptedStateSummary", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetAcceptedStateSummary), chainID, requestID, deadline, heights)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetAncestors mocks base method.
 func (m *OutboundMsgBuilder) GetAncestors(chainID ids.ID, requestID uint32, deadline time.Duration, containerID ids.ID, engineType p2p.EngineType) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAncestors", chainID, requestID, deadline, containerID, engineType)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetAncestors indicates an expected call of GetAncestors.
 func (mr *OutboundMsgBuilderMockRecorder) GetAncestors(chainID, requestID, deadline, containerID, engineType any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAncestors", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetAncestors), chainID, requestID, deadline, containerID, engineType)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetPeerList mocks base method.
 func (m *OutboundMsgBuilder) GetPeerList(knownPeersFilter, knownPeersSalt []byte, requestAllSubnetIPs bool) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPeerList", knownPeersFilter, knownPeersSalt, requestAllSubnetIPs)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetPeerList indicates an expected call of GetPeerList.
 func (mr *OutboundMsgBuilderMockRecorder) GetPeerList(knownPeersFilter, knownPeersSalt, requestAllSubnetIPs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPeerList", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetPeerList), knownPeersFilter, knownPeersSalt, requestAllSubnetIPs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStateSummaryFrontier mocks base method.
 func (m *OutboundMsgBuilder) GetStateSummaryFrontier(chainID ids.ID, requestID uint32, deadline time.Duration) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStateSummaryFrontier", chainID, requestID, deadline)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetStateSummaryFrontier indicates an expected call of GetStateSummaryFrontier.
 func (mr *OutboundMsgBuilderMockRecorder) GetStateSummaryFrontier(chainID, requestID, deadline any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStateSummaryFrontier", reflect.TypeOf((*OutboundMsgBuilder)(nil).GetStateSummaryFrontier), chainID, requestID, deadline)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Handshake mocks base method.
 func (m *OutboundMsgBuilder) Handshake(networkID uint32, myTime uint64, ip netip.AddrPort, client string, major, minor, patch uint32, upgradeTime, ipSigningTime uint64, ipNodeIDSig, ipBLSSig []byte, trackedSubnets []ids.ID, supportedACPs, objectedACPs []uint32, knownPeersFilter, knownPeersSalt []byte, requestAllSubnetIPs bool) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Handshake", networkID, myTime, ip, client, major, minor, patch, upgradeTime, ipSigningTime, ipNodeIDSig, ipBLSSig, trackedSubnets, supportedACPs, objectedACPs, knownPeersFilter, knownPeersSalt, requestAllSubnetIPs)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Handshake indicates an expected call of Handshake.
 func (mr *OutboundMsgBuilderMockRecorder) Handshake(networkID, myTime, ip, client, major, minor, patch, upgradeTime, ipSigningTime, ipNodeIDSig, ipBLSSig, trackedSubnets, supportedACPs, objectedACPs, knownPeersFilter, knownPeersSalt, requestAllSubnetIPs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Handshake", reflect.TypeOf((*OutboundMsgBuilder)(nil).Handshake), networkID, myTime, ip, client, major, minor, patch, upgradeTime, ipSigningTime, ipNodeIDSig, ipBLSSig, trackedSubnets, supportedACPs, objectedACPs, knownPeersFilter, knownPeersSalt, requestAllSubnetIPs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PeerList mocks base method.
 func (m *OutboundMsgBuilder) PeerList(peers []*ips.ClaimedIPPort, bypassThrottling bool) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PeerList", peers, bypassThrottling)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PeerList indicates an expected call of PeerList.
 func (mr *OutboundMsgBuilderMockRecorder) PeerList(peers, bypassThrottling any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PeerList", reflect.TypeOf((*OutboundMsgBuilder)(nil).PeerList), peers, bypassThrottling)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Ping mocks base method.
 func (m *OutboundMsgBuilder) Ping(primaryUptime uint32) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Ping", primaryUptime)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Ping indicates an expected call of Ping.
 func (mr *OutboundMsgBuilderMockRecorder) Ping(primaryUptime any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ping", reflect.TypeOf((*OutboundMsgBuilder)(nil).Ping), primaryUptime)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Pong mocks base method.
 func (m *OutboundMsgBuilder) Pong() (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Pong")
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Pong indicates an expected call of Pong.
 func (mr *OutboundMsgBuilderMockRecorder) Pong() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Pong", reflect.TypeOf((*OutboundMsgBuilder)(nil).Pong))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PullQuery mocks base method.
 func (m *OutboundMsgBuilder) PullQuery(chainID ids.ID, requestID uint32, deadline time.Duration, containerID ids.ID, requestedHeight uint64) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PullQuery", chainID, requestID, deadline, containerID, requestedHeight)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PullQuery indicates an expected call of PullQuery.
 func (mr *OutboundMsgBuilderMockRecorder) PullQuery(chainID, requestID, deadline, containerID, requestedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PullQuery", reflect.TypeOf((*OutboundMsgBuilder)(nil).PullQuery), chainID, requestID, deadline, containerID, requestedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // PushQuery mocks base method.
 func (m *OutboundMsgBuilder) PushQuery(chainID ids.ID, requestID uint32, deadline time.Duration, container []byte, requestedHeight uint64) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PushQuery", chainID, requestID, deadline, container, requestedHeight)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PushQuery indicates an expected call of PushQuery.
 func (mr *OutboundMsgBuilderMockRecorder) PushQuery(chainID, requestID, deadline, container, requestedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PushQuery", reflect.TypeOf((*OutboundMsgBuilder)(nil).PushQuery), chainID, requestID, deadline, container, requestedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Put mocks base method.
 func (m *OutboundMsgBuilder) Put(chainID ids.ID, requestID uint32, container []byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Put", chainID, requestID, container)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Put indicates an expected call of Put.
 func (mr *OutboundMsgBuilderMockRecorder) Put(chainID, requestID, container any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Put", reflect.TypeOf((*OutboundMsgBuilder)(nil).Put), chainID, requestID, container)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SimplexMessage mocks base method.
 func (m *OutboundMsgBuilder) SimplexMessage(msg *p2p.Simplex) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SimplexMessage", msg)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SimplexMessage indicates an expected call of SimplexMessage.
 func (mr *OutboundMsgBuilderMockRecorder) SimplexMessage(msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SimplexMessage", reflect.TypeOf((*OutboundMsgBuilder)(nil).SimplexMessage), msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StateSummaryFrontier mocks base method.
 func (m *OutboundMsgBuilder) StateSummaryFrontier(chainID ids.ID, requestID uint32, summary []byte) (*message.OutboundMessage, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "StateSummaryFrontier", chainID, requestID, summary)
-	ret0, _ := ret[0].(*message.OutboundMessage)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // StateSummaryFrontier indicates an expected call of StateSummaryFrontier.
 func (mr *OutboundMsgBuilderMockRecorder) StateSummaryFrontier(chainID, requestID, summary any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateSummaryFrontier", reflect.TypeOf((*OutboundMsgBuilder)(nil).StateSummaryFrontier), chainID, requestID, summary)
+	_ = "STUB: not implemented"
+	return nil
 }

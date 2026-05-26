@@ -10,8 +10,6 @@
 package hashingmock
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -28,27 +26,17 @@ type HasherMockRecorder struct {
 }
 
 // NewHasher creates a new mock instance.
-func NewHasher(ctrl *gomock.Controller) *Hasher {
-	mock := &Hasher{ctrl: ctrl}
-	mock.recorder = &HasherMockRecorder{mock}
-	return mock
-}
+func NewHasher(ctrl *gomock.Controller) *Hasher { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Hasher) EXPECT() *HasherMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Hash mocks base method.
+	return nil
 }
 
-// Hash mocks base method.
-func (m *Hasher) Hash(arg0 []byte) uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Hash", arg0)
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *Hasher) Hash(arg0 []byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Hash indicates an expected call of Hash.
-func (mr *HasherMockRecorder) Hash(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Hash", reflect.TypeOf((*Hasher)(nil).Hash), arg0)
-}
+func (mr *HasherMockRecorder) Hash(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }

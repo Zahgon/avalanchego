@@ -17,23 +17,17 @@ type BlockSyncSummaryProvider struct {
 }
 
 func NewBlockSyncSummaryProvider(c codec.Manager) *BlockSyncSummaryProvider {
-	return &BlockSyncSummaryProvider{codec: c}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StateSummaryAtBlock returns the block state summary at [block] if valid.
 func (c *BlockSyncSummaryProvider) StateSummaryAtBlock(blk *types.Block) (block.StateSummary, error) {
-	return NewBlockSyncSummary(c.codec, blk.Hash(), blk.NumberU64(), blk.Root())
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 func (c *BlockSyncSummaryProvider) Parse(summaryBytes []byte, acceptImpl AcceptImplFn) (Syncable, error) {
-	summary := BlockSyncSummary{}
-	summaryID, err := ParseSyncableSummary(c.codec, summaryBytes, &summary)
-	if err != nil {
-		return nil, err
-	}
-
-	summary.bytes = summaryBytes
-	summary.summaryID = summaryID
-	summary.acceptImpl = acceptImpl
-	return &summary, nil
+	_ = "STUB: not implemented"
+	return *new(Syncable), nil
 }

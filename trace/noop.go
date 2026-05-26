@@ -12,6 +12,4 @@ type noOpTracer struct {
 	noop.Tracer
 }
 
-func (noOpTracer) Close() error {
-	return nil
-}
+func (noOpTracer) Close() error { _ = "STUB: not implemented"; return nil }

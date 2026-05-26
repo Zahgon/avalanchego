@@ -8,11 +8,9 @@ import (
 	"crypto/ecdsa"
 	"errors"
 	"math/big"
-	"time"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
 	"github.com/ava-labs/libevm/ethclient"
 )
 
@@ -34,64 +32,20 @@ func newWallet(
 	client *ethclient.Client,
 	metrics metrics,
 ) *Wallet {
-	return &Wallet{
-		privKey: privKey,
-		nonce:   nonce,
-		chainID: chainID,
-		signer:  types.LatestSignerForChainID(chainID),
-		client:  client,
-		metrics: metrics,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (w *Wallet) SendTx(
 	ctx context.Context,
 	tx *types.Transaction,
 ) error {
+	_ = "STUB: not implemented"
 	// start listening for blocks
-	headers := make(chan *types.Header)
-	sub, err := w.client.SubscribeNewHead(ctx, headers)
-	if err != nil {
-		return err
-	}
-
-	defer func() {
-		sub.Unsubscribe()
-
-		// wait for err chan to close before safely closing headers
-		<-sub.Err()
-		close(headers)
-	}()
-
-	startTime := time.Now()
-	if err := w.client.SendTransaction(ctx, tx); err != nil {
-		return err
-	}
-
-	issuanceDuration := time.Since(startTime)
-	w.metrics.issue(issuanceDuration)
-
-	err = w.awaitTx(
-		ctx,
-		headers,
-		sub.Err(),
-		tx.Hash(),
-	)
-	if err != nil {
-		if errors.Is(err, errTxExecutionFailed) {
-			w.nonce++
-		}
-		return err
-	}
-
-	totalDuration := time.Since(startTime)
-	confirmationDuration := totalDuration - issuanceDuration
-	w.metrics.accept(confirmationDuration, totalDuration)
-
-	w.nonce++
-
 	return nil
 }
+
+// wait for err chan to close before safely closing headers
 
 func (w Wallet) awaitTx(
 	ctx context.Context,
@@ -99,35 +53,6 @@ func (w Wallet) awaitTx(
 	errs <-chan error,
 	txHash common.Hash,
 ) error {
-	account := crypto.PubkeyToAddress(w.privKey.PublicKey)
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case err := <-errs:
-			return err
-		case h := <-headers:
-			latestNonce, err := w.client.NonceAt(
-				ctx,
-				account,
-				h.Number,
-			)
-			if err != nil {
-				return err
-			}
-
-			if latestNonce == w.nonce+1 {
-				receipt, err := w.client.TransactionReceipt(ctx, txHash)
-				if err != nil {
-					return err
-				}
-
-				if receipt.Status != types.ReceiptStatusSuccessful {
-					return errTxExecutionFailed
-				}
-
-				return nil
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

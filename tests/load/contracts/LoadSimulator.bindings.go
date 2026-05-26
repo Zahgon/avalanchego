@@ -45,19 +45,8 @@ var LoadSimulatorBin = LoadSimulatorMetaData.Bin
 
 // DeployLoadSimulator deploys a new Ethereum contract, binding an instance of LoadSimulator to it.
 func DeployLoadSimulator(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *LoadSimulator, error) {
-	parsed, err := LoadSimulatorMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(LoadSimulatorBin), backend)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &LoadSimulator{LoadSimulatorCaller: LoadSimulatorCaller{contract: contract}, LoadSimulatorTransactor: LoadSimulatorTransactor{contract: contract}, LoadSimulatorFilterer: LoadSimulatorFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // LoadSimulator is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type LoadSimulatorTransactorRaw struct {
 
 // NewLoadSimulator creates a new instance of LoadSimulator, bound to a specific deployed contract.
 func NewLoadSimulator(address common.Address, backend bind.ContractBackend) (*LoadSimulator, error) {
-	contract, err := bindLoadSimulator(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &LoadSimulator{LoadSimulatorCaller: LoadSimulatorCaller{contract: contract}, LoadSimulatorTransactor: LoadSimulatorTransactor{contract: contract}, LoadSimulatorFilterer: LoadSimulatorFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewLoadSimulatorCaller creates a new read-only instance of LoadSimulator, bound to a specific deployed contract.
 func NewLoadSimulatorCaller(address common.Address, caller bind.ContractCaller) (*LoadSimulatorCaller, error) {
-	contract, err := bindLoadSimulator(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &LoadSimulatorCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewLoadSimulatorTransactor creates a new write-only instance of LoadSimulator, bound to a specific deployed contract.
 func NewLoadSimulatorTransactor(address common.Address, transactor bind.ContractTransactor) (*LoadSimulatorTransactor, error) {
-	contract, err := bindLoadSimulator(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &LoadSimulatorTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewLoadSimulatorFilterer creates a new log filterer instance of LoadSimulator, bound to a specific deployed contract.
 func NewLoadSimulatorFilterer(address common.Address, filterer bind.ContractFilterer) (*LoadSimulatorFilterer, error) {
-	contract, err := bindLoadSimulator(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &LoadSimulatorFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindLoadSimulator binds a generic wrapper to an already deployed contract.
 func bindLoadSimulator(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := LoadSimulatorMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindLoadSimulator(address common.Address, caller bind.ContractCaller, trans
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_LoadSimulator *LoadSimulatorRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _LoadSimulator.Contract.LoadSimulatorCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_LoadSimulator *LoadSimulatorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.LoadSimulatorTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_LoadSimulator *LoadSimulatorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.LoadSimulatorTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,144 +165,165 @@ func (_LoadSimulator *LoadSimulatorRaw) Transact(opts *bind.TransactOpts, method
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_LoadSimulator *LoadSimulatorCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _LoadSimulator.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_LoadSimulator *LoadSimulatorTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_LoadSimulator *LoadSimulatorTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Deploy is a paid mutator transaction binding the contract method 0x775c300c.
 //
 // Solidity: function deploy() returns()
 func (_LoadSimulator *LoadSimulatorTransactor) Deploy(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "deploy")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Deploy is a paid mutator transaction binding the contract method 0x775c300c.
 //
 // Solidity: function deploy() returns()
 func (_LoadSimulator *LoadSimulatorSession) Deploy() (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Deploy(&_LoadSimulator.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Deploy is a paid mutator transaction binding the contract method 0x775c300c.
 //
 // Solidity: function deploy() returns()
 func (_LoadSimulator *LoadSimulatorTransactorSession) Deploy() (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Deploy(&_LoadSimulator.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Hash is a paid mutator transaction binding the contract method 0xa78dac0d.
 //
 // Solidity: function hash(uint256 value, uint256 n) returns(bytes32 result)
 func (_LoadSimulator *LoadSimulatorTransactor) Hash(opts *bind.TransactOpts, value *big.Int, n *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "hash", value, n)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Hash is a paid mutator transaction binding the contract method 0xa78dac0d.
 //
 // Solidity: function hash(uint256 value, uint256 n) returns(bytes32 result)
 func (_LoadSimulator *LoadSimulatorSession) Hash(value *big.Int, n *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Hash(&_LoadSimulator.TransactOpts, value, n)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Hash is a paid mutator transaction binding the contract method 0xa78dac0d.
 //
 // Solidity: function hash(uint256 value, uint256 n) returns(bytes32 result)
 func (_LoadSimulator *LoadSimulatorTransactorSession) Hash(value *big.Int, n *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Hash(&_LoadSimulator.TransactOpts, value, n)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // LargeCalldata is a paid mutator transaction binding the contract method 0xa977e1d1.
 //
 // Solidity: function largeCalldata(bytes data) returns()
 func (_LoadSimulator *LoadSimulatorTransactor) LargeCalldata(opts *bind.TransactOpts, data []byte) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "largeCalldata", data)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // LargeCalldata is a paid mutator transaction binding the contract method 0xa977e1d1.
 //
 // Solidity: function largeCalldata(bytes data) returns()
 func (_LoadSimulator *LoadSimulatorSession) LargeCalldata(data []byte) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.LargeCalldata(&_LoadSimulator.TransactOpts, data)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // LargeCalldata is a paid mutator transaction binding the contract method 0xa977e1d1.
 //
 // Solidity: function largeCalldata(bytes data) returns()
 func (_LoadSimulator *LoadSimulatorTransactorSession) LargeCalldata(data []byte) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.LargeCalldata(&_LoadSimulator.TransactOpts, data)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Modify is a paid mutator transaction binding the contract method 0x85d05887.
 //
 // Solidity: function modify(uint256 numSlots, uint256 newValue) returns(bool success)
 func (_LoadSimulator *LoadSimulatorTransactor) Modify(opts *bind.TransactOpts, numSlots *big.Int, newValue *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "modify", numSlots, newValue)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Modify is a paid mutator transaction binding the contract method 0x85d05887.
 //
 // Solidity: function modify(uint256 numSlots, uint256 newValue) returns(bool success)
 func (_LoadSimulator *LoadSimulatorSession) Modify(numSlots *big.Int, newValue *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Modify(&_LoadSimulator.TransactOpts, numSlots, newValue)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Modify is a paid mutator transaction binding the contract method 0x85d05887.
 //
 // Solidity: function modify(uint256 numSlots, uint256 newValue) returns(bool success)
 func (_LoadSimulator *LoadSimulatorTransactorSession) Modify(numSlots *big.Int, newValue *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Modify(&_LoadSimulator.TransactOpts, numSlots, newValue)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Read is a paid mutator transaction binding the contract method 0x75080997.
 //
 // Solidity: function read(uint256 offset, uint256 numSlots) returns(uint256 sum)
 func (_LoadSimulator *LoadSimulatorTransactor) Read(opts *bind.TransactOpts, offset *big.Int, numSlots *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "read", offset, numSlots)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Read is a paid mutator transaction binding the contract method 0x75080997.
 //
 // Solidity: function read(uint256 offset, uint256 numSlots) returns(uint256 sum)
 func (_LoadSimulator *LoadSimulatorSession) Read(offset *big.Int, numSlots *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Read(&_LoadSimulator.TransactOpts, offset, numSlots)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Read is a paid mutator transaction binding the contract method 0x75080997.
 //
 // Solidity: function read(uint256 offset, uint256 numSlots) returns(uint256 sum)
 func (_LoadSimulator *LoadSimulatorTransactorSession) Read(offset *big.Int, numSlots *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Read(&_LoadSimulator.TransactOpts, offset, numSlots)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Write is a paid mutator transaction binding the contract method 0x9c0e3f7a.
 //
 // Solidity: function write(uint256 numSlots, uint256 value) returns()
 func (_LoadSimulator *LoadSimulatorTransactor) Write(opts *bind.TransactOpts, numSlots *big.Int, value *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.contract.Transact(opts, "write", numSlots, value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Write is a paid mutator transaction binding the contract method 0x9c0e3f7a.
 //
 // Solidity: function write(uint256 numSlots, uint256 value) returns()
 func (_LoadSimulator *LoadSimulatorSession) Write(numSlots *big.Int, value *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Write(&_LoadSimulator.TransactOpts, numSlots, value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Write is a paid mutator transaction binding the contract method 0x9c0e3f7a.
 //
 // Solidity: function write(uint256 numSlots, uint256 value) returns()
 func (_LoadSimulator *LoadSimulatorTransactorSession) Write(numSlots *big.Int, value *big.Int) (*types.Transaction, error) {
-	return _LoadSimulator.Contract.Write(&_LoadSimulator.TransactOpts, numSlots, value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // LoadSimulatorLargeCalldataIterator is returned from FilterLargeCalldata and is used to iterate over the raw logs and unpacked data for LargeCalldata events raised by the LoadSimulator contract.
@@ -345,55 +343,25 @@ type LoadSimulatorLargeCalldataIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *LoadSimulatorLargeCalldataIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(LoadSimulatorLargeCalldata)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(LoadSimulatorLargeCalldata)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *LoadSimulatorLargeCalldataIterator) Error() error {
-	return it.fail
-}
+	_ = "STUB: not implemented"
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *LoadSimulatorLargeCalldataIterator) Close() error {
-	it.sub.Unsubscribe()
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
 	return nil
 }
+
+func (it *LoadSimulatorLargeCalldataIterator) Close() error { _ = "STUB: not implemented"; return nil }
 
 // LoadSimulatorLargeCalldata represents a LargeCalldata event raised by the LoadSimulator contract.
 type LoadSimulatorLargeCalldata struct {
@@ -405,59 +373,24 @@ type LoadSimulatorLargeCalldata struct {
 //
 // Solidity: event LargeCalldata(bytes arg0)
 func (_LoadSimulator *LoadSimulatorFilterer) FilterLargeCalldata(opts *bind.FilterOpts) (*LoadSimulatorLargeCalldataIterator, error) {
-
-	logs, sub, err := _LoadSimulator.contract.FilterLogs(opts, "LargeCalldata")
-	if err != nil {
-		return nil, err
-	}
-	return &LoadSimulatorLargeCalldataIterator{contract: _LoadSimulator.contract, event: "LargeCalldata", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchLargeCalldata is a free log subscription operation binding the contract event 0x7cdeb400b923483a299a592d3b984525e73532d62e6861a342855a80c6a54a31.
 //
 // Solidity: event LargeCalldata(bytes arg0)
 func (_LoadSimulator *LoadSimulatorFilterer) WatchLargeCalldata(opts *bind.WatchOpts, sink chan<- *LoadSimulatorLargeCalldata) (event.Subscription, error) {
-
-	logs, sub, err := _LoadSimulator.contract.WatchLogs(opts, "LargeCalldata")
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(LoadSimulatorLargeCalldata)
-				if err := _LoadSimulator.contract.UnpackLog(event, "LargeCalldata", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseLargeCalldata is a log parse operation binding the contract event 0x7cdeb400b923483a299a592d3b984525e73532d62e6861a342855a80c6a54a31.
 //
 // Solidity: event LargeCalldata(bytes arg0)
 func (_LoadSimulator *LoadSimulatorFilterer) ParseLargeCalldata(log types.Log) (*LoadSimulatorLargeCalldata, error) {
-	event := new(LoadSimulatorLargeCalldata)
-	if err := _LoadSimulator.contract.UnpackLog(event, "LargeCalldata", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

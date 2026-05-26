@@ -21,17 +21,8 @@ type beacon struct {
 	ip netip.AddrPort
 }
 
-func New(id ids.NodeID, ip netip.AddrPort) Beacon {
-	return &beacon{
-		id: id,
-		ip: ip,
-	}
-}
+func New(id ids.NodeID, ip netip.AddrPort) Beacon { _ = "STUB: not implemented"; return *new(Beacon) }
 
-func (b *beacon) ID() ids.NodeID {
-	return b.id
-}
+func (b *beacon) ID() ids.NodeID { _ = "STUB: not implemented"; return *new(ids.NodeID) }
 
-func (b *beacon) IP() netip.AddrPort {
-	return b.ip
-}
+func (b *beacon) IP() netip.AddrPort { _ = "STUB: not implemented"; return *new(netip.AddrPort) }

@@ -21,59 +21,35 @@ type BanffCommitBlock struct {
 	ApricotCommitBlock `serialize:"true"`
 }
 
-func (b *BanffCommitBlock) Timestamp() time.Time {
-	return time.Unix(int64(b.Time), 0)
-}
+func (b *BanffCommitBlock) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (b *BanffCommitBlock) Visit(v Visitor) error {
-	return v.BanffCommitBlock(b)
-}
+func (b *BanffCommitBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 func NewBanffCommitBlock(
 	timestamp time.Time,
 	parentID ids.ID,
 	height uint64,
 ) (*BanffCommitBlock, error) {
-	blk := &BanffCommitBlock{
-		Time: uint64(timestamp.Unix()),
-		ApricotCommitBlock: ApricotCommitBlock{
-			CommonBlock: CommonBlock{
-				PrntID: parentID,
-				Hght:   height,
-			},
-		},
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type ApricotCommitBlock struct {
 	CommonBlock `serialize:"true"`
 }
 
-func (b *ApricotCommitBlock) initialize(bytes []byte) error {
-	b.CommonBlock.initialize(bytes)
-	return nil
-}
+func (b *ApricotCommitBlock) initialize(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (*ApricotCommitBlock) InitCtx(*snow.Context) {}
+func (*ApricotCommitBlock) InitCtx(*snow.Context) { _ = "STUB: not implemented"; return }
 
-func (*ApricotCommitBlock) Txs() []*txs.Tx {
-	return nil
-}
+func (*ApricotCommitBlock) Txs() []*txs.Tx { _ = "STUB: not implemented"; return nil }
 
-func (b *ApricotCommitBlock) Visit(v Visitor) error {
-	return v.ApricotCommitBlock(b)
-}
+func (b *ApricotCommitBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 func NewApricotCommitBlock(
 	parentID ids.ID,
 	height uint64,
 ) (*ApricotCommitBlock, error) {
-	blk := &ApricotCommitBlock{
-		CommonBlock: CommonBlock{
-			PrntID: parentID,
-			Hght:   height,
-		},
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

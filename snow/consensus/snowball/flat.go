@@ -11,10 +11,8 @@ import (
 var _ Consensus = (*Flat)(nil)
 
 func NewFlat(factory Factory, params Parameters, choice ids.ID) Consensus {
-	return &Flat{
-		Nnary:  factory.NewNnary(params, choice),
-		params: params,
-	}
+	_ = "STUB: not implemented"
+	return *new(Consensus)
 }
 
 // Flat is a naive implementation of a multi-choice snow instance
@@ -26,8 +24,4 @@ type Flat struct {
 	params Parameters
 }
 
-func (f *Flat) RecordPoll(votes bag.Bag[ids.ID]) bool {
-	pollMode, numVotes := votes.Mode()
-	f.Nnary.RecordPoll(numVotes, pollMode)
-	return numVotes >= f.params.AlphaPreference
-}
+func (f *Flat) RecordPoll(votes bag.Bag[ids.ID]) bool { _ = "STUB: not implemented"; return false }

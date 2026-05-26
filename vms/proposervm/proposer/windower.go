@@ -6,19 +6,14 @@ package proposer
 import (
 	"context"
 	"errors"
-	"math/bits"
 	"time"
 
-	"go.uber.org/zap"
 	"gonum.org/v1/gonum/mathext/prng"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/utils/sampler"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 // Proposer list constants
@@ -107,65 +102,20 @@ type windower struct {
 }
 
 func New(state validators.State, subnetID, chainID ids.ID, logger logging.Logger) Windower {
-	w := wrappers.Packer{Bytes: chainID[:]}
-	return &windower{
-		logger:      logger,
-		state:       state,
-		subnetID:    subnetID,
-		chainSource: w.UnpackLong(),
-	}
+	_ = "STUB: not implemented"
+	return *new(Windower)
 }
 
 func (w *windower) Proposers(ctx context.Context, blockHeight, pChainHeight uint64, maxWindows int) ([]ids.NodeID, error) {
+	_ = "STUB: not implemented"
 	// Note: The 32-bit prng is used here for legacy reasons. All other usages
 	// of a prng in this file should use the 64-bit version.
-	source := prng.NewMT19937()
-	sampler, validators, err := w.makeSampler(ctx, pChainHeight, source)
-	if err != nil {
-		return nil, err
-	}
-
-	var totalWeight uint64
-	for _, validator := range validators {
-		totalWeight, err = math.Add(totalWeight, validator.weight)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	source.Seed(w.chainSource ^ blockHeight)
-
-	numToSample := int(min(uint64(maxWindows), totalWeight))
-	indices, ok := sampler.Sample(numToSample)
-	if !ok {
-		return nil, ErrUnexpectedSamplerFailure
-	}
-
-	nodeIDs := make([]ids.NodeID, numToSample)
-	for i, index := range indices {
-		nodeIDs[i] = validators[index].id
-	}
-	return nodeIDs, nil
+	return nil, nil
 }
 
 func (w *windower) Delay(ctx context.Context, blockHeight, pChainHeight uint64, validatorID ids.NodeID, maxWindows int) (time.Duration, error) {
-	if validatorID == ids.EmptyNodeID {
-		return time.Duration(maxWindows) * WindowDuration, nil
-	}
-
-	proposers, err := w.Proposers(ctx, blockHeight, pChainHeight, maxWindows)
-	if err != nil {
-		return 0, err
-	}
-
-	delay := time.Duration(0)
-	for _, nodeID := range proposers {
-		if nodeID == validatorID {
-			return delay, nil
-		}
-		delay += WindowDuration
-	}
-	return delay, nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), nil
 }
 
 func (w *windower) ExpectedProposer(
@@ -174,22 +124,8 @@ func (w *windower) ExpectedProposer(
 	pChainHeight,
 	slot uint64,
 ) (ids.NodeID, error) {
-	source := prng.NewMT19937_64()
-	sampler, validators, err := w.makeSampler(ctx, pChainHeight, source)
-	if err != nil {
-		return ids.EmptyNodeID, err
-	}
-	if len(validators) == 0 {
-		return ids.EmptyNodeID, ErrAnyoneCanPropose
-	}
-
-	return w.expectedProposer(
-		validators,
-		source,
-		sampler,
-		blockHeight,
-		slot,
-	)
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), nil
 }
 
 func (w *windower) MinDelayForProposer(
@@ -199,75 +135,27 @@ func (w *windower) MinDelayForProposer(
 	nodeID ids.NodeID,
 	startSlot uint64,
 ) (time.Duration, error) {
-	source := prng.NewMT19937_64()
-	sampler, validators, err := w.makeSampler(ctx, pChainHeight, source)
-	if err != nil {
-		return 0, err
-	}
-
-	w.logger.Debug("sampled validators for P-chain height",
-		zap.Uint64("pChainHeight", pChainHeight), zap.Int("numValidators", len(validators)))
-
-	if len(validators) == 0 {
-		return 0, ErrAnyoneCanPropose
-	}
-
-	maxSlot := startSlot + MaxLookAheadSlots
-	for slot := startSlot; slot < maxSlot; slot++ {
-		expectedNodeID, err := w.expectedProposer(
-			validators,
-			source,
-			sampler,
-			blockHeight,
-			slot,
-		)
-		if err != nil {
-			return 0, err
-		}
-
-		if expectedNodeID == nodeID {
-			return time.Duration(slot) * WindowDuration, nil
-		}
-	}
-
-	// no slots scheduled for the max window we inspect. Return max delay
-	return time.Duration(maxSlot) * WindowDuration, nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), nil
 }
+
+// no slots scheduled for the max window we inspect. Return max delay
 
 func (w *windower) makeSampler(
 	ctx context.Context,
 	pChainHeight uint64,
 	source sampler.Source,
 ) (sampler.WeightedWithoutReplacement, []validatorData, error) {
+	_ = "STUB: not implemented"
 	// Get the canonical representation of the validator set at the provided
 	// p-chain height.
-	validatorsMap, err := w.state.GetValidatorSet(ctx, pChainHeight, w.subnetID)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	delete(validatorsMap, ids.EmptyNodeID) // Ignore inactive ACP-77 validators.
-
-	validators := make([]validatorData, 0, len(validatorsMap))
-	for k, v := range validatorsMap {
-		validators = append(validators, validatorData{
-			id:     k,
-			weight: v.Weight,
-		})
-	}
-
-	// Note: validators are sorted by ID. Sorting by weight would not create a
-	// canonically sorted list.
-	utils.Sort(validators)
-
-	weights := make([]uint64, len(validators))
-	for i, validator := range validators {
-		weights[i] = validator.weight
-	}
-
-	sampler := sampler.NewDeterministicWeightedWithoutReplacement(source)
-	return sampler, validators, sampler.Initialize(weights)
+	return *new(sampler.WeightedWithoutReplacement), nil, nil
 }
+
+// Ignore inactive ACP-77 validators.
+
+// Note: validators are sorted by ID. Sorting by weight would not create a
+// canonically sorted list.
 
 func (w *windower) expectedProposer(
 	validators []validatorData,
@@ -276,21 +164,12 @@ func (w *windower) expectedProposer(
 	blockHeight,
 	slot uint64,
 ) (ids.NodeID, error) {
+	_ = "STUB: not implemented"
 	// Slot is reversed to utilize a different state space in the seed than the
 	// height. If the slot was not reversed the state space would collide;
 	// biasing the seed generation. For example, without reversing the slot
 	// height=0 and slot=1 would equal height=1 and slot=0.
-	source.Seed(w.chainSource ^ blockHeight ^ bits.Reverse64(slot))
-	indices, ok := sampler.Sample(1)
-	if !ok {
-		return ids.EmptyNodeID, ErrUnexpectedSamplerFailure
-	}
-	return validators[indices[0]].id, nil
+	return *new(ids.NodeID), nil
 }
 
-func TimeToSlot(start, now time.Time) uint64 {
-	if now.Before(start) {
-		return 0
-	}
-	return uint64(now.Sub(start) / WindowDuration)
-}
+func TimeToSlot(start, now time.Time) uint64 { _ = "STUB: not implemented"; return 0 }

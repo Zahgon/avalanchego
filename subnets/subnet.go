@@ -42,60 +42,23 @@ type subnet struct {
 	bootstrapSignal common.PreemptionSignal
 }
 
-func New(myNodeID ids.NodeID, config Config) Subnet {
-	return &subnet{
-		config:   config,
-		myNodeID: myNodeID,
-	}
-}
+func New(myNodeID ids.NodeID, config Config) Subnet { _ = "STUB: not implemented"; return *new(Subnet) }
 
-func (s *subnet) AllBootstrapped() <-chan struct{} {
-	return s.bootstrapSignal.Listen()
-}
+func (s *subnet) AllBootstrapped() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-func (s *subnet) IsBootstrapped() bool {
-	s.lock.RLock()
-	defer s.lock.RUnlock()
+func (s *subnet) IsBootstrapped() bool { _ = "STUB: not implemented"; return false }
 
-	return s.bootstrapping.Len() == 0
-}
+func (s *subnet) Bootstrapped(chainID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (s *subnet) Bootstrapped(chainID ids.ID) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
+func (s *subnet) AddChain(chainID ids.ID) bool { _ = "STUB: not implemented"; return false }
 
-	s.bootstrapping.Remove(chainID)
-	s.bootstrapped.Add(chainID)
-	if s.bootstrapping.Len() > 0 {
-		return
-	}
-
-	s.bootstrapSignal.Preempt()
-}
-
-func (s *subnet) AddChain(chainID ids.ID) bool {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	if s.bootstrapping.Contains(chainID) || s.bootstrapped.Contains(chainID) {
-		return false
-	}
-
-	s.bootstrapping.Add(chainID)
-	return true
-}
-
-func (s *subnet) Config() Config {
-	return s.config
-}
+func (s *subnet) Config() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 func (s *subnet) IsAllowed(nodeID ids.NodeID, isValidator bool) bool {
+	_ = "STUB: not implemented"
 	// Case 1: NodeID is this node
 	// Case 2: This subnet is not validator-only subnet
 	// Case 3: NodeID is a validator for this chain
 	// Case 4: NodeID is explicitly allowed whether it's subnet validator or not
-	return nodeID == s.myNodeID ||
-		!s.config.ValidatorOnly ||
-		isValidator ||
-		s.config.AllowedNodes.Contains(nodeID)
+	return false
 }

@@ -11,7 +11,6 @@ package commonmock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	ids "github.com/ava-labs/avalanchego/ids"
 	common "github.com/ava-labs/avalanchego/snow/engine/common"
@@ -32,249 +31,239 @@ type SenderMockRecorder struct {
 }
 
 // NewSender creates a new mock instance.
-func NewSender(ctrl *gomock.Controller) *Sender {
-	mock := &Sender{ctrl: ctrl}
-	mock.recorder = &SenderMockRecorder{mock}
-	return mock
-}
+func NewSender(ctrl *gomock.Controller) *Sender { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Sender) EXPECT() *SenderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// SendAccepted mocks base method.
+	return nil
 }
 
-// SendAccepted mocks base method.
 func (m *Sender) SendAccepted(ctx context.Context, nodeID ids.NodeID, requestID uint32, containerIDs []ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendAccepted", ctx, nodeID, requestID, containerIDs)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAccepted indicates an expected call of SendAccepted.
 func (mr *SenderMockRecorder) SendAccepted(ctx, nodeID, requestID, containerIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAccepted", reflect.TypeOf((*Sender)(nil).SendAccepted), ctx, nodeID, requestID, containerIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAcceptedFrontier mocks base method.
 func (m *Sender) SendAcceptedFrontier(ctx context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendAcceptedFrontier", ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAcceptedFrontier indicates an expected call of SendAcceptedFrontier.
 func (mr *SenderMockRecorder) SendAcceptedFrontier(ctx, nodeID, requestID, containerID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAcceptedFrontier", reflect.TypeOf((*Sender)(nil).SendAcceptedFrontier), ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAcceptedStateSummary mocks base method.
 func (m *Sender) SendAcceptedStateSummary(ctx context.Context, nodeID ids.NodeID, requestID uint32, summaryIDs []ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendAcceptedStateSummary", ctx, nodeID, requestID, summaryIDs)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAcceptedStateSummary indicates an expected call of SendAcceptedStateSummary.
 func (mr *SenderMockRecorder) SendAcceptedStateSummary(ctx, nodeID, requestID, summaryIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAcceptedStateSummary", reflect.TypeOf((*Sender)(nil).SendAcceptedStateSummary), ctx, nodeID, requestID, summaryIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAncestors mocks base method.
 func (m *Sender) SendAncestors(ctx context.Context, nodeID ids.NodeID, requestID uint32, containers [][]byte) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendAncestors", ctx, nodeID, requestID, containers)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAncestors indicates an expected call of SendAncestors.
 func (mr *SenderMockRecorder) SendAncestors(ctx, nodeID, requestID, containers any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAncestors", reflect.TypeOf((*Sender)(nil).SendAncestors), ctx, nodeID, requestID, containers)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppError mocks base method.
 func (m *Sender) SendAppError(ctx context.Context, nodeID ids.NodeID, requestID uint32, errorCode int32, errorMessage string) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendAppError", ctx, nodeID, requestID, errorCode, errorMessage)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppError indicates an expected call of SendAppError.
 func (mr *SenderMockRecorder) SendAppError(ctx, nodeID, requestID, errorCode, errorMessage any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAppError", reflect.TypeOf((*Sender)(nil).SendAppError), ctx, nodeID, requestID, errorCode, errorMessage)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppGossip mocks base method.
 func (m *Sender) SendAppGossip(ctx context.Context, config common.SendConfig, appGossipBytes []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendAppGossip", ctx, config, appGossipBytes)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppGossip indicates an expected call of SendAppGossip.
 func (mr *SenderMockRecorder) SendAppGossip(ctx, config, appGossipBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAppGossip", reflect.TypeOf((*Sender)(nil).SendAppGossip), ctx, config, appGossipBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppRequest mocks base method.
 func (m *Sender) SendAppRequest(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, appRequestBytes []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendAppRequest", ctx, nodeIDs, requestID, appRequestBytes)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppRequest indicates an expected call of SendAppRequest.
 func (mr *SenderMockRecorder) SendAppRequest(ctx, nodeIDs, requestID, appRequestBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAppRequest", reflect.TypeOf((*Sender)(nil).SendAppRequest), ctx, nodeIDs, requestID, appRequestBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppResponse mocks base method.
 func (m *Sender) SendAppResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, appResponseBytes []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SendAppResponse", ctx, nodeID, requestID, appResponseBytes)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppResponse indicates an expected call of SendAppResponse.
 func (mr *SenderMockRecorder) SendAppResponse(ctx, nodeID, requestID, appResponseBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendAppResponse", reflect.TypeOf((*Sender)(nil).SendAppResponse), ctx, nodeID, requestID, appResponseBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendChits mocks base method.
 func (m *Sender) SendChits(ctx context.Context, nodeID ids.NodeID, requestID uint32, preferredID, preferredIDAtHeight, acceptedID ids.ID, acceptedHeight uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendChits", ctx, nodeID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendChits indicates an expected call of SendChits.
 func (mr *SenderMockRecorder) SendChits(ctx, nodeID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendChits", reflect.TypeOf((*Sender)(nil).SendChits), ctx, nodeID, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGet mocks base method.
 func (m *Sender) SendGet(ctx context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGet", ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGet indicates an expected call of SendGet.
 func (mr *SenderMockRecorder) SendGet(ctx, nodeID, requestID, containerID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGet", reflect.TypeOf((*Sender)(nil).SendGet), ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGetAccepted mocks base method.
 func (m *Sender) SendGetAccepted(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, containerIDs []ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGetAccepted", ctx, nodeIDs, requestID, containerIDs)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAccepted indicates an expected call of SendGetAccepted.
 func (mr *SenderMockRecorder) SendGetAccepted(ctx, nodeIDs, requestID, containerIDs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGetAccepted", reflect.TypeOf((*Sender)(nil).SendGetAccepted), ctx, nodeIDs, requestID, containerIDs)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGetAcceptedFrontier mocks base method.
 func (m *Sender) SendGetAcceptedFrontier(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGetAcceptedFrontier", ctx, nodeIDs, requestID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAcceptedFrontier indicates an expected call of SendGetAcceptedFrontier.
 func (mr *SenderMockRecorder) SendGetAcceptedFrontier(ctx, nodeIDs, requestID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGetAcceptedFrontier", reflect.TypeOf((*Sender)(nil).SendGetAcceptedFrontier), ctx, nodeIDs, requestID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGetAcceptedStateSummary mocks base method.
 func (m *Sender) SendGetAcceptedStateSummary(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, heights []uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGetAcceptedStateSummary", ctx, nodeIDs, requestID, heights)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAcceptedStateSummary indicates an expected call of SendGetAcceptedStateSummary.
 func (mr *SenderMockRecorder) SendGetAcceptedStateSummary(ctx, nodeIDs, requestID, heights any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGetAcceptedStateSummary", reflect.TypeOf((*Sender)(nil).SendGetAcceptedStateSummary), ctx, nodeIDs, requestID, heights)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGetAncestors mocks base method.
 func (m *Sender) SendGetAncestors(ctx context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGetAncestors", ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAncestors indicates an expected call of SendGetAncestors.
 func (mr *SenderMockRecorder) SendGetAncestors(ctx, nodeID, requestID, containerID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGetAncestors", reflect.TypeOf((*Sender)(nil).SendGetAncestors), ctx, nodeID, requestID, containerID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendGetStateSummaryFrontier mocks base method.
 func (m *Sender) SendGetStateSummaryFrontier(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendGetStateSummaryFrontier", ctx, nodeIDs, requestID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetStateSummaryFrontier indicates an expected call of SendGetStateSummaryFrontier.
 func (mr *SenderMockRecorder) SendGetStateSummaryFrontier(ctx, nodeIDs, requestID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendGetStateSummaryFrontier", reflect.TypeOf((*Sender)(nil).SendGetStateSummaryFrontier), ctx, nodeIDs, requestID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendPullQuery mocks base method.
 func (m *Sender) SendPullQuery(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, containerID ids.ID, requestedHeight uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendPullQuery", ctx, nodeIDs, requestID, containerID, requestedHeight)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPullQuery indicates an expected call of SendPullQuery.
 func (mr *SenderMockRecorder) SendPullQuery(ctx, nodeIDs, requestID, containerID, requestedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendPullQuery", reflect.TypeOf((*Sender)(nil).SendPullQuery), ctx, nodeIDs, requestID, containerID, requestedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendPushQuery mocks base method.
 func (m *Sender) SendPushQuery(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, container []byte, requestedHeight uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendPushQuery", ctx, nodeIDs, requestID, container, requestedHeight)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPushQuery indicates an expected call of SendPushQuery.
 func (mr *SenderMockRecorder) SendPushQuery(ctx, nodeIDs, requestID, container, requestedHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendPushQuery", reflect.TypeOf((*Sender)(nil).SendPushQuery), ctx, nodeIDs, requestID, container, requestedHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendPut mocks base method.
 func (m *Sender) SendPut(ctx context.Context, nodeID ids.NodeID, requestID uint32, container []byte) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendPut", ctx, nodeID, requestID, container)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPut indicates an expected call of SendPut.
 func (mr *SenderMockRecorder) SendPut(ctx, nodeID, requestID, container any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendPut", reflect.TypeOf((*Sender)(nil).SendPut), ctx, nodeID, requestID, container)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendStateSummaryFrontier mocks base method.
 func (m *Sender) SendStateSummaryFrontier(ctx context.Context, nodeID ids.NodeID, requestID uint32, summary []byte) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SendStateSummaryFrontier", ctx, nodeID, requestID, summary)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendStateSummaryFrontier indicates an expected call of SendStateSummaryFrontier.
 func (mr *SenderMockRecorder) SendStateSummaryFrontier(ctx, nodeID, requestID, summary any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SendStateSummaryFrontier", reflect.TypeOf((*Sender)(nil).SendStateSummaryFrontier), ctx, nodeID, requestID, summary)
+	_ = "STUB: not implemented"
+	return nil
 }

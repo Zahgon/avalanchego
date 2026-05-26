@@ -8,8 +8,6 @@ import (
 	"math"
 	"time"
 
-	"golang.org/x/exp/maps"
-
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/database"
@@ -60,47 +58,11 @@ type state struct {
 	deletedValidators      set.Set[ids.ID]
 }
 
-func newState(db database.Database) (*state, error) {
-	s := &state{
-		db:                     db,
-		validators:             make(map[ids.ID]*validator),
-		nodeIDsToValidationIDs: make(map[ids.NodeID]ids.ID),
-	}
-
-	it := db.NewIterator()
-	defer it.Release()
-
-	for it.Next() {
-		validationID, err := ids.ToID(it.Key())
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse validation ID: %w", err)
-		}
-
-		vdr := &validator{
-			validationID: validationID,
-		}
-
-		if _, err := codecManager.Unmarshal(it.Value(), vdr); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal validator: %w", err)
-		}
-
-		s.addValidatorToMemory(validationID, vdr)
-	}
-
-	if err := it.Error(); err != nil {
-		return nil, fmt.Errorf("failed to iterate: %w", err)
-	}
-
-	return s, nil
-}
+func newState(db database.Database) (*state, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (s *state) GetUptime(nodeID ids.NodeID) (time.Duration, time.Time, error) {
-	v, ok := s.getValidatorByNodeID(nodeID)
-	if !ok {
-		return 0, time.Time{}, database.ErrNotFound
-	}
-
-	return v.UpDuration, time.Unix(int64(v.LastUpdated), 0), nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), *new(time.Time), nil
 }
 
 func (s *state) SetUptime(
@@ -108,129 +70,56 @@ func (s *state) SetUptime(
 	upDuration time.Duration,
 	lastUpdated time.Time,
 ) error {
-	v, ok := s.getValidatorByNodeID(nodeID)
-	if !ok {
-		return database.ErrNotFound
-	}
-
-	v.UpDuration = upDuration
-	v.LastUpdated = uint64(lastUpdated.Unix())
-
-	s.updatedValidators.Add(v.validationID)
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (s *state) GetStartTime(nodeID ids.NodeID) (time.Time, error) {
-	v, ok := s.getValidatorByNodeID(nodeID)
-	if !ok {
-		return time.Time{}, database.ErrNotFound
-	}
-
-	return time.Unix(int64(v.LastUpdated), 0), nil
+	_ = "STUB: not implemented"
+	return *new(time.Time), nil
 }
 
 // addNewValidator adds a new validator to the state and marks it for
 // persistence to the database. This should be used when adding validators
 // during runtime operations.
-func (s *state) addNewValidator(vdr *validator) {
-	s.addValidatorToMemory(vdr.validationID, vdr)
-	s.updatedValidators.Add(vdr.validationID)
-}
+func (s *state) addNewValidator(vdr *validator) { _ = "STUB: not implemented"; return }
 
 // updateValidator sets the isActive state of the validator with the given
 // validationID -- this function assumes that a validator with the given
 // validationID exists.
 func (s *state) updateValidator(validationID ids.ID, isActive bool) bool {
-	v := s.validators[validationID]
-
-	if v.IsActive == isActive {
-		return false
-	}
-
-	v.IsActive = isActive
-	s.updatedValidators.Add(validationID)
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 // deleteValidator deletes the validator with the given validationID -- this
 // function assumes that a validator with the given validationID exists.
-func (s *state) deleteValidator(validationID ids.ID) {
-	v := s.validators[validationID]
+func (s *state) deleteValidator(validationID ids.ID) { _ = "STUB: not implemented"; return }
 
-	delete(s.validators, v.validationID)
-	delete(s.nodeIDsToValidationIDs, v.NodeID)
+func (s *state) writeModifications() error { _ = "STUB: not implemented"; return nil }
 
-	s.deletedValidators.Add(v.validationID)
-}
-
-func (s *state) writeModifications() error {
-	batch := s.db.NewBatch()
-
-	for validationID := range s.updatedValidators {
-		validatorBytes, err := codecManager.Marshal(
-			codecVersion,
-			s.validators[validationID],
-		)
-		if err != nil {
-			return fmt.Errorf("failed to marshal validator: %w", err)
-		}
-
-		if err := batch.Put(validationID[:], validatorBytes); err != nil {
-			return fmt.Errorf("failed to put validator: %w", err)
-		}
-	}
-
-	for validationID := range s.deletedValidators {
-		if err := batch.Delete(validationID[:]); err != nil {
-			return fmt.Errorf("failed to delete validator: %w", err)
-		}
-	}
-
-	if err := batch.Write(); err != nil {
-		return fmt.Errorf("failed to write batch: %w", err)
-	}
-
-	// We have written all pending updates
-	clear(s.updatedValidators)
-	clear(s.deletedValidators)
-
-	return nil
-}
+// We have written all pending updates
 
 // addValidatorToMemory adds a validator to the in-memory data structures only.
 // This is used during initialization when loading from the database and does not
 // mark the validator for persistence.
 func (s *state) addValidatorToMemory(validationID ids.ID, validator *validator) {
-	s.validators[validationID] = validator
-	s.nodeIDsToValidationIDs[validator.NodeID] = validationID
+	_ = "STUB: not implemented"
+	return
 }
 
 func (s *state) getValidatorByNodeID(nodeID ids.NodeID) (*validator, bool) {
-	validationID, ok := s.nodeIDsToValidationIDs[nodeID]
-	if !ok {
-		return nil, false
-	}
-
-	// we are guaranteed to have this validator
-	v := s.validators[validationID]
-	return v, true
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
-func (s *state) hasValidationID(validationID ids.ID) bool {
-	_, ok := s.validators[validationID]
-	return ok
-}
+// we are guaranteed to have this validator
+
+func (s *state) hasValidationID(validationID ids.ID) bool { _ = "STUB: not implemented"; return false }
 
 func (s *state) getNodeID(validationID ids.ID) (ids.NodeID, bool) {
-	v, ok := s.validators[validationID]
-	if !ok {
-		return ids.NodeID{}, false
-	}
-
-	return v.NodeID, true
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), false
 }
 
-func (s *state) getNodeIDs() []ids.NodeID {
-	return maps.Keys(s.nodeIDsToValidationIDs)
-}
+func (s *state) getNodeIDs() []ids.NodeID { _ = "STUB: not implemented"; return nil }

@@ -4,8 +4,6 @@
 package rpc
 
 import (
-	"strconv"
-
 	"github.com/ava-labs/libevm/common/hexutil"
 
 	"github.com/ava-labs/avalanchego/network/p2p"
@@ -17,26 +15,16 @@ type netAPI struct {
 	chainID string
 }
 
-func newNetAPI(peers *p2p.Peers, chainID uint64) *netAPI {
-	return &netAPI{
-		peers:   peers,
-		chainID: strconv.FormatUint(chainID, 10),
-	}
-}
+func newNetAPI(peers *p2p.Peers, chainID uint64) *netAPI { _ = "STUB: not implemented"; return nil }
 
 func (*netAPI) Listening() bool {
-	return true // The node is always listening for p2p connections.
+	_ = "STUB: not implemented"
+	// The node is always listening for p2p connections.
+	return false
 }
 
-func (s *netAPI) PeerCount() hexutil.Uint {
-	c := s.peers.Len()
-	if c <= 0 {
-		return 0
-	}
-	// Peers includes ourself, so we subtract one.
-	return hexutil.Uint(c) - 1
-}
+func (s *netAPI) PeerCount() hexutil.Uint { _ = "STUB: not implemented"; return *new(hexutil.Uint) }
 
-func (s *netAPI) Version() string {
-	return s.chainID
-}
+// Peers includes ourself, so we subtract one.
+
+func (s *netAPI) Version() string { _ = "STUB: not implemented"; return "" }

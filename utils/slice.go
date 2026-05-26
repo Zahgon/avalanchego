@@ -10,9 +10,4 @@ package utils
 // when the order of the slice is not important.
 //
 // If [i] is out of bounds, this function will panic.
-func DeleteIndex[S ~[]E, E any](s S, i int) S {
-	newSize := len(s) - 1
-	s[i] = s[newSize]
-	s[newSize] = Zero[E]()
-	return s[:newSize]
-}
+func DeleteIndex[S ~[]E, E any](s S, i int) S { _ = "STUB: not implemented"; return *new(S) }

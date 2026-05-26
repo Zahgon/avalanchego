@@ -5,8 +5,6 @@ package metrics
 
 import (
 	"errors"
-	"fmt"
-	"slices"
 
 	"github.com/prometheus/client_golang/prometheus"
 
@@ -22,9 +20,8 @@ var (
 // NewLabelGatherer returns a new MultiGatherer that merges metrics by adding a
 // new label.
 func NewLabelGatherer(labelName string) MultiGatherer {
-	return &labelGatherer{
-		labelName: labelName,
-	}
+	_ = "STUB: not implemented"
+	return *new(MultiGatherer)
 }
 
 type labelGatherer struct {
@@ -34,25 +31,7 @@ type labelGatherer struct {
 }
 
 func (g *labelGatherer) Register(labelValue string, gatherer prometheus.Gatherer) error {
-	g.lock.Lock()
-	defer g.lock.Unlock()
-
-	if slices.Contains(g.names, labelValue) {
-		return fmt.Errorf("%w: for %q with label %q",
-			errDuplicateGatherer,
-			g.labelName,
-			labelValue,
-		)
-	}
-
-	g.register(
-		labelValue,
-		&labeledGatherer{
-			labelName:  g.labelName,
-			labelValue: labelValue,
-			gatherer:   gatherer,
-		},
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -63,16 +42,8 @@ type labeledGatherer struct {
 }
 
 func (g *labeledGatherer) Gather() ([]*dto.MetricFamily, error) {
+	_ = "STUB: not implemented"
 	// Gather returns partially filled metrics in the case of an error. So, it
 	// is expected to still return the metrics in the case an error is returned.
-	metricFamilies, err := g.gatherer.Gather()
-	for _, metricFamily := range metricFamilies {
-		for _, metric := range metricFamily.Metric {
-			metric.Label = append(metric.Label, &dto.LabelPair{
-				Name:  &g.labelName,
-				Value: &g.labelValue,
-			})
-		}
-	}
-	return metricFamilies, err
+	return nil, nil
 }

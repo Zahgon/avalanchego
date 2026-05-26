@@ -6,12 +6,8 @@ package p2p
 import (
 	"context"
 	"errors"
-	"fmt"
-
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/message"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
@@ -48,13 +44,8 @@ func (c *Client) AppRequestAny(
 	appRequestBytes []byte,
 	onResponse AppResponseCallback,
 ) error {
-	sampled := c.nodeSampler.Sample(ctx, 1)
-	if len(sampled) != 1 {
-		return ErrNoPeers
-	}
-
-	nodeIDs := set.Of(sampled...)
-	return c.AppRequest(ctx, nodeIDs, appRequestBytes, onResponse)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest issues an arbitrary request to a node.
@@ -65,50 +56,13 @@ func (c *Client) AppRequest(
 	appRequestBytes []byte,
 	onResponse AppResponseCallback,
 ) error {
+	_ = "STUB: not implemented"
 	// Cancellation is removed from this context to avoid erroring unexpectedly.
 	// SendAppRequest should be non-blocking and any error other than context
 	// cancellation is unexpected.
 	//
 	// This guarantees that the router should never receive an unexpected
 	// AppResponse.
-	ctxWithoutCancel := context.WithoutCancel(ctx)
-
-	c.router.lock.Lock()
-	defer c.router.lock.Unlock()
-
-	appRequestBytes = PrefixMessage(c.handlerPrefix, appRequestBytes)
-	for nodeID := range nodeIDs {
-		requestID := c.router.requestID
-		if _, ok := c.router.pendingAppRequests[requestID]; ok {
-			return fmt.Errorf(
-				"failed to issue request with request id %d: %w",
-				requestID,
-				ErrRequestPending,
-			)
-		}
-
-		if err := c.sender.SendAppRequest(
-			ctxWithoutCancel,
-			set.Of(nodeID),
-			requestID,
-			appRequestBytes,
-		); err != nil {
-			c.router.log.Error("unexpected error when sending message",
-				zap.Stringer("op", message.AppRequestOp),
-				zap.Stringer("nodeID", nodeID),
-				zap.Uint32("requestID", requestID),
-				zap.Error(err),
-			)
-			return err
-		}
-
-		c.router.pendingAppRequests[requestID] = pendingAppRequest{
-			handlerID: c.handlerIDStr,
-			callback:  onResponse,
-		}
-		c.router.requestID += 2
-	}
-
 	return nil
 }
 
@@ -118,16 +72,11 @@ func (c *Client) AppGossip(
 	config common.SendConfig,
 	appGossipBytes []byte,
 ) error {
+	_ = "STUB: not implemented"
 	// Cancellation is removed from this context to avoid erroring unexpectedly.
 	// SendAppGossip should be non-blocking and any error other than context
 	// cancellation is unexpected.
-	ctxWithoutCancel := context.WithoutCancel(ctx)
-
-	return c.sender.SendAppGossip(
-		ctxWithoutCancel,
-		config,
-		PrefixMessage(c.handlerPrefix, appGossipBytes),
-	)
+	return nil
 }
 
 // PrefixMessage prefixes the original message with the protocol identifier.
@@ -135,9 +84,4 @@ func (c *Client) AppGossip(
 // Only gossip and request messages need to be prefixed.
 // Response messages don't need to be prefixed because request ids are tracked
 // which map to the expected response handler.
-func PrefixMessage(prefix, msg []byte) []byte {
-	messageBytes := make([]byte, len(prefix)+len(msg))
-	copy(messageBytes, prefix)
-	copy(messageBytes[len(prefix):], msg)
-	return messageBytes
-}
+func PrefixMessage(prefix, msg []byte) []byte { _ = "STUB: not implemented"; return nil }

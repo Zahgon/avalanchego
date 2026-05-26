@@ -4,23 +4,16 @@
 package leveldb
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"math"
-	"slices"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/errors"
-	"github.com/syndtr/goleveldb/leveldb/filter"
 	"github.com/syndtr/goleveldb/leveldb/iterator"
 	"github.com/syndtr/goleveldb/leveldb/opt"
-	"github.com/syndtr/goleveldb/leveldb/util"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/utils"
@@ -187,154 +180,61 @@ type config struct {
 
 // New returns a wrapped LevelDB object.
 func New(file string, configBytes []byte, log logging.Logger, reg prometheus.Registerer) (database.Database, error) {
-	parsedConfig := config{
-		BlockCacheCapacity:     DefaultBlockCacheSize,
-		DisableSeeksCompaction: true,
-		OpenFilesCacheCapacity: DefaultHandleCap,
-		WriteBuffer:            DefaultWriteBufferSize / 2,
-		FilterBitsPerKey:       DefaultBitsPerKey,
-		MaxManifestFileSize:    DefaultMaxManifestFileSize,
-		MetricUpdateFrequency:  DefaultMetricUpdateFrequency,
-	}
-	if len(configBytes) > 0 {
-		if err := json.Unmarshal(configBytes, &parsedConfig); err != nil {
-			return nil, fmt.Errorf("%w: %w", ErrInvalidConfig, err)
-		}
-	}
-
-	log.Info("creating leveldb",
-		zap.Reflect("config", parsedConfig),
-	)
-
-	// Open the db and recover any potential corruptions
-	db, err := leveldb.OpenFile(file, &opt.Options{
-		BlockCacheCapacity:            parsedConfig.BlockCacheCapacity,
-		BlockSize:                     parsedConfig.BlockSize,
-		CompactionExpandLimitFactor:   parsedConfig.CompactionExpandLimitFactor,
-		CompactionGPOverlapsFactor:    parsedConfig.CompactionGPOverlapsFactor,
-		CompactionL0Trigger:           parsedConfig.CompactionL0Trigger,
-		CompactionSourceLimitFactor:   parsedConfig.CompactionSourceLimitFactor,
-		CompactionTableSize:           parsedConfig.CompactionTableSize,
-		CompactionTableSizeMultiplier: parsedConfig.CompactionTableSizeMultiplier,
-		CompactionTotalSize:           parsedConfig.CompactionTotalSize,
-		CompactionTotalSizeMultiplier: parsedConfig.CompactionTotalSizeMultiplier,
-		DisableSeeksCompaction:        parsedConfig.DisableSeeksCompaction,
-		OpenFilesCacheCapacity:        parsedConfig.OpenFilesCacheCapacity,
-		WriteBuffer:                   parsedConfig.WriteBuffer,
-		Filter:                        filter.NewBloomFilter(parsedConfig.FilterBitsPerKey),
-		MaxManifestFileSize:           parsedConfig.MaxManifestFileSize,
-	})
-	if _, corrupted := err.(*errors.ErrCorrupted); corrupted {
-		db, err = leveldb.RecoverFile(file, nil)
-	}
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrCouldNotOpen, err)
-	}
-
-	wrappedDB := &Database{
-		DB:      db,
-		closeCh: make(chan struct{}),
-	}
-	if parsedConfig.MetricUpdateFrequency > 0 {
-		metrics, err := newMetrics(reg)
-		if err != nil {
-			// Drop any close error to report the original error
-			_ = db.Close()
-			return nil, err
-		}
-		wrappedDB.metrics = metrics
-		wrappedDB.closeWg.Add(1)
-		go func() {
-			t := time.NewTicker(parsedConfig.MetricUpdateFrequency)
-			defer func() {
-				t.Stop()
-				wrappedDB.closeWg.Done()
-			}()
-
-			for {
-				if err := wrappedDB.updateMetrics(); err != nil {
-					log.Warn("failed to update leveldb metrics",
-						zap.Error(err),
-					)
-				}
-
-				select {
-				case <-t.C:
-				case <-wrappedDB.closeCh:
-					return
-				}
-			}
-		}()
-	}
-	return wrappedDB, nil
+	_ = "STUB: not implemented"
+	return *new(database.Database), nil
 }
+
+// Open the db and recover any potential corruptions
+
+// Drop any close error to report the original error
 
 // Has returns if the key is set in the database
-func (db *Database) Has(key []byte) (bool, error) {
-	has, err := db.DB.Has(key, nil)
-	return has, updateError(err)
-}
+func (db *Database) Has(key []byte) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
 // Get returns the value the key maps to in the database
-func (db *Database) Get(key []byte) ([]byte, error) {
-	value, err := db.DB.Get(key, nil)
-	return value, updateError(err)
-}
+func (db *Database) Get(key []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Put sets the value of the provided key to the provided value
-func (db *Database) Put(key []byte, value []byte) error {
-	return updateError(db.DB.Put(key, value, nil))
-}
+func (db *Database) Put(key []byte, value []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Delete removes the key from the database
-func (db *Database) Delete(key []byte) error {
-	return updateError(db.DB.Delete(key, nil))
-}
+func (db *Database) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // NewBatch creates a write/delete-only buffer that is atomically committed to
 // the database when write is called
 func (db *Database) NewBatch() database.Batch {
-	return &batch{db: db}
+	_ = "STUB: not implemented"
+	return *
+
+	// NewIterator creates a lexicographically ordered iterator over the database
+	new(database.Batch)
 }
 
-// NewIterator creates a lexicographically ordered iterator over the database
 func (db *Database) NewIterator() database.Iterator {
-	return &iter{
-		db:       db,
-		Iterator: db.DB.NewIterator(new(util.Range), nil),
-	}
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // NewIteratorWithStart creates a lexicographically ordered iterator over the
 // database starting at the provided key
 func (db *Database) NewIteratorWithStart(start []byte) database.Iterator {
-	return &iter{
-		db:       db,
-		Iterator: db.DB.NewIterator(&util.Range{Start: start}, nil),
-	}
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // NewIteratorWithPrefix creates a lexicographically ordered iterator over the
 // database ignoring keys that do not start with the provided prefix
 func (db *Database) NewIteratorWithPrefix(prefix []byte) database.Iterator {
-	return &iter{
-		db:       db,
-		Iterator: db.DB.NewIterator(util.BytesPrefix(prefix), nil),
-	}
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // NewIteratorWithStartAndPrefix creates a lexicographically ordered iterator
 // over the database starting at start and ignoring keys that do not start with
 // the provided prefix
 func (db *Database) NewIteratorWithStartAndPrefix(start, prefix []byte) database.Iterator {
-	iterRange := util.BytesPrefix(prefix)
-	if bytes.Compare(start, prefix) == 1 {
-		iterRange.Start = start
-	}
-	return &iter{
-		db:       db,
-		Iterator: db.DB.NewIterator(iterRange, nil),
-	}
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // This comment is basically copy pasted from the underlying levelDB library:
@@ -349,22 +249,14 @@ func (db *Database) NewIteratorWithStartAndPrefix(start, prefix []byte) database
 // And a nil limit is treated as a key after all keys in the DB.
 // Therefore if both are nil then it will compact entire DB.
 func (db *Database) Compact(start []byte, limit []byte) error {
-	return updateError(db.DB.CompactRange(util.Range{Start: start, Limit: limit}))
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (db *Database) Close() error {
-	db.closed.Set(true)
-	db.closeOnce.Do(func() {
-		close(db.closeCh)
-	})
-	db.closeWg.Wait()
-	return updateError(db.DB.Close())
-}
+func (db *Database) Close() error { _ = "STUB: not implemented"; return nil }
 
 func (db *Database) HealthCheck(context.Context) (interface{}, error) {
-	if db.closed.Get() {
-		return nil, database.ErrClosed
-	}
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
@@ -376,68 +268,43 @@ type batch struct {
 }
 
 // Put the value into the batch for later writing
-func (b *batch) Put(key, value []byte) error {
-	b.Batch.Put(key, value)
-	b.size += len(key) + len(value) + levelDBByteOverhead
-	return nil
-}
+func (b *batch) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Delete the key during writing
-func (b *batch) Delete(key []byte) error {
-	b.Batch.Delete(key)
-	b.size += len(key) + levelDBByteOverhead
-	return nil
-}
+func (b *batch) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Size retrieves the amount of data queued up for writing.
 func (b *batch) Size() int {
-	return b.size
+	_ = "STUB: not implemented"
+
+	// Write flushes any accumulated data to disk.
+	return 0
 }
 
-// Write flushes any accumulated data to disk.
-func (b *batch) Write() error {
-	return updateError(b.db.DB.Write(&b.Batch, nil))
-}
+func (b *batch) Write() error { _ = "STUB: not implemented"; return nil }
 
 // Reset resets the batch for reuse.
-func (b *batch) Reset() {
-	b.Batch.Reset()
-	b.size = 0
-}
+func (b *batch) Reset() { _ = "STUB: not implemented"; return }
 
 // Replay the batch contents.
 func (b *batch) Replay(w database.KeyValueWriterDeleter) error {
-	replay := &replayer{writerDeleter: w}
-	if err := b.Batch.Replay(replay); err != nil {
-		// Never actually returns an error, because Replay just returns nil
-		return err
-	}
-	return replay.err
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// Never actually returns an error, because Replay just returns nil
+
 // Inner returns itself
-func (b *batch) Inner() database.Batch {
-	return b
-}
+func (b *batch) Inner() database.Batch { _ = "STUB: not implemented"; return *new(database.Batch) }
 
 type replayer struct {
 	writerDeleter database.KeyValueWriterDeleter
 	err           error
 }
 
-func (r *replayer) Put(key, value []byte) {
-	if r.err != nil {
-		return
-	}
-	r.err = r.writerDeleter.Put(key, value)
-}
+func (r *replayer) Put(key, value []byte) { _ = "STUB: not implemented"; return }
 
-func (r *replayer) Delete(key []byte) {
-	if r.err != nil {
-		return
-	}
-	r.err = r.writerDeleter.Delete(key)
-}
+func (r *replayer) Delete(key []byte) { _ = "STUB: not implemented"; return }
 
 type iter struct {
 	db *Database
@@ -448,47 +315,15 @@ type iter struct {
 }
 
 func (it *iter) Next() bool {
+	_ = "STUB: not implemented"
 	// Short-circuit and set an error if the underlying database has been closed.
-	if it.db.closed.Get() {
-		it.key = nil
-		it.val = nil
-		it.err = database.ErrClosed
-		return false
-	}
-
-	hasNext := it.Iterator.Next()
-	if hasNext {
-		it.key = slices.Clone(it.Iterator.Key())
-		it.val = slices.Clone(it.Iterator.Value())
-	} else {
-		it.key = nil
-		it.val = nil
-	}
-	return hasNext
+	return false
 }
 
-func (it *iter) Error() error {
-	if it.err != nil {
-		return it.err
-	}
-	return updateError(it.Iterator.Error())
-}
+func (it *iter) Error() error { _ = "STUB: not implemented"; return nil }
 
-func (it *iter) Key() []byte {
-	return it.key
-}
+func (it *iter) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-func (it *iter) Value() []byte {
-	return it.val
-}
+func (it *iter) Value() []byte { _ = "STUB: not implemented"; return nil }
 
-func updateError(err error) error {
-	switch err {
-	case leveldb.ErrClosed:
-		return database.ErrClosed
-	case leveldb.ErrNotFound:
-		return database.ErrNotFound
-	default:
-		return err
-	}
-}
+func updateError(err error) error { _ = "STUB: not implemented"; return nil }

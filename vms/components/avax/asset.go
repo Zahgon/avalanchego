@@ -22,17 +22,6 @@ type Asset struct {
 }
 
 // AssetID returns the ID of the contained asset
-func (asset *Asset) AssetID() ids.ID {
-	return asset.ID
-}
+func (asset *Asset) AssetID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (asset *Asset) Verify() error {
-	switch {
-	case asset == nil:
-		return errNilAssetID
-	case asset.ID == ids.Empty:
-		return errEmptyAssetID
-	default:
-		return nil
-	}
-}
+func (asset *Asset) Verify() error { _ = "STUB: not implemented"; return nil }

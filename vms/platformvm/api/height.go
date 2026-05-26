@@ -19,37 +19,17 @@ const (
 
 var errInvalidHeight = errors.New("invalid height")
 
-func (h Height) MarshalJSON() ([]byte, error) {
-	if h == ProposedHeight {
-		return []byte(ProposedHeightJSON), nil
-	}
-	return json.Uint64(h).MarshalJSON()
-}
+func (h Height) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (h *Height) UnmarshalJSON(b []byte) error {
+	_ = "STUB: not implemented"
 	// First check for known string values
-	switch string(b) {
-	case json.Null:
-		return nil
-	case ProposedHeightJSON:
-		*h = ProposedHeight
-		return nil
-	}
-
-	// Otherwise, unmarshal as a uint64
-	if err := (*json.Uint64)(h).UnmarshalJSON(b); err != nil {
-		return errInvalidHeight
-	}
-
-	// MaxUint64 is reserved for proposed height, so return an error if supplied
-	// numerically.
-	if uint64(*h) == ProposedHeight {
-		*h = 0
-		return errInvalidHeight
-	}
 	return nil
 }
 
-func (h Height) IsProposed() bool {
-	return h == ProposedHeight
-}
+// Otherwise, unmarshal as a uint64
+
+// MaxUint64 is reserved for proposed height, so return an error if supplied
+// numerically.
+
+func (h Height) IsProposed() bool { _ = "STUB: not implemented"; return false }

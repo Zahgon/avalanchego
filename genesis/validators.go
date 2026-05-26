@@ -10,7 +10,6 @@ import (
 	_ "embed"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
 
@@ -28,7 +27,4 @@ func init() {
 }
 
 // GetValidators returns recent validators for the requested network.
-func GetValidators(networkID uint32) set.Set[ids.NodeID] {
-	networkName := constants.NetworkIDToNetworkName[networkID]
-	return validatorsPerNetwork[networkName]
-}
+func GetValidators(networkID uint32) set.Set[ids.NodeID] { _ = "STUB: not implemented"; return nil }

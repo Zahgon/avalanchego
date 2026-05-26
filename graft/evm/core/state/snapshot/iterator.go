@@ -28,12 +28,7 @@
 package snapshot
 
 import (
-	"bytes"
-	"fmt"
-	"sort"
-
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	ethsnapshot "github.com/ava-labs/libevm/core/state/snapshot"
 	"github.com/ava-labs/libevm/ethdb"
 )
@@ -67,83 +62,63 @@ type diffAccountIterator struct {
 
 // AccountIterator creates an account iterator over a single diff layer.
 func (dl *diffLayer) AccountIterator(seek common.Hash) AccountIterator {
+	_ = "STUB: not implemented"
 	// Seek out the requested starting account
-	hashes := dl.AccountList()
-	index := sort.Search(len(hashes), func(i int) bool {
-		return bytes.Compare(seek[:], hashes[i][:]) <= 0
-	})
-	// Assemble and returned the already seeked iterator
-	return &diffAccountIterator{
-		layer: dl,
-		keys:  hashes[index:],
-	}
+	return *new(AccountIterator)
 }
+
+// Assemble and returned the already seeked iterator
 
 // Next steps the iterator forward one element, returning false if exhausted.
 func (it *diffAccountIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator was already stale, consider it a programmer error. Although
 	// we could just return false here, triggering this path would probably mean
 	// somebody forgot to check for Error, so lets blow up instead of undefined
 	// behavior that's hard to debug.
-	if it.fail != nil {
-		panic(fmt.Sprintf("called Next of failed iterator: %v", it.fail))
-	}
-	// Stop iterating if all keys were exhausted
-	if len(it.keys) == 0 {
-		return false
-	}
-	if it.layer.Stale() {
-		it.fail, it.keys = ErrSnapshotStale, nil
-		return false
-	}
-	// Iterator seems to be still alive, retrieve and cache the live hash
-	it.curHash = it.keys[0]
-	// key cached, shift the iterator and notify the user of success
-	it.keys = it.keys[1:]
-	return true
+	return false
 }
+
+// Stop iterating if all keys were exhausted
+
+// Iterator seems to be still alive, retrieve and cache the live hash
+
+// key cached, shift the iterator and notify the user of success
 
 // Error returns any failure that occurred during iteration, which might have
 // caused a premature iteration exit (e.g. snapshot stack becoming stale).
 func (it *diffAccountIterator) Error() error {
-	return it.fail
+	_ = "STUB: not implemented"
+
+	// Hash returns the hash of the account the iterator is currently at.
+	return nil
 }
 
-// Hash returns the hash of the account the iterator is currently at.
 func (it *diffAccountIterator) Hash() common.Hash {
-	return it.curHash
+	_ = "STUB: not implemented"
+
+	// Account returns the RLP encoded slim account the iterator is currently at.
+	// This method may _fail_, if the underlying layer has been flattened between
+	// the call to Next and Account. That type of error will set it.Err.
+	// This method assumes that flattening does not delete elements from
+	// the accountdata mapping (writing nil into it is fine though), and will panic
+	// if elements have been deleted.
+	//
+	// Note the returned account is not a copy, please don't modify it.
+	return *new(common.Hash)
 }
 
-// Account returns the RLP encoded slim account the iterator is currently at.
-// This method may _fail_, if the underlying layer has been flattened between
-// the call to Next and Account. That type of error will set it.Err.
-// This method assumes that flattening does not delete elements from
-// the accountdata mapping (writing nil into it is fine though), and will panic
-// if elements have been deleted.
-//
-// Note the returned account is not a copy, please don't modify it.
-func (it *diffAccountIterator) Account() []byte {
-	it.layer.lock.RLock()
-	blob, ok := it.layer.accountData[it.curHash]
-	if !ok {
-		if _, ok := it.layer.destructSet[it.curHash]; ok {
-			it.layer.lock.RUnlock()
-			return nil
-		}
-		panic(fmt.Sprintf("iterator referenced non-existent account: %x", it.curHash))
-	}
-	it.layer.lock.RUnlock()
-	if it.layer.Stale() {
-		it.fail, it.keys = ErrSnapshotStale, nil
-	}
-	return blob
-}
+func (it *diffAccountIterator) Account() []byte { _ = "STUB: not implemented"; return nil }
 
 // Release is a noop for diff account iterators as there are no held resources.
-func (it *diffAccountIterator) Release() {}
+func (it *diffAccountIterator) Release() {
+	_ = "STUB: not implemented"
 
-// diskAccountIterator is an account iterator that steps over the live accounts
-// contained within a disk layer.
+	// diskAccountIterator is an account iterator that steps over the live accounts
+	// contained within a disk layer.
+	return
+}
+
 type diskAccountIterator struct {
 	layer *diskLayer
 	it    ethdb.Iterator
@@ -151,62 +126,44 @@ type diskAccountIterator struct {
 
 // AccountIterator creates an account iterator over a disk layer.
 func (dl *diskLayer) AccountIterator(seek common.Hash) AccountIterator {
-	pos := common.TrimRightZeroes(seek[:])
-	return &diskAccountIterator{
-		layer: dl,
-		it:    dl.diskdb.NewIterator(rawdb.SnapshotAccountPrefix, pos),
-	}
+	_ = "STUB: not implemented"
+	return *new(AccountIterator)
 }
 
 // Next steps the iterator forward one element, returning false if exhausted.
 func (it *diskAccountIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator was already exhausted, don't bother
-	if it.it == nil {
-		return false
-	}
-	// Try to advance the iterator and release it if we reached the end
-	for {
-		if !it.it.Next() {
-			it.it.Release()
-			it.it = nil
-			return false
-		}
-		if len(it.it.Key()) == len(rawdb.SnapshotAccountPrefix)+common.HashLength {
-			break
-		}
-	}
-	return true
+	return false
 }
+
+// Try to advance the iterator and release it if we reached the end
 
 // Error returns any failure that occurred during iteration, which might have
 // caused a premature iteration exit (e.g. snapshot stack becoming stale).
 //
 // A diff layer is immutable after creation content wise and can always be fully
 // iterated without error, so this method always returns nil.
-func (it *diskAccountIterator) Error() error {
-	if it.it == nil {
-		return nil // Iterator is exhausted and released
-	}
-	return it.it.Error()
-}
+func (it *diskAccountIterator) Error() error { _ = "STUB: not implemented"; return nil }
+
+// Iterator is exhausted and released
 
 // Hash returns the hash of the account the iterator is currently at.
 func (it *diskAccountIterator) Hash() common.Hash {
-	return common.BytesToHash(it.it.Key()) // The prefix will be truncated
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
+// The prefix will be truncated
+
 // Account returns the RLP encoded slim account the iterator is currently at.
-func (it *diskAccountIterator) Account() []byte {
-	return it.it.Value()
-}
+func (it *diskAccountIterator) Account() []byte { _ = "STUB: not implemented"; return nil }
 
 // Release releases the database snapshot held during iteration.
 func (it *diskAccountIterator) Release() {
+	_ = "STUB: not implemented"
 	// The iterator is auto-released on exhaustion, so make sure it's still alive
-	if it.it != nil {
-		it.it.Release()
-		it.it = nil
-	}
+	return
 }
 
 // diffStorageIterator is a storage iterator that steps over the specific storage
@@ -231,87 +188,67 @@ type diffStorageIterator struct {
 // destructed in this layer(maybe recreated too), don't bother deeper layer
 // for storage retrieval.
 func (dl *diffLayer) StorageIterator(account common.Hash, seek common.Hash) (StorageIterator, bool) {
+	_ = "STUB: not implemented"
 	// Create the storage for this account even it's marked
 	// as destructed. The iterator is for the new one which
 	// just has the same address as the deleted one.
-	hashes, destructed := dl.StorageList(account)
-	index := sort.Search(len(hashes), func(i int) bool {
-		return bytes.Compare(seek[:], hashes[i][:]) <= 0
-	})
-	// Assemble and returned the already seeked iterator
-	return &diffStorageIterator{
-		layer:   dl,
-		account: account,
-		keys:    hashes[index:],
-	}, destructed
+	return *new(StorageIterator), false
 }
+
+// Assemble and returned the already seeked iterator
 
 // Next steps the iterator forward one element, returning false if exhausted.
 func (it *diffStorageIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator was already stale, consider it a programmer error. Although
 	// we could just return false here, triggering this path would probably mean
 	// somebody forgot to check for Error, so lets blow up instead of undefined
 	// behavior that's hard to debug.
-	if it.fail != nil {
-		panic(fmt.Sprintf("called Next of failed iterator: %v", it.fail))
-	}
-	// Stop iterating if all keys were exhausted
-	if len(it.keys) == 0 {
-		return false
-	}
-	if it.layer.Stale() {
-		it.fail, it.keys = ErrSnapshotStale, nil
-		return false
-	}
-	// Iterator seems to be still alive, retrieve and cache the live hash
-	it.curHash = it.keys[0]
-	// key cached, shift the iterator and notify the user of success
-	it.keys = it.keys[1:]
-	return true
+	return false
 }
+
+// Stop iterating if all keys were exhausted
+
+// Iterator seems to be still alive, retrieve and cache the live hash
+
+// key cached, shift the iterator and notify the user of success
 
 // Error returns any failure that occurred during iteration, which might have
 // caused a premature iteration exit (e.g. snapshot stack becoming stale).
 func (it *diffStorageIterator) Error() error {
-	return it.fail
+	_ = "STUB: not implemented"
+
+	// Hash returns the hash of the storage slot the iterator is currently at.
+	return nil
 }
 
-// Hash returns the hash of the storage slot the iterator is currently at.
 func (it *diffStorageIterator) Hash() common.Hash {
-	return it.curHash
+	_ = "STUB: not implemented"
+
+	// Slot returns the raw storage slot value the iterator is currently at.
+	// This method may _fail_, if the underlying layer has been flattened between
+	// the call to Next and Value. That type of error will set it.Err.
+	// This method assumes that flattening does not delete elements from
+	// the storage mapping (writing nil into it is fine though), and will panic
+	// if elements have been deleted.
+	//
+	// Note the returned slot is not a copy, please don't modify it.
+	return *new(common.Hash)
 }
 
-// Slot returns the raw storage slot value the iterator is currently at.
-// This method may _fail_, if the underlying layer has been flattened between
-// the call to Next and Value. That type of error will set it.Err.
-// This method assumes that flattening does not delete elements from
-// the storage mapping (writing nil into it is fine though), and will panic
-// if elements have been deleted.
-//
-// Note the returned slot is not a copy, please don't modify it.
-func (it *diffStorageIterator) Slot() []byte {
-	it.layer.lock.RLock()
-	storage, ok := it.layer.storageData[it.account]
-	if !ok {
-		panic(fmt.Sprintf("iterator referenced non-existent account storage: %x", it.account))
-	}
-	// Storage slot might be nil(deleted), but it must exist
-	blob, ok := storage[it.curHash]
-	if !ok {
-		panic(fmt.Sprintf("iterator referenced non-existent storage slot: %x", it.curHash))
-	}
-	it.layer.lock.RUnlock()
-	if it.layer.Stale() {
-		it.fail, it.keys = ErrSnapshotStale, nil
-	}
-	return blob
-}
+func (it *diffStorageIterator) Slot() []byte { _ = "STUB: not implemented"; return nil }
+
+// Storage slot might be nil(deleted), but it must exist
 
 // Release is a noop for diff account iterators as there are no held resources.
-func (it *diffStorageIterator) Release() {}
+func (it *diffStorageIterator) Release() {
+	_ = "STUB: not implemented"
 
-// diskStorageIterator is a storage iterator that steps over the live storage
-// contained within a disk layer.
+	// diskStorageIterator is a storage iterator that steps over the live storage
+	// contained within a disk layer.
+	return
+}
+
 type diskStorageIterator struct {
 	layer   *diskLayer
 	account common.Hash
@@ -323,67 +260,44 @@ type diskStorageIterator struct {
 // layer are deleted already. So the "destructed" flag returned here
 // is always false.
 func (dl *diskLayer) StorageIterator(account common.Hash, seek common.Hash) (StorageIterator, bool) {
-	pos := common.TrimRightZeroes(seek[:])
-
-	// create prefix to be rawdb.SnapshotStoragePrefix + account[:]
-	prefix := make([]byte, len(rawdb.SnapshotStoragePrefix)+common.HashLength)
-	copy(prefix, rawdb.SnapshotStoragePrefix)
-	copy(prefix[len(rawdb.SnapshotStoragePrefix):], account[:])
-
-	return &diskStorageIterator{
-		layer:   dl,
-		account: account,
-		it:      dl.diskdb.NewIterator(prefix, pos),
-	}, false
+	_ = "STUB: not implemented"
+	return *new(StorageIterator), false
 }
+
+// create prefix to be rawdb.SnapshotStoragePrefix + account[:]
 
 // Next steps the iterator forward one element, returning false if exhausted.
 func (it *diskStorageIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator was already exhausted, don't bother
-	if it.it == nil {
-		return false
-	}
-	// Try to advance the iterator and release it if we reached the end
-	for {
-		if !it.it.Next() {
-			it.it.Release()
-			it.it = nil
-			return false
-		}
-		if len(it.it.Key()) == len(rawdb.SnapshotStoragePrefix)+common.HashLength+common.HashLength {
-			break
-		}
-	}
-	return true
+	return false
 }
+
+// Try to advance the iterator and release it if we reached the end
 
 // Error returns any failure that occurred during iteration, which might have
 // caused a premature iteration exit (e.g. snapshot stack becoming stale).
 //
 // A diff layer is immutable after creation content wise and can always be fully
 // iterated without error, so this method always returns nil.
-func (it *diskStorageIterator) Error() error {
-	if it.it == nil {
-		return nil // Iterator is exhausted and released
-	}
-	return it.it.Error()
-}
+func (it *diskStorageIterator) Error() error { _ = "STUB: not implemented"; return nil }
+
+// Iterator is exhausted and released
 
 // Hash returns the hash of the storage slot the iterator is currently at.
 func (it *diskStorageIterator) Hash() common.Hash {
-	return common.BytesToHash(it.it.Key()) // The prefix will be truncated
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
+// The prefix will be truncated
+
 // Slot returns the raw storage slot content the iterator is currently at.
-func (it *diskStorageIterator) Slot() []byte {
-	return it.it.Value()
-}
+func (it *diskStorageIterator) Slot() []byte { _ = "STUB: not implemented"; return nil }
 
 // Release releases the database snapshot held during iteration.
 func (it *diskStorageIterator) Release() {
+	_ = "STUB: not implemented"
 	// The iterator is auto-released on exhaustion, so make sure it's still alive
-	if it.it != nil {
-		it.it.Release()
-		it.it = nil
-	}
+	return
 }

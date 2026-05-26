@@ -72,167 +72,95 @@ type Options struct {
 	confirmationHandler func(ConfirmationReceipt)
 }
 
-func NewOptions(ops []Option) *Options {
-	o := &Options{}
-	o.applyOptions(ops)
-	return o
-}
+func NewOptions(ops []Option) *Options { _ = "STUB: not implemented"; return nil }
 
-func UnionOptions(first, second []Option) []Option {
-	firstLen := len(first)
-	newOptions := make([]Option, firstLen+len(second))
-	copy(newOptions, first)
-	copy(newOptions[firstLen:], second)
-	return newOptions
-}
+func UnionOptions(first, second []Option) []Option { _ = "STUB: not implemented"; return nil }
 
-func (o *Options) applyOptions(ops []Option) {
-	for _, op := range ops {
-		op(o)
-	}
-}
+func (o *Options) applyOptions(ops []Option) { _ = "STUB: not implemented"; return }
 
 func (o *Options) Context() context.Context {
-	if o.ctx != nil {
-		return o.ctx
-	}
-	return context.Background()
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 func (o *Options) Addresses(defaultAddresses set.Set[ids.ShortID]) set.Set[ids.ShortID] {
-	if o.customAddressesSet {
-		return o.customAddresses
-	}
-	return defaultAddresses
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (o *Options) EthAddresses(defaultAddresses set.Set[ethcommon.Address]) set.Set[ethcommon.Address] {
-	if o.customEthAddressesSet {
-		return o.customEthAddresses
-	}
-	return defaultAddresses
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (o *Options) BaseFee(defaultBaseFee *big.Int) *big.Int {
-	if o.baseFee != nil {
-		return o.baseFee
-	}
-	return defaultBaseFee
-}
+func (o *Options) BaseFee(defaultBaseFee *big.Int) *big.Int { _ = "STUB: not implemented"; return nil }
 
-func (o *Options) MinIssuanceTime() uint64 {
-	if o.minIssuanceTimeSet {
-		return o.minIssuanceTime
-	}
-	return uint64(time.Now().Unix())
-}
+func (o *Options) MinIssuanceTime() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (o *Options) AllowStakeableLocked() bool {
-	return o.allowStakeableLocked
-}
+func (o *Options) AllowStakeableLocked() bool { _ = "STUB: not implemented"; return false }
 
 func (o *Options) ChangeOwner(defaultOwner *secp256k1fx.OutputOwners) *secp256k1fx.OutputOwners {
-	if o.changeOwner != nil {
-		return o.changeOwner
-	}
-	return defaultOwner
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (o *Options) Memo() []byte {
-	return o.memo
-}
+func (o *Options) Memo() []byte { _ = "STUB: not implemented"; return nil }
 
-func (o *Options) AssumeDecided() bool {
-	return o.assumeDecided
-}
+func (o *Options) AssumeDecided() bool { _ = "STUB: not implemented"; return false }
 
 func (o *Options) PollFrequency() time.Duration {
-	if o.pollFrequencySet {
-		return o.pollFrequency
-	}
-	return defaultPollFrequency
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-func (o *Options) IssuanceHandler() func(IssuanceReceipt) {
-	return o.issuanceHandler
-}
+func (o *Options) IssuanceHandler() func(IssuanceReceipt) { _ = "STUB: not implemented"; return nil }
 
 func (o *Options) ConfirmationHandler() func(ConfirmationReceipt) {
-	return o.confirmationHandler
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func WithContext(ctx context.Context) Option {
-	return func(o *Options) {
-		o.ctx = ctx
-	}
-}
+func WithContext(ctx context.Context) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithCustomAddresses(addrs set.Set[ids.ShortID]) Option {
-	return func(o *Options) {
-		o.customAddressesSet = true
-		o.customAddresses = addrs
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 func WithCustomEthAddresses(addrs set.Set[ethcommon.Address]) Option {
-	return func(o *Options) {
-		o.customEthAddressesSet = true
-		o.customEthAddresses = addrs
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func WithBaseFee(baseFee *big.Int) Option {
-	return func(o *Options) {
-		o.baseFee = baseFee
-	}
-}
+func WithBaseFee(baseFee *big.Int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithMinIssuanceTime(minIssuanceTime uint64) Option {
-	return func(o *Options) {
-		o.minIssuanceTimeSet = true
-		o.minIssuanceTime = minIssuanceTime
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func WithStakeableLocked() Option {
-	return func(o *Options) {
-		o.allowStakeableLocked = true
-	}
-}
+func WithStakeableLocked() Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithChangeOwner(changeOwner *secp256k1fx.OutputOwners) Option {
-	return func(o *Options) {
-		o.changeOwner = changeOwner
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
-func WithMemo(memo []byte) Option {
-	return func(o *Options) {
-		o.memo = memo
-	}
-}
+func WithMemo(memo []byte) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func WithAssumeDecided() Option {
-	return func(o *Options) {
-		o.assumeDecided = true
-	}
-}
+func WithAssumeDecided() Option { _ = "STUB: not implemented"; return *new(Option) }
 
 func WithPollFrequency(pollFrequency time.Duration) Option {
-	return func(o *Options) {
-		o.pollFrequencySet = true
-		o.pollFrequency = pollFrequency
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 func WithIssuanceHandler(f func(IssuanceReceipt)) Option {
-	return func(o *Options) {
-		o.issuanceHandler = f
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }
 
 func WithConfirmationHandler(f func(ConfirmationReceipt)) Option {
-	return func(o *Options) {
-		o.confirmationHandler = f
-	}
+	_ = "STUB: not implemented"
+	return *new(Option)
 }

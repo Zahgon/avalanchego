@@ -4,8 +4,6 @@
 package bootstrap
 
 import (
-	"errors"
-
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -14,20 +12,6 @@ type metrics struct {
 }
 
 func newMetrics(registerer prometheus.Registerer) (*metrics, error) {
-	m := &metrics{
-		numFetched: prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "bs_fetched",
-			Help: "Number of blocks fetched during bootstrapping",
-		}),
-		numAccepted: prometheus.NewCounter(prometheus.CounterOpts{
-			Name: "bs_accepted",
-			Help: "Number of blocks accepted during bootstrapping",
-		}),
-	}
-
-	err := errors.Join(
-		registerer.Register(m.numFetched),
-		registerer.Register(m.numAccepted),
-	)
-	return m, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }

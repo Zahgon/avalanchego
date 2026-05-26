@@ -23,19 +23,4 @@ var (
 
 // VMName returns the name of the VM with the provided ID. If a human readable
 // name isn't known, then the formatted ID is returned.
-func VMName(vmID ids.ID) string {
-	switch vmID {
-	case PlatformVMID:
-		return PlatformVMName
-	case AVMID:
-		return AVMName
-	case EVMID:
-		return EVMName
-	case SubnetEVMID:
-		return SubnetEVMName
-	case XSVMID:
-		return XSVMName
-	default:
-		return vmID.String()
-	}
-}
+func VMName(vmID ids.ID) string { _ = "STUB: not implemented"; return "" }

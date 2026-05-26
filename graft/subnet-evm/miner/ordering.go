@@ -28,7 +28,6 @@
 package miner
 
 import (
-	"container/heap"
 	"math/big"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/core/txpool"
@@ -48,51 +47,27 @@ type txWithMinerFee struct {
 // miner gasTipCap if a base fee is provided.
 // Returns error in case of a negative effective miner gasTipCap.
 func newTxWithMinerFee(tx *txpool.LazyTransaction, from common.Address, baseFee *uint256.Int) (*txWithMinerFee, error) {
-	tip := new(uint256.Int).Set(tx.GasTipCap)
-	if baseFee != nil {
-		if tx.GasFeeCap.Cmp(baseFee) < 0 {
-			return nil, types.ErrGasFeeCapTooLow
-		}
-		tip = new(uint256.Int).Sub(tx.GasFeeCap, baseFee)
-		if tip.Gt(tx.GasTipCap) {
-			tip = tx.GasTipCap
-		}
-	}
-	return &txWithMinerFee{
-		tx:   tx,
-		from: from,
-		fees: tip,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // txByPriceAndTime implements both the sort and the heap interface, making it useful
 // for all at once sorting as well as individually adding and removing elements.
 type txByPriceAndTime []*txWithMinerFee
 
-func (s txByPriceAndTime) Len() int { return len(s) }
+func (s txByPriceAndTime) Len() int { _ = "STUB: not implemented"; return 0 }
 func (s txByPriceAndTime) Less(i, j int) bool {
+	_ = "STUB: not implemented"
 	// If the prices are equal, use the time the transaction was first seen for
 	// deterministic sorting
-	cmp := s[i].fees.Cmp(s[j].fees)
-	if cmp == 0 {
-		return s[i].tx.Time.Before(s[j].tx.Time)
-	}
-	return cmp > 0
-}
-func (s txByPriceAndTime) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
-
-func (s *txByPriceAndTime) Push(x interface{}) {
-	*s = append(*s, x.(*txWithMinerFee))
+	return false
 }
 
-func (s *txByPriceAndTime) Pop() interface{} {
-	old := *s
-	n := len(old)
-	x := old[n-1]
-	old[n-1] = nil
-	*s = old[0 : n-1]
-	return x
-}
+func (s txByPriceAndTime) Swap(i, j int) { _ = "STUB: not implemented"; return }
+
+func (s *txByPriceAndTime) Push(x interface{}) { _ = "STUB: not implemented"; return }
+
+func (s *txByPriceAndTime) Pop() interface{} { _ = "STUB: not implemented"; return nil }
 
 // transactionsByPriceAndNonce represents a set of transactions that can return
 // transactions in a profit-maximizing sorted order, while supporting removing
@@ -110,68 +85,36 @@ type transactionsByPriceAndNonce struct {
 // Note, the input map is reowned so the caller should not interact any more with
 // if after providing it to the constructor.
 func newTransactionsByPriceAndNonce(signer types.Signer, txs map[common.Address][]*txpool.LazyTransaction, baseFee *big.Int) *transactionsByPriceAndNonce {
+	_ = "STUB: not implemented"
 	// Convert the basefee from header format to uint256 format
-	var baseFeeUint *uint256.Int
-	if baseFee != nil {
-		baseFeeUint = uint256.MustFromBig(baseFee)
-	}
-	// Initialize a price and received time based heap with the head transactions
-	heads := make(txByPriceAndTime, 0, len(txs))
-	for from, accTxs := range txs {
-		wrapped, err := newTxWithMinerFee(accTxs[0], from, baseFeeUint)
-		if err != nil {
-			delete(txs, from)
-			continue
-		}
-		heads = append(heads, wrapped)
-		txs[from] = accTxs[1:]
-	}
-	heap.Init(&heads)
-
-	// Assemble and return the transaction set
-	return &transactionsByPriceAndNonce{
-		txs:     txs,
-		heads:   heads,
-		signer:  signer,
-		baseFee: baseFeeUint,
-	}
+	return nil
 }
+
+// Initialize a price and received time based heap with the head transactions
+
+// Assemble and return the transaction set
 
 // Peek returns the next transaction by price.
 func (t *transactionsByPriceAndNonce) Peek() (*txpool.LazyTransaction, *uint256.Int) {
-	if len(t.heads) == 0 {
-		return nil, nil
-	}
-	return t.heads[0].tx, t.heads[0].fees
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Shift replaces the current best head with the next one from the same account.
-func (t *transactionsByPriceAndNonce) Shift() {
-	acc := t.heads[0].from
-	if txs, ok := t.txs[acc]; ok && len(txs) > 0 {
-		if wrapped, err := newTxWithMinerFee(txs[0], acc, t.baseFee); err == nil {
-			t.heads[0], t.txs[acc] = wrapped, txs[1:]
-			heap.Fix(&t.heads, 0)
-			return
-		}
-	}
-	heap.Pop(&t.heads)
-}
+func (t *transactionsByPriceAndNonce) Shift() { _ = "STUB: not implemented"; return }
 
 // Pop removes the best transaction, *not* replacing it with the next one from
 // the same account. This should be used when a transaction cannot be executed
 // and hence all subsequent ones should be discarded from the same account.
 func (t *transactionsByPriceAndNonce) Pop() {
-	heap.Pop(&t.heads)
+	_ = "STUB: not implemented"
+
+	// Empty returns if the price heap is empty. It can be used to check it simpler
+	// than calling peek and checking for nil return.
+	return
 }
 
-// Empty returns if the price heap is empty. It can be used to check it simpler
-// than calling peek and checking for nil return.
-func (t *transactionsByPriceAndNonce) Empty() bool {
-	return len(t.heads) == 0
-}
+func (t *transactionsByPriceAndNonce) Empty() bool { _ = "STUB: not implemented"; return false }
 
 // Clear removes the entire content of the heap.
-func (t *transactionsByPriceAndNonce) Clear() {
-	t.heads, t.txs = nil, nil
-}
+func (t *transactionsByPriceAndNonce) Clear() { _ = "STUB: not implemented"; return }

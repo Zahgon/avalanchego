@@ -29,10 +29,8 @@ package pathdb
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/common/hexutil"
 )
 
 var (
@@ -65,9 +63,6 @@ var (
 )
 
 func newUnexpectedNodeError(loc string, expHash common.Hash, gotHash common.Hash, owner common.Hash, path []byte, blob []byte) error {
-	blobHex := "nil"
-	if len(blob) > 0 {
-		blobHex = hexutil.Encode(blob)
-	}
-	return fmt.Errorf("%w, loc: %s, node: (%x %v), %x!=%x, blob: %s", errUnexpectedNode, loc, owner, path, expHash, gotHash, blobHex)
+	_ = "STUB: not implemented"
+	return nil
 }

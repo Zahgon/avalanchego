@@ -5,8 +5,6 @@ package tests
 
 import (
 	"context"
-	"os/signal"
-	"syscall"
 	"time"
 )
 
@@ -14,13 +12,6 @@ import (
 // process termination are received. If a non-zero duration is provided, the parent to the
 // notify context will be a context with a timeout for that duration.
 func DefaultNotifyContext(duration time.Duration, cleanup func(func())) context.Context {
-	parentContext := context.Background()
-	if duration > 0 {
-		var cancel context.CancelFunc
-		parentContext, cancel = context.WithTimeout(parentContext, duration)
-		cleanup(cancel)
-	}
-	ctx, stop := signal.NotifyContext(parentContext, syscall.SIGTERM, syscall.SIGINT)
-	cleanup(stop)
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }

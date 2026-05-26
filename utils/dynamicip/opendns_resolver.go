@@ -8,8 +8,6 @@ import (
 	"errors"
 	"net"
 	"net/netip"
-
-	"github.com/ava-labs/avalanchego/utils/ips"
 )
 
 const openDNSUrl = "resolver1.opendns.com:53"
@@ -25,27 +23,9 @@ type openDNSResolver struct {
 	resolver *net.Resolver
 }
 
-func newOpenDNSResolver() Resolver {
-	return &openDNSResolver{
-		resolver: &net.Resolver{
-			PreferGo: true,
-			Dial: func(ctx context.Context, _, _ string) (net.Conn, error) {
-				d := net.Dialer{}
-				return d.DialContext(ctx, "udp", openDNSUrl)
-			},
-		},
-	}
-}
+func newOpenDNSResolver() Resolver { _ = "STUB: not implemented"; return *new(Resolver) }
 
 func (r *openDNSResolver) Resolve(ctx context.Context) (netip.Addr, error) {
-	resolvedIPs, err := r.resolver.LookupIP(ctx, "ip", "myip.opendns.com")
-	if err != nil {
-		return netip.Addr{}, err
-	}
-	for _, ip := range resolvedIPs {
-		if addr, ok := ips.AddrFromSlice(ip); ok {
-			return addr, nil
-		}
-	}
-	return netip.Addr{}, errOpenDNSNoIP
+	_ = "STUB: not implemented"
+	return *new(netip.Addr), nil
 }

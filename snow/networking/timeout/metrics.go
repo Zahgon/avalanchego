@@ -4,7 +4,6 @@
 package timeout
 
 import (
-	"errors"
 	"sync"
 	"time"
 
@@ -31,46 +30,17 @@ type timeoutMetrics struct {
 }
 
 func newTimeoutMetrics(reg prometheus.Registerer) (*timeoutMetrics, error) {
-	m := &timeoutMetrics{
-		messages: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "messages",
-				Help: "number of responses",
-			},
-			opLabels,
-		),
-		messageLatencies: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Name: "message_latencies",
-				Help: "message latencies (ns)",
-			},
-			opLabels,
-		),
-		chainIDToAlias: make(map[ids.ID]string),
-	}
-	return m, errors.Join(
-		reg.Register(m.messages),
-		reg.Register(m.messageLatencies),
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *timeoutMetrics) RegisterChain(ctx *snow.ConsensusContext) error {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.chainIDToAlias[ctx.ChainID] = ctx.PrimaryAlias
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // Record that a response of type [op] took [latency]
 func (m *timeoutMetrics) Observe(chainID ids.ID, op message.Op, latency time.Duration) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	labels := prometheus.Labels{
-		chainLabel: m.chainIDToAlias[chainID],
-		opLabel:    op.String(),
-	}
-	m.messages.With(labels).Inc()
-	m.messageLatencies.With(labels).Add(float64(latency))
+	_ = "STUB: not implemented"
+	return
 }

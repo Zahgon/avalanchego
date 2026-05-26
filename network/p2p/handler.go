@@ -6,16 +6,12 @@ package p2p
 import (
 	"context"
 	"errors"
-	"fmt"
-	"math"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/message"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
@@ -60,9 +56,13 @@ type Handler interface {
 // NoOpHandler drops all messages
 type NoOpHandler struct{}
 
-func (NoOpHandler) AppGossip(context.Context, ids.NodeID, []byte) {}
+func (NoOpHandler) AppGossip(context.Context, ids.NodeID, []byte) {
+	_ = "STUB: not implemented"
+	return
+}
 
 func (NoOpHandler) AppRequest(context.Context, ids.NodeID, time.Time, []byte) ([]byte, *common.AppError) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
@@ -82,9 +82,8 @@ func (d *DynamicThrottlerHandler) AppGossip(
 	nodeID ids.NodeID,
 	gossipBytes []byte,
 ) {
-	d.checkUpdateThrottlingLimit(ctx)
-
-	d.handler.AppGossip(ctx, nodeID, gossipBytes)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (d *DynamicThrottlerHandler) AppRequest(
@@ -93,45 +92,21 @@ func (d *DynamicThrottlerHandler) AppRequest(
 	deadline time.Time,
 	requestBytes []byte,
 ) ([]byte, *common.AppError) {
-	d.checkUpdateThrottlingLimit(ctx)
-
-	return d.handler.AppRequest(ctx, nodeID, deadline, requestBytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (d *DynamicThrottlerHandler) checkUpdateThrottlingLimit(ctx context.Context) {
-	d.lock.Lock()
-	defer d.lock.Unlock()
-
-	numValidators := d.validatorSet.Len(ctx)
-
-	if numValidators == d.prevNumConnectedValidators {
-		return
-	}
-
-	d.prevNumConnectedValidators = numValidators
-
-	if numValidators == 0 {
-		d.setLimit(0)
-		return
-	}
-
-	n := float64(numValidators)
-
-	// guaranteed to not overflow an int
-	expectedSamples := d.requestsPerPeer / n
-	variance := d.requestsPerPeer * (n - 1) / (n * n)
-	stdDeviation := math.Sqrt(variance)
-
-	// Throttle anything beyond 4 standard deviations which should throttle
-	// anything beyond the 99.994 percentile of expected requests.
-	limit := expectedSamples + 4*stdDeviation
-	d.setLimit(limit)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (d *DynamicThrottlerHandler) setLimit(limit float64) {
-	d.throttler.setLimit(limit)
-	d.throttleLimitMetric.Set(limit)
-}
+// guaranteed to not overflow an int
+
+// Throttle anything beyond 4 standard deviations which should throttle
+// anything beyond the 99.994 percentile of expected requests.
+
+func (d *DynamicThrottlerHandler) setLimit(limit float64) { _ = "STUB: not implemented"; return }
 
 // NewDynamicThrottlerHandler wraps a handler with defaults.
 // Period is the throttling evaluation period during which this node is
@@ -147,46 +122,19 @@ func NewDynamicThrottlerHandler(
 	metrics prometheus.Registerer,
 	namespace string,
 ) (*DynamicThrottlerHandler, error) {
-	if period <= 0 {
-		return nil, errPeriodMustBePositive
-	}
-
-	if math.IsNaN(requestsPerPeer) || requestsPerPeer < 0 {
-		return nil, errRequestsPerPeerMustBeNonNegative
-	}
-
-	// Throttling limit will be initialized when a request is handled
-	throttler := NewSlidingWindowThrottler(period, 0)
-
-	throttleLimitMetric := prometheus.NewGauge(prometheus.GaugeOpts{
-		Namespace: namespace,
-		Name:      "throttle_limit",
-		Help:      "maximum number of requests per peer for a single throttling period",
-	})
-
-	if err := metrics.Register(throttleLimitMetric); err != nil {
-		return nil, fmt.Errorf("failed to register throttle limit metric: %w", err)
-	}
-
-	return &DynamicThrottlerHandler{
-		handler:             NewThrottlerHandler(handler, throttler, log),
-		validatorSet:        validatorSet,
-		requestsPerPeer:     requestsPerPeer,
-		throttler:           throttler,
-		throttleLimitMetric: throttleLimitMetric,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Throttling limit will be initialized when a request is handled
 
 func NewValidatorHandler(
 	handler Handler,
 	validatorSet ValidatorSet,
 	log logging.Logger,
 ) *ValidatorHandler {
-	return &ValidatorHandler{
-		handler:      handler,
-		validatorSet: validatorSet,
-		log:          log,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ValidatorHandler drops messages from non-validators
@@ -197,23 +145,13 @@ type ValidatorHandler struct {
 }
 
 func (v ValidatorHandler) AppGossip(ctx context.Context, nodeID ids.NodeID, gossipBytes []byte) {
-	if !v.validatorSet.Has(ctx, nodeID) {
-		v.log.Debug("dropping message",
-			zap.Stringer("nodeID", nodeID),
-			zap.String("reason", "not a validator"),
-		)
-		return
-	}
-
-	v.handler.AppGossip(ctx, nodeID, gossipBytes)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (v ValidatorHandler) AppRequest(ctx context.Context, nodeID ids.NodeID, deadline time.Time, requestBytes []byte) ([]byte, *common.AppError) {
-	if !v.validatorSet.Has(ctx, nodeID) {
-		return nil, ErrNotValidator
-	}
-
-	return v.handler.AppRequest(ctx, nodeID, deadline, requestBytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // responder automatically sends the response for a given request
@@ -226,21 +164,8 @@ type responder struct {
 
 // AppRequest calls the underlying handler and sends back the response to nodeID
 func (r *responder) AppRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, deadline time.Time, request []byte) error {
-	appResponse, err := r.Handler.AppRequest(ctx, nodeID, deadline, request)
-	if err != nil {
-		r.log.Debug("failed to handle message",
-			zap.Stringer("messageOp", message.AppRequestOp),
-			zap.Stringer("nodeID", nodeID),
-			zap.Uint32("requestID", requestID),
-			zap.Time("deadline", deadline),
-			zap.Uint64("handlerID", r.handlerID),
-			zap.Binary("message", request),
-			zap.Error(err),
-		)
-		return r.sender.SendAppError(ctx, nodeID, requestID, err.Code, err.Message)
-	}
-
-	return r.sender.SendAppResponse(ctx, nodeID, requestID, appResponse)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type TestHandler struct {
@@ -249,17 +174,11 @@ type TestHandler struct {
 }
 
 func (t TestHandler) AppGossip(ctx context.Context, nodeID ids.NodeID, gossipBytes []byte) {
-	if t.AppGossipF == nil {
-		return
-	}
-
-	t.AppGossipF(ctx, nodeID, gossipBytes)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (t TestHandler) AppRequest(ctx context.Context, nodeID ids.NodeID, deadline time.Time, requestBytes []byte) ([]byte, *common.AppError) {
-	if t.AppRequestF == nil {
-		return nil, nil
-	}
-
-	return t.AppRequestF(ctx, nodeID, deadline, requestBytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

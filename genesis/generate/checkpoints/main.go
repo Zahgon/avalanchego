@@ -6,11 +6,9 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/indexer"
 	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/perms"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -91,31 +89,11 @@ func getCheckpoints(
 	uri string,
 	chainAlias string,
 ) (set.Set[ids.ID], error) {
-	var (
-		chainURI = fmt.Sprintf("%s/ext/index/%s/block", uri, chainAlias)
-		client   = indexer.NewClient(chainURI)
-	)
-
-	// If there haven't been any blocks accepted, this will return an error.
-	_, lastIndex, err := client.GetLastAccepted(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	var (
-		numAccepted = lastIndex + 1
-		// interval is rounded up to ensure that the number of checkpoints
-		// fetched is at most maxNumCheckpoints.
-		interval    = (numAccepted + maxNumCheckpoints - 1) / maxNumCheckpoints
-		checkpoints set.Set[ids.ID]
-	)
-	for index := interval - 1; index <= lastIndex; index += interval {
-		container, err := client.GetContainerByIndex(ctx, index)
-		if err != nil {
-			return nil, err
-		}
-
-		checkpoints.Add(container.ID)
-	}
-	return checkpoints, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// If there haven't been any blocks accepted, this will return an error.
+
+// interval is rounded up to ensure that the number of checkpoints
+// fetched is at most maxNumCheckpoints.

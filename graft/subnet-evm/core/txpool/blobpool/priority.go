@@ -29,7 +29,6 @@ package blobpool
 
 import (
 	"math"
-	"math/bits"
 
 	"github.com/holiman/uint256"
 )
@@ -43,28 +42,18 @@ var log2_1_125 = math.Log2(1.125)
 // This method takes about 8ns on a very recent laptop CPU, recalculating about
 // 125 million transaction priority values per second.
 func evictionPriority(basefeeJumps float64, txBasefeeJumps, blobfeeJumps, txBlobfeeJumps float64) int {
-	var (
-		basefeePriority = evictionPriority1D(basefeeJumps, txBasefeeJumps)
-		blobfeePriority = evictionPriority1D(blobfeeJumps, txBlobfeeJumps)
-	)
-	if basefeePriority < blobfeePriority {
-		return basefeePriority
-	}
-	return blobfeePriority
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // evictionPriority1D calculates the eviction priority based on the algorithm
 // described in the BlobPool docs for a single fee component.
 func evictionPriority1D(basefeeJumps float64, txfeeJumps float64) int {
-	jumps := txfeeJumps - basefeeJumps
-	if int(jumps) == 0 {
-		return 0 // can't log2 0
-	}
-	if jumps < 0 {
-		return -intLog2(uint(-math.Floor(jumps)))
-	}
-	return intLog2(uint(math.Ceil(jumps)))
+	_ = "STUB: not implemented"
+	return 0
 }
+
+// can't log2 0
 
 // dynamicFeeJumps calculates the log1.125(fee), namely the number of fee jumps
 // needed to reach the requested one. We only use it when calculating the jumps
@@ -74,28 +63,15 @@ func evictionPriority1D(basefeeJumps float64, txfeeJumps float64) int {
 // This method is very expensive, taking about 75ns on a very recent laptop CPU,
 // but the result does not change with the lifetime of a transaction, so it can
 // be cached.
-func dynamicFeeJumps(fee *uint256.Int) float64 {
-	if fee.IsZero() {
-		return 0 // can't log2 zero, should never happen outside tests, but don't choke
-	}
-	return math.Log2(fee.Float64()) / log2_1_125
-}
+func dynamicFeeJumps(fee *uint256.Int) float64 { _ = "STUB: not implemented"; return 0 }
+
+// can't log2 zero, should never happen outside tests, but don't choke
 
 // intLog2 is a helper to calculate the integral part of a log2 of an unsigned
 // integer. It is a very specific calculation that's not particularly useful in
 // general, but it's what we need here (it's fast).
-func intLog2(n uint) int {
-	switch {
-	case n == 0:
-		panic("log2(0) is undefined")
+func intLog2(n uint) int { _ = "STUB: not implemented"; return 0 }
 
-	case n < 2048:
-		return bits.UintSize - bits.LeadingZeros(n) - 1
-
-	default:
-		// The input is log1.125(uint256) = log2(uint256) / log2(1.125). At the
-		// most extreme, log2(uint256) will be a bit below 257, and the constant
-		// log2(1.125) ~= 0.17. The larges input thus is ~257 / ~0.17 ~= ~1511.
-		panic("dynamic fee jump diffs cannot reach this")
-	}
-}
+// The input is log1.125(uint256) = log2(uint256) / log2(1.125). At the
+// most extreme, log2(uint256) will be a bit below 257, and the constant
+// log2(1.125) ~= 0.17. The larges input thus is ~257 / ~0.17 ~= ~1511.

@@ -7,8 +7,6 @@ import (
 	"context"
 	"time"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/vms/proposervm/block"
 )
@@ -23,139 +21,76 @@ type postForkOption struct {
 	timestamp time.Time
 }
 
-func (b *postForkOption) Timestamp() time.Time {
-	if b.Height() <= b.vm.lastAcceptedHeight {
-		return b.vm.lastAcceptedTime
-	}
-	return b.timestamp
-}
+func (b *postForkOption) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (b *postForkOption) Accept(ctx context.Context) error {
-	if err := b.acceptOuterBlk(); err != nil {
-		return err
-	}
-	return b.acceptInnerBlk(ctx)
-}
+func (b *postForkOption) Accept(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (b *postForkOption) acceptOuterBlk() error {
-	return b.vm.acceptPostForkBlock(b)
-}
+func (b *postForkOption) acceptOuterBlk() error { _ = "STUB: not implemented"; return nil }
 
 func (b *postForkOption) acceptInnerBlk(ctx context.Context) error {
+	_ = "STUB: not implemented"
 	// mark the inner block as accepted and all conflicting inner blocks as
 	// rejected
-	return b.vm.Tree.Accept(ctx, b.innerBlk)
+	return nil
 }
 
 func (b *postForkOption) Reject(context.Context) error {
+	_ = "STUB: not implemented"
 	// we do not reject the inner block here because that block may be contained
 	// in the proposer block that causing this block to be rejected.
-
-	delete(b.vm.verifiedBlocks, b.ID())
 	return nil
 }
 
 func (b *postForkOption) Parent() ids.ID {
-	return b.ParentID()
+	_ = "STUB: not implemented"
+	return *
+
+	// If Verify returns nil, Accept or Reject is eventually called on [b] and
+	// [b.innerBlk].
+	new(ids.ID)
 }
 
-// If Verify returns nil, Accept or Reject is eventually called on [b] and
-// [b.innerBlk].
-func (b *postForkOption) Verify(ctx context.Context) error {
-	parent, err := b.vm.getBlock(ctx, b.ParentID())
-	if err != nil {
-		return err
-	}
-	b.timestamp = parent.Timestamp()
-	return parent.verifyPostForkOption(ctx, b)
-}
+func (b *postForkOption) Verify(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 func (*postForkOption) verifyPreForkChild(context.Context, *preForkBlock) error {
+	_ = "STUB: not implemented"
 	// A *preForkBlock's parent must be a *preForkBlock
-	return errUnsignedChild
+	return nil
 }
 
 func (b *postForkOption) verifyPostForkChild(ctx context.Context, child *postForkBlock) error {
-	parentTimestamp := b.Timestamp()
-	parentPChainHeight, err := b.pChainHeight(ctx)
-	if err != nil {
-		return err
-	}
-	parentEpoch, err := b.pChainEpoch(ctx)
-	if err != nil {
-		return err
-	}
-
-	return b.postForkCommonComponents.Verify(
-		ctx,
-		parentTimestamp,
-		parentPChainHeight,
-		parentEpoch,
-		child,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*postForkOption) verifyPostForkOption(context.Context, *postForkOption) error {
+	_ = "STUB: not implemented"
 	// A *postForkOption's parent can't be a *postForkOption
-	return errUnexpectedBlockType
+	return nil
 }
 
 func (b *postForkOption) buildChild(ctx context.Context) (Block, error) {
-	parentID := b.ID()
-	parentPChainHeight, err := b.pChainHeight(ctx)
-	if err != nil {
-		b.vm.ctx.Log.Error("unexpected build block failure",
-			zap.String("reason", "failed to fetch parent's P-chain height"),
-			zap.Stringer("parentID", parentID),
-			zap.Error(err),
-		)
-		return nil, err
-	}
-	parentEpoch, err := b.pChainEpoch(ctx)
-	if err != nil {
-		b.vm.ctx.Log.Error("unexpected build block failure",
-			zap.String("reason", "failed to fetch parent's epoch"),
-			zap.Stringer("parentID", parentID),
-			zap.Error(err),
-		)
-		return nil, err
-	}
-
-	return b.postForkCommonComponents.buildChild(
-		ctx,
-		parentID,
-		b.Timestamp(),
-		parentPChainHeight,
-		parentEpoch,
-	)
+	_ = "STUB: not implemented"
+	return *new(Block), nil
 }
 
 // This block's P-Chain height is its parent's P-Chain height
 func (b *postForkOption) pChainHeight(ctx context.Context) (uint64, error) {
-	parent, err := b.vm.getBlock(ctx, b.ParentID())
-	if err != nil {
-		return 0, err
-	}
-	return parent.pChainHeight(ctx)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (b *postForkOption) pChainEpoch(ctx context.Context) (block.Epoch, error) {
-	parent, err := b.vm.getBlock(ctx, b.ParentID())
-	if err != nil {
-		return block.Epoch{}, err
-	}
-	return parent.pChainEpoch(ctx)
+	_ = "STUB: not implemented"
+	return *new(block.Epoch), nil
 }
 
 func (b *postForkOption) selectChildPChainHeight(ctx context.Context) (uint64, error) {
-	pChainHeight, err := b.pChainHeight(ctx)
-	if err != nil {
-		return 0, err
-	}
-
-	return b.vm.selectChildPChainHeight(ctx, pChainHeight)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (b *postForkOption) getStatelessBlk() block.Block {
-	return b.Block
+	_ = "STUB: not implemented"
+	return *new(block.Block)
 }

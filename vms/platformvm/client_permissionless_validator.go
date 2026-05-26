@@ -4,10 +4,7 @@
 package platformvm
 
 import (
-	"encoding/json"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/formatting/address"
 	"github.com/ava-labs/avalanchego/vms/platformvm/api"
 	"github.com/ava-labs/avalanchego/vms/platformvm/signer"
 )
@@ -72,121 +69,28 @@ type ClientDelegator struct {
 }
 
 func apiStakerToClientStaker(validator api.Staker) ClientStaker {
-	return ClientStaker{
-		TxID:      validator.TxID,
-		StartTime: uint64(validator.StartTime),
-		EndTime:   uint64(validator.EndTime),
-		Weight:    uint64(validator.Weight),
-		NodeID:    validator.NodeID,
-	}
+	_ = "STUB: not implemented"
+	return *new(ClientStaker)
 }
 
 func apiOwnerToClientOwner(rewardOwner *api.Owner) (*ClientOwner, error) {
-	if rewardOwner == nil {
-		return nil, nil
-	}
-
-	addrs, err := address.ParseToIDs(rewardOwner.Addresses)
-	return &ClientOwner{
-		Locktime:  uint64(rewardOwner.Locktime),
-		Threshold: uint32(rewardOwner.Threshold),
-		Addresses: addrs,
-	}, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func getClientPermissionlessValidators(validatorsSliceIntf []interface{}) ([]ClientPermissionlessValidator, error) {
-	clientValidators := make([]ClientPermissionlessValidator, len(validatorsSliceIntf))
-	for i, validatorMapIntf := range validatorsSliceIntf {
-		validatorMapJSON, err := json.Marshal(validatorMapIntf)
-		if err != nil {
-			return nil, err
-		}
-
-		var apiValidator api.PermissionlessValidator
-		err = json.Unmarshal(validatorMapJSON, &apiValidator)
-		if err != nil {
-			return nil, err
-		}
-
-		clientValidator, err := getClientPrimaryOrSubnetValidator(apiValidator)
-		if err != nil {
-			return nil, err
-		}
-
-		// If the validator is a L1 validator, we need to set the L1 fields as well
-		if apiValidator.ValidationID != nil {
-			l1Validator, err := getClientL1Validator(apiValidator)
-			if err != nil {
-				return nil, err
-			}
-			clientValidator.ClientL1Validator = l1Validator
-		}
-
-		clientValidators[i] = clientValidator
-	}
-	return clientValidators, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// If the validator is a L1 validator, we need to set the L1 fields as well
+
 func getClientL1Validator(apiValidator api.PermissionlessValidator) (ClientL1Validator, error) {
-	remainingBalanceOwner, err := apiOwnerToClientOwner(apiValidator.RemainingBalanceOwner)
-	if err != nil {
-		return ClientL1Validator{}, err
-	}
-
-	deactivationOwner, err := apiOwnerToClientOwner(apiValidator.DeactivationOwner)
-	if err != nil {
-		return ClientL1Validator{}, err
-	}
-
-	return ClientL1Validator{
-		ValidationID:          apiValidator.ValidationID,
-		RemainingBalanceOwner: remainingBalanceOwner,
-		DeactivationOwner:     deactivationOwner,
-		MinNonce:              (*uint64)(apiValidator.MinNonce),
-		Balance:               (*uint64)(apiValidator.Balance),
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(ClientL1Validator), nil
 }
 
 func getClientPrimaryOrSubnetValidator(apiValidator api.PermissionlessValidator) (ClientPermissionlessValidator, error) {
-	validationRewardOwner, err := apiOwnerToClientOwner(apiValidator.ValidationRewardOwner)
-	if err != nil {
-		return ClientPermissionlessValidator{}, err
-	}
-
-	delegationRewardOwner, err := apiOwnerToClientOwner(apiValidator.DelegationRewardOwner)
-	if err != nil {
-		return ClientPermissionlessValidator{}, err
-	}
-
-	var clientDelegators []ClientDelegator
-	if apiValidator.Delegators != nil {
-		clientDelegators = make([]ClientDelegator, len(*apiValidator.Delegators))
-		for j, apiDelegator := range *apiValidator.Delegators {
-			rewardOwner, err := apiOwnerToClientOwner(apiDelegator.RewardOwner)
-			if err != nil {
-				return ClientPermissionlessValidator{}, err
-			}
-
-			clientDelegators[j] = ClientDelegator{
-				ClientStaker:    apiStakerToClientStaker(apiDelegator.Staker),
-				RewardOwner:     rewardOwner,
-				PotentialReward: (*uint64)(apiDelegator.PotentialReward),
-			}
-		}
-	}
-
-	return ClientPermissionlessValidator{
-		ClientStaker:           apiStakerToClientStaker(apiValidator.Staker),
-		ValidationRewardOwner:  validationRewardOwner,
-		DelegationRewardOwner:  delegationRewardOwner,
-		PotentialReward:        (*uint64)(apiValidator.PotentialReward),
-		AccruedDelegateeReward: (*uint64)(apiValidator.AccruedDelegateeReward),
-		DelegationFee:          float32(apiValidator.DelegationFee),
-		Uptime:                 (*float32)(apiValidator.Uptime),
-		Connected:              apiValidator.Connected,
-		Signer:                 apiValidator.Signer,
-		DelegatorCount:         (*uint64)(apiValidator.DelegatorCount),
-		DelegatorWeight:        (*uint64)(apiValidator.DelegatorWeight),
-		Delegators:             clientDelegators,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(ClientPermissionlessValidator), nil
 }

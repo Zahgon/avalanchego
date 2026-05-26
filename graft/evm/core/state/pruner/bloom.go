@@ -28,20 +28,11 @@
 package pruner
 
 import (
-	"encoding/binary"
-	"errors"
-	"os"
-
-	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
-	"github.com/ava-labs/libevm/log"
 	bloomfilter "github.com/holiman/bloomfilter/v2"
 )
 
 // stateBloomHash is used to convert a trie hash or contract code hash into a 64 bit mini hash.
-func stateBloomHash(f []byte) uint64 {
-	return binary.BigEndian.Uint64(f)
-}
+func stateBloomHash(f []byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // stateBloom is a bloom filter used during the state conversion(snapshot->state).
 // The keys of all generated entries will be recorded here so that in the pruning
@@ -67,70 +58,42 @@ type stateBloom struct {
 // to the https://hur.st/bloomfilter/?n=600000000&p=&m=2048MB&k=4, the parameters
 // are picked so that the false-positive rate for mainnet is low enough.
 func newStateBloomWithSize(size uint64) (*stateBloom, error) {
-	bloom, err := bloomfilter.New(size*1024*1024*8, 4)
-	if err != nil {
-		return nil, err
-	}
-	log.Info("Initialized state bloom", "size", common.StorageSize(float64(bloom.M()/8)))
-	return &stateBloom{bloom: bloom}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewStateBloomFromDisk loads the state bloom from the given file.
 // In this case the assumption is held the bloom filter is complete.
 func NewStateBloomFromDisk(filename string) (*stateBloom, error) {
-	bloom, _, err := bloomfilter.ReadFile(filename)
-	if err != nil {
-		return nil, err
-	}
-	return &stateBloom{bloom: bloom}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Commit flushes the bloom filter content into the disk and marks the bloom
 // as complete.
 func (bloom *stateBloom) Commit(filename, tempname string) error {
+	_ = "STUB: not implemented"
 	// Write the bloom out into a temporary file
-	_, err := bloom.bloom.WriteFile(tempname)
-	if err != nil {
-		return err
-	}
-	// Ensure the file is synced to disk
-	f, err := os.OpenFile(tempname, os.O_RDWR, 0666)
-	if err != nil {
-		return err
-	}
-	if err := f.Sync(); err != nil {
-		f.Close()
-		return err
-	}
-	f.Close()
-
-	// Move the temporary file into it's final location
-	return os.Rename(tempname, filename)
+	return nil
 }
+
+// Ensure the file is synced to disk
+
+// Move the temporary file into it's final location
 
 // Put implements the KeyValueWriter interface. But here only the key is needed.
 func (bloom *stateBloom) Put(key []byte, value []byte) error {
+	_ = "STUB: not implemented"
 	// If the key length is not 32bytes, ensure it's contract code
 	// entry with new scheme.
-	if len(key) != common.HashLength {
-		isCode, codeKey := rawdb.IsCodeKey(key)
-		if !isCode {
-			return errors.New("invalid entry")
-		}
-		bloom.bloom.AddHash(stateBloomHash(codeKey))
-		return nil
-	}
-	bloom.bloom.AddHash(stateBloomHash(key))
 	return nil
 }
 
 // Delete removes the key from the key-value data store.
-func (bloom *stateBloom) Delete(key []byte) error { panic("not supported") }
+func (bloom *stateBloom) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Contain is the wrapper of the underlying contains function which
 // reports whether the key is contained.
 // - If it says yes, the key may be contained
 // - If it says no, the key is definitely not contained.
-func (bloom *stateBloom) Contain(key []byte) bool {
-	return bloom.bloom.ContainsHash(stateBloomHash(key))
-}
+func (bloom *stateBloom) Contain(key []byte) bool { _ = "STUB: not implemented"; return false }

@@ -24,10 +24,12 @@ type InboundHandler interface {
 type InboundHandlerFunc func(context.Context, *message.InboundMessage)
 
 func (f InboundHandlerFunc) HandleInbound(ctx context.Context, msg *message.InboundMessage) {
-	f(ctx, msg)
+	_ = "STUB: not implemented"
+
+	// ExternalHandler handles messages from external parties
+	return
 }
 
-// ExternalHandler handles messages from external parties
 type ExternalHandler interface {
 	InboundHandler
 

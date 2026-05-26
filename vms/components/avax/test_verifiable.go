@@ -20,11 +20,9 @@ type TestState struct {
 	Err error
 }
 
-func (*TestState) InitCtx(*snow.Context) {}
+func (*TestState) InitCtx(*snow.Context) { _ = "STUB: not implemented"; return }
 
-func (v *TestState) Verify() error {
-	return v.Err
-}
+func (v *TestState) Verify() error { _ = "STUB: not implemented"; return nil }
 
 type TestTransferable struct {
 	TestState
@@ -32,15 +30,11 @@ type TestTransferable struct {
 	Val uint64 `serialize:"true"`
 }
 
-func (*TestTransferable) InitCtx(*snow.Context) {}
+func (*TestTransferable) InitCtx(*snow.Context) { _ = "STUB: not implemented"; return }
 
-func (t *TestTransferable) Amount() uint64 {
-	return t.Val
-}
+func (t *TestTransferable) Amount() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (*TestTransferable) Cost() (uint64, error) {
-	return 0, nil
-}
+func (*TestTransferable) Cost() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 type TestAddressable struct {
 	TestTransferable `serialize:"true"`
@@ -48,6 +42,4 @@ type TestAddressable struct {
 	Addrs [][]byte `serialize:"true"`
 }
 
-func (a *TestAddressable) Addresses() [][]byte {
-	return a.Addrs
-}
+func (a *TestAddressable) Addresses() [][]byte { _ = "STUB: not implemented"; return nil }

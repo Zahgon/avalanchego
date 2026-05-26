@@ -5,15 +5,10 @@
 package ap3
 
 import (
-	"encoding/binary"
 	"errors"
-	"fmt"
-	"math"
 
 	"github.com/ava-labs/avalanchego/graft/evm/utils"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
-
-	safemath "github.com/ava-labs/libevm/common/math"
 )
 
 const (
@@ -65,67 +60,22 @@ var ErrWindowInsufficientLength = errors.New("insufficient length for window")
 // Index 0 is the oldest entry, and [WindowLen]-1 is the current entry.
 type Window [WindowLen]uint64
 
-func ParseWindow(bytes []byte) (Window, error) {
-	if len(bytes) < WindowSize {
-		return Window{}, fmt.Errorf("%w: expected at least %d bytes but got %d bytes",
-			ErrWindowInsufficientLength,
-			WindowSize,
-			len(bytes),
-		)
-	}
-
-	var window Window
-	for i := range window {
-		offset := i * wrappers.LongLen
-		window[i] = binary.BigEndian.Uint64(bytes[offset:])
-	}
-	return window, nil
-}
+func ParseWindow(bytes []byte) (Window, error) { _ = "STUB: not implemented"; return *new(Window), nil }
 
 // Add adds the amounts to the most recent entry in the window.
 //
 // If the most recent entry overflows, it is set to [math.MaxUint64].
-func (w *Window) Add(amounts ...uint64) {
-	const lastIndex uint = WindowLen - 1
-	w[lastIndex] = add(w[lastIndex], amounts...)
-}
+func (w *Window) Add(amounts ...uint64) { _ = "STUB: not implemented"; return }
 
 // Shift removes the oldest n entries from the window and adds n new empty
 // entries.
-func (w *Window) Shift(n uint64) {
-	if n >= WindowLen {
-		*w = Window{}
-		return
-	}
-
-	var newWindow Window
-	copy(newWindow[:], w[n:])
-	*w = newWindow
-}
+func (w *Window) Shift(n uint64) { _ = "STUB: not implemented"; return }
 
 // Sum returns the sum of all the entries in the window.
 //
 // If the sum overflows, [math.MaxUint64] is returned.
-func (w *Window) Sum() uint64 {
-	return add(0, w[:]...)
-}
+func (w *Window) Sum() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (w *Window) Bytes() []byte {
-	bytes := make([]byte, WindowSize)
-	for i, v := range w {
-		offset := i * wrappers.LongLen
-		binary.BigEndian.PutUint64(bytes[offset:], v)
-	}
-	return bytes
-}
+func (w *Window) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func add(sum uint64, values ...uint64) uint64 {
-	var overflow bool
-	for _, v := range values {
-		sum, overflow = safemath.SafeAdd(sum, v)
-		if overflow {
-			return math.MaxUint64
-		}
-	}
-	return sum
-}
+func add(sum uint64, values ...uint64) uint64 { _ = "STUB: not implemented"; return 0 }

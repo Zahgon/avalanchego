@@ -5,17 +5,13 @@ package resource
 
 import (
 	"math"
-	"strconv"
 	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/process"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/storage"
 )
 
 var (
@@ -99,121 +95,27 @@ func NewManager(
 	diskHalflife time.Duration,
 	metricsRegisterer prometheus.Registerer,
 ) (Manager, error) {
-	processMetrics, err := newMetrics(metricsRegisterer)
-	if err != nil {
-		return nil, err
-	}
-
-	m := &manager{
-		log:                  log,
-		processMetrics:       processMetrics,
-		processes:            make(map[int]*proc),
-		onClose:              make(chan struct{}),
-		availableDiskBytes:   math.MaxUint64,
-		availableDiskPercent: 100,
-	}
-
-	go m.update(diskPath, frequency, cpuHalflife, diskHalflife)
-	return m, nil
+	_ = "STUB: not implemented"
+	return *new(Manager), nil
 }
 
-func (m *manager) CPUUsage() float64 {
-	m.usageLock.RLock()
-	defer m.usageLock.RUnlock()
+func (m *manager) CPUUsage() float64 { _ = "STUB: not implemented"; return 0 }
 
-	return m.cpuUsage
-}
+func (m *manager) DiskUsage() (float64, float64) { _ = "STUB: not implemented"; return 0, 0 }
 
-func (m *manager) DiskUsage() (float64, float64) {
-	m.usageLock.RLock()
-	defer m.usageLock.RUnlock()
+func (m *manager) AvailableDiskBytes() uint64 { _ = "STUB: not implemented"; return 0 }
 
-	return m.readUsage, m.writeUsage
-}
+func (m *manager) AvailableDiskPercentage() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (m *manager) AvailableDiskBytes() uint64 {
-	m.usageLock.RLock()
-	defer m.usageLock.RUnlock()
+func (m *manager) TrackProcess(pid int) { _ = "STUB: not implemented"; return }
 
-	return m.availableDiskBytes
-}
+func (m *manager) UntrackProcess(pid int) { _ = "STUB: not implemented"; return }
 
-func (m *manager) AvailableDiskPercentage() uint64 {
-	m.usageLock.RLock()
-	defer m.usageLock.RUnlock()
-
-	return m.availableDiskPercent
-}
-
-func (m *manager) TrackProcess(pid int) {
-	p, err := process.NewProcess(int32(pid))
-	if err != nil {
-		return
-	}
-
-	process := &proc{
-		p:   p,
-		log: m.log,
-	}
-
-	m.processesLock.Lock()
-	m.processes[pid] = process
-	m.processesLock.Unlock()
-}
-
-func (m *manager) UntrackProcess(pid int) {
-	m.processesLock.Lock()
-	delete(m.processes, pid)
-	m.processesLock.Unlock()
-}
-
-func (m *manager) Shutdown() {
-	m.closeOnce.Do(func() {
-		close(m.onClose)
-	})
-}
+func (m *manager) Shutdown() { _ = "STUB: not implemented"; return }
 
 func (m *manager) update(diskPath string, frequency, cpuHalflife, diskHalflife time.Duration) {
-	ticker := time.NewTicker(frequency)
-	defer ticker.Stop()
-
-	newCPUWeight, oldCPUWeight := getSampleWeights(frequency, cpuHalflife)
-	newDiskWeight, oldDiskWeight := getSampleWeights(frequency, diskHalflife)
-
-	frequencyInSeconds := frequency.Seconds()
-	for {
-		currentCPUUsage, currentReadUsage, currentWriteUsage := m.getActiveUsage(frequencyInSeconds)
-		currentScaledCPUUsage := newCPUWeight * currentCPUUsage
-		currentScaledReadUsage := newDiskWeight * currentReadUsage
-		currentScaledWriteUsage := newDiskWeight * currentWriteUsage
-
-		availableBytes, availablePercentage, getBytesErr := storage.AvailableBytes(diskPath)
-		if getBytesErr != nil {
-			m.log.Verbo("failed to lookup resource",
-				zap.String("resource", "system disk"),
-				zap.String("path", diskPath),
-				zap.Error(getBytesErr),
-			)
-		}
-
-		m.usageLock.Lock()
-		m.cpuUsage = oldCPUWeight*m.cpuUsage + currentScaledCPUUsage
-		m.readUsage = oldDiskWeight*m.readUsage + currentScaledReadUsage
-		m.writeUsage = oldDiskWeight*m.writeUsage + currentScaledWriteUsage
-
-		if getBytesErr == nil {
-			m.availableDiskBytes = availableBytes
-			m.availableDiskPercent = availablePercentage
-		}
-
-		m.usageLock.Unlock()
-
-		select {
-		case <-ticker.C:
-		case <-m.onClose:
-			return
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // Returns:
@@ -221,29 +123,8 @@ func (m *manager) update(diskPath string, frequency, cpuHalflife, diskHalflife t
 // 2. Current bytes/sec read from disk by all processes.
 // 3. Current bytes/sec written to disk by all processes.
 func (m *manager) getActiveUsage(secondsSinceLastUpdate float64) (float64, float64, float64) {
-	m.processesLock.Lock()
-	defer m.processesLock.Unlock()
-
-	var (
-		totalCPU   float64
-		totalRead  float64
-		totalWrite float64
-	)
-	for _, p := range m.processes {
-		cpu, read, write := p.getActiveUsage(secondsSinceLastUpdate)
-		totalCPU += cpu
-		totalRead += read
-		totalWrite += write
-
-		processIDStr := strconv.Itoa(int(p.p.Pid))
-		m.processMetrics.numCPUCycles.WithLabelValues(processIDStr).Set(p.lastTotalCPU)
-		m.processMetrics.numDiskReads.WithLabelValues(processIDStr).Set(float64(p.numReads))
-		m.processMetrics.numDiskReadBytes.WithLabelValues(processIDStr).Set(float64(p.lastReadBytes))
-		m.processMetrics.numDiskWrites.WithLabelValues(processIDStr).Set(float64(p.numWrites))
-		m.processMetrics.numDiskWritesBytes.WithLabelValues(processIDStr).Set(float64(p.lastWriteBytes))
-	}
-
-	return totalCPU, totalRead, totalWrite
+	_ = "STUB: not implemented"
+	return 0, 0, 0
 }
 
 type proc struct {
@@ -268,67 +149,19 @@ type proc struct {
 }
 
 func (p *proc) getActiveUsage(secondsSinceLastUpdate float64) (float64, float64, float64) {
+	_ = "STUB: not implemented"
 	// If there is an error tracking the CPU/disk utilization of a process,
 	// assume that the utilization is 0.
-	times, err := p.p.Times()
-	if err != nil {
-		p.log.Verbo("failed to lookup resource",
-			zap.String("resource", "process CPU"),
-			zap.Int32("pid", p.p.Pid),
-			zap.Error(err),
-		)
-		times = &cpu.TimesStat{}
-	}
-
-	// Note: IOCounters is not implemented on macos and therefore always returns
-	// an error on macos.
-	io, err := p.p.IOCounters()
-	if err != nil {
-		p.log.Verbo("failed to lookup resource",
-			zap.String("resource", "process IO"),
-			zap.Int32("pid", p.p.Pid),
-			zap.Error(err),
-		)
-		io = &process.IOCountersStat{}
-	}
-
-	var (
-		cpu   float64
-		read  float64
-		write float64
-	)
-	totalCPU := times.Total()
-	if p.initialized {
-		if totalCPU > p.lastTotalCPU {
-			newCPU := totalCPU - p.lastTotalCPU
-			cpu = newCPU / secondsSinceLastUpdate
-		}
-		if io.ReadBytes > p.lastReadBytes {
-			newRead := io.ReadBytes - p.lastReadBytes
-			read = float64(newRead) / secondsSinceLastUpdate
-		}
-		if io.WriteBytes > p.lastWriteBytes {
-			newWrite := io.WriteBytes - p.lastWriteBytes
-			write = float64(newWrite) / secondsSinceLastUpdate
-		}
-	}
-
-	p.initialized = true
-	p.lastTotalCPU = totalCPU
-	p.numReads = io.ReadCount
-	p.lastReadBytes = io.ReadBytes
-	p.numWrites = io.WriteCount
-	p.lastWriteBytes = io.WriteBytes
-
-	return cpu, read, write
+	return 0, 0, 0
 }
+
+// Note: IOCounters is not implemented on macos and therefore always returns
+// an error on macos.
 
 // getSampleWeights converts the frequency of CPU sampling and the halflife of
 // the CPU sample's usefulness into weights to scale the newly sampled point and
 // previously samples.
 func getSampleWeights(frequency, halflife time.Duration) (float64, float64) {
-	halflifeInSamples := float64(halflife) / float64(frequency)
-	oldWeight := math.Exp(lnHalf / halflifeInSamples)
-	newWeight := 1 - oldWeight
-	return newWeight, oldWeight
+	_ = "STUB: not implemented"
+	return 0, 0
 }

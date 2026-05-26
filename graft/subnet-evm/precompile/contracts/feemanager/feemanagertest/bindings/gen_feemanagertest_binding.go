@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -45,19 +45,8 @@ var FeeManagerTestBin = FeeManagerTestMetaData.Bin
 
 // DeployFeeManagerTest deploys a new Ethereum contract, binding an instance of FeeManagerTest to it.
 func DeployFeeManagerTest(auth *bind.TransactOpts, backend bind.ContractBackend, feeManagerPrecompile common.Address) (common.Address, *types.Transaction, *FeeManagerTest, error) {
-	parsed, err := FeeManagerTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(FeeManagerTestBin), backend, feeManagerPrecompile)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &FeeManagerTest{FeeManagerTestCaller: FeeManagerTestCaller{contract: contract}, FeeManagerTestTransactor: FeeManagerTestTransactor{contract: contract}, FeeManagerTestFilterer: FeeManagerTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // FeeManagerTest is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type FeeManagerTestTransactorRaw struct {
 
 // NewFeeManagerTest creates a new instance of FeeManagerTest, bound to a specific deployed contract.
 func NewFeeManagerTest(address common.Address, backend bind.ContractBackend) (*FeeManagerTest, error) {
-	contract, err := bindFeeManagerTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &FeeManagerTest{FeeManagerTestCaller: FeeManagerTestCaller{contract: contract}, FeeManagerTestTransactor: FeeManagerTestTransactor{contract: contract}, FeeManagerTestFilterer: FeeManagerTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewFeeManagerTestCaller creates a new read-only instance of FeeManagerTest, bound to a specific deployed contract.
 func NewFeeManagerTestCaller(address common.Address, caller bind.ContractCaller) (*FeeManagerTestCaller, error) {
-	contract, err := bindFeeManagerTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &FeeManagerTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewFeeManagerTestTransactor creates a new write-only instance of FeeManagerTest, bound to a specific deployed contract.
 func NewFeeManagerTestTransactor(address common.Address, transactor bind.ContractTransactor) (*FeeManagerTestTransactor, error) {
-	contract, err := bindFeeManagerTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &FeeManagerTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewFeeManagerTestFilterer creates a new log filterer instance of FeeManagerTest, bound to a specific deployed contract.
 func NewFeeManagerTestFilterer(address common.Address, filterer bind.ContractFilterer) (*FeeManagerTestFilterer, error) {
-	contract, err := bindFeeManagerTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &FeeManagerTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindFeeManagerTest binds a generic wrapper to an already deployed contract.
 func bindFeeManagerTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := FeeManagerTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindFeeManagerTest(address common.Address, caller bind.ContractCaller, tran
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_FeeManagerTest *FeeManagerTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _FeeManagerTest.Contract.FeeManagerTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_FeeManagerTest *FeeManagerTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.FeeManagerTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_FeeManagerTest *FeeManagerTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.FeeManagerTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,18 +165,21 @@ func (_FeeManagerTest *FeeManagerTestRaw) Transact(opts *bind.TransactOpts, meth
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_FeeManagerTest *FeeManagerTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _FeeManagerTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_FeeManagerTest *FeeManagerTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_FeeManagerTest *FeeManagerTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -215,34 +195,8 @@ func (_FeeManagerTest *FeeManagerTestCaller) GetFeeConfig(opts *bind.CallOpts) (
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	var out []interface{}
-	err := _FeeManagerTest.contract.Call(opts, &out, "getFeeConfig")
-
-	outstruct := new(struct {
-		GasLimit                 *big.Int
-		TargetBlockRate          *big.Int
-		MinBaseFee               *big.Int
-		TargetGas                *big.Int
-		BaseFeeChangeDenominator *big.Int
-		MinBlockGasCost          *big.Int
-		MaxBlockGasCost          *big.Int
-		BlockGasCostStep         *big.Int
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.GasLimit = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-	outstruct.TargetBlockRate = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
-	outstruct.MinBaseFee = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-	outstruct.TargetGas = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
-	outstruct.BaseFeeChangeDenominator = *abi.ConvertType(out[4], new(*big.Int)).(**big.Int)
-	outstruct.MinBlockGasCost = *abi.ConvertType(out[5], new(*big.Int)).(**big.Int)
-	outstruct.MaxBlockGasCost = *abi.ConvertType(out[6], new(*big.Int)).(**big.Int)
-	outstruct.BlockGasCostStep = *abi.ConvertType(out[7], new(*big.Int)).(**big.Int)
-
-	return *outstruct, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -258,7 +212,8 @@ func (_FeeManagerTest *FeeManagerTestSession) GetFeeConfig() (struct {
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	return _FeeManagerTest.Contract.GetFeeConfig(&_FeeManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfig is a free data retrieval call binding the contract method 0x5fbbc0d2.
@@ -274,57 +229,54 @@ func (_FeeManagerTest *FeeManagerTestCallerSession) GetFeeConfig() (struct {
 	MaxBlockGasCost          *big.Int
 	BlockGasCostStep         *big.Int
 }, error) {
-	return _FeeManagerTest.Contract.GetFeeConfig(&_FeeManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256)
 func (_FeeManagerTest *FeeManagerTestCaller) GetFeeConfigLastChangedAt(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _FeeManagerTest.contract.Call(opts, &out, "getFeeConfigLastChangedAt")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256)
 func (_FeeManagerTest *FeeManagerTestSession) GetFeeConfigLastChangedAt() (*big.Int, error) {
-	return _FeeManagerTest.Contract.GetFeeConfigLastChangedAt(&_FeeManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetFeeConfigLastChangedAt is a free data retrieval call binding the contract method 0x9e05549a.
 //
 // Solidity: function getFeeConfigLastChangedAt() view returns(uint256)
 func (_FeeManagerTest *FeeManagerTestCallerSession) GetFeeConfigLastChangedAt() (*big.Int, error) {
-	return _FeeManagerTest.Contract.GetFeeConfigLastChangedAt(&_FeeManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_FeeManagerTest *FeeManagerTestTransactor) SetFeeConfig(opts *bind.TransactOpts, gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _FeeManagerTest.contract.Transact(opts, "setFeeConfig", gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_FeeManagerTest *FeeManagerTestSession) SetFeeConfig(gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.SetFeeConfig(&_FeeManagerTest.TransactOpts, gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetFeeConfig is a paid mutator transaction binding the contract method 0x8f10b586.
 //
 // Solidity: function setFeeConfig(uint256 gasLimit, uint256 targetBlockRate, uint256 minBaseFee, uint256 targetGas, uint256 baseFeeChangeDenominator, uint256 minBlockGasCost, uint256 maxBlockGasCost, uint256 blockGasCostStep) returns()
 func (_FeeManagerTest *FeeManagerTestTransactorSession) SetFeeConfig(gasLimit *big.Int, targetBlockRate *big.Int, minBaseFee *big.Int, targetGas *big.Int, baseFeeChangeDenominator *big.Int, minBlockGasCost *big.Int, maxBlockGasCost *big.Int, blockGasCostStep *big.Int) (*types.Transaction, error) {
-	return _FeeManagerTest.Contract.SetFeeConfig(&_FeeManagerTest.TransactOpts, gasLimit, targetBlockRate, minBaseFee, targetGas, baseFeeChangeDenominator, minBlockGasCost, maxBlockGasCost, blockGasCostStep)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

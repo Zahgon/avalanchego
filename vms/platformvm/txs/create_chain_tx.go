@@ -5,12 +5,9 @@ package txs
 
 import (
 	"errors"
-	"unicode"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/units"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 )
@@ -51,40 +48,10 @@ type CreateChainTx struct {
 }
 
 func (tx *CreateChainTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case tx.SubnetID == constants.PrimaryNetworkID:
-		return ErrCantValidatePrimaryNetwork
-	case len(tx.ChainName) > MaxNameLen:
-		return errNameTooLong
-	case tx.VMID == ids.Empty:
-		return errInvalidVMID
-	case !utils.IsSortedAndUnique(tx.FxIDs):
-		return errFxIDsNotSortedAndUnique
-	case len(tx.GenesisData) > MaxGenesisLen:
-		return errGenesisTooLong
-	}
-
-	for _, r := range tx.ChainName {
-		if r > unicode.MaxASCII || (!unicode.IsLetter(r) && !unicode.IsNumber(r) && r != ' ') {
-			return errIllegalNameCharacter
-		}
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := tx.SubnetAuth.Verify(); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *CreateChainTx) Visit(visitor Visitor) error {
-	return visitor.CreateChainTx(tx)
-}
+// already passed syntactic verification
+
+func (tx *CreateChainTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

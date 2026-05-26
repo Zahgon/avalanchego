@@ -10,8 +10,6 @@
 package codecmock
 
 import (
-	reflect "reflect"
-
 	codec "github.com/ava-labs/avalanchego/codec"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,72 +27,59 @@ type ManagerMockRecorder struct {
 }
 
 // NewManager creates a new mock instance.
-func NewManager(ctrl *gomock.Controller) *Manager {
-	mock := &Manager{ctrl: ctrl}
-	mock.recorder = &ManagerMockRecorder{mock}
-	return mock
-}
+func NewManager(ctrl *gomock.Controller) *Manager { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Manager) EXPECT() *ManagerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Marshal mocks base method.
+	return nil
 }
 
-// Marshal mocks base method.
 func (m *Manager) Marshal(version uint16, source any) ([]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Marshal", version, source)
-	ret0, _ := ret[0].([]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Marshal indicates an expected call of Marshal.
 func (mr *ManagerMockRecorder) Marshal(version, source any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Marshal", reflect.TypeOf((*Manager)(nil).Marshal), version, source)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterCodec mocks base method.
 func (m *Manager) RegisterCodec(version uint16, codec codec.Codec) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "RegisterCodec", version, codec)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RegisterCodec indicates an expected call of RegisterCodec.
 func (mr *ManagerMockRecorder) RegisterCodec(version, codec any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RegisterCodec", reflect.TypeOf((*Manager)(nil).RegisterCodec), version, codec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Size mocks base method.
 func (m *Manager) Size(version uint16, value any) (int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Size", version, value)
-	ret0, _ := ret[0].(int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Size indicates an expected call of Size.
 func (mr *ManagerMockRecorder) Size(version, value any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Size", reflect.TypeOf((*Manager)(nil).Size), version, value)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Unmarshal mocks base method.
 func (m *Manager) Unmarshal(source []byte, destination any) (uint16, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Unmarshal", source, destination)
-	ret0, _ := ret[0].(uint16)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // Unmarshal indicates an expected call of Unmarshal.
 func (mr *ManagerMockRecorder) Unmarshal(source, destination any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Unmarshal", reflect.TypeOf((*Manager)(nil).Unmarshal), source, destination)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
@@ -66,74 +65,40 @@ type health struct {
 }
 
 func New(log logging.Logger, registerer prometheus.Registerer) (Health, error) {
-	failingChecks := prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "checks_failing",
-			Help: "number of currently failing health checks",
-		},
-		[]string{CheckLabel, TagLabel},
-	)
-	return &health{
-		log:       log,
-		readiness: newWorker(log, "readiness", failingChecks),
-		health:    newWorker(log, "health", failingChecks),
-		liveness:  newWorker(log, "liveness", failingChecks),
-	}, registerer.Register(failingChecks)
+	_ = "STUB: not implemented"
+	return *new(Health), nil
 }
 
 func (h *health) RegisterReadinessCheck(name string, checker Checker, tags ...string) error {
-	return h.readiness.RegisterMonotonicCheck(name, checker, tags...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (h *health) RegisterHealthCheck(name string, checker Checker, tags ...string) error {
-	return h.health.RegisterCheck(name, checker, tags...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (h *health) RegisterLivenessCheck(name string, checker Checker, tags ...string) error {
-	return h.liveness.RegisterCheck(name, checker, tags...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (h *health) Readiness(tags ...string) (map[string]Result, bool) {
-	results, healthy := h.readiness.Results(tags...)
-	if !healthy {
-		h.log.Warn("failing check",
-			zap.String("namespace", "readiness"),
-			zap.Reflect("reason", results),
-		)
-	}
-	return results, healthy
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (h *health) Health(tags ...string) (map[string]Result, bool) {
-	results, healthy := h.health.Results(tags...)
-	if !healthy {
-		h.log.Warn("failing check",
-			zap.String("namespace", "health"),
-			zap.Reflect("reason", results),
-		)
-	}
-	return results, healthy
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (h *health) Liveness(tags ...string) (map[string]Result, bool) {
-	results, healthy := h.liveness.Results(tags...)
-	if !healthy {
-		h.log.Warn("failing check",
-			zap.String("namespace", "liveness"),
-			zap.Reflect("reason", results),
-		)
-	}
-	return results, healthy
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
-func (h *health) Start(ctx context.Context, freq time.Duration) {
-	h.readiness.Start(ctx, freq)
-	h.health.Start(ctx, freq)
-	h.liveness.Start(ctx, freq)
-}
+func (h *health) Start(ctx context.Context, freq time.Duration) { _ = "STUB: not implemented"; return }
 
-func (h *health) Stop() {
-	h.readiness.Stop()
-	h.health.Stop()
-	h.liveness.Stop()
-}
+func (h *health) Stop() { _ = "STUB: not implemented"; return }

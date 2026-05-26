@@ -18,10 +18,8 @@ func NewWalletWithOptions(
 	wallet Wallet,
 	options ...common.Option,
 ) Wallet {
-	return &walletWithOptions{
-		Wallet:  wallet,
-		options: options,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type walletWithOptions struct {
@@ -29,23 +27,15 @@ type walletWithOptions struct {
 	options []common.Option
 }
 
-func (w *walletWithOptions) Builder() Builder {
-	return NewBuilderWithOptions(
-		w.Wallet.Builder(),
-		w.options...,
-	)
-}
+func (w *walletWithOptions) Builder() Builder { _ = "STUB: not implemented"; return *new(Builder) }
 
 func (w *walletWithOptions) IssueImportTx(
 	chainID ids.ID,
 	to ethcommon.Address,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	return w.Wallet.IssueImportTx(
-		chainID,
-		to,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueExportTx(
@@ -53,29 +43,22 @@ func (w *walletWithOptions) IssueExportTx(
 	outputs []*secp256k1fx.TransferOutput,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	return w.Wallet.IssueExportTx(
-		chainID,
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueUnsignedAtomicTx(
 	utx atomic.UnsignedAtomicTx,
 	options ...common.Option,
 ) (*atomic.Tx, error) {
-	return w.Wallet.IssueUnsignedAtomicTx(
-		utx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *walletWithOptions) IssueAtomicTx(
 	tx *atomic.Tx,
 	options ...common.Option,
 ) error {
-	return w.Wallet.IssueAtomicTx(
-		tx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

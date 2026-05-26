@@ -15,6 +15,4 @@ type validatorData struct {
 	weight uint64
 }
 
-func (d validatorData) Compare(other validatorData) int {
-	return d.id.Compare(other.id)
-}
+func (d validatorData) Compare(other validatorData) int { _ = "STUB: not implemented"; return 0 }

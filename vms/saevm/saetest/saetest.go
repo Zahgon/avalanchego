@@ -9,9 +9,6 @@ package saetest
 
 import (
 	"context"
-	"math/big"
-	"slices"
-	"sync"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/state"
@@ -19,7 +16,6 @@ import (
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
 	"github.com/ava-labs/libevm/params"
-	"github.com/ava-labs/libevm/trie"
 
 	"github.com/ava-labs/avalanchego/utils/lock"
 	"github.com/ava-labs/avalanchego/vms/saevm/saedb"
@@ -35,33 +31,26 @@ type stateDBOpener struct {
 // NewStateDBOpener provides an abstraction to create a `state.StateDB`.
 // `snaps` MAY be nil.
 func NewStateDBOpener(cache state.Database, snaps *snapshot.Tree) saedb.StateDBOpener {
-	return &stateDBOpener{
-		cache: cache,
-		snaps: snaps,
-	}
+	_ = "STUB: not implemented"
+	return *new(saedb.StateDBOpener)
 }
 
 func (o *stateDBOpener) StateDB(root common.Hash) (*state.StateDB, error) {
-	return state.New(root, o.cache, o.snaps)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // TrieHasher returns an arbitrary trie hasher.
-func TrieHasher() types.TrieHasher {
-	return trie.NewStackTrie(nil)
-}
+func TrieHasher() types.TrieHasher { _ = "STUB: not implemented"; return *new(types.TrieHasher) }
 
 // ChainConfig returns [params.MergedTestChainConfig] as it includes all EIPs
 // available for testing, including post-merge upgrades. This SHOULD be used for
 // all testing.
-func ChainConfig() *params.ChainConfig {
-	return params.MergedTestChainConfig
-}
+func ChainConfig() *params.ChainConfig { _ = "STUB: not implemented"; return nil }
 
 // Rules returns the rules associated with [ChainConfig], at height and time
 // zero, and post-merge.
-func Rules() params.Rules {
-	return ChainConfig().Rules(new(big.Int), true, 0)
-}
+func Rules() params.Rules { _ = "STUB: not implemented"; return *new(params.Rules) }
 
 // An EventCollector collects all events received from an [event.Subscription].
 // All methods are safe for concurrent use.
@@ -78,51 +67,21 @@ type EventCollector[T any] struct {
 // provided function. [EventCollector.Unsubscribe] must be called to release
 // resources.
 func NewEventCollector[T any](subscribe func(chan<- T) event.Subscription) *EventCollector[T] {
-	c := &EventCollector[T]{
-		ch:   make(chan T),
-		done: make(chan struct{}),
-		cond: lock.NewCond(&sync.Mutex{}),
-	}
-	c.sub = subscribe(c.ch)
-	go c.collect()
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *EventCollector[T]) collect() {
-	defer close(c.done)
-	for x := range c.ch {
-		c.cond.L.Lock()
-		c.all = append(c.all, x)
-		c.cond.L.Unlock()
-		c.cond.Broadcast()
-	}
-}
+func (c *EventCollector[T]) collect() { _ = "STUB: not implemented"; return }
 
 // All returns all events received thus far.
-func (c *EventCollector[T]) All() []T {
-	c.cond.L.Lock()
-	defer c.cond.L.Unlock()
-	return slices.Clone(c.all)
-}
+func (c *EventCollector[T]) All() []T { _ = "STUB: not implemented"; return nil }
 
 // Unsubscribe unsubscribes from the subscription and returns the error,
 // possibly nil, received on [event.Subscription.Err].
-func (c *EventCollector[T]) Unsubscribe() error {
-	c.sub.Unsubscribe()
-	err := <-c.sub.Err()
-	close(c.ch)
-	<-c.done
-	return err
-}
+func (c *EventCollector[T]) Unsubscribe() error { _ = "STUB: not implemented"; return nil }
 
 // WaitForAtLeast blocks until at least `n` events have been received.
 func (c *EventCollector[T]) WaitForAtLeast(ctx context.Context, n int) error {
-	c.cond.L.Lock()
-	defer c.cond.L.Unlock()
-	for len(c.all) < n {
-		if c.cond.Wait(ctx) != nil {
-			return context.Cause(ctx)
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

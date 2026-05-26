@@ -5,9 +5,7 @@ package atomic
 
 import (
 	"github.com/ava-labs/avalanchego/database"
-	"github.com/ava-labs/avalanchego/database/versiondb"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils"
 )
 
 var _ SharedMemory = (*sharedMemory)(nil)
@@ -63,23 +61,8 @@ type sharedMemory struct {
 }
 
 func (sm *sharedMemory) Get(peerChainID ids.ID, keys [][]byte) ([][]byte, error) {
-	sharedID := sharedID(peerChainID, sm.thisChainID)
-	db := sm.m.GetSharedDatabase(sm.m.db, sharedID)
-	defer sm.m.ReleaseSharedDatabase(sharedID)
-
-	s := state{
-		valueDB: inbound.getValueDB(sm.thisChainID, peerChainID, db),
-	}
-
-	values := make([][]byte, len(keys))
-	for i, key := range keys {
-		elem, err := s.Value(key)
-		if err != nil {
-			return nil, err
-		}
-		values[i] = elem.Value
-	}
-	return values, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (sm *sharedMemory) Indexed(
@@ -89,77 +72,22 @@ func (sm *sharedMemory) Indexed(
 	startKey []byte,
 	limit int,
 ) ([][]byte, []byte, []byte, error) {
-	sharedID := sharedID(peerChainID, sm.thisChainID)
-	db := sm.m.GetSharedDatabase(sm.m.db, sharedID)
-	defer sm.m.ReleaseSharedDatabase(sharedID)
-
-	s := state{}
-	s.valueDB, s.indexDB = inbound.getValueAndIndexDB(sm.thisChainID, peerChainID, db)
-
-	keys, lastTrait, lastKey, err := s.getKeys(traits, startTrait, startKey, limit)
-	if err != nil {
-		return nil, nil, nil, err
-	}
-
-	values := make([][]byte, len(keys))
-	for i, key := range keys {
-		elem, err := s.Value(key)
-		if err != nil {
-			return nil, nil, nil, err
-		}
-		values[i] = elem.Value
-	}
-	return values, lastTrait, lastKey, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil, nil
 }
 
 func (sm *sharedMemory) Apply(requests map[ids.ID]*Requests, batches ...database.Batch) error {
+	_ = "STUB: not implemented"
 	// Sorting here introduces an ordering over the locks to prevent any
 	// deadlocks
-	sharedIDs := make([]ids.ID, 0, len(requests))
-	sharedOperations := make(map[ids.ID]*Requests, len(requests))
-	for peerChainID, request := range requests {
-		sharedID := sharedID(sm.thisChainID, peerChainID)
-		sharedIDs = append(sharedIDs, sharedID)
-
-		request.peerChainID = peerChainID
-		sharedOperations[sharedID] = request
-	}
-	utils.Sort(sharedIDs)
-
-	// Make sure all operations are committed atomically
-	vdb := versiondb.New(sm.m.db)
-
-	for _, sharedID := range sharedIDs {
-		req := sharedOperations[sharedID]
-
-		db := sm.m.GetSharedDatabase(vdb, sharedID)
-		defer sm.m.ReleaseSharedDatabase(sharedID)
-
-		s := state{}
-
-		// Perform any remove requests on the inbound database
-		s.valueDB, s.indexDB = inbound.getValueAndIndexDB(sm.thisChainID, req.peerChainID, db)
-		for _, removeRequest := range req.RemoveRequests {
-			if err := s.RemoveValue(removeRequest); err != nil {
-				return err
-			}
-		}
-
-		// Add Put requests to the outbound database.
-		s.valueDB, s.indexDB = outbound.getValueAndIndexDB(sm.thisChainID, req.peerChainID, db)
-		for _, putRequest := range req.PutRequests {
-			if err := s.SetValue(putRequest); err != nil {
-				return err
-			}
-		}
-	}
-
-	// Commit the operations on shared memory atomically with the contents of
-	// [batches].
-	batch, err := vdb.CommitBatch()
-	if err != nil {
-		return err
-	}
-
-	return WriteAll(batch, batches...)
+	return nil
 }
+
+// Make sure all operations are committed atomically
+
+// Perform any remove requests on the inbound database
+
+// Add Put requests to the outbound database.
+
+// Commit the operations on shared memory atomically with the contents of
+// [batches].

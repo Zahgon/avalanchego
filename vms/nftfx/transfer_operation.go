@@ -18,22 +18,10 @@ type TransferOperation struct {
 	Output TransferOutput    `serialize:"true" json:"output"`
 }
 
-func (op *TransferOperation) InitCtx(ctx *snow.Context) {
-	op.Output.OutputOwners.InitCtx(ctx)
-}
+func (op *TransferOperation) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (op *TransferOperation) Cost() (uint64, error) {
-	return op.Input.Cost()
-}
+func (op *TransferOperation) Cost() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (op *TransferOperation) Outs() []verify.State {
-	return []verify.State{&op.Output}
-}
+func (op *TransferOperation) Outs() []verify.State { _ = "STUB: not implemented"; return nil }
 
-func (op *TransferOperation) Verify() error {
-	if op == nil {
-		return errNilTransferOperation
-	}
-
-	return verify.All(&op.Input, &op.Output)
-}
+func (op *TransferOperation) Verify() error { _ = "STUB: not implemented"; return nil }

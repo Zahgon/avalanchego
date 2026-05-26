@@ -19,26 +19,10 @@ type MintOperation struct {
 	OwnedOutput OwnedOutput       `serialize:"true" json:"ownedOutput"`
 }
 
-func (op *MintOperation) InitCtx(ctx *snow.Context) {
-	op.MintOutput.OutputOwners.InitCtx(ctx)
-	op.OwnedOutput.OutputOwners.InitCtx(ctx)
-}
+func (op *MintOperation) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (op *MintOperation) Cost() (uint64, error) {
-	return op.MintInput.Cost()
-}
+func (op *MintOperation) Cost() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (op *MintOperation) Outs() []verify.State {
-	return []verify.State{
-		&op.MintOutput,
-		&op.OwnedOutput,
-	}
-}
+func (op *MintOperation) Outs() []verify.State { _ = "STUB: not implemented"; return nil }
 
-func (op *MintOperation) Verify() error {
-	if op == nil {
-		return errNilMintOperation
-	}
-
-	return verify.All(&op.MintInput, &op.MintOutput, &op.OwnedOutput)
-}
+func (op *MintOperation) Verify() error { _ = "STUB: not implemented"; return nil }

@@ -32,14 +32,13 @@ type tlsServerUpgrader struct {
 }
 
 func NewTLSServerUpgrader(config *tls.Config, invalidCerts prometheus.Counter) Upgrader {
-	return &tlsServerUpgrader{
-		config:       config,
-		invalidCerts: invalidCerts,
-	}
+	_ = "STUB: not implemented"
+	return *new(Upgrader)
 }
 
 func (t *tlsServerUpgrader) Upgrade(conn net.Conn) (ids.NodeID, net.Conn, *staking.Certificate, error) {
-	return connToIDAndCert(tls.Server(conn, t.config), t.invalidCerts)
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), *new(net.Conn), nil, nil
 }
 
 type tlsClientUpgrader struct {
@@ -48,33 +47,16 @@ type tlsClientUpgrader struct {
 }
 
 func NewTLSClientUpgrader(config *tls.Config, invalidCerts prometheus.Counter) Upgrader {
-	return &tlsClientUpgrader{
-		config:       config,
-		invalidCerts: invalidCerts,
-	}
+	_ = "STUB: not implemented"
+	return *new(Upgrader)
 }
 
 func (t *tlsClientUpgrader) Upgrade(conn net.Conn) (ids.NodeID, net.Conn, *staking.Certificate, error) {
-	return connToIDAndCert(tls.Client(conn, t.config), t.invalidCerts)
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), *new(net.Conn), nil, nil
 }
 
 func connToIDAndCert(conn *tls.Conn, invalidCerts prometheus.Counter) (ids.NodeID, net.Conn, *staking.Certificate, error) {
-	if err := conn.Handshake(); err != nil {
-		return ids.EmptyNodeID, nil, nil, err
-	}
-
-	state := conn.ConnectionState()
-	if len(state.PeerCertificates) == 0 {
-		return ids.EmptyNodeID, nil, nil, errNoCert
-	}
-
-	tlsCert := state.PeerCertificates[0]
-	peerCert, err := staking.ParseCertificate(tlsCert.Raw)
-	if err != nil {
-		invalidCerts.Inc()
-		return ids.EmptyNodeID, nil, nil, err
-	}
-
-	nodeID := ids.NodeIDFromCert(peerCert)
-	return nodeID, conn, peerCert, nil
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), *new(net.Conn), nil, nil
 }

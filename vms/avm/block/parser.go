@@ -4,7 +4,6 @@
 package block
 
 import (
-	"errors"
 	"reflect"
 
 	"github.com/ava-labs/avalanchego/codec"
@@ -30,22 +29,7 @@ type parser struct {
 	txs.Parser
 }
 
-func NewParser(fxs []fxs.Fx) (Parser, error) {
-	p, err := txs.NewParser(fxs)
-	if err != nil {
-		return nil, err
-	}
-	c := p.CodecRegistry()
-	gc := p.GenesisCodecRegistry()
-
-	err = errors.Join(
-		c.RegisterType(&StandardBlock{}),
-		gc.RegisterType(&StandardBlock{}),
-	)
-	return &parser{
-		Parser: p,
-	}, err
-}
+func NewParser(fxs []fxs.Fx) (Parser, error) { _ = "STUB: not implemented"; return *new(Parser), nil }
 
 func NewCustomParser(
 	typeToFxIndex map[reflect.Type]int,
@@ -53,34 +37,21 @@ func NewCustomParser(
 	log logging.Logger,
 	fxs []fxs.Fx,
 ) (Parser, error) {
-	p, err := txs.NewCustomParser(typeToFxIndex, clock, log, fxs)
-	if err != nil {
-		return nil, err
-	}
-	c := p.CodecRegistry()
-	gc := p.GenesisCodecRegistry()
-
-	err = errors.Join(
-		c.RegisterType(&StandardBlock{}),
-		gc.RegisterType(&StandardBlock{}),
-	)
-	return &parser{
-		Parser: p,
-	}, err
+	_ = "STUB: not implemented"
+	return *new(Parser), nil
 }
 
 func (p *parser) ParseBlock(bytes []byte) (Block, error) {
-	return parse(p.Codec(), bytes)
+	_ = "STUB: not implemented"
+	return *new(Block), nil
 }
 
 func (p *parser) ParseGenesisBlock(bytes []byte) (Block, error) {
-	return parse(p.GenesisCodec(), bytes)
+	_ = "STUB: not implemented"
+	return *new(Block), nil
 }
 
 func parse(cm codec.Manager, bytes []byte) (Block, error) {
-	var blk Block
-	if _, err := cm.Unmarshal(bytes, &blk); err != nil {
-		return nil, err
-	}
-	return blk, blk.initialize(bytes, cm)
+	_ = "STUB: not implemented"
+	return *new(Block), nil
 }

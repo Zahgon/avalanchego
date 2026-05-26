@@ -10,13 +10,10 @@ import (
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/stretchr/testify/require"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/eth/ethconfig"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/node"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/params"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/precompileconfig"
 
 	sim "github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient/simulated"
@@ -24,10 +21,8 @@ import (
 
 // NewAuth creates a new transactor with the given private key and chain ID.
 func NewAuth(t *testing.T, key *ecdsa.PrivateKey, chainID *big.Int) *bind.TransactOpts {
-	t.Helper()
-	auth, err := bind.NewKeyedTransactorWithChainID(key, chainID)
-	require.NoError(t, err)
-	return auth
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewBackendWithPrecompile creates a simulated backend with the given precompile enabled
@@ -39,34 +34,18 @@ func NewBackendWithPrecompile(
 	fundedAddrs []common.Address,
 	opts ...func(*node.Config, *ethconfig.Config),
 ) *sim.Backend {
-	t.Helper()
-	chainCfg := params.Copy(params.TestChainConfig)
-	params.GetExtra(&chainCfg).GenesisPrecompiles = extras.Precompiles{
-		precompileCfg.Key(): precompileCfg,
-	}
-
-	genesisAlloc := make(types.GenesisAlloc)
-	for _, addr := range fundedAddrs {
-		genesisAlloc[addr] = types.Account{Balance: big.NewInt(1000000000000000000)}
-	}
-
-	opts = append(opts, sim.WithChainConfig(&chainCfg))
-	return sim.NewBackend(genesisAlloc, opts...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WaitReceipt commits the simulated backend and waits for the transaction receipt.
 func WaitReceipt(t *testing.T, b *sim.Backend, tx *types.Transaction) *types.Receipt {
-	t.Helper()
-	b.Commit(true)
-	receipt, err := b.Client().TransactionReceipt(t.Context(), tx.Hash())
-	require.NoError(t, err, "failed to get transaction receipt")
-	return receipt
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WaitReceiptSuccessful commits the backend, waits for the receipt, and asserts success.
 func WaitReceiptSuccessful(t *testing.T, b *sim.Backend, tx *types.Transaction) *types.Receipt {
-	t.Helper()
-	receipt := WaitReceipt(t, b, tx)
-	require.Equal(t, types.ReceiptStatusSuccessful, receipt.Status, "transaction should succeed")
-	return receipt
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -5,7 +5,6 @@ package message
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 
@@ -33,19 +32,21 @@ type CorethLeafsRequest struct {
 }
 
 func (c CorethLeafsRequest) Handle(ctx context.Context, nodeID ids.NodeID, requestID uint32, handler RequestHandler) ([]byte, error) {
-	return handler.HandleLeafsRequest(ctx, nodeID, requestID, c)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (c CorethLeafsRequest) String() string {
-	return fmt.Sprintf(
-		"LeafsRequest(Root=%s, Account=%s, Start=%s, End=%s, Limit=%d, NodeType=%d)",
-		c.Root, c.Account, common.Bytes2Hex(c.Start), common.Bytes2Hex(c.End), c.Limit, c.NodeType,
-	)
-}
+func (c CorethLeafsRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (c CorethLeafsRequest) RootHash() common.Hash    { return c.Root }
-func (c CorethLeafsRequest) AccountHash() common.Hash { return c.Account }
-func (c CorethLeafsRequest) StartKey() []byte         { return c.Start }
-func (c CorethLeafsRequest) EndKey() []byte           { return c.End }
-func (c CorethLeafsRequest) KeyLimit() uint16         { return c.Limit }
-func (c CorethLeafsRequest) LeafType() NodeType       { return c.NodeType }
+func (c CorethLeafsRequest) RootHash() common.Hash {
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
+}
+func (c CorethLeafsRequest) AccountHash() common.Hash {
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
+}
+func (c CorethLeafsRequest) StartKey() []byte   { _ = "STUB: not implemented"; return nil }
+func (c CorethLeafsRequest) EndKey() []byte     { _ = "STUB: not implemented"; return nil }
+func (c CorethLeafsRequest) KeyLimit() uint16   { _ = "STUB: not implemented"; return 0 }
+func (c CorethLeafsRequest) LeafType() NodeType { _ = "STUB: not implemented"; return *new(NodeType) }

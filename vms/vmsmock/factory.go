@@ -10,8 +10,6 @@
 package vmsmock
 
 import (
-	reflect "reflect"
-
 	logging "github.com/ava-labs/avalanchego/utils/logging"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,28 +27,20 @@ type FactoryMockRecorder struct {
 }
 
 // NewFactory creates a new mock instance.
-func NewFactory(ctrl *gomock.Controller) *Factory {
-	mock := &Factory{ctrl: ctrl}
-	mock.recorder = &FactoryMockRecorder{mock}
-	return mock
-}
+func NewFactory(ctrl *gomock.Controller) *Factory { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Factory) EXPECT() *FactoryMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// New mocks base method.
+	return nil
 }
 
-// New mocks base method.
 func (m *Factory) New(arg0 logging.Logger) (any, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "New", arg0)
-	ret0, _ := ret[0].(any)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 // New indicates an expected call of New.
-func (mr *FactoryMockRecorder) New(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "New", reflect.TypeOf((*Factory)(nil).New), arg0)
-}
+func (mr *FactoryMockRecorder) New(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }

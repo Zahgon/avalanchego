@@ -19,10 +19,6 @@ type chainWithFinalBlock struct {
 // CurrentFinalBlock returns the current block below which blobs should not
 // be maintained anymore for reorg purposes.
 func (c *chainWithFinalBlock) CurrentFinalBlock() *types.Header {
-	lastAccepted := c.LastAcceptedBlock().Header().Number.Uint64()
-	if lastAccepted <= blocksToKeep {
-		return nil
-	}
-
-	return c.GetHeaderByNumber(lastAccepted - blocksToKeep)
+	_ = "STUB: not implemented"
+	return nil
 }

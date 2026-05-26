@@ -6,7 +6,6 @@ package snowtest
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
@@ -25,32 +24,8 @@ type Decidable struct {
 	Status  Status
 }
 
-func (d *Decidable) ID() ids.ID {
-	return d.IDV
-}
+func (d *Decidable) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (d *Decidable) Accept(context.Context) error {
-	if d.Status == Rejected {
-		return fmt.Errorf("%w from %s to %s",
-			ErrInvalidStateTransition,
-			Rejected,
-			Accepted,
-		)
-	}
+func (d *Decidable) Accept(context.Context) error { _ = "STUB: not implemented"; return nil }
 
-	d.Status = Accepted
-	return d.AcceptV
-}
-
-func (d *Decidable) Reject(context.Context) error {
-	if d.Status == Accepted {
-		return fmt.Errorf("%w from %s to %s",
-			ErrInvalidStateTransition,
-			Accepted,
-			Rejected,
-		)
-	}
-
-	d.Status = Rejected
-	return d.RejectV
-}
+func (d *Decidable) Reject(context.Context) error { _ = "STUB: not implemented"; return nil }

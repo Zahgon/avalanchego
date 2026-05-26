@@ -4,8 +4,6 @@
 package avm
 
 import (
-	"encoding/json"
-
 	"github.com/ava-labs/avalanchego/vms/avm/network"
 )
 
@@ -20,11 +18,6 @@ type Config struct {
 }
 
 func ParseConfig(configBytes []byte) (Config, error) {
-	if len(configBytes) == 0 {
-		return DefaultConfig, nil
-	}
-
-	config := DefaultConfig
-	err := json.Unmarshal(configBytes, &config)
-	return config, err
+	_ = "STUB: not implemented"
+	return *new(Config), nil
 }

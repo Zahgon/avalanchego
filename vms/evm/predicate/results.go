@@ -4,8 +4,6 @@
 package predicate
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 
 	"github.com/ava-labs/avalanchego/codec"
@@ -59,59 +57,29 @@ type (
 
 // ParseBlockResults parses bytes into predicate results.
 func ParseBlockResults(b []byte) (BlockResults, error) {
-	var encodedResults encodedBlockResults
-	_, err := resultsCodec.Unmarshal(b, &encodedResults)
-	if err != nil {
-		return BlockResults{}, fmt.Errorf("failed to unmarshal predicate results: %w", err)
-	}
-
-	// Convert encoded representation into in-memory representation
-	results := make(BlockResults, len(encodedResults))
-	for txHash, addrToBytes := range encodedResults {
-		decoded := make(PrecompileResults, len(addrToBytes))
-		for addr, bs := range addrToBytes {
-			decoded[addr] = set.BitsFromBytes(bs)
-		}
-		results[txHash] = decoded
-	}
-
-	return results, nil
+	_ = "STUB: not implemented"
+	return *new(BlockResults), nil
 }
+
+// Convert encoded representation into in-memory representation
 
 // Get returns the predicate results for txHash from precompile address.
 func (b *BlockResults) Get(txHash common.Hash, address common.Address) set.Bits {
-	if result, ok := (*b)[txHash][address]; ok {
-		return result
-	}
-	return set.NewBits()
+	_ = "STUB: not implemented"
+	return *new(set.Bits)
 }
 
 // Set sets the predicate results for the given txHash. Results are overwritten,
 // not merged.
 func (b *BlockResults) Set(txHash common.Hash, txResults PrecompileResults) {
-	if len(txResults) == 0 {
-		delete(*b, txHash)
-		return
-	}
-
-	if *b == nil {
-		*b = make(map[common.Hash]PrecompileResults)
-	}
-	(*b)[txHash] = txResults
+	_ = "STUB: not implemented"
+	return
 }
 
 // Bytes marshals the predicate results.
 func (b *BlockResults) Bytes() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// Convert to results representation before marshaling to avoid serializing
 	// set.Bits directly, which is not supported by the codec.
-	results := make(encodedBlockResults, len(*b))
-	for txHash, addrToBits := range *b {
-		encoded := make(map[common.Address][]byte, len(addrToBits))
-		for addr, bits := range addrToBits {
-			encoded[addr] = bits.Bytes()
-		}
-		results[txHash] = encoded
-	}
-
-	return resultsCodec.Marshal(version, results)
+	return nil, nil
 }

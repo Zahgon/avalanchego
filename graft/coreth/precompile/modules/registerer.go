@@ -6,7 +6,6 @@ package modules
 import (
 	"errors"
 	"fmt"
-	"sort"
 
 	"github.com/ava-labs/libevm/common"
 
@@ -39,65 +38,26 @@ var (
 )
 
 // ReservedAddress returns true if [addr] is in a reserved range for custom precompiles
-func ReservedAddress(addr common.Address) bool {
-	for _, reservedRange := range reservedRanges {
-		if reservedRange.Contains(addr) {
-			return true
-		}
-	}
-
-	return false
-}
+func ReservedAddress(addr common.Address) bool { _ = "STUB: not implemented"; return false }
 
 // RegisterModule registers a stateful precompile module
-func RegisterModule(stm Module) error {
-	address := stm.Address
-	key := stm.ConfigKey
+func RegisterModule(stm Module) error { _ = "STUB: not implemented"; return nil }
 
-	if address == constants.BlackholeAddr {
-		return fmt.Errorf("%w: address %s ", errBlackholeAddress, address)
-	}
-	if !ReservedAddress(address) {
-		return fmt.Errorf("%w: address %s ", errAddressNotInReservedRange, address)
-	}
-
-	for _, registeredModule := range registeredModules {
-		if registeredModule.ConfigKey == key {
-			return fmt.Errorf("name %s already used by a stateful precompile", key)
-		}
-		if registeredModule.Address == address {
-			return fmt.Errorf("address %s already used by a stateful precompile", address)
-		}
-	}
-	// sort by address to ensure deterministic iteration
-	registeredModules = insertSortedByAddress(registeredModules, stm)
-	return nil
-}
+// sort by address to ensure deterministic iteration
 
 func GetPrecompileModuleByAddress(address common.Address) (Module, bool) {
-	for _, stm := range registeredModules {
-		if stm.Address == address {
-			return stm, true
-		}
-	}
-	return Module{}, false
+	_ = "STUB: not implemented"
+	return *new(Module), false
 }
 
 func GetPrecompileModule(key string) (Module, bool) {
-	for _, stm := range registeredModules {
-		if stm.ConfigKey == key {
-			return stm, true
-		}
-	}
-	return Module{}, false
+	_ = "STUB: not implemented"
+	return *new(Module), false
 }
 
-func RegisteredModules() []Module {
-	return registeredModules
-}
+func RegisteredModules() []Module { _ = "STUB: not implemented"; return nil }
 
 func insertSortedByAddress(data []Module, stm Module) []Module {
-	data = append(data, stm)
-	sort.Sort(moduleArray(data))
-	return data
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -30,23 +30,14 @@ type snowmanBlock struct {
 	children map[ids.ID]Block
 }
 
-func (n *snowmanBlock) AddChild(child Block) {
-	childID := child.ID()
+func (n *snowmanBlock) AddChild(child Block) { _ = "STUB: not implemented"; return }
 
-	// if the snowball instance is nil, this is the first child. So the instance
-	// should be initialized.
-	if n.sb == nil {
-		n.sb = snowball.NewTree(n.t.Factory, n.t.params, childID)
-		n.children = make(map[ids.ID]Block)
-	} else {
-		n.sb.Add(childID)
-	}
-
-	n.children[childID] = child
-}
+// if the snowball instance is nil, this is the first child. So the instance
+// should be initialized.
 
 func (n *snowmanBlock) Decided() bool {
+	_ = "STUB: not implemented"
 	// if the block is nil, then this is the genesis which is defined as
 	// accepted
-	return n.blk == nil || n.blk.Height() <= n.t.lastAcceptedHeight
+	return false
 }

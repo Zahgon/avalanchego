@@ -4,8 +4,6 @@
 package rewardmanager
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
@@ -42,31 +40,25 @@ func init() {
 // MakeConfig returns a new precompile config instance.
 // This is required for Marshal/Unmarshal the precompile config.
 func (*configurator) MakeConfig() precompileconfig.Config {
-	return new(Config)
+	_ = "STUB: not implemented"
+	return *
+
+	// Configure configures [state] with the given [cfg] precompileconfig.
+	// This function is called by the EVM once per precompile contract activation.
+	// You can use this function to set up your precompile contract's initial state,
+	// by using the [cfg] config and [state] stateDB.
+	new(precompileconfig.Config)
 }
 
-// Configure configures [state] with the given [cfg] precompileconfig.
-// This function is called by the EVM once per precompile contract activation.
-// You can use this function to set up your precompile contract's initial state,
-// by using the [cfg] config and [state] stateDB.
 func (*configurator) Configure(chainConfig precompileconfig.ChainConfig, cfg precompileconfig.Config, state contract.StateDB, blockContext contract.ConfigurationBlockContext) error {
-	config, ok := cfg.(*Config)
-	if !ok {
-		return fmt.Errorf("expected config type %T, got %T: %v", &Config{}, cfg, cfg)
-	}
-	// configure the RewardManager with the given initial configuration
-
-	switch {
-	case config.InitialRewardConfig != nil:
-		config.InitialRewardConfig.Configure(state)
-	case chainConfig.AllowedFeeRecipients():
-		// configure the RewardManager according to chainConfig
-		EnableAllowFeeRecipients(state)
-	default:
-		// chainConfig does not have any reward address
-		// if chainConfig does not enable fee recipients
-		// default to disabling rewards
-		DisableFeeRewards(state)
-	}
-	return config.AllowListConfig.Configure(chainConfig, ContractAddress, state, blockContext)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// configure the RewardManager with the given initial configuration
+
+// configure the RewardManager according to chainConfig
+
+// chainConfig does not have any reward address
+// if chainConfig does not enable fee recipients
+// default to disabling rewards

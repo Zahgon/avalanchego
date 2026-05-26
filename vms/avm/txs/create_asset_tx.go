@@ -22,19 +22,10 @@ type CreateAssetTx struct {
 	States       []*InitialState `serialize:"true" json:"initialStates"`
 }
 
-func (t *CreateAssetTx) InitCtx(ctx *snow.Context) {
-	for _, state := range t.States {
-		state.InitCtx(ctx)
-	}
-	t.BaseTx.InitCtx(ctx)
-}
+func (t *CreateAssetTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InitialStates track which virtual machines, and the initial state of these
 // machines, this asset uses. The returned array should not be modified.
-func (t *CreateAssetTx) InitialStates() []*InitialState {
-	return t.States
-}
+func (t *CreateAssetTx) InitialStates() []*InitialState { _ = "STUB: not implemented"; return nil }
 
-func (t *CreateAssetTx) Visit(v Visitor) error {
-	return v.CreateAssetTx(t)
-}
+func (t *CreateAssetTx) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

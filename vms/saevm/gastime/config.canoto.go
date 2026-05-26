@@ -42,43 +42,14 @@ type canotoData_GasPriceConfig struct {
 
 // CanotoSpec returns the specification of this canoto message.
 func (*GasPriceConfig) CanotoSpec(...reflect.Type) *canoto.Spec {
-	var zero GasPriceConfig
-	s := &canoto.Spec{
-		Name: "GasPriceConfig",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber: canoto__GasPriceConfig__TargetToExcessScaling,
-				Name:        "TargetToExcessScaling",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.TargetToExcessScaling),
-			},
-			{
-				FieldNumber: canoto__GasPriceConfig__MinPrice,
-				Name:        "MinPrice",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.MinPrice),
-			},
-			{
-				FieldNumber: canoto__GasPriceConfig__StaticPricing,
-				Name:        "StaticPricing",
-				OneOf:       "",
-				TypeBool:    true,
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *GasPriceConfig) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *GasPriceConfig) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -87,60 +58,8 @@ func (c *GasPriceConfig) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *GasPriceConfig) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = GasPriceConfig{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__GasPriceConfig__TargetToExcessScaling:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.TargetToExcessScaling); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.TargetToExcessScaling) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__GasPriceConfig__MinPrice:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.MinPrice); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.MinPrice) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__GasPriceConfig__StaticPricing:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadBool(&r, &c.StaticPricing); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.StaticPricing) {
-				return canoto.ErrZeroValue
-			}
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
 
@@ -152,26 +71,16 @@ func (c *GasPriceConfig) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
 func (c *GasPriceConfig) ValidCanoto() bool {
-	return true
+	_ = "STUB: not implemented"
+
+	// CalculateCanotoCache populates size and OneOf caches based on the current
+	// values in the struct.
+	//
+	// It is not safe to copy this struct concurrently.
+	return false
 }
 
-// CalculateCanotoCache populates size and OneOf caches based on the current
-// values in the struct.
-//
-// It is not safe to copy this struct concurrently.
-func (c *GasPriceConfig) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.TargetToExcessScaling) {
-		size += uint64(len(canoto__GasPriceConfig__TargetToExcessScaling__tag)) + canoto.SizeUint(c.TargetToExcessScaling)
-	}
-	if !canoto.IsZero(c.MinPrice) {
-		size += uint64(len(canoto__GasPriceConfig__MinPrice__tag)) + canoto.SizeUint(c.MinPrice)
-	}
-	if !canoto.IsZero(c.StaticPricing) {
-		size += uint64(len(canoto__GasPriceConfig__StaticPricing__tag)) + canoto.SizeBool
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *GasPriceConfig) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -180,23 +89,14 @@ func (c *GasPriceConfig) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *GasPriceConfig) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *GasPriceConfig) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *GasPriceConfig) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *GasPriceConfig) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -208,17 +108,6 @@ func (c *GasPriceConfig) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *GasPriceConfig) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.TargetToExcessScaling) {
-		canoto.Append(&w, canoto__GasPriceConfig__TargetToExcessScaling__tag)
-		canoto.AppendUint(&w, c.TargetToExcessScaling)
-	}
-	if !canoto.IsZero(c.MinPrice) {
-		canoto.Append(&w, canoto__GasPriceConfig__MinPrice__tag)
-		canoto.AppendUint(&w, c.MinPrice)
-	}
-	if !canoto.IsZero(c.StaticPricing) {
-		canoto.Append(&w, canoto__GasPriceConfig__StaticPricing__tag)
-		canoto.AppendBool(&w, true)
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }

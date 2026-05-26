@@ -5,12 +5,9 @@ package utilstest
 
 import (
 	"crypto/ecdsa"
-	"crypto/rand"
 	"testing"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/crypto"
-	"github.com/stretchr/testify/require"
 )
 
 // Key contains an ecdsa private key field as well as an address field
@@ -21,12 +18,4 @@ type Key struct {
 }
 
 // NewKey generates a new key pair and returns a pointer to a [Key].
-func NewKey(t *testing.T) *Key {
-	t.Helper()
-	privateKeyECDSA, err := ecdsa.GenerateKey(crypto.S256(), rand.Reader)
-	require.NoError(t, err)
-	return &Key{
-		Address:    crypto.PubkeyToAddress(privateKeyECDSA.PublicKey),
-		PrivateKey: privateKeyECDSA,
-	}
-}
+func NewKey(t *testing.T) *Key { _ = "STUB: not implemented"; return nil }

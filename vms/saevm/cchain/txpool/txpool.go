@@ -8,26 +8,21 @@ package txpool
 import (
 	"context"
 	"errors"
-	"fmt"
 	"iter"
-	"slices"
 	"sync"
 
 	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
 	"github.com/ava-labs/libevm/libevm"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/params"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/customtypes"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/utils/heap"
 	"github.com/ava-labs/avalanchego/utils/lock"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/utils/setmap"
-	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
 	"github.com/ava-labs/avalanchego/vms/saevm/cchain/tx"
 	"github.com/ava-labs/avalanchego/vms/saevm/hook"
 )
@@ -74,90 +69,24 @@ func New(
 	chain Backend,
 	maxSize int,
 ) (*Txpool, error) {
-	if maxSize <= 0 {
-		return nil, fmt.Errorf("maxSize must be > 0: %d", maxSize)
-	}
-
-	// executed is unbuffered to guarantee that the pool never holds a reference
-	// to state older than the last-settled state. SAE does not guarantee that
-	// such a state exists on disk anymore.
-	executed := make(chan core.ChainHeadEvent)
-	sub := chain.SubscribeChainHeadEvent(executed)
-
-	state, err := chain.LastExecutedState()
-	if err != nil {
-		sub.Unsubscribe()
-		return nil, fmt.Errorf("getting last executed state: %w", err)
-	}
-
-	// state must be populated after [Backend.SubscribeChainHeadEvent] is called
-	// to ensure we do not miss an update.
-	p := &Txpool{
-		Pending: pending,
-		snowCtx: snowCtx,
-		sub:     sub,
-		maxSize: maxSize,
-		state:   state,
-	}
-	p.wg.Go(func() {
-		p.updateState(chainConfig, chain, executed)
-	})
-	return p, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// executed is unbuffered to guarantee that the pool never holds a reference
+// to state older than the last-settled state. SAE does not guarantee that
+// such a state exists on disk anymore.
+
+// state must be populated after [Backend.SubscribeChainHeadEvent] is called
+// to ensure we do not miss an update.
 
 func (p *Txpool) updateState(
 	chainConfig *params.ChainConfig,
 	chain Backend,
 	executed <-chan core.ChainHeadEvent,
 ) {
-	sub := p.sub
-	defer sub.Unsubscribe()
-	for {
-		select {
-		case e := <-executed:
-			var (
-				b   = e.Block
-				log = p.snowCtx.Log.With(
-					zap.Stringer("blockHash", b.Hash()),
-					zap.Uint64("blockNumber", b.NumberU64()),
-				)
-			)
-
-			inputs, err := inputUTXOs(b, chainConfig)
-			if err != nil {
-				log.Error("unable to get inputs from block",
-					zap.Error(err),
-				)
-				continue
-			}
-
-			newState, err := chain.LastExecutedState()
-			if err != nil {
-				log.Error("unable to get latest executed state",
-					zap.Error(err),
-				)
-				continue
-			}
-
-			p.stateLock.Lock()
-			p.lock.Lock()
-
-			p.removeConflicts(inputs)
-			p.state = newState
-
-			p.lock.Unlock()
-			p.stateLock.Unlock()
-
-			log.Debug("updated to new state")
-		case err := <-sub.Err():
-			if err != nil {
-				p.snowCtx.Log.Error("pool subscription failed",
-					zap.Error(err),
-				)
-			}
-			return
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 var (
@@ -178,92 +107,24 @@ var (
 // transaction is evicted in favor of a higher-fee incoming transaction.
 //
 // Returns [ErrAlreadyKnown] if tx is already in the pool.
-func (p *Txpool) Add(tx *tx.Tx) error {
-	if err := tx.SanityCheck(p.snowCtx); err != nil {
-		return fmt.Errorf("%w: %w", errSanityCheck, err)
-	}
+func (p *Txpool) Add(tx *tx.Tx) error { _ = "STUB: not implemented"; return nil }
 
-	t, err := newTxData(tx, p.snowCtx.AVAXAssetID)
-	if err != nil {
-		return err
-	}
+// TODO:(StephenButtolph): Should we enforce a maximum gas amount here?
 
-	// TODO:(StephenButtolph): Should we enforce a maximum gas amount here?
-
-	// We must verify the tx against a state that is at least as high as the
-	// last block processed by the pool subscription.
-	//
-	// Verifying against an older state risks admitting a tx that would never
-	// be evicted.
-	p.stateLock.RLock()
-	defer p.stateLock.RUnlock()
-
-	if err := tx.VerifyCredentials(p.snowCtx.SharedMemory); err != nil {
-		return fmt.Errorf("%w: %w", errVerifyCredentials, err)
-	}
-	if err := verifyOp(p.state, t.op); err != nil {
-		return fmt.Errorf("%w: %w", errVerifyState, err)
-	}
-
-	p.lock.Lock()
-	defer p.lock.Unlock()
-
-	if _, ok := p.txs.Get(t.id); ok {
-		return ErrAlreadyKnown
-	}
-
-	for input := range t.inputs {
-		if conflictID, ok := p.utxos.GetKey(input); ok {
-			conflict, _ := p.txs.Get(conflictID)
-			if t.op.GasFeeCap.Cmp(&conflict.op.GasFeeCap) <= 0 {
-				return errInsufficientFee
-			}
-		}
-	}
-	p.removeConflicts(t.inputs)
-
-	if p.txs.Len() >= p.maxSize {
-		_, cheap, _ := p.txs.Peek()
-		if t.op.GasFeeCap.Cmp(&cheap.op.GasFeeCap) <= 0 {
-			return errInsufficientFee
-		}
-		p.removeConflicts(cheap.inputs)
-	}
-
-	p.add(t)
-	return nil
-}
+// We must verify the tx against a state that is at least as high as the
+// last block processed by the pool subscription.
+//
+// Verifying against an older state risks admitting a tx that would never
+// be evicted.
 
 // Close releases all allocated resources.
-func (p *Txpool) Close() {
-	p.sub.Unsubscribe()
-	p.wg.Wait()
-}
+func (p *Txpool) Close() { _ = "STUB: not implemented"; return }
 
 // inputUTXOs returns the union of all UTXO IDs consumed by transactions in b,
 // covering both EVM-native account+nonce inputs and cross-chain inputs.
 func inputUTXOs(b *types.Block, c *params.ChainConfig) (set.Set[ids.ID], error) {
-	var (
-		ethTxs = b.Transactions()
-		signer = blocks.Signer(b, c)
-		inputs = set.NewSet[ids.ID](len(ethTxs))
-	)
-	for i, t := range ethTxs {
-		sender, err := signer.Sender(t)
-		if err != nil {
-			return nil, fmt.Errorf("getting sender of tx %s (%d): %w", t.Hash(), i, err)
-		}
-		inputs.Add(tx.AccountInputID(sender, t.Nonce()))
-	}
-
-	avaxTxs, err := tx.ParseSlice(customtypes.BlockExtData(b))
-	if err != nil {
-		return nil, fmt.Errorf("parsing txs: %w", err)
-	}
-	for _, t := range avaxTxs {
-		inputs.Union(t.InputIDs())
-	}
-	return inputs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var (
@@ -272,17 +133,7 @@ var (
 )
 
 // verifyOp verifies that op's debits are valid against state.
-func verifyOp(state libevm.StateReader, op hook.Op) error {
-	for address, debit := range op.Burn {
-		if nonce := state.GetNonce(address); nonce != debit.Nonce {
-			return fmt.Errorf("%w: address %s has nonce %d but needs %d", errNonceMismatch, address, nonce, debit.Nonce)
-		}
-		if balance := state.GetBalance(address); balance.Lt(&debit.MinBalance) {
-			return fmt.Errorf("%w: address %s has balance %s but needs %s", errInsufficientFunds, address, balance.String(), debit.MinBalance.String())
-		}
-	}
-	return nil
-}
+func verifyOp(state libevm.StateReader, op hook.Op) error { _ = "STUB: not implemented"; return nil }
 
 // Pending stores transactions that are eligible for inclusion in a future
 // block, indexed for fast conflict lookup and ordered by gas price.
@@ -298,82 +149,33 @@ type Pending struct {
 }
 
 // NewPending constructs an empty set of [Pending] transactions.
-func NewPending() *Pending {
-	p := &Pending{
-		txs: heap.NewMap[ids.ID, *txData](func(a, b *txData) bool {
-			return a.op.GasFeeCap.Lt(&b.op.GasFeeCap) // txs is a min-heap
-		}),
-		utxos: setmap.New[ids.ID, ids.ID](),
-	}
-	p.cond = lock.NewCond(p.lock.RLocker())
-	return p
-}
+func NewPending() *Pending { _ = "STUB: not implemented"; return nil }
+
+// txs is a min-heap
 
 // Iter returns an iterator over the pool's transactions in decreasing gas
 // price order.
 func (p *Pending) Iter() iter.Seq[*tx.Tx] {
-	p.lock.RLock()
+	_ = "STUB: not implemented"
+
 	// TODO:(StephenButtolph): Iteration shouldn't copy the pool.
-	values := heap.MapValues(p.txs)
-	p.lock.RUnlock()
-
-	slices.SortFunc(values, func(a, b *txData) int {
-		return -a.op.GasFeeCap.Cmp(&b.op.GasFeeCap)
-	})
-
-	return func(yield func(*tx.Tx) bool) {
-		for _, t := range values {
-			if !yield(t.tx) {
-				return
-			}
-		}
-	}
-}
-
-// Len returns the number of transactions currently in the pool.
-func (p *Pending) Len() int {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.txs.Len()
-}
-
-// Has reports whether txID is in the pool.
-func (p *Pending) Has(txID ids.ID) bool {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	_, ok := p.txs.Get(txID)
-	return ok
-}
-
-// AwaitTxs blocks until at least one transaction is in the pool or ctx is
-// cancelled.
-func (p *Pending) AwaitTxs(ctx context.Context) error {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	for p.txs.Len() == 0 {
-		if err := p.cond.Wait(ctx); err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
-func (p *Pending) removeConflicts(utxos set.Set[ids.ID]) {
-	for _, removed := range p.utxos.DeleteOverlapping(utxos) {
-		p.txs.Remove(removed.Key)
-	}
-}
+// Len returns the number of transactions currently in the pool.
+func (p *Pending) Len() int { _ = "STUB: not implemented"; return 0 }
+
+// Has reports whether txID is in the pool.
+func (p *Pending) Has(txID ids.ID) bool { _ = "STUB: not implemented"; return false }
+
+// AwaitTxs blocks until at least one transaction is in the pool or ctx is
+// cancelled.
+func (p *Pending) AwaitTxs(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
+
+func (p *Pending) removeConflicts(utxos set.Set[ids.ID]) { _ = "STUB: not implemented"; return }
 
 // add inserts t into the pool. It assumes there are no existing conflicts.
-func (p *Pending) add(t *txData) {
-	p.utxos.Put(t.id, t.inputs)
-	p.txs.Push(t.id, t)
-	p.cond.Broadcast()
-}
+func (p *Pending) add(t *txData) { _ = "STUB: not implemented"; return }
 
 // txData contains the values from [tx.Tx] that the pool uses for ordering and
 // conflict detection.
@@ -387,14 +189,6 @@ type txData struct {
 var errAsOp = errors.New("as op")
 
 func newTxData(tx *tx.Tx, avaxAssetID ids.ID) (*txData, error) {
-	op, err := tx.AsOp(avaxAssetID)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errAsOp, err)
-	}
-	return &txData{
-		id:     op.ID,
-		tx:     tx,
-		inputs: tx.InputIDs(),
-		op:     op,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -14,14 +14,13 @@ type workerPool struct {
 }
 
 func (wp *workerPool) Done() {
+	_ = "STUB: not implemented"
 	// Done is guaranteed to only be called after all work is already complete,
 	// so we call Wait for goroutines to finish before returning.
-	wp.BoundedWorkers.Wait()
+	return
 }
 
 func WithConcurrentWorkers(prefetchers int) state.PrefetcherOption {
-	pool := &workerPool{
-		BoundedWorkers: utils.NewBoundedWorkers(prefetchers),
-	}
-	return state.WithWorkerPools(func() state.WorkerPool { return pool })
+	_ = "STUB: not implemented"
+	return *new(state.PrefetcherOption)
 }

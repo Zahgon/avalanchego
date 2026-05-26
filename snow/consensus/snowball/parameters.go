@@ -5,7 +5,6 @@ package snowball
 
 import (
 	"errors"
-	"fmt"
 	"time"
 )
 
@@ -90,37 +89,14 @@ type Parameters struct {
 //
 // Note: K/2 < K implies that 0 <= K/2, so we don't need an explicit check that
 // AlphaPreference is positive.
-func (p Parameters) Verify() error {
-	switch {
-	case p.AlphaPreference <= p.K/2:
-		return fmt.Errorf("%w: k = %d, alphaPreference = %d: fails the condition that: k/2 < alphaPreference", ErrParametersInvalid, p.K, p.AlphaPreference)
-	case p.AlphaConfidence < p.AlphaPreference:
-		return fmt.Errorf("%w: alphaPreference = %d, alphaConfidence = %d: fails the condition that: alphaPreference <= alphaConfidence", ErrParametersInvalid, p.AlphaPreference, p.AlphaConfidence)
-	case p.K < p.AlphaConfidence:
-		return fmt.Errorf("%w: k = %d, alphaConfidence = %d: fails the condition that: alphaConfidence <= k", ErrParametersInvalid, p.K, p.AlphaConfidence)
-	case p.AlphaConfidence == 3 && p.AlphaPreference == 28:
-		return fmt.Errorf("%w: alphaConfidence = %d, alphaPreference = %d: fails the condition that: alphaPreference <= alphaConfidence\n%s", ErrParametersInvalid, p.AlphaConfidence, p.AlphaPreference, errMsg)
-	case p.ConcurrentRepolls <= 0:
-		return fmt.Errorf("%w: concurrentRepolls = %d: fails the condition that: 0 < concurrentRepolls", ErrParametersInvalid, p.ConcurrentRepolls)
-	case p.ConcurrentRepolls > p.Beta:
-		return fmt.Errorf("%w: concurrentRepolls = %d, beta = %d: fails the condition that: concurrentRepolls <= beta", ErrParametersInvalid, p.ConcurrentRepolls, p.Beta)
-	case p.OptimalProcessing <= 0:
-		return fmt.Errorf("%w: optimalProcessing = %d: fails the condition that: 0 < optimalProcessing", ErrParametersInvalid, p.OptimalProcessing)
-	case p.MaxOutstandingItems <= 0:
-		return fmt.Errorf("%w: maxOutstandingItems = %d: fails the condition that: 0 < maxOutstandingItems", ErrParametersInvalid, p.MaxOutstandingItems)
-	case p.MaxItemProcessingTime <= 0:
-		return fmt.Errorf("%w: maxItemProcessingTime = %d: fails the condition that: 0 < maxItemProcessingTime", ErrParametersInvalid, p.MaxItemProcessingTime)
-	default:
-		return nil
-	}
-}
+func (p Parameters) Verify() error { _ = "STUB: not implemented"; return nil }
 
 func (p Parameters) MinPercentConnectedHealthy() float64 {
+	_ = "STUB: not implemented"
 	// AlphaConfidence is used here to ensure that the node can still feasibly
 	// accept operations. If AlphaPreference were used, committing could be
 	// extremely unlikely to happen, even while healthy.
-	alphaRatio := float64(p.AlphaConfidence) / float64(p.K)
-	return alphaRatio*(1-MinPercentConnectedBuffer) + MinPercentConnectedBuffer
+	return 0
 }
 
 type terminationCondition struct {
@@ -129,10 +105,6 @@ type terminationCondition struct {
 }
 
 func newSingleTerminationCondition(alphaConfidence int, beta int) []terminationCondition {
-	return []terminationCondition{
-		{
-			alphaConfidence: alphaConfidence,
-			beta:            beta,
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

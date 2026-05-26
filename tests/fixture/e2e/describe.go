@@ -3,8 +3,6 @@
 
 package e2e
 
-import "github.com/onsi/ginkgo/v2"
-
 const (
 	// For label usage in ginkgo invocation, see: https://onsi.github.io/ginkgo/#spec-labels
 
@@ -15,25 +13,16 @@ const (
 )
 
 // DescribeXChain annotates the tests for X-Chain.
-func DescribeXChain(text string, args ...interface{}) bool {
-	args = append(args, ginkgo.Label("x"))
-	return ginkgo.Describe("[X-Chain] "+text, args...)
-}
+func DescribeXChain(text string, args ...interface{}) bool { _ = "STUB: not implemented"; return false }
 
 // DescribeXChainSerial annotates serial tests for X-Chain.
 func DescribeXChainSerial(text string, args ...interface{}) bool {
-	args = append(args, ginkgo.Serial)
-	return DescribeXChain(text, args...)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // DescribePChain annotates the tests for P-Chain.
-func DescribePChain(text string, args ...interface{}) bool {
-	args = append(args, ginkgo.Label("p"))
-	return ginkgo.Describe("[P-Chain] "+text, args...)
-}
+func DescribePChain(text string, args ...interface{}) bool { _ = "STUB: not implemented"; return false }
 
 // DescribeCChain annotates the tests for C-Chain.
-func DescribeCChain(text string, args ...interface{}) bool {
-	args = append(args, ginkgo.Label("c"))
-	return ginkgo.Describe("[C-Chain] "+text, args...)
-}
+func DescribeCChain(text string, args ...interface{}) bool { _ = "STUB: not implemented"; return false }

@@ -7,13 +7,10 @@ package simplex
 
 import (
 	"context"
-	"encoding/binary"
 	"errors"
-	"fmt"
 	"sync/atomic"
 
 	"github.com/ava-labs/simplex"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
@@ -66,223 +63,64 @@ type Storage struct {
 // finalizations according to their sequence numbers.
 // The VM is assumed to be initialized before calling this function.
 func newStorage(ctx context.Context, config *Config, qcDeserializer *QCDeserializer, blockTracker *blockTracker) (*Storage, error) {
-	genesisBlock, err := getGenesisBlock(ctx, config, blockTracker)
-	if err != nil {
-		return nil, err
-	}
-
-	s := &Storage{
-		db:           config.DB,
-		genesisBlock: genesisBlock,
-		vm:           config.VM,
-		deserializer: qcDeserializer,
-		blockTracker: blockTracker,
-		log:          config.Log,
-	}
-
-	lastAccepted, err := config.VM.LastAccepted(ctx)
-	if err != nil {
-		return nil, err
-	}
-	lastAcceptedBlock, err := config.VM.GetBlock(ctx, lastAccepted)
-	if err != nil {
-		return nil, err
-	}
-	s.numBlocks.Store(lastAcceptedBlock.Height() + 1)
-
-	// set the last accepted digest by retrieving the last accepted simplex block
-	lastAcceptedSimplexBlock, _, err := s.Retrieve(lastAcceptedBlock.Height())
-	if err != nil {
-		return nil, fmt.Errorf("failed to retrieve last accepted simplex block: %w", err)
-	}
-	s.lastIndexedDigest = lastAcceptedSimplexBlock.BlockHeader().Digest
-
-	return s, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (s *Storage) NumBlocks() uint64 {
-	return s.numBlocks.Load()
-}
+// set the last accepted digest by retrieving the last accepted simplex block
+
+func (s *Storage) NumBlocks() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Retrieve returns the block and finalization at [seq].
 // If [seq] is not found, returns simplex.ErrBlockNotFound.
 func (s *Storage) Retrieve(seq uint64) (simplex.VerifiedBlock, simplex.Finalization, error) {
+	_ = "STUB: not implemented"
 	// The genesis block doesn't have a finalization, so we need to handle it specifically.
-	if seq == 0 {
-		return s.genesisBlock, simplex.Finalization{}, nil
-	}
-
-	block, err := getBlock(context.TODO(), s.vm, seq)
-	if err != nil {
-		if errors.Is(err, database.ErrNotFound) {
-			return nil, simplex.Finalization{}, simplex.ErrBlockNotFound
-		}
-		s.log.Error("Error retrieving block from storage", zap.Uint64("seq", seq), zap.Error(err))
-		return nil, simplex.Finalization{}, err
-	}
-
-	finalization, err := s.retrieveFinalization(seq)
-	if err != nil {
-		return nil, simplex.Finalization{}, err
-	}
-
-	blacklist, err := s.retrieveBlacklist(seq)
-	if err != nil {
-		return nil, simplex.Finalization{}, err
-	}
-
-	vb, err := newBlock(finalization.Finalization.ProtocolMetadata, blacklist, block, s.blockTracker)
-	if err != nil {
-		s.log.Error("failed to create simplex block", zap.Uint64("seq", seq), zap.Error(err))
-		return nil, simplex.Finalization{}, err
-	}
-
-	return vb, finalization, nil
+	return *new(simplex.VerifiedBlock), *new(simplex.Finalization), nil
 }
 
 // Index indexes the finalization in the storage.
 // It stores the finalization bytes and increments numBlocks.
 func (s *Storage) Index(ctx context.Context, block simplex.VerifiedBlock, finalization simplex.Finalization) error {
-	bh := block.BlockHeader()
-	numBlocks := s.numBlocks.Load()
-	if numBlocks != bh.Seq {
-		s.log.Error("Attempted to index block with mismatched sequence number",
-			zap.Uint64("expected", numBlocks),
-			zap.Uint64("got", bh.Seq))
-		return fmt.Errorf("%w: expected %d, got %d", errUnexpectedSeq, numBlocks, bh.Seq)
-	}
-
-	if s.lastIndexedDigest != bh.Prev {
-		s.log.Error("Attempted to index block with mismatched previous digest",
-			zap.Stringer("expected", s.lastIndexedDigest),
-			zap.Stringer("got", bh.Prev))
-
-		return fmt.Errorf("%w: expected %s, got %s", errMismatchedPrevDigest, s.lastIndexedDigest, bh.Prev)
-	}
-
-	if bh.Digest != finalization.Finalization.Digest {
-		s.log.Error("Attempted to index block with mismatched digest",
-			zap.Stringer("expected", bh.Digest),
-			zap.Stringer("got", finalization.Finalization.Digest))
-		return fmt.Errorf("%w: expected %d, got %d", errMismatchedDigest, bh.Digest, finalization.Finalization.Digest)
-	}
-
-	if finalization.QC == nil {
-		s.log.Error("Attempted to index block with no quorum certificate", zap.Stringer("blockID", bh.Digest))
-		return errInvalidQC
-	}
-
-	finalizationBytes := finalizationToBytes(finalization)
-	if err := s.db.Put(finalizationKey(bh.Seq), finalizationBytes); err != nil {
-		return fmt.Errorf("failed to store finalization: %w", err)
-	}
-
-	bl := block.Blacklist()
-	if err := s.db.Put(blacklistKey(bh.Seq), bl.Bytes()); err != nil {
-		return fmt.Errorf("failed to store blacklist: %w", err)
-	}
-
-	err := s.blockTracker.indexBlock(ctx, bh.Digest)
-	if err != nil {
-		return fmt.Errorf("failed to index block: %w", err)
-	}
-
-	s.numBlocks.Add(1) // only increment numBlocks after successful indexing
-	s.lastIndexedDigest = bh.Digest
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func finalizationKey(seq uint64) []byte {
-	seqBuff := make([]byte, len(finalizationPrefix)+8)
-	copy(seqBuff, finalizationPrefix)
-	binary.BigEndian.PutUint64(seqBuff[len(finalizationPrefix):], seq)
-	return seqBuff
-}
+// only increment numBlocks after successful indexing
 
-func blacklistKey(seq uint64) []byte {
-	seqBuff := make([]byte, len(blacklistPrefix)+8)
-	copy(seqBuff, blacklistPrefix)
-	binary.BigEndian.PutUint64(seqBuff[len(blacklistPrefix):], seq)
-	return seqBuff
-}
+func finalizationKey(seq uint64) []byte { _ = "STUB: not implemented"; return nil }
+
+func blacklistKey(seq uint64) []byte { _ = "STUB: not implemented"; return nil }
 
 // getGenesisBlock returns the genesis block wrapped as a Block instance.
 func getGenesisBlock(ctx context.Context, config *Config, blockTracker *blockTracker) (*Block, error) {
-	snowmanGenesis, err := getBlock(ctx, config.VM, 0)
-	if err != nil {
-		return nil, err
-	}
-
-	genesis := &Block{
-		metadata:     genesisMetadata,
-		blockTracker: blockTracker,
-		vmBlock:      snowmanGenesis,
-		blacklist:    simplex.NewBlacklist(uint16(len(config.Params.InitialValidators))),
-	}
-
-	// set the digest
-	bytes, err := genesis.Bytes()
-	if err != nil {
-		return nil, err
-	}
-	genesis.digest = computeDigest(bytes)
-
-	return genesis, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// set the digest
 
 // retrieveFinalization retrieves the finalization at [seq].
 // If the finalization is not found, it returns false.
 func (s *Storage) retrieveFinalization(seq uint64) (simplex.Finalization, error) {
-	finalizationBytes, err := s.db.Get(finalizationKey(seq))
-	if err != nil {
-		if err == database.ErrNotFound {
-			return simplex.Finalization{}, simplex.ErrBlockNotFound
-		}
-		s.log.Debug("Failed to retrieve finalization", zap.Uint64("seq", seq), zap.Error(err))
-		return simplex.Finalization{}, err
-	}
-
-	var canotoFinalization canotoFinalization
-	if err := canotoFinalization.UnmarshalCanoto(finalizationBytes); err != nil {
-		return simplex.Finalization{}, err
-	}
-
-	return canotoFinalization.toFinalization(s.deserializer)
+	_ = "STUB: not implemented"
+	return *new(simplex.Finalization), nil
 }
 
 func (s *Storage) retrieveBlacklist(seq uint64) (simplex.Blacklist, error) {
-	blacklistBytes, err := s.db.Get(blacklistKey(seq))
-	if err != nil {
-		if err == database.ErrNotFound {
-			return simplex.Blacklist{}, nil
-		}
-		s.log.Debug("Failed to retrieve blacklist", zap.Uint64("seq", seq), zap.Error(err))
-		return simplex.Blacklist{}, err
-	}
-
-	var blacklist simplex.Blacklist
-	if err := blacklist.FromBytes(blacklistBytes); err != nil {
-		return simplex.Blacklist{}, fmt.Errorf("failed to parse blacklist: %w", err)
-	}
-	return blacklist, nil
+	_ = "STUB: not implemented"
+	return *new(simplex.Blacklist), nil
 }
 
 func getBlock(ctx context.Context, vm block.ChainVM, height uint64) (snowman.Block, error) {
-	id, err := vm.GetBlockIDAtHeight(ctx, height)
-	if err != nil {
-		return nil, err
-	}
-
-	return vm.GetBlock(ctx, id)
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // finalizationToBytes serializes the simplex.Finalization into bytes.
 func finalizationToBytes(finalization simplex.Finalization) []byte {
-	cFinalization := canotoFinalization{
-		Finalization: finalization.Finalization.Bytes(),
-		QC:           finalization.QC.Bytes(),
-	}
-	return cFinalization.MarshalCanoto()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type canotoFinalization struct {
@@ -294,16 +132,6 @@ type canotoFinalization struct {
 
 // finalizationFromBytes deserialized the bytes into a simplex.Finalization.
 func (c *canotoFinalization) toFinalization(d *QCDeserializer) (simplex.Finalization, error) {
-	var finalization simplex.Finalization
-	if err := finalization.Finalization.FromBytes(c.Finalization); err != nil {
-		return simplex.Finalization{}, err
-	}
-
-	qc, err := d.DeserializeQuorumCertificate(c.QC)
-	if err != nil {
-		return simplex.Finalization{}, err
-	}
-
-	finalization.QC = qc
-	return finalization, nil
+	_ = "STUB: not implemented"
+	return *new(simplex.Finalization), nil
 }

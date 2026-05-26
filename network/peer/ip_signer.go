@@ -32,11 +32,8 @@ func NewIPSigner(
 	tlsSigner crypto.Signer,
 	blsSigner bls.Signer,
 ) *IPSigner {
-	return &IPSigner{
-		ip:        ip,
-		tlsSigner: tlsSigner,
-		blsSigner: blsSigner,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetSignedIP returns the signedIP of the current value of the provided
@@ -45,38 +42,16 @@ func NewIPSigner(
 //
 // It's safe for multiple goroutines to concurrently call GetSignedIP.
 func (s *IPSigner) GetSignedIP() (*SignedIP, error) {
+	_ = "STUB: not implemented"
 	// Optimistically, the IP should already be signed. By grabbing a read lock
 	// here we enable full concurrency of new connections.
-	s.signedIPLock.RLock()
-	signedIP := s.signedIP
-	s.signedIPLock.RUnlock()
-	ip := s.ip.Get()
-	if signedIP != nil && signedIP.AddrPort == ip {
-		return signedIP, nil
-	}
-
-	// If our current IP hasn't been signed yet - then we should sign it.
-	s.signedIPLock.Lock()
-	defer s.signedIPLock.Unlock()
-
-	// It's possible that multiple threads read [n.signedIP] as incorrect at the
-	// same time, we should verify that we are the first thread to attempt to
-	// update it.
-	signedIP = s.signedIP
-	if signedIP != nil && signedIP.AddrPort == ip {
-		return signedIP, nil
-	}
-
-	// We should now sign our new IP at the current timestamp.
-	unsignedIP := UnsignedIP{
-		AddrPort:  ip,
-		Timestamp: s.clock.Unix(),
-	}
-	signedIP, err := unsignedIP.Sign(s.tlsSigner, s.blsSigner)
-	if err != nil {
-		return nil, err
-	}
-
-	s.signedIP = signedIP
-	return s.signedIP, nil
+	return nil, nil
 }
+
+// If our current IP hasn't been signed yet - then we should sign it.
+
+// It's possible that multiple threads read [n.signedIP] as incorrect at the
+// same time, we should verify that we are the first thread to attempt to
+// update it.
+
+// We should now sign our new IP at the current timestamp.

@@ -8,7 +8,6 @@ import (
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/message"
@@ -83,164 +82,65 @@ func NewMessageQueue(
 	metricsNamespace string,
 	reg prometheus.Registerer,
 ) (MessageQueue, error) {
-	m := &messageQueue{
-		log:                   log,
-		subnetID:              subnetID,
-		vdrs:                  vdrs,
-		cpuTracker:            cpuTracker,
-		cond:                  sync.NewCond(&sync.Mutex{}),
-		nodeToUnprocessedMsgs: make(map[ids.NodeID]int),
-		msgAndCtxs:            buffer.NewUnboundedDeque[*msgAndContext](1 /*=initSize*/),
-	}
-	return m, m.metrics.initialize(metricsNamespace, reg)
+	_ = "STUB: not implemented"
+	return *new(MessageQueue), nil
 }
 
-func (m *messageQueue) Push(ctx context.Context, msg Message) {
-	m.cond.L.Lock()
-	defer m.cond.L.Unlock()
+/*=initSize*/
 
-	if m.closed {
-		msg.OnFinishedHandling()
-		return
-	}
+func (m *messageQueue) Push(ctx context.Context, msg Message) { _ = "STUB: not implemented"; return }
 
-	// Add the message to the queue
-	m.msgAndCtxs.PushRight(&msgAndContext{
-		msg: msg,
-		ctx: ctx,
-	})
-	m.nodeToUnprocessedMsgs[msg.NodeID]++
+// Add the message to the queue
 
-	// Update metrics
-	m.metrics.count.With(prometheus.Labels{
-		opLabel: msg.Op.String(),
-	}).Inc()
-	m.metrics.nodesWithMessages.Set(float64(len(m.nodeToUnprocessedMsgs)))
+// Update metrics
 
-	// Signal a waiting thread
-	m.cond.Signal()
-}
+// Signal a waiting thread
 
 // FIFO, but skip over messages whose senders whose messages have caused us to
 // use excessive CPU recently.
 func (m *messageQueue) Pop() (context.Context, Message, bool) {
-	m.cond.L.Lock()
-	defer m.cond.L.Unlock()
-
-	for {
-		if m.closed {
-			return nil, Message{}, false
-		}
-		if m.msgAndCtxs.Len() != 0 {
-			break
-		}
-		m.cond.Wait()
-	}
-
-	n := m.msgAndCtxs.Len() // note that n > 0
-	i := 0
-	for {
-		if i == n {
-			m.log.Debug("canPop is false for all unprocessed messages",
-				zap.Int("numMessages", n),
-			)
-		}
-
-		var (
-			msgAndCtx, _ = m.msgAndCtxs.PopLeft()
-			msg          = msgAndCtx.msg
-			ctx          = msgAndCtx.ctx
-			nodeID       = msg.NodeID
-		)
-
-		// See if it's OK to process [msg] next
-		if m.canPop(msg.InboundMessage) || i == n { // i should never == n but handle anyway as a fail-safe
-			m.nodeToUnprocessedMsgs[nodeID]--
-			if m.nodeToUnprocessedMsgs[nodeID] == 0 {
-				delete(m.nodeToUnprocessedMsgs, nodeID)
-			}
-			m.metrics.count.With(prometheus.Labels{
-				opLabel: msg.Op.String(),
-			}).Dec()
-			m.metrics.nodesWithMessages.Set(float64(len(m.nodeToUnprocessedMsgs)))
-			return ctx, msg, true
-		}
-		// [msg.nodeID] is causing excessive CPU usage.
-		// Push [msg] to back of [m.msgs] and handle it later.
-		m.msgAndCtxs.PushRight(msgAndCtx)
-		i++
-		m.metrics.numExcessiveCPU.Inc()
-	}
+	_ = "STUB: not implemented"
+	return *new(context.Context), *new(Message), false
 }
 
-func (m *messageQueue) Len() int {
-	m.cond.L.Lock()
-	defer m.cond.L.Unlock()
+// note that n > 0
 
-	return m.msgAndCtxs.Len()
-}
+// See if it's OK to process [msg] next
+// i should never == n but handle anyway as a fail-safe
 
-func (m *messageQueue) Shutdown() {
-	m.cond.L.Lock()
-	defer m.cond.L.Unlock()
+// [msg.nodeID] is causing excessive CPU usage.
+// Push [msg] to back of [m.msgs] and handle it later.
 
-	// Remove all the current messages from the queue
-	for m.msgAndCtxs.Len() > 0 {
-		msgAndCtx, _ := m.msgAndCtxs.PopLeft()
-		msgAndCtx.msg.OnFinishedHandling()
-	}
-	m.nodeToUnprocessedMsgs = nil
+func (m *messageQueue) Len() int { _ = "STUB: not implemented"; return 0 }
 
-	// Update metrics
-	m.metrics.count.Reset()
-	m.metrics.nodesWithMessages.Set(0)
+func (m *messageQueue) Shutdown() { _ = "STUB: not implemented"; return }
 
-	// Mark the queue as closed
-	m.closed = true
-	m.cond.Broadcast()
-}
+// Remove all the current messages from the queue
+
+// Update metrics
+
+// Mark the queue as closed
 
 // canPop will return true for at least one message in [m.msgs]
 func (m *messageQueue) canPop(msg *message.InboundMessage) bool {
+	_ = "STUB: not implemented"
 	// Always pop connected and disconnected messages.
-	if op := msg.Op; op == message.ConnectedOp || op == message.DisconnectedOp {
-		return true
-	}
-
-	// If the deadline to handle [msg] has passed, always pop it.
-	// It will be dropped immediately.
-	if expiration := msg.Expiration; m.clock.Time().After(expiration) {
-		return true
-	}
-	// Every node has some allowed CPU allocation depending on
-	// the number of nodes with unprocessed messages.
-	baseMaxCPU := 1 / float64(len(m.nodeToUnprocessedMsgs))
-	nodeID := msg.NodeID
-	weight := m.vdrs.GetWeight(m.subnetID, nodeID)
-
-	var portionWeight float64
-	if totalVdrsWeight, err := m.vdrs.TotalWeight(m.subnetID); err != nil {
-		// The sum of validator weights should never overflow, but if they do,
-		// we treat portionWeight as 0.
-		m.log.Error("failed to get total weight of validators",
-			zap.Stringer("subnetID", m.subnetID),
-			zap.Error(err),
-		)
-	} else if totalVdrsWeight == 0 {
-		// The sum of validator weights should never be 0, but handle that case
-		// for completeness here to avoid divide by 0.
-		m.log.Warn("validator set is empty",
-			zap.Stringer("subnetID", m.subnetID),
-		)
-	} else {
-		portionWeight = float64(weight) / float64(totalVdrsWeight)
-	}
-
-	// Validators are allowed to use more CPU. More weight --> more CPU use allowed.
-	recentCPUUsage := m.cpuTracker.Usage(nodeID, m.clock.Time())
-	maxCPU := baseMaxCPU + (1.0-baseMaxCPU)*portionWeight
-	return recentCPUUsage <= maxCPU
+	return false
 }
+
+// If the deadline to handle [msg] has passed, always pop it.
+// It will be dropped immediately.
+
+// Every node has some allowed CPU allocation depending on
+// the number of nodes with unprocessed messages.
+
+// The sum of validator weights should never overflow, but if they do,
+// we treat portionWeight as 0.
+
+// The sum of validator weights should never be 0, but handle that case
+// for completeness here to avoid divide by 0.
+
+// Validators are allowed to use more CPU. More weight --> more CPU use allowed.
 
 type msgAndContext struct {
 	msg Message

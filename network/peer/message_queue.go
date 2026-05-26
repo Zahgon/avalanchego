@@ -7,8 +7,6 @@ import (
 	"context"
 	"sync"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/message"
 	"github.com/ava-labs/avalanchego/network/throttling"
@@ -29,9 +27,7 @@ type SendFailedCallback interface {
 
 type SendFailedFunc func(*message.OutboundMessage)
 
-func (f SendFailedFunc) SendFailed(msg *message.OutboundMessage) {
-	f(msg)
-}
+func (f SendFailedFunc) SendFailed(msg *message.OutboundMessage) { _ = "STUB: not implemented"; return }
 
 type MessageQueue interface {
 	// Push attempts to add the message to the queue. If the context is
@@ -77,121 +73,43 @@ func NewThrottledMessageQueue(
 	log logging.Logger,
 	outboundMsgThrottler throttling.OutboundMsgThrottler,
 ) MessageQueue {
-	return &throttledMessageQueue{
-		onFailed:             onFailed,
-		id:                   id,
-		log:                  log,
-		outboundMsgThrottler: outboundMsgThrottler,
-		cond:                 sync.NewCond(&sync.Mutex{}),
-		queue:                buffer.NewUnboundedDeque[*message.OutboundMessage](initialQueueSize),
-	}
+	_ = "STUB: not implemented"
+	return *new(MessageQueue)
 }
 
 func (q *throttledMessageQueue) Push(ctx context.Context, msg *message.OutboundMessage) bool {
-	if err := ctx.Err(); err != nil {
-		q.log.Debug(
-			"dropping outgoing message",
-			zap.Stringer("messageOp", msg.Op),
-			zap.Stringer("nodeID", q.id),
-			zap.Error(err),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	}
-
-	// Acquire space on the outbound message queue, or drop [msg] if we can't.
-	if !q.outboundMsgThrottler.Acquire(msg, q.id) {
-		q.log.Debug(
-			"dropping outgoing message",
-			zap.String("reason", "rate-limiting"),
-			zap.Stringer("messageOp", msg.Op),
-			zap.Stringer("nodeID", q.id),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	}
-
-	// Invariant: must call q.outboundMsgThrottler.Release(msg, q.id) when [msg]
-	// is popped or, if this queue closes before [msg] is popped, when this
-	// queue closes.
-
-	q.cond.L.Lock()
-	defer q.cond.L.Unlock()
-
-	if q.closed {
-		q.log.Debug(
-			"dropping outgoing message",
-			zap.String("reason", "closed queue"),
-			zap.Stringer("messageOp", msg.Op),
-			zap.Stringer("nodeID", q.id),
-		)
-		q.outboundMsgThrottler.Release(msg, q.id)
-		q.onFailed.SendFailed(msg)
-		return false
-	}
-
-	q.queue.PushRight(msg)
-	q.cond.Signal()
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
+
+// Acquire space on the outbound message queue, or drop [msg] if we can't.
+
+// Invariant: must call q.outboundMsgThrottler.Release(msg, q.id) when [msg]
+// is popped or, if this queue closes before [msg] is popped, when this
+// queue closes.
 
 func (q *throttledMessageQueue) Pop() (*message.OutboundMessage, bool) {
-	q.cond.L.Lock()
-	defer q.cond.L.Unlock()
-
-	for {
-		if q.closed {
-			return nil, false
-		}
-		if q.queue.Len() > 0 {
-			// There is a message
-			break
-		}
-		// Wait until there is a message
-		q.cond.Wait()
-	}
-
-	return q.pop(), true
+	_ = "STUB: not implemented"
+	return nil, false
 }
+
+// There is a message
+
+// Wait until there is a message
 
 func (q *throttledMessageQueue) PopNow() (*message.OutboundMessage, bool) {
-	q.cond.L.Lock()
-	defer q.cond.L.Unlock()
-
-	if q.closed || q.queue.Len() == 0 {
-		// There isn't a message
-		return nil, false
-	}
-
-	return q.pop(), true
+	_ = "STUB: not implemented"
+	return nil, false
 }
+
+// There isn't a message
 
 func (q *throttledMessageQueue) pop() *message.OutboundMessage {
-	msg, _ := q.queue.PopLeft()
-
-	q.outboundMsgThrottler.Release(msg, q.id)
-	return msg
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (q *throttledMessageQueue) Close() {
-	q.cond.L.Lock()
-	defer q.cond.L.Unlock()
-
-	if q.closed {
-		return
-	}
-
-	q.closed = true
-
-	for q.queue.Len() > 0 {
-		msg, _ := q.queue.PopLeft()
-		q.outboundMsgThrottler.Release(msg, q.id)
-		q.onFailed.SendFailed(msg)
-	}
-	q.queue = nil
-
-	q.cond.Broadcast()
-}
+func (q *throttledMessageQueue) Close() { _ = "STUB: not implemented"; return }
 
 type blockingMessageQueue struct {
 	onFailed SendFailedCallback
@@ -210,94 +128,23 @@ func NewBlockingMessageQueue(
 	log logging.Logger,
 	bufferSize int,
 ) MessageQueue {
-	return &blockingMessageQueue{
-		onFailed: onFailed,
-		log:      log,
-
-		closing: make(chan struct{}),
-		queue:   make(chan *message.OutboundMessage, bufferSize),
-	}
+	_ = "STUB: not implemented"
+	return *new(MessageQueue)
 }
 
 func (q *blockingMessageQueue) Push(ctx context.Context, msg *message.OutboundMessage) bool {
-	q.closingLock.RLock()
-	defer q.closingLock.RUnlock()
-
-	ctxDone := ctx.Done()
-	select {
-	case <-q.closing:
-		q.log.Debug(
-			"dropping message",
-			zap.String("reason", "closed queue"),
-			zap.Stringer("messageOp", msg.Op),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	case <-ctxDone:
-		q.log.Debug(
-			"dropping message",
-			zap.String("reason", "cancelled context"),
-			zap.Stringer("messageOp", msg.Op),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	default:
-	}
-
-	select {
-	case q.queue <- msg:
-		return true
-	case <-ctxDone:
-		q.log.Debug(
-			"dropping message",
-			zap.String("reason", "cancelled context"),
-			zap.Stringer("messageOp", msg.Op),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	case <-q.closing:
-		q.log.Debug(
-			"dropping message",
-			zap.String("reason", "closed queue"),
-			zap.Stringer("messageOp", msg.Op),
-		)
-		q.onFailed.SendFailed(msg)
-		return false
-	}
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (q *blockingMessageQueue) Pop() (*message.OutboundMessage, bool) {
-	select {
-	case msg := <-q.queue:
-		return msg, true
-	case <-q.closing:
-		return nil, false
-	}
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (q *blockingMessageQueue) PopNow() (*message.OutboundMessage, bool) {
-	select {
-	case msg := <-q.queue:
-		return msg, true
-	default:
-		return nil, false
-	}
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
-func (q *blockingMessageQueue) Close() {
-	q.closeOnce.Do(func() {
-		close(q.closing)
-
-		q.closingLock.Lock()
-		defer q.closingLock.Unlock()
-
-		for {
-			select {
-			case msg := <-q.queue:
-				q.onFailed.SendFailed(msg)
-			default:
-				return
-			}
-		}
-	})
-}
+func (q *blockingMessageQueue) Close() { _ = "STUB: not implemented"; return }

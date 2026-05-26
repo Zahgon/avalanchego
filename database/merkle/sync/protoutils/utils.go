@@ -9,18 +9,6 @@ import (
 	pb "github.com/ava-labs/avalanchego/proto/pb/sync"
 )
 
-func MaybeToProto(m maybe.Maybe[[]byte]) *pb.MaybeBytes {
-	if m.IsNothing() {
-		return nil
-	}
-	return &pb.MaybeBytes{
-		Value: m.Value(),
-	}
-}
+func MaybeToProto(m maybe.Maybe[[]byte]) *pb.MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func ProtoToMaybe(mb *pb.MaybeBytes) maybe.Maybe[[]byte] {
-	if mb == nil {
-		return maybe.Nothing[[]byte]()
-	}
-	return maybe.Some(mb.Value)
-}
+func ProtoToMaybe(mb *pb.MaybeBytes) maybe.Maybe[[]byte] { _ = "STUB: not implemented"; return nil }

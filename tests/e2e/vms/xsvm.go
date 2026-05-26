@@ -18,9 +18,7 @@ import (
 	"github.com/ava-labs/avalanchego/connectproto/pb/xsvm/xsvmconnect"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/tests/fixture/e2e"
-	"github.com/ava-labs/avalanchego/tests/fixture/subnet"
 	"github.com/ava-labs/avalanchego/tests/fixture/tmpnet"
-	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
 	"github.com/ava-labs/avalanchego/utils/units"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/api"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/cmd/issue/export"
@@ -36,23 +34,11 @@ var (
 )
 
 func XSVMSubnetsOrPanic(nodes ...*tmpnet.Node) []*tmpnet.Subnet {
-	key, err := secp256k1.NewPrivateKey()
-	if err != nil {
-		panic(err)
-	}
-	subnetANodes := nodes
-	subnetBNodes := nodes
-	if len(nodes) > 1 {
-		// Validate tmpnet bootstrap of a disjoint validator set
-		midpoint := len(nodes) / 2
-		subnetANodes = nodes[:midpoint]
-		subnetBNodes = nodes[midpoint:]
-	}
-	return []*tmpnet.Subnet{
-		subnet.NewXSVMOrPanic(subnetAName, key, subnetANodes...),
-		subnet.NewXSVMOrPanic(subnetBName, key, subnetBNodes...),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Validate tmpnet bootstrap of a disjoint validator set
 
 var _ = ginkgo.Describe("[XSVM]", ginkgo.Label("xsvm"), func() {
 	tc := e2e.NewTestContext()
@@ -267,13 +253,6 @@ var _ = ginkgo.Describe("[XSVM]", ginkgo.Label("xsvm"), func() {
 
 // Retrieve the nodes corresponding to the provided IDs
 func getNodesForIDs(nodes []*tmpnet.Node, nodeIDs []ids.NodeID) []*tmpnet.Node {
-	desiredNodes := make([]*tmpnet.Node, 0, len(nodeIDs))
-	for _, node := range nodes {
-		for _, nodeID := range nodeIDs {
-			if node.NodeID == nodeID {
-				desiredNodes = append(desiredNodes, node)
-			}
-		}
-	}
-	return desiredNodes
+	_ = "STUB: not implemented"
+	return nil
 }

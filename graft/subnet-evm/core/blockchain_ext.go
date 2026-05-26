@@ -16,14 +16,8 @@ import "github.com/ava-labs/libevm/metrics"
 //
 //nolint:unparam // to match native metrics call
 func getOrOverrideAsRegisteredCounter(name string, r metrics.Registry) metrics.Counter {
-	if r == nil {
-		r = metrics.DefaultRegistry
-	}
-
-	if c, ok := r.GetOrRegister(name, metrics.NewCounter).(metrics.Counter); ok {
-		return c
-	}
-	// `name` must have already been registered to be any other type
-	r.Unregister(name)
-	return metrics.NewRegisteredCounter(name, r)
+	_ = "STUB: not implemented"
+	return *new(metrics.Counter)
 }
+
+// `name` must have already been registered to be any other type

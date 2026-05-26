@@ -28,12 +28,7 @@
 package shutdowncheck
 
 import (
-	"time"
-
-	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
 )
 
 // ShutdownTracker is a service that reports previous unclean shutdowns
@@ -46,51 +41,21 @@ type ShutdownTracker struct {
 
 // NewShutdownTracker creates a new ShutdownTracker instance and has
 // no other side-effect.
-func NewShutdownTracker(db ethdb.Database) *ShutdownTracker {
-	return &ShutdownTracker{
-		db:     db,
-		stopCh: make(chan struct{}),
-	}
-}
+func NewShutdownTracker(db ethdb.Database) *ShutdownTracker { _ = "STUB: not implemented"; return nil }
 
 // MarkStartup is to be called in the beginning when the node starts. It will:
 // - Push a new startup marker to the db
 // - Report previous unclean shutdowns
-func (t *ShutdownTracker) MarkStartup() {
-	if uncleanShutdowns, discards, err := rawdb.PushUncleanShutdownMarker(t.db); err != nil {
-		log.Error("Could not update unclean-shutdown-marker list", "error", err)
-	} else {
-		if discards > 0 {
-			log.Warn("Old unclean shutdowns found", "count", discards)
-		}
-		for _, tstamp := range uncleanShutdowns {
-			t := time.Unix(int64(tstamp), 0)
-			log.Warn("Unclean shutdown detected", "booted", t,
-				"age", common.PrettyAge(t))
-		}
-	}
-}
+func (t *ShutdownTracker) MarkStartup() { _ = "STUB: not implemented"; return }
 
 // Start runs an event loop that updates the current marker's timestamp every 5 minutes.
-func (t *ShutdownTracker) Start() {
-	go func() {
-		ticker := time.NewTicker(5 * time.Minute)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-ticker.C:
-				rawdb.UpdateUncleanShutdownMarker(t.db)
-			case <-t.stopCh:
-				return
-			}
-		}
-	}()
-}
+func (t *ShutdownTracker) Start() { _ = "STUB: not implemented"; return }
 
 // Stop will stop the update loop and clear the current marker.
 func (t *ShutdownTracker) Stop() {
+	_ = "STUB: not implemented"
 	// Stop update loop.
-	t.stopCh <- struct{}{}
-	// Clear last marker.
-	rawdb.PopUncleanShutdownMarker(t.db)
+	return
 }
+
+// Clear last marker.

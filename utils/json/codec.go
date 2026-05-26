@@ -5,11 +5,7 @@ package json
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
-	"strings"
-	"unicode"
-	"unicode/utf8"
 
 	"github.com/gorilla/rpc/v2"
 	"github.com/gorilla/rpc/v2/json2"
@@ -27,39 +23,17 @@ var (
 
 // NewCodec returns a new json codec that will convert the first character of
 // the method to uppercase
-func NewCodec() rpc.Codec {
-	return lowercase{json2.NewCodec()}
-}
+func NewCodec() rpc.Codec { _ = "STUB: not implemented"; return *new(rpc.Codec) }
 
 type lowercase struct{ *json2.Codec }
 
 func (lc lowercase) NewRequest(r *http.Request) rpc.CodecRequest {
-	return &request{lc.Codec.NewRequest(r).(*json2.CodecRequest)}
+	_ = "STUB: not implemented"
+	return *new(rpc.CodecRequest)
 }
 
 type request struct{ *json2.CodecRequest }
 
-func (r *request) Method() (string, error) {
-	method, err := r.CodecRequest.Method()
-	methodSections := strings.SplitN(method, ".", 2)
-	if len(methodSections) != 2 || err != nil {
-		return method, err
-	}
-	class, function := methodSections[0], methodSections[1]
-	firstRune, runeLen := utf8.DecodeRuneInString(function)
-	if firstRune == utf8.RuneError {
-		return method, nil
-	}
-	if unicode.IsUpper(firstRune) {
-		return method, errUppercaseMethod
-	}
-	uppercaseRune := string(unicode.ToUpper(firstRune))
-	return fmt.Sprintf("%s.%s%s", class, uppercaseRune, function[runeLen:]), nil
-}
+func (r *request) Method() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (r *request) ReadRequest(args interface{}) error {
-	if err := r.CodecRequest.ReadRequest(args); err != nil {
-		return errInvalidArg
-	}
-	return nil
-}
+func (r *request) ReadRequest(args interface{}) error { _ = "STUB: not implemented"; return nil }

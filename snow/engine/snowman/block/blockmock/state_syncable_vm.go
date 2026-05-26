@@ -11,7 +11,6 @@ package blockmock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	block "github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	gomock "go.uber.org/mock/gomock"
@@ -31,87 +30,73 @@ type StateSyncableVMMockRecorder struct {
 
 // NewStateSyncableVM creates a new mock instance.
 func NewStateSyncableVM(ctrl *gomock.Controller) *StateSyncableVM {
-	mock := &StateSyncableVM{ctrl: ctrl}
-	mock.recorder = &StateSyncableVMMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *StateSyncableVM) EXPECT() *StateSyncableVMMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetLastStateSummary mocks base method.
+	return nil
 }
 
-// GetLastStateSummary mocks base method.
 func (m *StateSyncableVM) GetLastStateSummary(arg0 context.Context) (block.StateSummary, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetLastStateSummary", arg0)
-	ret0, _ := ret[0].(block.StateSummary)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 // GetLastStateSummary indicates an expected call of GetLastStateSummary.
 func (mr *StateSyncableVMMockRecorder) GetLastStateSummary(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLastStateSummary", reflect.TypeOf((*StateSyncableVM)(nil).GetLastStateSummary), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetOngoingSyncStateSummary mocks base method.
 func (m *StateSyncableVM) GetOngoingSyncStateSummary(arg0 context.Context) (block.StateSummary, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetOngoingSyncStateSummary", arg0)
-	ret0, _ := ret[0].(block.StateSummary)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 // GetOngoingSyncStateSummary indicates an expected call of GetOngoingSyncStateSummary.
 func (mr *StateSyncableVMMockRecorder) GetOngoingSyncStateSummary(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOngoingSyncStateSummary", reflect.TypeOf((*StateSyncableVM)(nil).GetOngoingSyncStateSummary), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStateSummary mocks base method.
 func (m *StateSyncableVM) GetStateSummary(ctx context.Context, summaryHeight uint64) (block.StateSummary, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStateSummary", ctx, summaryHeight)
-	ret0, _ := ret[0].(block.StateSummary)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 // GetStateSummary indicates an expected call of GetStateSummary.
 func (mr *StateSyncableVMMockRecorder) GetStateSummary(ctx, summaryHeight any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStateSummary", reflect.TypeOf((*StateSyncableVM)(nil).GetStateSummary), ctx, summaryHeight)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ParseStateSummary mocks base method.
 func (m *StateSyncableVM) ParseStateSummary(ctx context.Context, summaryBytes []byte) (block.StateSummary, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseStateSummary", ctx, summaryBytes)
-	ret0, _ := ret[0].(block.StateSummary)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block.StateSummary), nil
 }
 
 // ParseStateSummary indicates an expected call of ParseStateSummary.
 func (mr *StateSyncableVMMockRecorder) ParseStateSummary(ctx, summaryBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseStateSummary", reflect.TypeOf((*StateSyncableVM)(nil).ParseStateSummary), ctx, summaryBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StateSyncEnabled mocks base method.
 func (m *StateSyncableVM) StateSyncEnabled(arg0 context.Context) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "StateSyncEnabled", arg0)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // StateSyncEnabled indicates an expected call of StateSyncEnabled.
 func (mr *StateSyncableVMMockRecorder) StateSyncEnabled(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StateSyncEnabled", reflect.TypeOf((*StateSyncableVM)(nil).StateSyncEnabled), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }

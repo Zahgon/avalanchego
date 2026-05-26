@@ -25,52 +25,23 @@ type prefixGroup struct {
 // of IDs, and the members field contains all IDs from the given idList for which their bit prefix
 // matches the prefix field.
 func longestSharedPrefixes(idList []ids.ID) *prefixGroup {
+	_ = "STUB: not implemented"
 	// First thing - de-duplicate all ids that appear twice or more
-	idList = deduplicate(idList)
-
-	originPG := &prefixGroup{members: idList}
-
-	pgs := make([]*prefixGroup, 0, len(idList))
-	pgs = append(pgs, originPG)
-
-	// Try to split each prefix group.
-	// Continue until all prefix groups cannot be split anymore.
-	for i := 0; i < len(pgs); i++ {
-		pg := pgs[i]
-
-		if !pg.canSplit() {
-			continue
-		}
-
-		for {
-			pg.split()
-
-			// We cannot split this prefix group any longer, as the shared prefix ends in this bifurcation
-			if pg.isBifurcation() {
-				pgs = append(pgs, pg.children[:]...)
-				break
-			}
-
-			// Else, there is no bifurcation, so swallow up your descendant
-			descendant := determineDescendant(pg)
-
-			// Become your descendant
-			*pg = *descendant
-		}
-	}
-
-	return originPG
+	return nil
 }
 
-func determineDescendant(pg *prefixGroup) *prefixGroup {
-	for _, child := range pg.children {
-		if child != nil {
-			return child
-		}
-	}
-	// If both are nil, it's a programming error, so panic.
-	panic("programming error: both children are nil")
-}
+// Try to split each prefix group.
+// Continue until all prefix groups cannot be split anymore.
+
+// We cannot split this prefix group any longer, as the shared prefix ends in this bifurcation
+
+// Else, there is no bifurcation, so swallow up your descendant
+
+// Become your descendant
+
+func determineDescendant(pg *prefixGroup) *prefixGroup { _ = "STUB: not implemented"; return nil }
+
+// If both are nil, it's a programming error, so panic.
 
 // bifurcationsWithCommonPrefix traverses the transitive descendants of this prefix group,
 // and applies f() on the block IDs of each prefix group.
@@ -78,32 +49,18 @@ func determineDescendant(pg *prefixGroup) *prefixGroup {
 // Prefix group without a prefix (root prefix group) are also skipped as they do not correspond
 // to any instance of snowflake.
 func (pg *prefixGroup) bifurcationsWithCommonPrefix(f func([]ids.ID)) {
-	pg.traverse(func(prefixGroup *prefixGroup) {
-		if prefixGroup.isBifurcation() && prefixGroup.index > 0 {
-			f(prefixGroup.members)
-		}
-	})
+	_ = "STUB: not implemented"
+	return
 }
 
 // isBifurcation returns whether this prefixGroup has both zero and one bit descendants.
-func (pg *prefixGroup) isBifurcation() bool {
-	return pg.children[0] != nil && pg.children[1] != nil
-}
+func (pg *prefixGroup) isBifurcation() bool { _ = "STUB: not implemented"; return false }
 
 // canSplit returns whether this prefixGroup can be split.
-func (pg *prefixGroup) canSplit() bool {
-	return len(pg.members) > 1
-}
+func (pg *prefixGroup) canSplit() bool { _ = "STUB: not implemented"; return false }
 
 // traverse invokes f() on this prefixGroup and all descendants in pre-order traversal.
-func (pg *prefixGroup) traverse(f func(*prefixGroup)) {
-	f(pg)
-	for _, childPG := range pg.children {
-		if childPG != nil {
-			childPG.traverse(f)
-		}
-	}
-}
+func (pg *prefixGroup) traverse(f func(*prefixGroup)) { _ = "STUB: not implemented"; return }
 
 // split splits the prefixGroup into two prefixGroups according
 // to members and the next internal bit.
@@ -114,37 +71,8 @@ func (pg *prefixGroup) traverse(f func(*prefixGroup)) {
 // since it has at least two members, which means they either differ in the next bit index,
 // in which case two prefixGroups would be returned, and otherwise they do not differ
 // in the next bit, and then at least one prefixGroup would be returned.
-func (pg *prefixGroup) split() {
-	for i := range pg.children {
-		pg.children[i] = &prefixGroup{
-			index:   pg.index + 1,
-			members: make([]ids.ID, 0, len(pg.members)),
-		}
-	}
+func (pg *prefixGroup) split() { _ = "STUB: not implemented"; return }
 
-	// Split members according to their next bit
-	for _, member := range pg.members {
-		bit := member.Bit(uint(pg.index))
-		child := pg.children[bit]
-		child.members = append(child.members, member)
-	}
+// Split members according to their next bit
 
-	for i, child := range pg.children {
-		if len(child.members) == 0 {
-			pg.children[i] = nil
-		}
-	}
-}
-
-func deduplicate(in []ids.ID) []ids.ID {
-	out := make([]ids.ID, 0, len(in))
-	used := make(map[ids.ID]struct{}, len(in))
-	for _, id := range in {
-		if _, exists := used[id]; exists {
-			continue
-		}
-		used[id] = struct{}{}
-		out = append(out, id)
-	}
-	return out
-}
+func deduplicate(in []ids.ID) []ids.ID { _ = "STUB: not implemented"; return nil }

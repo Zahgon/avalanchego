@@ -5,7 +5,6 @@ package customtypes
 
 import (
 	"math/big"
-	"slices"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
@@ -17,9 +16,7 @@ import (
 )
 
 // SetBlockExtra sets the [BlockBodyExtra] `extra` in the [Block] `b`.
-func SetBlockExtra(b *ethtypes.Block, extra *BlockBodyExtra) {
-	extras.Block.Set(b, extra)
-}
+func SetBlockExtra(b *ethtypes.Block, extra *BlockBodyExtra) { _ = "STUB: not implemented"; return }
 
 // BlockBodyExtra is a struct containing extra fields used by Avalanche
 // in the [Block] and [Body].
@@ -34,14 +31,7 @@ type BlockBodyExtra struct {
 // - [ethtypes.Block.WithSeal]
 // - [ethtypes.Block.WithBody]
 // - [ethtypes.Block.WithWithdrawals]
-func (b *BlockBodyExtra) Copy() *BlockBodyExtra {
-	cpy := *b
-	if b.ExtData != nil {
-		data := slices.Clone(*b.ExtData)
-		cpy.ExtData = &data
-	}
-	return &cpy
-}
+func (b *BlockBodyExtra) Copy() *BlockBodyExtra { _ = "STUB: not implemented"; return nil }
 
 // BodyRLPFieldPointersForEncoding returns the fields that should be encoded
 // for the [Body] and [BlockBodyExtra].
@@ -50,27 +40,15 @@ func (b *BlockBodyExtra) Copy() *BlockBodyExtra {
 // - (+) [BlockBodyExtra] `Version` field
 // - (+) [BlockBodyExtra] `ExtData` field
 func (b *BlockBodyExtra) BodyRLPFieldsForEncoding(body *ethtypes.Body) *rlp.Fields {
-	return &rlp.Fields{
-		Required: []any{
-			body.Transactions,
-			body.Uncles,
-			b.Version,
-			b.ExtData,
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BodyRLPFieldPointersForDecoding returns the fields that should be decoded to
 // for the [Body] and [BlockBodyExtra].
 func (b *BlockBodyExtra) BodyRLPFieldPointersForDecoding(body *ethtypes.Body) *rlp.Fields {
-	return &rlp.Fields{
-		Required: []any{
-			&body.Transactions,
-			&body.Uncles,
-			&b.Version,
-			&b.ExtData,
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BlockRLPFieldPointersForEncoding returns the fields that should be encoded
@@ -80,104 +58,43 @@ func (b *BlockBodyExtra) BodyRLPFieldPointersForDecoding(body *ethtypes.Body) *r
 // - (+) [BlockBodyExtra] `Version` field
 // - (+) [BlockBodyExtra] `ExtData` field
 func (b *BlockBodyExtra) BlockRLPFieldsForEncoding(block *ethtypes.BlockRLPProxy) *rlp.Fields {
-	return &rlp.Fields{
-		Required: []any{
-			block.Header,
-			block.Txs,
-			block.Uncles,
-			b.Version,
-			b.ExtData,
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BlockRLPFieldPointersForDecoding returns the fields that should be decoded to
 // for the [Block] and [BlockBodyExtra].
 func (b *BlockBodyExtra) BlockRLPFieldPointersForDecoding(block *ethtypes.BlockRLPProxy) *rlp.Fields {
-	return &rlp.Fields{
-		Required: []any{
-			&block.Header,
-			&block.Txs,
-			&block.Uncles,
-			&b.Version,
-			&b.ExtData,
-		},
-	}
-}
-
-func BlockExtData(b *ethtypes.Block) []byte {
-	if data := extras.Block.Get(b).ExtData; data != nil {
-		return *data
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func BlockVersion(b *ethtypes.Block) uint32 {
-	return extras.Block.Get(b).Version
-}
+func BlockExtData(b *ethtypes.Block) []byte { _ = "STUB: not implemented"; return nil }
 
-func BlockExtDataGasUsed(b *ethtypes.Block) *big.Int {
-	used := GetHeaderExtra(b.Header()).ExtDataGasUsed
-	if used == nil {
-		return nil
-	}
-	return new(big.Int).Set(used)
-}
+func BlockVersion(b *ethtypes.Block) uint32 { _ = "STUB: not implemented"; return 0 }
 
-func BlockGasCost(b *ethtypes.Block) *big.Int {
-	cost := GetHeaderExtra(b.Header()).BlockGasCost
-	if cost == nil {
-		return nil
-	}
-	return new(big.Int).Set(cost)
-}
+func BlockExtDataGasUsed(b *ethtypes.Block) *big.Int { _ = "STUB: not implemented"; return nil }
 
-func BlockTimeMilliseconds(b *ethtypes.Block) *uint64 {
-	time := GetHeaderExtra(b.Header()).TimeMilliseconds
-	if time == nil {
-		return nil
-	}
-	cp := *time
-	return &cp
-}
+func BlockGasCost(b *ethtypes.Block) *big.Int { _ = "STUB: not implemented"; return nil }
+
+func BlockTimeMilliseconds(b *ethtypes.Block) *uint64 { _ = "STUB: not implemented"; return nil }
 
 func BlockMinDelayExcess(b *ethtypes.Block) *acp226.DelayExcess {
-	e := GetHeaderExtra(b.Header()).MinDelayExcess
-	if e == nil {
-		return nil
-	}
-	cp := *e
-	return &cp
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func CalcExtDataHash(extdata []byte) common.Hash {
-	if len(extdata) == 0 {
-		return EmptyExtDataHash
-	}
-	return ethtypes.RLPHash(extdata)
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
-func BlockTime(eth *ethtypes.Header) time.Time {
-	if t := GetHeaderExtra(eth).TimeMilliseconds; t != nil {
-		return time.UnixMilli(int64(*t))
-	}
-	return time.Unix(int64(eth.Time), 0)
-}
+func BlockTime(eth *ethtypes.Header) time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 func NewBlockWithExtData(
 	header *ethtypes.Header, txs []*ethtypes.Transaction, uncles []*ethtypes.Header, receipts []*ethtypes.Receipt,
 	hasher ethtypes.TrieHasher, extdata []byte, recalc bool,
 ) *ethtypes.Block {
-	if recalc {
-		headerExtra := GetHeaderExtra(header)
-		headerExtra.ExtDataHash = CalcExtDataHash(extdata)
-	}
-	block := ethtypes.NewBlock(header, txs, uncles, receipts, hasher)
-	extdataCopy := make([]byte, len(extdata))
-	copy(extdataCopy, extdata)
-	extra := &BlockBodyExtra{
-		ExtData: &extdataCopy,
-	}
-	extras.Block.Set(block, extra)
-	return block
+	_ = "STUB: not implemented"
+	return nil
 }

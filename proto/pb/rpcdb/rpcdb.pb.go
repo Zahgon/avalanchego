@@ -7,12 +7,11 @@
 package rpcdb
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -45,32 +44,27 @@ var (
 	}
 )
 
-func (x Error) Enum() *Error {
-	p := new(Error)
-	*p = x
-	return p
-}
+func (x Error) Enum() *Error { _ = "STUB: not implemented"; return nil }
 
-func (x Error) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
+func (x Error) String() string { _ = "STUB: not implemented"; return "" }
 
 func (Error) Descriptor() protoreflect.EnumDescriptor {
-	return file_rpcdb_rpcdb_proto_enumTypes[0].Descriptor()
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumDescriptor)
 }
 
 func (Error) Type() protoreflect.EnumType {
-	return &file_rpcdb_rpcdb_proto_enumTypes[0]
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumType)
 }
 
 func (x Error) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.EnumNumber)
 }
 
 // Deprecated: Use Error.Descriptor instead.
-func (Error) EnumDescriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{0}
-}
+func (Error) EnumDescriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type HasRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -79,42 +73,21 @@ type HasRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HasRequest) Reset() {
-	*x = HasRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *HasRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *HasRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *HasRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*HasRequest) ProtoMessage() {}
+func (*HasRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *HasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use HasRequest.ProtoReflect.Descriptor instead.
-func (*HasRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{0}
-}
+func (*HasRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *HasRequest) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *HasRequest) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type HasResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -124,49 +97,23 @@ type HasResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HasResponse) Reset() {
-	*x = HasResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *HasResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *HasResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *HasResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*HasResponse) ProtoMessage() {}
+func (*HasResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *HasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use HasResponse.ProtoReflect.Descriptor instead.
-func (*HasResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{1}
-}
+func (*HasResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *HasResponse) GetHas() bool {
-	if x != nil {
-		return x.Has
-	}
-	return false
-}
+func (x *HasResponse) GetHas() bool { _ = "STUB: not implemented"; return false }
 
-func (x *HasResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *HasResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -175,42 +122,21 @@ type GetRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetRequest) Reset() {
-	*x = GetRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetRequest) ProtoMessage() {}
+func (*GetRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
-func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{2}
-}
+func (*GetRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetRequest) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *GetRequest) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -220,49 +146,23 @@ type GetResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetResponse) Reset() {
-	*x = GetResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetResponse) ProtoMessage() {}
+func (*GetResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
-func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{3}
-}
+func (*GetResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetResponse) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *GetResponse) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *GetResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *GetResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type PutRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -272,49 +172,23 @@ type PutRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PutRequest) Reset() {
-	*x = PutRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PutRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PutRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PutRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PutRequest) ProtoMessage() {}
+func (*PutRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PutRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PutRequest.ProtoReflect.Descriptor instead.
-func (*PutRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{4}
-}
+func (*PutRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PutRequest) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *PutRequest) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PutRequest) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *PutRequest) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 type PutResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -323,42 +197,21 @@ type PutResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PutResponse) Reset() {
-	*x = PutResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PutResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PutResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PutResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PutResponse) ProtoMessage() {}
+func (*PutResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PutResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PutResponse.ProtoReflect.Descriptor instead.
-func (*PutResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{5}
-}
+func (*PutResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PutResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *PutResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -367,42 +220,21 @@ type DeleteRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteRequest) Reset() {
-	*x = DeleteRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *DeleteRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *DeleteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *DeleteRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*DeleteRequest) ProtoMessage() {}
+func (*DeleteRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
-func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{6}
-}
+func (*DeleteRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *DeleteRequest) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *DeleteRequest) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
 type DeleteResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -411,42 +243,21 @@ type DeleteResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteResponse) Reset() {
-	*x = DeleteResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *DeleteResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *DeleteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *DeleteResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*DeleteResponse) ProtoMessage() {}
+func (*DeleteResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
-func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{7}
-}
+func (*DeleteResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *DeleteResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *DeleteResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type CompactRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -456,49 +267,23 @@ type CompactRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CompactRequest) Reset() {
-	*x = CompactRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *CompactRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CompactRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CompactRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CompactRequest) ProtoMessage() {}
+func (*CompactRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CompactRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CompactRequest.ProtoReflect.Descriptor instead.
-func (*CompactRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{8}
-}
+func (*CompactRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *CompactRequest) GetStart() []byte {
-	if x != nil {
-		return x.Start
-	}
-	return nil
-}
+func (x *CompactRequest) GetStart() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *CompactRequest) GetLimit() []byte {
-	if x != nil {
-		return x.Limit
-	}
-	return nil
-}
+func (x *CompactRequest) GetLimit() []byte { _ = "STUB: not implemented"; return nil }
 
 type CompactResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -507,42 +292,21 @@ type CompactResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CompactResponse) Reset() {
-	*x = CompactResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *CompactResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CompactResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CompactResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CompactResponse) ProtoMessage() {}
+func (*CompactResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CompactResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CompactResponse.ProtoReflect.Descriptor instead.
-func (*CompactResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{9}
-}
+func (*CompactResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *CompactResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *CompactResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type CloseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -550,35 +314,19 @@ type CloseRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloseRequest) Reset() {
-	*x = CloseRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *CloseRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CloseRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CloseRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CloseRequest) ProtoMessage() {}
+func (*CloseRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CloseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CloseRequest.ProtoReflect.Descriptor instead.
-func (*CloseRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{10}
-}
+func (*CloseRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type CloseResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -587,42 +335,21 @@ type CloseResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CloseResponse) Reset() {
-	*x = CloseResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *CloseResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *CloseResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *CloseResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*CloseResponse) ProtoMessage() {}
+func (*CloseResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *CloseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use CloseResponse.ProtoReflect.Descriptor instead.
-func (*CloseResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{11}
-}
+func (*CloseResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *CloseResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *CloseResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type WriteBatchRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -632,49 +359,23 @@ type WriteBatchRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteBatchRequest) Reset() {
-	*x = WriteBatchRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteBatchRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteBatchRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteBatchRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteBatchRequest) ProtoMessage() {}
+func (*WriteBatchRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteBatchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteBatchRequest.ProtoReflect.Descriptor instead.
-func (*WriteBatchRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{12}
-}
+func (*WriteBatchRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteBatchRequest) GetPuts() []*PutRequest {
-	if x != nil {
-		return x.Puts
-	}
-	return nil
-}
+func (x *WriteBatchRequest) GetPuts() []*PutRequest { _ = "STUB: not implemented"; return nil }
 
-func (x *WriteBatchRequest) GetDeletes() []*DeleteRequest {
-	if x != nil {
-		return x.Deletes
-	}
-	return nil
-}
+func (x *WriteBatchRequest) GetDeletes() []*DeleteRequest { _ = "STUB: not implemented"; return nil }
 
 type WriteBatchResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -683,42 +384,21 @@ type WriteBatchResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteBatchResponse) Reset() {
-	*x = WriteBatchResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteBatchResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteBatchResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteBatchResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteBatchResponse) ProtoMessage() {}
+func (*WriteBatchResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteBatchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteBatchResponse.ProtoReflect.Descriptor instead.
-func (*WriteBatchResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{13}
-}
+func (*WriteBatchResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteBatchResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *WriteBatchResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type NewIteratorRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -726,35 +406,19 @@ type NewIteratorRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *NewIteratorRequest) Reset() {
-	*x = NewIteratorRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *NewIteratorRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *NewIteratorRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *NewIteratorRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*NewIteratorRequest) ProtoMessage() {}
+func (*NewIteratorRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *NewIteratorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use NewIteratorRequest.ProtoReflect.Descriptor instead.
-func (*NewIteratorRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{14}
-}
+func (*NewIteratorRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 type NewIteratorWithStartAndPrefixRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -764,47 +428,33 @@ type NewIteratorWithStartAndPrefixRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *NewIteratorWithStartAndPrefixRequest) Reset() {
-	*x = NewIteratorWithStartAndPrefixRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *NewIteratorWithStartAndPrefixRequest) Reset() { _ = "STUB: not implemented"; return }
 
 func (x *NewIteratorWithStartAndPrefixRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func (*NewIteratorWithStartAndPrefixRequest) ProtoMessage() {}
+func (*NewIteratorWithStartAndPrefixRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *NewIteratorWithStartAndPrefixRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use NewIteratorWithStartAndPrefixRequest.ProtoReflect.Descriptor instead.
 func (*NewIteratorWithStartAndPrefixRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{15}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *NewIteratorWithStartAndPrefixRequest) GetStart() []byte {
-	if x != nil {
-		return x.Start
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *NewIteratorWithStartAndPrefixRequest) GetPrefix() []byte {
-	if x != nil {
-		return x.Prefix
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -815,42 +465,27 @@ type NewIteratorWithStartAndPrefixResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *NewIteratorWithStartAndPrefixResponse) Reset() {
-	*x = NewIteratorWithStartAndPrefixResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *NewIteratorWithStartAndPrefixResponse) Reset() { _ = "STUB: not implemented"; return }
 
 func (x *NewIteratorWithStartAndPrefixResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
+	_ = "STUB: not implemented"
+	return ""
 }
 
-func (*NewIteratorWithStartAndPrefixResponse) ProtoMessage() {}
+func (*NewIteratorWithStartAndPrefixResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *NewIteratorWithStartAndPrefixResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use NewIteratorWithStartAndPrefixResponse.ProtoReflect.Descriptor instead.
 func (*NewIteratorWithStartAndPrefixResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{16}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *NewIteratorWithStartAndPrefixResponse) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
+func (x *NewIteratorWithStartAndPrefixResponse) GetId() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type IteratorNextRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -859,42 +494,24 @@ type IteratorNextRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorNextRequest) Reset() {
-	*x = IteratorNextRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorNextRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorNextRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorNextRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorNextRequest) ProtoMessage() {}
+func (*IteratorNextRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorNextRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorNextRequest.ProtoReflect.Descriptor instead.
 func (*IteratorNextRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{17}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorNextRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
+func (x *IteratorNextRequest) GetId() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type IteratorNextResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -903,42 +520,24 @@ type IteratorNextResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorNextResponse) Reset() {
-	*x = IteratorNextResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorNextResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorNextResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorNextResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorNextResponse) ProtoMessage() {}
+func (*IteratorNextResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorNextResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorNextResponse.ProtoReflect.Descriptor instead.
 func (*IteratorNextResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{18}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorNextResponse) GetData() []*PutRequest {
-	if x != nil {
-		return x.Data
-	}
-	return nil
-}
+func (x *IteratorNextResponse) GetData() []*PutRequest { _ = "STUB: not implemented"; return nil }
 
 type IteratorErrorRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -947,42 +546,24 @@ type IteratorErrorRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorErrorRequest) Reset() {
-	*x = IteratorErrorRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorErrorRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorErrorRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorErrorRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorErrorRequest) ProtoMessage() {}
+func (*IteratorErrorRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorErrorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorErrorRequest.ProtoReflect.Descriptor instead.
 func (*IteratorErrorRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{19}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorErrorRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
+func (x *IteratorErrorRequest) GetId() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type IteratorErrorResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -991,42 +572,24 @@ type IteratorErrorResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorErrorResponse) Reset() {
-	*x = IteratorErrorResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorErrorResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorErrorResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorErrorResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorErrorResponse) ProtoMessage() {}
+func (*IteratorErrorResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorErrorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorErrorResponse.ProtoReflect.Descriptor instead.
 func (*IteratorErrorResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{20}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorErrorResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *IteratorErrorResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type IteratorReleaseRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1035,42 +598,24 @@ type IteratorReleaseRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorReleaseRequest) Reset() {
-	*x = IteratorReleaseRequest{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorReleaseRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorReleaseRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorReleaseRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorReleaseRequest) ProtoMessage() {}
+func (*IteratorReleaseRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorReleaseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorReleaseRequest.ProtoReflect.Descriptor instead.
 func (*IteratorReleaseRequest) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{21}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorReleaseRequest) GetId() uint64 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
+func (x *IteratorReleaseRequest) GetId() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type IteratorReleaseResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1079,42 +624,24 @@ type IteratorReleaseResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *IteratorReleaseResponse) Reset() {
-	*x = IteratorReleaseResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *IteratorReleaseResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *IteratorReleaseResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *IteratorReleaseResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*IteratorReleaseResponse) ProtoMessage() {}
+func (*IteratorReleaseResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *IteratorReleaseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use IteratorReleaseResponse.ProtoReflect.Descriptor instead.
 func (*IteratorReleaseResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{22}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *IteratorReleaseResponse) GetErr() Error {
-	if x != nil {
-		return x.Err
-	}
-	return Error_ERROR_UNSPECIFIED
-}
+func (x *IteratorReleaseResponse) GetErr() Error { _ = "STUB: not implemented"; return *new(Error) }
 
 type HealthCheckResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1123,42 +650,24 @@ type HealthCheckResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HealthCheckResponse) Reset() {
-	*x = HealthCheckResponse{}
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *HealthCheckResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *HealthCheckResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *HealthCheckResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*HealthCheckResponse) ProtoMessage() {}
+func (*HealthCheckResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *HealthCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpcdb_rpcdb_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use HealthCheckResponse.ProtoReflect.Descriptor instead.
 func (*HealthCheckResponse) Descriptor() ([]byte, []int) {
-	return file_rpcdb_rpcdb_proto_rawDescGZIP(), []int{23}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *HealthCheckResponse) GetDetails() []byte {
-	if x != nil {
-		return x.Details
-	}
-	return nil
-}
+func (x *HealthCheckResponse) GetDetails() []byte { _ = "STUB: not implemented"; return nil }
 
 var File_rpcdb_rpcdb_proto protoreflect.FileDescriptor
 
@@ -1244,12 +753,7 @@ var (
 	file_rpcdb_rpcdb_proto_rawDescData []byte
 )
 
-func file_rpcdb_rpcdb_proto_rawDescGZIP() []byte {
-	file_rpcdb_rpcdb_proto_rawDescOnce.Do(func() {
-		file_rpcdb_rpcdb_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_rpcdb_rpcdb_proto_rawDesc), len(file_rpcdb_rpcdb_proto_rawDesc)))
-	})
-	return file_rpcdb_rpcdb_proto_rawDescData
-}
+func file_rpcdb_rpcdb_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_rpcdb_rpcdb_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_rpcdb_rpcdb_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
@@ -1325,27 +829,5 @@ var file_rpcdb_rpcdb_proto_depIdxs = []int32{
 	0,  // [0:12] is the sub-list for field type_name
 }
 
-func init() { file_rpcdb_rpcdb_proto_init() }
-func file_rpcdb_rpcdb_proto_init() {
-	if File_rpcdb_rpcdb_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_rpcdb_rpcdb_proto_rawDesc), len(file_rpcdb_rpcdb_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   24,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_rpcdb_rpcdb_proto_goTypes,
-		DependencyIndexes: file_rpcdb_rpcdb_proto_depIdxs,
-		EnumInfos:         file_rpcdb_rpcdb_proto_enumTypes,
-		MessageInfos:      file_rpcdb_rpcdb_proto_msgTypes,
-	}.Build()
-	File_rpcdb_rpcdb_proto = out.File
-	file_rpcdb_rpcdb_proto_goTypes = nil
-	file_rpcdb_rpcdb_proto_depIdxs = nil
-}
+func init()                        { file_rpcdb_rpcdb_proto_init() }
+func file_rpcdb_rpcdb_proto_init() { _ = "STUB: not implemented"; return }

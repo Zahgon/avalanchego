@@ -4,56 +4,27 @@
 package gossip
 
 import (
-	"google.golang.org/protobuf/proto"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/proto/pb/sdk"
 	"github.com/ava-labs/avalanchego/utils/bloom"
 )
 
 func MarshalAppRequest(filter, salt []byte) ([]byte, error) {
-	request := &sdk.PullGossipRequest{
-		Filter: filter,
-		Salt:   salt,
-	}
-	return proto.Marshal(request)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func ParseAppRequest(bytes []byte) (*bloom.ReadFilter, ids.ID, error) {
-	request := &sdk.PullGossipRequest{}
-	if err := proto.Unmarshal(bytes, request); err != nil {
-		return nil, ids.Empty, err
-	}
-
-	salt, err := ids.ToID(request.Salt)
-	if err != nil {
-		return nil, ids.Empty, err
-	}
-
-	filter, err := bloom.Parse(request.Filter)
-	return filter, salt, err
+	_ = "STUB: not implemented"
+	return nil, *new(ids.ID), nil
 }
 
 func MarshalAppResponse(gossip [][]byte) ([]byte, error) {
-	return proto.Marshal(&sdk.PullGossipResponse{
-		Gossip: gossip,
-	})
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func ParseAppResponse(bytes []byte) ([][]byte, error) {
-	response := &sdk.PullGossipResponse{}
-	err := proto.Unmarshal(bytes, response)
-	return response.Gossip, err
-}
+func ParseAppResponse(bytes []byte) ([][]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func MarshalAppGossip(gossip [][]byte) ([]byte, error) {
-	return proto.Marshal(&sdk.PushGossip{
-		Gossip: gossip,
-	})
-}
+func MarshalAppGossip(gossip [][]byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func ParseAppGossip(bytes []byte) ([][]byte, error) {
-	msg := &sdk.PushGossip{}
-	err := proto.Unmarshal(bytes, msg)
-	return msg.Gossip, err
-}
+func ParseAppGossip(bytes []byte) ([][]byte, error) { _ = "STUB: not implemented"; return nil, nil }

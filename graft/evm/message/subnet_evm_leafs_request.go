@@ -5,7 +5,6 @@ package message
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 
@@ -35,19 +34,24 @@ type SubnetEVMLeafsRequest struct {
 }
 
 func (s SubnetEVMLeafsRequest) Handle(ctx context.Context, nodeID ids.NodeID, requestID uint32, handler RequestHandler) ([]byte, error) {
-	return handler.HandleLeafsRequest(ctx, nodeID, requestID, s)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (s SubnetEVMLeafsRequest) String() string {
-	return fmt.Sprintf(
-		"LeafsRequest(Root=%s, Account=%s, Start=%s, End=%s, Limit=%d, NodeType=%d)",
-		s.Root, s.Account, common.Bytes2Hex(s.Start), common.Bytes2Hex(s.End), s.Limit, s.NodeType,
-	)
-}
+func (s SubnetEVMLeafsRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (s SubnetEVMLeafsRequest) RootHash() common.Hash    { return s.Root }
-func (s SubnetEVMLeafsRequest) AccountHash() common.Hash { return s.Account }
-func (s SubnetEVMLeafsRequest) StartKey() []byte         { return s.Start }
-func (s SubnetEVMLeafsRequest) EndKey() []byte           { return s.End }
-func (s SubnetEVMLeafsRequest) KeyLimit() uint16         { return s.Limit }
-func (s SubnetEVMLeafsRequest) LeafType() NodeType       { return s.NodeType }
+func (s SubnetEVMLeafsRequest) RootHash() common.Hash {
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
+}
+func (s SubnetEVMLeafsRequest) AccountHash() common.Hash {
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
+}
+func (s SubnetEVMLeafsRequest) StartKey() []byte { _ = "STUB: not implemented"; return nil }
+func (s SubnetEVMLeafsRequest) EndKey() []byte   { _ = "STUB: not implemented"; return nil }
+func (s SubnetEVMLeafsRequest) KeyLimit() uint16 { _ = "STUB: not implemented"; return 0 }
+func (s SubnetEVMLeafsRequest) LeafType() NodeType {
+	_ = "STUB: not implemented"
+	return *new(NodeType)
+}

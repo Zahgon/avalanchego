@@ -9,7 +9,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/proto/pb/p2p"
-	"github.com/ava-labs/avalanchego/utils/timer/mockable"
 	"github.com/ava-labs/avalanchego/version"
 )
 
@@ -56,35 +55,19 @@ type GetStateSummaryFrontierFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *GetStateSummaryFrontierFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *GetStateSummaryFrontierFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetStateSummaryFrontierFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetStateSummaryFrontierFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetStateSummaryFrontierFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetStateSummaryFrontierFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalGetStateSummaryFrontierFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetStateSummaryFrontierFailedOp,
-		Message: &GetStateSummaryFrontierFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetAcceptedStateSummaryFailed struct {
@@ -92,35 +75,19 @@ type GetAcceptedStateSummaryFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *GetAcceptedStateSummaryFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *GetAcceptedStateSummaryFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetAcceptedStateSummaryFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetAcceptedStateSummaryFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetAcceptedStateSummaryFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetAcceptedStateSummaryFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalGetAcceptedStateSummaryFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetAcceptedStateSummaryFailedOp,
-		Message: &GetAcceptedStateSummaryFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetAcceptedFrontierFailed struct {
@@ -128,35 +95,19 @@ type GetAcceptedFrontierFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *GetAcceptedFrontierFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *GetAcceptedFrontierFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetAcceptedFrontierFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetAcceptedFrontierFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetAcceptedFrontierFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetAcceptedFrontierFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalGetAcceptedFrontierFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetAcceptedFrontierFailedOp,
-		Message: &GetAcceptedFrontierFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetAcceptedFailed struct {
@@ -164,35 +115,19 @@ type GetAcceptedFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *GetAcceptedFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *GetAcceptedFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetAcceptedFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetAcceptedFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetAcceptedFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetAcceptedFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalGetAcceptedFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetAcceptedFailedOp,
-		Message: &GetAcceptedFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetAncestorsFailed struct {
@@ -201,23 +136,15 @@ type GetAncestorsFailed struct {
 	EngineType p2p.EngineType `json:"engine_type,omitempty"`
 }
 
-func (m *GetAncestorsFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d EngineType: %s",
-		m.ChainID, m.RequestID, m.EngineType,
-	)
-}
+func (m *GetAncestorsFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetAncestorsFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetAncestorsFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetAncestorsFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetAncestorsFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func (m *GetAncestorsFailed) GetEngineType() p2p.EngineType {
-	return m.EngineType
+	_ = "STUB: not implemented"
+	return *new(p2p.EngineType)
 }
 
 func InternalGetAncestorsFailed(
@@ -226,16 +153,8 @@ func InternalGetAncestorsFailed(
 	requestID uint32,
 	engineType p2p.EngineType,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetAncestorsFailedOp,
-		Message: &GetAncestorsFailed{
-			ChainID:    chainID,
-			RequestID:  requestID,
-			EngineType: engineType,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetFailed struct {
@@ -243,35 +162,19 @@ type GetFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *GetFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *GetFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *GetFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *GetFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *GetFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *GetFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalGetFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     GetFailedOp,
-		Message: &GetFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type QueryFailed struct {
@@ -279,112 +182,59 @@ type QueryFailed struct {
 	RequestID uint32 `json:"request_id,omitempty"`
 }
 
-func (m *QueryFailed) String() string {
-	return fmt.Sprintf(
-		"ChainID: %s RequestID: %d",
-		m.ChainID, m.RequestID,
-	)
-}
+func (m *QueryFailed) String() string { _ = "STUB: not implemented"; return "" }
 
-func (m *QueryFailed) GetChainId() []byte {
-	return m.ChainID[:]
-}
+func (m *QueryFailed) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (m *QueryFailed) GetRequestId() uint32 {
-	return m.RequestID
-}
+func (m *QueryFailed) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
 func InternalQueryFailed(
 	nodeID ids.NodeID,
 	chainID ids.ID,
 	requestID uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     QueryFailedOp,
-		Message: &QueryFailed{
-			ChainID:   chainID,
-			RequestID: requestID,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Connected struct {
 	NodeVersion *version.Application `json:"node_version,omitempty"`
 }
 
-func (m *Connected) String() string {
-	return fmt.Sprintf(
-		"NodeVersion: %s",
-		m.NodeVersion,
-	)
-}
+func (m *Connected) String() string { _ = "STUB: not implemented"; return "" }
 
 func InternalConnected(nodeID ids.NodeID, nodeVersion *version.Application) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     ConnectedOp,
-		Message: &Connected{
-			NodeVersion: nodeVersion,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type Disconnected struct{}
 
-func (Disconnected) String() string {
-	return ""
-}
+func (Disconnected) String() string { _ = "STUB: not implemented"; return "" }
 
-func InternalDisconnected(nodeID ids.NodeID) *InboundMessage {
-	return &InboundMessage{
-		NodeID:     nodeID,
-		Op:         DisconnectedOp,
-		Message:    disconnected,
-		Expiration: mockable.MaxTime,
-	}
-}
+func InternalDisconnected(nodeID ids.NodeID) *InboundMessage { _ = "STUB: not implemented"; return nil }
 
 type VMMessage struct {
 	Notification uint32 `json:"notification,omitempty"`
 }
 
-func (m *VMMessage) String() string {
-	return fmt.Sprintf(
-		"Notification: %d",
-		m.Notification,
-	)
-}
+func (m *VMMessage) String() string { _ = "STUB: not implemented"; return "" }
 
 func InternalVMMessage(
 	nodeID ids.NodeID,
 	notification uint32,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID: nodeID,
-		Op:     NotifyOp,
-		Message: &VMMessage{
-			Notification: notification,
-		},
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GossipRequest struct{}
 
-func (GossipRequest) String() string {
-	return ""
-}
+func (GossipRequest) String() string { _ = "STUB: not implemented"; return "" }
 
 func InternalGossipRequest(
 	nodeID ids.NodeID,
 ) *InboundMessage {
-	return &InboundMessage{
-		NodeID:     nodeID,
-		Op:         GossipRequestOp,
-		Message:    gossipRequest,
-		Expiration: mockable.MaxTime,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

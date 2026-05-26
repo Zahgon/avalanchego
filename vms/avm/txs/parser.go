@@ -4,9 +4,6 @@
 package txs
 
 import (
-	"errors"
-	"fmt"
-	"math"
 	"reflect"
 
 	"github.com/ava-labs/avalanchego/codec"
@@ -39,14 +36,7 @@ type parser struct {
 	gc  linearcodec.Codec
 }
 
-func NewParser(fxs []fxs.Fx) (Parser, error) {
-	return NewCustomParser(
-		make(map[reflect.Type]int),
-		&mockable.Clock{},
-		logging.NoLog{},
-		fxs,
-	)
-}
+func NewParser(fxs []fxs.Fx) (Parser, error) { _ = "STUB: not implemented"; return *new(Parser), nil }
 
 func NewCustomParser(
 	typeToFxIndex map[reflect.Type]int,
@@ -54,94 +44,35 @@ func NewCustomParser(
 	log logging.Logger,
 	fxs []fxs.Fx,
 ) (Parser, error) {
-	gc := linearcodec.NewDefault()
-	c := linearcodec.NewDefault()
-
-	gcm := codec.NewManager(math.MaxInt32)
-	cm := codec.NewDefaultManager()
-
-	err := errors.Join(
-		c.RegisterType(&BaseTx{}),
-		c.RegisterType(&CreateAssetTx{}),
-		c.RegisterType(&OperationTx{}),
-		c.RegisterType(&ImportTx{}),
-		c.RegisterType(&ExportTx{}),
-		cm.RegisterCodec(CodecVersion, c),
-
-		gc.RegisterType(&BaseTx{}),
-		gc.RegisterType(&CreateAssetTx{}),
-		gc.RegisterType(&OperationTx{}),
-		gc.RegisterType(&ImportTx{}),
-		gc.RegisterType(&ExportTx{}),
-		gcm.RegisterCodec(CodecVersion, gc),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	vm := &fxVM{
-		typeToFxIndex: typeToFxIndex,
-		clock:         clock,
-		log:           log,
-	}
-	for i, fx := range fxs {
-		vm.codecRegistry = &codecRegistry{
-			codecs:      []codec.Registry{gc, c},
-			index:       i,
-			typeToIndex: vm.typeToFxIndex,
-		}
-		if err := fx.Initialize(vm); err != nil {
-			return nil, err
-		}
-	}
-	return &parser{
-		cm:  cm,
-		gcm: gcm,
-		c:   c,
-		gc:  gc,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(Parser), nil
 }
 
-func (p *parser) Codec() codec.Manager {
-	return p.cm
-}
+func (p *parser) Codec() codec.Manager { _ = "STUB: not implemented"; return *new(codec.Manager) }
 
 func (p *parser) GenesisCodec() codec.Manager {
-	return p.gcm
+	_ = "STUB: not implemented"
+	return *new(codec.Manager)
 }
 
 func (p *parser) CodecRegistry() codec.Registry {
-	return p.c
+	_ = "STUB: not implemented"
+	return *new(codec.Registry)
 }
 
 func (p *parser) GenesisCodecRegistry() codec.Registry {
-	return p.gc
+	_ = "STUB: not implemented"
+	return *new(codec.Registry)
 }
 
-func (p *parser) ParseTx(bytes []byte) (*Tx, error) {
-	return parse(p.cm, bytes)
-}
+func (p *parser) ParseTx(bytes []byte) (*Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (p *parser) ParseGenesisTx(bytes []byte) (*Tx, error) {
-	return parse(p.gcm, bytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func parse(cm codec.Manager, signedBytes []byte) (*Tx, error) {
-	tx := &Tx{}
-	parsedVersion, err := cm.Unmarshal(signedBytes, tx)
-	if err != nil {
-		return nil, err
-	}
-	if parsedVersion != CodecVersion {
-		return nil, fmt.Errorf("expected codec version %d but got %d", CodecVersion, parsedVersion)
-	}
-
-	unsignedBytesLen, err := cm.Size(CodecVersion, &tx.Unsigned)
-	if err != nil {
-		return nil, fmt.Errorf("couldn't calculate UnsignedTx marshal length: %w", err)
-	}
-
-	unsignedBytes := signedBytes[:unsignedBytesLen]
-	tx.SetBytes(unsignedBytes, signedBytes)
-	return tx, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -16,17 +16,10 @@ type Uniform interface {
 }
 
 // NewUniform returns a new sampler
-func NewUniform() Uniform {
-	return &uniformReplacer{
-		rng: globalRNG,
-	}
-}
+func NewUniform() Uniform { _ = "STUB: not implemented"; return *new(Uniform) }
 
 // NewDeterministicUniform returns a new sampler
 func NewDeterministicUniform(source Source) Uniform {
-	return &uniformReplacer{
-		rng: &rng{
-			rng: source,
-		},
-	}
+	_ = "STUB: not implemented"
+	return *new(Uniform)
 }

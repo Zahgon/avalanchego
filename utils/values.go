@@ -5,10 +5,10 @@ package utils
 
 // Returns a new instance of a T.
 func Zero[T any]() (_ T) {
-	return
+	_ = "STUB: not implemented"
+
+	// PointerTo returns a pointer to the provided value.
+	return *new(T)
 }
 
-// PointerTo returns a pointer to the provided value.
-func PointerTo[T any](v T) *T {
-	return &v
-}
+func PointerTo[T any](v T) *T { _ = "STUB: not implemented"; return nil }

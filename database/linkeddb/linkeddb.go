@@ -4,11 +4,9 @@
 package linkeddb
 
 import (
-	"slices"
 	"sync"
 
 	"github.com/ava-labs/avalanchego/cache"
-	"github.com/ava-labs/avalanchego/cache/lru"
 	"github.com/ava-labs/avalanchego/database"
 )
 
@@ -62,179 +60,51 @@ type node struct {
 }
 
 func New(db database.Database, cacheSize int) LinkedDB {
-	return &linkedDB{
-		nodeCache:    lru.NewCache[string, *node](cacheSize),
-		updatedNodes: make(map[string]*node),
-		db:           db,
-		batch:        db.NewBatch(),
-	}
+	_ = "STUB: not implemented"
+	return *new(LinkedDB)
 }
 
-func NewDefault(db database.Database) LinkedDB {
-	return New(db, defaultCacheSize)
-}
+func NewDefault(db database.Database) LinkedDB { _ = "STUB: not implemented"; return *new(LinkedDB) }
 
-func (ldb *linkedDB) Has(key []byte) (bool, error) {
-	ldb.lock.RLock()
-	defer ldb.lock.RUnlock()
+func (ldb *linkedDB) Has(key []byte) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-	return ldb.db.Has(nodeKey(key))
-}
+func (ldb *linkedDB) Get(key []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (ldb *linkedDB) Get(key []byte) ([]byte, error) {
-	ldb.lock.RLock()
-	defer ldb.lock.RUnlock()
+func (ldb *linkedDB) Put(key, value []byte) error { _ = "STUB: not implemented"; return nil }
 
-	node, err := ldb.getNode(key)
-	return node.Value, err
-}
+// If the key already has a node in the list, update that node.
 
-func (ldb *linkedDB) Put(key, value []byte) error {
-	ldb.lock.Lock()
-	defer ldb.lock.Unlock()
+// The key isn't currently in the list, so we should add it as the head.
+// Note we will copy the key so it's safe to store references to it.
 
-	ldb.resetBatch()
+// The list currently has a head, so we need to update the old head.
 
-	// If the key already has a node in the list, update that node.
-	existingNode, err := ldb.getNode(key)
-	if err == nil {
-		existingNode.Value = slices.Clone(value)
-		if err := ldb.putNode(key, existingNode); err != nil {
-			return err
-		}
-		return ldb.writeBatch()
-	}
-	if err != database.ErrNotFound {
-		return err
-	}
+func (ldb *linkedDB) Delete(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-	// The key isn't currently in the list, so we should add it as the head.
-	// Note we will copy the key so it's safe to store references to it.
-	key = slices.Clone(key)
-	newHead := node{Value: slices.Clone(value)}
-	if headKey, err := ldb.getHeadKey(); err == nil {
-		// The list currently has a head, so we need to update the old head.
-		oldHead, err := ldb.getNode(headKey)
-		if err != nil {
-			return err
-		}
-		oldHead.HasPrevious = true
-		oldHead.Previous = key
-		if err := ldb.putNode(headKey, oldHead); err != nil {
-			return err
-		}
+// We're trying to delete this node.
 
-		newHead.HasNext = true
-		newHead.Next = headKey
-	} else if err != database.ErrNotFound {
-		return err
-	}
-	if err := ldb.putNode(key, newHead); err != nil {
-		return err
-	}
-	if err := ldb.putHeadKey(key); err != nil {
-		return err
-	}
-	return ldb.writeBatch()
-}
+// We aren't modifying the head.
 
-func (ldb *linkedDB) Delete(key []byte) error {
-	ldb.lock.Lock()
-	defer ldb.lock.Unlock()
+// We aren't modifying the tail.
 
-	currentNode, err := ldb.getNode(key)
-	if err == database.ErrNotFound {
-		return nil
-	}
-	if err != nil {
-		return err
-	}
+// This is the only node, so we don't have a head anymore.
 
-	ldb.resetBatch()
+// The next node will be the new head.
 
-	// We're trying to delete this node.
-	if err := ldb.deleteNode(key); err != nil {
-		return err
-	}
+func (ldb *linkedDB) IsEmpty() (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-	switch {
-	case currentNode.HasPrevious:
-		// We aren't modifying the head.
-		previousNode, err := ldb.getNode(currentNode.Previous)
-		if err != nil {
-			return err
-		}
-		previousNode.HasNext = currentNode.HasNext
-		previousNode.Next = currentNode.Next
-		if err := ldb.putNode(currentNode.Previous, previousNode); err != nil {
-			return err
-		}
-		if currentNode.HasNext {
-			// We aren't modifying the tail.
-			nextNode, err := ldb.getNode(currentNode.Next)
-			if err != nil {
-				return err
-			}
-			nextNode.HasPrevious = true
-			nextNode.Previous = currentNode.Previous
-			if err := ldb.putNode(currentNode.Next, nextNode); err != nil {
-				return err
-			}
-		}
-	case !currentNode.HasNext:
-		// This is the only node, so we don't have a head anymore.
-		if err := ldb.deleteHeadKey(); err != nil {
-			return err
-		}
-	default:
-		// The next node will be the new head.
-		if err := ldb.putHeadKey(currentNode.Next); err != nil {
-			return err
-		}
-		nextNode, err := ldb.getNode(currentNode.Next)
-		if err != nil {
-			return err
-		}
-		nextNode.HasPrevious = false
-		nextNode.Previous = nil
-		if err := ldb.putNode(currentNode.Next, nextNode); err != nil {
-			return err
-		}
-	}
-	return ldb.writeBatch()
-}
-
-func (ldb *linkedDB) IsEmpty() (bool, error) {
-	_, err := ldb.HeadKey()
-	if err == database.ErrNotFound {
-		return true, nil
-	}
-	return false, err
-}
-
-func (ldb *linkedDB) HeadKey() ([]byte, error) {
-	ldb.lock.RLock()
-	defer ldb.lock.RUnlock()
-
-	return ldb.getHeadKey()
-}
+func (ldb *linkedDB) HeadKey() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (ldb *linkedDB) Head() ([]byte, []byte, error) {
-	ldb.lock.RLock()
-	defer ldb.lock.RUnlock()
-
-	headKey, err := ldb.getHeadKey()
-	if err != nil {
-		return nil, nil, err
-	}
-	head, err := ldb.getNode(headKey)
-	return headKey, head.Value, err
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // This iterator does not guarantee that keys are returned in lexicographic
 // order.
 func (ldb *linkedDB) NewIterator() database.Iterator {
-	return &iterator{ldb: ldb}
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
 
 // NewIteratorWithStart returns an iterator that starts at [start].
@@ -242,122 +112,37 @@ func (ldb *linkedDB) NewIterator() database.Iterator {
 // order.
 // If [start] is not in the list, starts iterating from the list head.
 func (ldb *linkedDB) NewIteratorWithStart(start []byte) database.Iterator {
-	hasStartKey, err := ldb.Has(start)
-	if err == nil && hasStartKey {
-		return &iterator{
-			ldb:         ldb,
-			initialized: true,
-			nextKey:     start,
-		}
-	}
-	// If the start key isn't present, start from the head
-	return ldb.NewIterator()
+	_ = "STUB: not implemented"
+	return *new(database.Iterator)
 }
+
+// If the start key isn't present, start from the head
 
 func (ldb *linkedDB) getHeadKey() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// If the ldb read lock is held, then there needs to be additional
 	// synchronization here to avoid racy behavior.
-	ldb.cacheLock.Lock()
-	defer ldb.cacheLock.Unlock()
-
-	if ldb.headKeyIsSynced {
-		if ldb.headKeyExists {
-			return ldb.headKey, nil
-		}
-		return nil, database.ErrNotFound
-	}
-	headKey, err := ldb.db.Get(headKey)
-	if err == nil {
-		ldb.headKeyIsSynced = true
-		ldb.headKeyExists = true
-		ldb.headKey = headKey
-		return headKey, nil
-	}
-	if err == database.ErrNotFound {
-		ldb.headKeyIsSynced = true
-		ldb.headKeyExists = false
-		return nil, database.ErrNotFound
-	}
-	return headKey, err
+	return nil, nil
 }
 
-func (ldb *linkedDB) putHeadKey(key []byte) error {
-	ldb.headKeyIsUpdated = true
-	ldb.updatedHeadKeyExists = true
-	ldb.updatedHeadKey = key
-	return ldb.batch.Put(headKey, key)
-}
+func (ldb *linkedDB) putHeadKey(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (ldb *linkedDB) deleteHeadKey() error {
-	ldb.headKeyIsUpdated = true
-	ldb.updatedHeadKeyExists = false
-	return ldb.batch.Delete(headKey)
-}
+func (ldb *linkedDB) deleteHeadKey() error { _ = "STUB: not implemented"; return nil }
 
 func (ldb *linkedDB) getNode(key []byte) (node, error) {
+	_ = "STUB: not implemented"
 	// If the ldb read lock is held, then there needs to be additional
 	// synchronization here to avoid racy behavior.
-	ldb.cacheLock.Lock()
-	defer ldb.cacheLock.Unlock()
-
-	keyStr := string(key)
-	if n, exists := ldb.nodeCache.Get(keyStr); exists {
-		if n == nil {
-			return node{}, database.ErrNotFound
-		}
-		return *n, nil
-	}
-
-	nodeBytes, err := ldb.db.Get(nodeKey(key))
-	if err == database.ErrNotFound {
-		ldb.nodeCache.Put(keyStr, nil)
-		return node{}, err
-	}
-	if err != nil {
-		return node{}, err
-	}
-	n := node{}
-	_, err = Codec.Unmarshal(nodeBytes, &n)
-	if err == nil {
-		ldb.nodeCache.Put(keyStr, &n)
-	}
-	return n, err
+	return *new(node), nil
 }
 
-func (ldb *linkedDB) putNode(key []byte, n node) error {
-	ldb.updatedNodes[string(key)] = &n
-	nodeBytes, err := Codec.Marshal(CodecVersion, n)
-	if err != nil {
-		return err
-	}
-	return ldb.batch.Put(nodeKey(key), nodeBytes)
-}
+func (ldb *linkedDB) putNode(key []byte, n node) error { _ = "STUB: not implemented"; return nil }
 
-func (ldb *linkedDB) deleteNode(key []byte) error {
-	ldb.updatedNodes[string(key)] = nil
-	return ldb.batch.Delete(nodeKey(key))
-}
+func (ldb *linkedDB) deleteNode(key []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (ldb *linkedDB) resetBatch() {
-	ldb.headKeyIsUpdated = false
-	clear(ldb.updatedNodes)
-	ldb.batch.Reset()
-}
+func (ldb *linkedDB) resetBatch() { _ = "STUB: not implemented"; return }
 
-func (ldb *linkedDB) writeBatch() error {
-	if err := ldb.batch.Write(); err != nil {
-		return err
-	}
-	if ldb.headKeyIsUpdated {
-		ldb.headKeyIsSynced = true
-		ldb.headKeyExists = ldb.updatedHeadKeyExists
-		ldb.headKey = ldb.updatedHeadKey
-	}
-	for key, n := range ldb.updatedNodes {
-		ldb.nodeCache.Put(key, n)
-	}
-	return nil
-}
+func (ldb *linkedDB) writeBatch() error { _ = "STUB: not implemented"; return nil }
 
 type iterator struct {
 	ldb                    *linkedDB
@@ -367,73 +152,19 @@ type iterator struct {
 }
 
 func (it *iterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator has been exhausted, there is no next value.
-	if it.exhausted {
-		it.key = nil
-		it.value = nil
-		return false
-	}
-
-	it.ldb.lock.RLock()
-	defer it.ldb.lock.RUnlock()
-
-	// If the iterator was not yet initialized, do it now.
-	if !it.initialized {
-		it.initialized = true
-		headKey, err := it.ldb.getHeadKey()
-		if err == database.ErrNotFound {
-			it.exhausted = true
-			it.key = nil
-			it.value = nil
-			return false
-		}
-		if err != nil {
-			it.exhausted = true
-			it.key = nil
-			it.value = nil
-			it.err = err
-			return false
-		}
-		it.nextKey = headKey
-	}
-
-	nextNode, err := it.ldb.getNode(it.nextKey)
-	if err == database.ErrNotFound {
-		it.exhausted = true
-		it.key = nil
-		it.value = nil
-		return false
-	}
-	if err != nil {
-		it.exhausted = true
-		it.key = nil
-		it.value = nil
-		it.err = err
-		return false
-	}
-	it.key = it.nextKey
-	it.value = nextNode.Value
-	it.nextKey = nextNode.Next
-	it.exhausted = !nextNode.HasNext
-	return true
+	return false
 }
 
-func (it *iterator) Error() error {
-	return it.err
-}
+// If the iterator was not yet initialized, do it now.
 
-func (it *iterator) Key() []byte {
-	return it.key
-}
+func (it *iterator) Error() error { _ = "STUB: not implemented"; return nil }
 
-func (it *iterator) Value() []byte {
-	return it.value
-}
+func (it *iterator) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-func (*iterator) Release() {}
+func (it *iterator) Value() []byte { _ = "STUB: not implemented"; return nil }
 
-func nodeKey(key []byte) []byte {
-	newKey := make([]byte, len(key)+1)
-	copy(newKey[1:], key)
-	return newKey
-}
+func (*iterator) Release() { _ = "STUB: not implemented"; return }
+
+func nodeKey(key []byte) []byte { _ = "STUB: not implemented"; return nil }

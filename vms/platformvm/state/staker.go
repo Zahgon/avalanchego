@@ -4,7 +4,6 @@
 package state
 
 import (
-	"bytes"
 	"time"
 
 	"github.com/google/btree"
@@ -45,29 +44,7 @@ type Staker struct {
 
 // Equals returns true if this staker is equal to the provided staker.
 // If s.Less(other) and other.Less(s) are both false, then it doesn't mean that s.Equals(other) is true.
-func (s *Staker) Equals(other *Staker) bool {
-	if s == nil && other == nil {
-		return true
-	}
-
-	if other == nil || s == nil {
-		return false
-	}
-
-	equalPKs := (s.PublicKey == nil && other.PublicKey == nil) ||
-		(s.PublicKey != nil && other.PublicKey != nil && s.PublicKey.Equals(other.PublicKey))
-
-	return s.TxID == other.TxID &&
-		s.NodeID == other.NodeID &&
-		equalPKs &&
-		s.SubnetID == other.SubnetID &&
-		s.Weight == other.Weight &&
-		s.StartTime.Equal(other.StartTime) &&
-		s.EndTime.Equal(other.EndTime) &&
-		s.PotentialReward == other.PotentialReward &&
-		s.NextTime.Equal(other.NextTime) &&
-		s.Priority == other.Priority
-}
+func (s *Staker) Equals(other *Staker) bool { _ = "STUB: not implemented"; return false }
 
 // A *Staker is considered to be less than another *Staker when:
 //
@@ -76,23 +53,7 @@ func (s *Staker) Equals(other *Staker) bool {
 //     lesser one.
 //  3. If the priorities are also the same, the one with the lesser txID is
 //     lesser.
-func (s *Staker) Less(than *Staker) bool {
-	if s.NextTime.Before(than.NextTime) {
-		return true
-	}
-	if than.NextTime.Before(s.NextTime) {
-		return false
-	}
-
-	if s.Priority < than.Priority {
-		return true
-	}
-	if than.Priority < s.Priority {
-		return false
-	}
-
-	return bytes.Compare(s.TxID[:], than.TxID[:]) == -1
-}
+func (s *Staker) Less(than *Staker) bool { _ = "STUB: not implemented"; return false }
 
 func NewCurrentStaker(
 	txID ids.ID,
@@ -100,40 +61,11 @@ func NewCurrentStaker(
 	startTime time.Time,
 	potentialReward uint64,
 ) (*Staker, error) {
-	publicKey, _, err := staker.PublicKey()
-	if err != nil {
-		return nil, err
-	}
-	endTime := staker.EndTime()
-	return &Staker{
-		TxID:            txID,
-		NodeID:          staker.NodeID(),
-		PublicKey:       publicKey,
-		SubnetID:        staker.SubnetID(),
-		Weight:          staker.Weight(),
-		StartTime:       startTime,
-		EndTime:         endTime,
-		PotentialReward: potentialReward,
-		NextTime:        endTime,
-		Priority:        staker.CurrentPriority(),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewPendingStaker(txID ids.ID, staker txs.ScheduledStaker) (*Staker, error) {
-	publicKey, _, err := staker.PublicKey()
-	if err != nil {
-		return nil, err
-	}
-	startTime := staker.StartTime()
-	return &Staker{
-		TxID:      txID,
-		NodeID:    staker.NodeID(),
-		PublicKey: publicKey,
-		SubnetID:  staker.SubnetID(),
-		Weight:    staker.Weight(),
-		StartTime: startTime,
-		EndTime:   staker.EndTime(),
-		NextTime:  startTime,
-		Priority:  staker.PendingPriority(),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -28,14 +28,7 @@
 package node
 
 import (
-	"fmt"
-	"os"
-	"path/filepath"
-
 	"github.com/ava-labs/libevm/accounts"
-	"github.com/ava-labs/libevm/accounts/external"
-	"github.com/ava-labs/libevm/accounts/keystore"
-	"github.com/ava-labs/libevm/log"
 )
 
 // Config represents a small collection of configuration values to fine tune the
@@ -73,78 +66,31 @@ type Config struct {
 // ExtRPCEnabled returns the indicator whether node enables the external
 // RPC(http, ws or graphql).
 func (c *Config) ExtRPCEnabled() bool {
+	_ = "STUB: not implemented"
 	// In avalanche, we always disable the external RPC.
 	return false
 }
 
 // KeyDirConfig determines the settings for keydirectory
-func (c *Config) KeyDirConfig() (string, error) {
-	var (
-		keydir string
-		err    error
-	)
-	switch {
-	case filepath.IsAbs(c.KeyStoreDir):
-		keydir = c.KeyStoreDir
-	case c.KeyStoreDir != "":
-		keydir, err = filepath.Abs(c.KeyStoreDir)
-	}
-	return keydir, err
-}
+func (c *Config) KeyDirConfig() (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 // GetKeyStoreDir retrieves the key directory and will create
 // and ephemeral one if necessary.
 func (c *Config) GetKeyStoreDir() (string, bool, error) {
-	keydir, err := c.KeyDirConfig()
-	if err != nil {
-		return "", false, err
-	}
-	isEphemeral := false
-	if keydir == "" {
-		// There is no datadir.
-		keydir, err = os.MkdirTemp("", "subnet-evm-keystore")
-		isEphemeral = true
-	}
-
-	if err != nil {
-		return "", false, err
-	}
-	if err := os.MkdirAll(keydir, 0700); err != nil {
-		return "", false, err
-	}
-
-	return keydir, isEphemeral, nil
+	_ = "STUB: not implemented"
+	return "", false, nil
 }
+
+// There is no datadir.
 
 func makeAccountManager(conf *Config) (*accounts.Manager, error) {
-	scryptN := keystore.StandardScryptN
-	scryptP := keystore.StandardScryptP
-	if conf.UseLightweightKDF {
-		scryptN = keystore.LightScryptN
-		scryptP = keystore.LightScryptP
-	}
-
-	keydir, _, err := conf.GetKeyStoreDir()
-	if err != nil {
-		return nil, err
-	}
-	// Assemble the account manager and supported backends
-	var backends []accounts.Backend
-	if len(conf.ExternalSigner) > 0 {
-		log.Info("Using external signer", "url", conf.ExternalSigner)
-		if extapi, err := external.NewExternalBackend(conf.ExternalSigner); err == nil {
-			backends = append(backends, extapi)
-		} else {
-			return nil, fmt.Errorf("error connecting to external signer: %v", err)
-		}
-	}
-	if len(backends) == 0 {
-		// For now, we're using EITHER external signer OR local signers.
-		// If/when we implement some form of lockfile for USB and keystore wallets,
-		// we can have both, but it's very confusing for the user to see the same
-		// accounts in both externally and locally, plus very racey.
-		backends = append(backends, keystore.NewKeyStore(keydir, scryptN, scryptP))
-	}
-
-	return accounts.NewManager(&accounts.Config{InsecureUnlockAllowed: conf.InsecureUnlockAllowed}, backends...), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Assemble the account manager and supported backends
+
+// For now, we're using EITHER external signer OR local signers.
+// If/when we implement some form of lockfile for USB and keystore wallets,
+// we can have both, but it's very confusing for the user to see the same
+// accounts in both externally and locally, plus very racey.

@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
 
@@ -37,162 +36,116 @@ var (
 // Chain state
 
 func IsInitialized(db database.KeyValueReader) (bool, error) {
-	return db.Has(initializedKey)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func SetInitialized(db database.KeyValueWriter) error {
-	return db.Put(initializedKey, nil)
-}
+func SetInitialized(db database.KeyValueWriter) error { _ = "STUB: not implemented"; return nil }
 
 // Block state
 
 func GetLastAccepted(db database.KeyValueReader) (ids.ID, error) {
-	return database.GetID(db, blockPrefix)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func SetLastAccepted(db database.KeyValueWriter, blkID ids.ID) error {
-	return database.PutID(db, blockPrefix, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func GetBlockIDByHeight(db database.KeyValueReader, height uint64) (ids.ID, error) {
-	key := Flatten(blockPrefix, database.PackUInt64(height))
-	return database.GetID(db, key)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func GetBlock(db database.KeyValueReader, blkID ids.ID) ([]byte, error) {
-	key := Flatten(blockPrefix, blkID[:])
-	return db.Get(key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func AddBlock(db database.KeyValueWriter, height uint64, blkID ids.ID, blk []byte) error {
-	heightToIDKey := Flatten(blockPrefix, database.PackUInt64(height))
-	if err := database.PutID(db, heightToIDKey, blkID); err != nil {
-		return err
-	}
-	idToBlockKey := Flatten(blockPrefix, blkID[:])
-	return db.Put(idToBlockKey, blk)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Address state
 
 func GetNonce(db database.KeyValueReader, address ids.ShortID) (uint64, error) {
-	key := Flatten(addressPrefix, address[:])
-	return database.WithDefault(database.GetUInt64, db, key, 0)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func SetNonce(db database.KeyValueWriter, address ids.ShortID, nonce uint64) error {
-	key := Flatten(addressPrefix, address[:])
-	return database.PutUInt64(db, key, nonce)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func IncrementNonce(db database.KeyValueReaderWriter, address ids.ShortID, nonce uint64) error {
-	expectedNonce, err := GetNonce(db, address)
-	if err != nil {
-		return err
-	}
-	if nonce != expectedNonce {
-		return errWrongNonce
-	}
-	return SetNonce(db, address, nonce+1)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func GetBalance(db database.KeyValueReader, address ids.ShortID, chainID ids.ID) (uint64, error) {
-	key := Flatten(addressPrefix, address[:], chainID[:])
-	return database.WithDefault(database.GetUInt64, db, key, 0)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func SetBalance(db database.KeyValueWriterDeleter, address ids.ShortID, chainID ids.ID, balance uint64) error {
-	key := Flatten(addressPrefix, address[:], chainID[:])
-	if balance == 0 {
-		return db.Delete(key)
-	}
-	return database.PutUInt64(db, key, balance)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func DecreaseBalance(db database.KeyValueReaderWriterDeleter, address ids.ShortID, chainID ids.ID, amount uint64) error {
-	balance, err := GetBalance(db, address, chainID)
-	if err != nil {
-		return err
-	}
-	if balance < amount {
-		return errInsufficientBalance
-	}
-	return SetBalance(db, address, chainID, balance-amount)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func IncreaseBalance(db database.KeyValueReaderWriterDeleter, address ids.ShortID, chainID ids.ID, amount uint64) error {
-	balance, err := GetBalance(db, address, chainID)
-	if err != nil {
-		return err
-	}
-	balance, err = math.Add(balance, amount)
-	if err != nil {
-		return err
-	}
-	return SetBalance(db, address, chainID, balance)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Chain state
 
 func HasLoanID(db database.KeyValueReader, chainID ids.ID, loanID ids.ID) (bool, error) {
-	key := Flatten(chainPrefix, chainID[:], loanID[:])
-	return db.Has(key)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func AddLoanID(db database.KeyValueWriter, chainID ids.ID, loanID ids.ID) error {
-	key := Flatten(chainPrefix, chainID[:], loanID[:])
-	return db.Put(key, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func GetLoan(db database.KeyValueReader, chainID ids.ID) (uint64, error) {
-	key := Flatten(chainPrefix, chainID[:])
-	return database.WithDefault(database.GetUInt64, db, key, 0)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func SetLoan(db database.KeyValueWriterDeleter, chainID ids.ID, balance uint64) error {
-	key := Flatten(chainPrefix, chainID[:])
-	if balance == 0 {
-		return db.Delete(key)
-	}
-	return database.PutUInt64(db, key, balance)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func DecreaseLoan(db database.KeyValueReaderWriterDeleter, chainID ids.ID, amount uint64) error {
-	balance, err := GetLoan(db, chainID)
-	if err != nil {
-		return err
-	}
-	if balance < amount {
-		return errInsufficientBalance
-	}
-	return SetLoan(db, chainID, balance-amount)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func IncreaseLoan(db database.KeyValueReaderWriterDeleter, chainID ids.ID, amount uint64) error {
-	balance, err := GetLoan(db, chainID)
-	if err != nil {
-		return err
-	}
-	balance, err = math.Add(balance, amount)
-	if err != nil {
-		return err
-	}
-	return SetLoan(db, chainID, balance)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Message state
 
 func GetMessage(db database.KeyValueReader, txID ids.ID) (*warp.UnsignedMessage, error) {
-	key := Flatten(messagePrefix, txID[:])
-	bytes, err := db.Get(key)
-	if err != nil {
-		return nil, err
-	}
-	return warp.ParseUnsignedMessage(bytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func SetMessage(db database.KeyValueWriter, txID ids.ID, message *warp.UnsignedMessage) error {
-	key := Flatten(messagePrefix, txID[:])
-	bytes := message.Bytes()
-	return db.Put(key, bytes)
+	_ = "STUB: not implemented"
+	return nil
 }

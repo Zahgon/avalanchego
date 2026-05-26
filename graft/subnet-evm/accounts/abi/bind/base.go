@@ -30,17 +30,12 @@ package bind
 import (
 	"context"
 	"errors"
-	"fmt"
 	"math/big"
-	"strings"
 	"sync"
 
-	"github.com/ava-labs/avalanchego/graft/evm/rpc"
-	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
 	"github.com/ava-labs/libevm/event"
 )
 
@@ -107,19 +102,7 @@ type MetaData struct {
 	ab   *abi.ABI
 }
 
-func (m *MetaData) GetAbi() (*abi.ABI, error) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-	if m.ab != nil {
-		return m.ab, nil
-	}
-	if parsed, err := abi.JSON(strings.NewReader(m.ABI)); err != nil {
-		return nil, err
-	} else {
-		m.ab = &parsed
-	}
-	return m.ab, nil
-}
+func (m *MetaData) GetAbi() (*abi.ABI, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // BoundContract is the base wrapper object that reflects a contract on the
 // Ethereum network. It contains a collection of methods that are used by the
@@ -135,31 +118,16 @@ type BoundContract struct {
 // NewBoundContract creates a low level contract interface through which calls
 // and transactions may be made through.
 func NewBoundContract(address common.Address, abi abi.ABI, caller ContractCaller, transactor ContractTransactor, filterer ContractFilterer) *BoundContract {
-	return &BoundContract{
-		address:    address,
-		abi:        abi,
-		caller:     caller,
-		transactor: transactor,
-		filterer:   filterer,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DeployContract deploys a contract onto the Ethereum blockchain and binds the
 // deployment address with a Go wrapper.
 func DeployContract(opts *TransactOpts, abi abi.ABI, bytecode []byte, backend ContractBackend, params ...interface{}) (common.Address, *types.Transaction, *BoundContract, error) {
+	_ = "STUB: not implemented"
 	// Otherwise try to deploy the contract
-	c := NewBoundContract(common.Address{}, abi, backend, backend, backend)
-
-	input, err := c.abi.Pack("", params...)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	tx, err := c.transact(opts, nil, append(bytecode, input...))
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	c.address = crypto.CreateAddress(opts.From, tx.Nonce())
-	return c.address, tx, c, nil
+	return *new(common.Address), nil, nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -167,412 +135,147 @@ func DeployContract(opts *TransactOpts, abi abi.ABI, bytecode []byte, backend Co
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (c *BoundContract) Call(opts *CallOpts, results *[]interface{}, method string, params ...interface{}) error {
+	_ = "STUB: not implemented"
 	// Don't crash on a lazy user
-	if opts == nil {
-		opts = new(CallOpts)
-	}
-	if results == nil {
-		results = new([]interface{})
-	}
-	// Pack the input, call and unpack the results
-	input, err := c.abi.Pack(method, params...)
-	if err != nil {
-		return err
-	}
-	var (
-		msg    = ethereum.CallMsg{From: opts.From, To: &c.address, Data: input}
-		ctx    = ensureContext(opts.Context)
-		code   []byte
-		output []byte
-	)
-	if opts.Accepted {
-		pb, ok := c.caller.(AcceptedContractCaller)
-		if !ok {
-			return ErrNoAcceptedState
-		}
-		output, err = pb.AcceptedCallContract(ctx, msg)
-		if err != nil {
-			return err
-		}
-		if len(output) == 0 {
-			// Make sure we have a contract to operate on, and bail out otherwise.
-			if code, err = pb.AcceptedCodeAt(ctx, c.address); err != nil {
-				return err
-			} else if len(code) == 0 {
-				return ErrNoCode
-			}
-		}
-	} else if opts.BlockHash != (common.Hash{}) {
-		bh, ok := c.caller.(BlockHashContractCaller)
-		if !ok {
-			return ErrNoBlockHashState
-		}
-		output, err = bh.CallContractAtHash(ctx, msg, opts.BlockHash)
-		if err != nil {
-			return err
-		}
-		if len(output) == 0 {
-			// Make sure we have a contract to operate on, and bail out otherwise.
-			if code, err = bh.CodeAtHash(ctx, c.address, opts.BlockHash); err != nil {
-				return err
-			} else if len(code) == 0 {
-				return ErrNoCode
-			}
-		}
-	} else {
-		output, err = c.caller.CallContract(ctx, msg, opts.BlockNumber)
-		if err != nil {
-			return err
-		}
-		if len(output) == 0 {
-			// Make sure we have a contract to operate on, and bail out otherwise.
-			if code, err = c.caller.CodeAt(ctx, c.address, opts.BlockNumber); err != nil {
-				return err
-			} else if len(code) == 0 {
-				return ErrNoCode
-			}
-		}
-	}
-
-	if len(*results) == 0 {
-		res, err := c.abi.Unpack(method, output)
-		*results = res
-		return err
-	}
-	res := *results
-	return c.abi.UnpackIntoInterface(res[0], method, output)
+	return nil
 }
+
+// Pack the input, call and unpack the results
+
+// Make sure we have a contract to operate on, and bail out otherwise.
+
+// Make sure we have a contract to operate on, and bail out otherwise.
+
+// Make sure we have a contract to operate on, and bail out otherwise.
 
 // Transact invokes the (paid) contract method with params as input values.
 func (c *BoundContract) Transact(opts *TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	_ = "STUB: not implemented"
 	// Otherwise pack up the parameters and invoke the contract
-	input, err := c.abi.Pack(method, params...)
-	if err != nil {
-		return nil, err
-	}
-	// todo(rjl493456442) check whether the method is payable or not,
-	// reject invalid transaction at the first place
-	return c.transact(opts, &c.address, input)
+	return nil, nil
 }
+
+// todo(rjl493456442) check whether the method is payable or not,
+// reject invalid transaction at the first place
 
 // RawTransact initiates a transaction with the given raw calldata as the input.
 // It's usually used to initiate transactions for invoking **Fallback** function.
 func (c *BoundContract) RawTransact(opts *TransactOpts, calldata []byte) (*types.Transaction, error) {
+	_ = "STUB: not implemented"
 	// todo(rjl493456442) check whether the method is payable or not,
 	// reject invalid transaction at the first place
-	return c.transact(opts, &c.address, calldata)
+	return nil, nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (c *BoundContract) Transfer(opts *TransactOpts) (*types.Transaction, error) {
+	_ = "STUB: not implemented"
 	// todo(rjl493456442) check the payable fallback or receive is defined
 	// or not, reject invalid transaction at the first place
-	return c.transact(opts, &c.address, nil)
+	return nil, nil
 }
 
 func (c *BoundContract) createDynamicTx(opts *TransactOpts, contract *common.Address, input []byte, head *types.Header) (*types.Transaction, error) {
+	_ = "STUB: not implemented"
 	// Normalize value
-	value := opts.Value
-	if value == nil {
-		value = new(big.Int)
-	}
-	// Estimate TipCap
-	gasTipCap := opts.GasTipCap
-	if gasTipCap == nil {
-		tip, err := c.transactor.SuggestGasTipCap(ensureContext(opts.Context))
-		if err != nil {
-			return nil, err
-		}
-		gasTipCap = tip
-	}
-	// Estimate FeeCap
-	gasFeeCap := opts.GasFeeCap
-	if gasFeeCap == nil {
-		gasFeeCap = new(big.Int).Add(
-			gasTipCap,
-			new(big.Int).Mul(head.BaseFee, big.NewInt(basefeeWiggleMultiplier)),
-		)
-	}
-	if gasFeeCap.Cmp(gasTipCap) < 0 {
-		return nil, fmt.Errorf("maxFeePerGas (%v) < maxPriorityFeePerGas (%v)", gasFeeCap, gasTipCap)
-	}
-	// Estimate GasLimit
-	gasLimit := opts.GasLimit
-	if opts.GasLimit == 0 {
-		var err error
-		gasLimit, err = c.estimateGasLimit(opts, contract, input, nil, gasTipCap, gasFeeCap, value)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// create the transaction
-	nonce, err := c.getNonce(opts)
-	if err != nil {
-		return nil, err
-	}
-	baseTx := &types.DynamicFeeTx{
-		To:        contract,
-		Nonce:     nonce,
-		GasFeeCap: gasFeeCap,
-		GasTipCap: gasTipCap,
-		Gas:       gasLimit,
-		Value:     value,
-		Data:      input,
-	}
-	return types.NewTx(baseTx), nil
+	return nil, nil
 }
+
+// Estimate TipCap
+
+// Estimate FeeCap
+
+// Estimate GasLimit
+
+// create the transaction
 
 func (c *BoundContract) createLegacyTx(opts *TransactOpts, contract *common.Address, input []byte) (*types.Transaction, error) {
-	if opts.GasFeeCap != nil || opts.GasTipCap != nil {
-		return nil, errors.New("maxFeePerGas or maxPriorityFeePerGas specified but london is not active yet")
-	}
-	// Normalize value
-	value := opts.Value
-	if value == nil {
-		value = new(big.Int)
-	}
-	// Estimate GasPrice
-	gasPrice := opts.GasPrice
-	if gasPrice == nil {
-		price, err := c.transactor.SuggestGasPrice(ensureContext(opts.Context))
-		if err != nil {
-			return nil, err
-		}
-		gasPrice = price
-	}
-	// Estimate GasLimit
-	gasLimit := opts.GasLimit
-	if opts.GasLimit == 0 {
-		var err error
-		gasLimit, err = c.estimateGasLimit(opts, contract, input, gasPrice, nil, nil, value)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// create the transaction
-	nonce, err := c.getNonce(opts)
-	if err != nil {
-		return nil, err
-	}
-	baseTx := &types.LegacyTx{
-		To:       contract,
-		Nonce:    nonce,
-		GasPrice: gasPrice,
-		Gas:      gasLimit,
-		Value:    value,
-		Data:     input,
-	}
-	return types.NewTx(baseTx), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// Normalize value
+
+// Estimate GasPrice
+
+// Estimate GasLimit
+
+// create the transaction
+
 func (c *BoundContract) estimateGasLimit(opts *TransactOpts, contract *common.Address, input []byte, gasPrice, gasTipCap, gasFeeCap, value *big.Int) (uint64, error) {
-	if contract != nil {
+	_ = "STUB: not implemented"
+	return 0,
+
 		// Gas estimation cannot succeed without code for method invocations.
-		if code, err := c.transactor.AcceptedCodeAt(ensureContext(opts.Context), c.address); err != nil {
-			return 0, err
-		} else if len(code) == 0 {
-			return 0, ErrNoCode
-		}
-	}
-	msg := ethereum.CallMsg{
-		From:      opts.From,
-		To:        contract,
-		GasPrice:  gasPrice,
-		GasTipCap: gasTipCap,
-		GasFeeCap: gasFeeCap,
-		Value:     value,
-		Data:      input,
-	}
-	return c.transactor.EstimateGas(ensureContext(opts.Context), msg)
+		nil
 }
 
 func (c *BoundContract) getNonce(opts *TransactOpts) (uint64, error) {
-	if opts.Nonce == nil {
-		pendingBlock := big.NewInt(int64(rpc.PendingBlockNumber))
-		return c.transactor.NonceAt(ensureContext(opts.Context), opts.From, pendingBlock)
-	} else {
-		return opts.Nonce.Uint64(), nil
-	}
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // transact executes an actual transaction invocation, first deriving any missing
 // authorization fields, and then scheduling the transaction for execution.
 func (c *BoundContract) transact(opts *TransactOpts, contract *common.Address, input []byte) (*types.Transaction, error) {
-	if opts.GasPrice != nil && (opts.GasFeeCap != nil || opts.GasTipCap != nil) {
-		return nil, errors.New("both gasPrice and (maxFeePerGas or maxPriorityFeePerGas) specified")
-	}
-	// Create the transaction
-	var (
-		rawTx *types.Transaction
-		err   error
-	)
-	if opts.GasPrice != nil {
-		rawTx, err = c.createLegacyTx(opts, contract, input)
-	} else if opts.GasFeeCap != nil && opts.GasTipCap != nil {
-		rawTx, err = c.createDynamicTx(opts, contract, input, nil)
-	} else {
-		// Only query for basefee if gasPrice not specified
-		if head, errHead := c.transactor.HeaderByNumber(ensureContext(opts.Context), nil); errHead != nil {
-			return nil, errHead
-		} else if head.BaseFee != nil {
-			rawTx, err = c.createDynamicTx(opts, contract, input, head)
-		} else {
-			// Chain is not London ready -> use legacy transaction
-			rawTx, err = c.createLegacyTx(opts, contract, input)
-		}
-	}
-	if err != nil {
-		return nil, err
-	}
-	// Sign the transaction and schedule it for execution
-	if opts.Signer == nil {
-		return nil, errors.New("no signer to authorize the transaction with")
-	}
-	signedTx, err := opts.Signer(opts.From, rawTx)
-	if err != nil {
-		return nil, err
-	}
-	if opts.NoSend {
-		return signedTx, nil
-	}
-	if err := c.transactor.SendTransaction(ensureContext(opts.Context), signedTx); err != nil {
-		return nil, err
-	}
-	return signedTx, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// Create the transaction
+
+// Only query for basefee if gasPrice not specified
+
+// Chain is not London ready -> use legacy transaction
+
+// Sign the transaction and schedule it for execution
 
 // FilterLogs filters contract logs for past blocks, returning the necessary
 // channels to construct a strongly typed bound iterator on top of them.
 func (c *BoundContract) FilterLogs(opts *FilterOpts, name string, query ...[]interface{}) (chan types.Log, event.Subscription, error) {
+	_ = "STUB: not implemented"
 	// Don't crash on a lazy user
-	if opts == nil {
-		opts = new(FilterOpts)
-	}
-	// Append the event selector to the query parameters and construct the topic set
-	query = append([][]interface{}{{c.abi.Events[name].ID}}, query...)
-
-	topics, err := abi.MakeTopics(query...)
-	if err != nil {
-		return nil, nil, err
-	}
-	// Start the background filtering
-	logs := make(chan types.Log, 128)
-
-	config := ethereum.FilterQuery{
-		Addresses: []common.Address{c.address},
-		Topics:    topics,
-		FromBlock: new(big.Int).SetUint64(opts.Start),
-	}
-	if opts.End != nil {
-		config.ToBlock = new(big.Int).SetUint64(*opts.End)
-	}
-	/* TODO(karalabe): Replace the rest of the method below with this when supported
-	sub, err := c.filterer.SubscribeFilterLogs(ensureContext(opts.Context), config, logs)
-	*/
-	buff, err := c.filterer.FilterLogs(ensureContext(opts.Context), config)
-	if err != nil {
-		return nil, nil, err
-	}
-	sub, err := event.NewSubscription(func(quit <-chan struct{}) error {
-		for _, log := range buff {
-			select {
-			case logs <- log:
-			case <-quit:
-				return nil
-			}
-		}
-		return nil
-	}), nil
-
-	if err != nil {
-		return nil, nil, err
-	}
-	return logs, sub, nil
+	return nil, *new(event.Subscription), nil
 }
+
+// Append the event selector to the query parameters and construct the topic set
+
+// Start the background filtering
+
+/* TODO(karalabe): Replace the rest of the method below with this when supported
+sub, err := c.filterer.SubscribeFilterLogs(ensureContext(opts.Context), config, logs)
+*/
 
 // WatchLogs filters subscribes to contract logs for future blocks, returning a
 // subscription object that can be used to tear down the watcher.
 func (c *BoundContract) WatchLogs(opts *WatchOpts, name string, query ...[]interface{}) (chan types.Log, event.Subscription, error) {
+	_ = "STUB: not implemented"
 	// Don't crash on a lazy user
-	if opts == nil {
-		opts = new(WatchOpts)
-	}
-	// Append the event selector to the query parameters and construct the topic set
-	query = append([][]interface{}{{c.abi.Events[name].ID}}, query...)
-
-	topics, err := abi.MakeTopics(query...)
-	if err != nil {
-		return nil, nil, err
-	}
-	// Start the background filtering
-	logs := make(chan types.Log, 128)
-
-	config := ethereum.FilterQuery{
-		Addresses: []common.Address{c.address},
-		Topics:    topics,
-	}
-	if opts.Start != nil {
-		config.FromBlock = new(big.Int).SetUint64(*opts.Start)
-	}
-	sub, err := c.filterer.SubscribeFilterLogs(ensureContext(opts.Context), config, logs)
-	if err != nil {
-		return nil, nil, err
-	}
-	return logs, sub, nil
+	return nil, *new(event.Subscription), nil
 }
+
+// Append the event selector to the query parameters and construct the topic set
+
+// Start the background filtering
 
 // UnpackLog unpacks a retrieved log into the provided output structure.
 func (c *BoundContract) UnpackLog(out interface{}, event string, log types.Log) error {
+	_ = "STUB: not implemented"
 	// Anonymous events are not supported.
-	if len(log.Topics) == 0 {
-		return errNoEventSignature
-	}
-	if log.Topics[0] != c.abi.Events[event].ID {
-		return errEventSignatureMismatch
-	}
-	if len(log.Data) > 0 {
-		if err := c.abi.UnpackIntoInterface(out, event, log.Data); err != nil {
-			return err
-		}
-	}
-	var indexed abi.Arguments
-	for _, arg := range c.abi.Events[event].Inputs {
-		if arg.Indexed {
-			indexed = append(indexed, arg)
-		}
-	}
-	return abi.ParseTopics(out, indexed, log.Topics[1:])
+	return nil
 }
 
 // UnpackLogIntoMap unpacks a retrieved log into the provided map.
 func (c *BoundContract) UnpackLogIntoMap(out map[string]interface{}, event string, log types.Log) error {
+	_ = "STUB: not implemented"
 	// Anonymous events are not supported.
-	if len(log.Topics) == 0 {
-		return errNoEventSignature
-	}
-	if log.Topics[0] != c.abi.Events[event].ID {
-		return errEventSignatureMismatch
-	}
-	if len(log.Data) > 0 {
-		if err := c.abi.UnpackIntoMap(out, event, log.Data); err != nil {
-			return err
-		}
-	}
-	var indexed abi.Arguments
-	for _, arg := range c.abi.Events[event].Inputs {
-		if arg.Indexed {
-			indexed = append(indexed, arg)
-		}
-	}
-	return abi.ParseTopicsIntoMap(out, indexed, log.Topics[1:])
+	return nil
 }
 
 // ensureContext is a helper method to ensure a context is not nil, even if the
 // user specified it as such.
 func ensureContext(ctx context.Context) context.Context {
-	if ctx == nil {
-		return context.Background()
-	}
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }

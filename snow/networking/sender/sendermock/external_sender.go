@@ -10,8 +10,6 @@
 package sendermock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	message "github.com/ava-labs/avalanchego/message"
 	common "github.com/ava-labs/avalanchego/snow/engine/common"
@@ -34,26 +32,25 @@ type ExternalSenderMockRecorder struct {
 
 // NewExternalSender creates a new mock instance.
 func NewExternalSender(ctrl *gomock.Controller) *ExternalSender {
-	mock := &ExternalSender{ctrl: ctrl}
-	mock.recorder = &ExternalSenderMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *ExternalSender) EXPECT() *ExternalSenderMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Send mocks base method.
+	return nil
 }
 
-// Send mocks base method.
 func (m *ExternalSender) Send(msg *message.OutboundMessage, config common.SendConfig, subnetID ids.ID, allower subnets.Allower) set.Set[ids.NodeID] {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", msg, config, subnetID, allower)
-	ret0, _ := ret[0].(set.Set[ids.NodeID])
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Send indicates an expected call of Send.
 func (mr *ExternalSenderMockRecorder) Send(msg, config, subnetID, allower any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*ExternalSender)(nil).Send), msg, config, subnetID, allower)
+	_ = "STUB: not implemented"
+	return nil
 }

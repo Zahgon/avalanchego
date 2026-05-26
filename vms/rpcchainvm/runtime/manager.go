@@ -18,31 +18,8 @@ type manager struct {
 //
 // TODO: If a runtime exits before the call to `manager.Stop`, it would be nice
 // to remove it from the current set.
-func NewManager() Manager {
-	return &manager{}
-}
+func NewManager() Manager { _ = "STUB: not implemented"; return *new(Manager) }
 
-func (m *manager) Stop(ctx context.Context) {
-	var wg sync.WaitGroup
-	m.lock.Lock()
-	defer func() {
-		m.lock.Unlock()
-		wg.Wait()
-	}()
+func (m *manager) Stop(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-	wg.Add(len(m.runtimes))
-	for _, rt := range m.runtimes {
-		go func(runtime Stopper) {
-			defer wg.Done()
-			runtime.Stop(ctx)
-		}(rt)
-	}
-	m.runtimes = nil
-}
-
-func (m *manager) TrackRuntime(runtime Stopper) {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.runtimes = append(m.runtimes, runtime)
-}
+func (m *manager) TrackRuntime(runtime Stopper) { _ = "STUB: not implemented"; return }

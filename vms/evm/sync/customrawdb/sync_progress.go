@@ -4,13 +4,9 @@
 package customrawdb
 
 import (
-	"encoding/binary"
-
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
@@ -39,200 +35,132 @@ var (
 // ReadSyncRoot reads the root corresponding to the main trie of an in-progress
 // sync and returns common.Hash{} if no in-progress sync was found.
 func ReadSyncRoot(db ethdb.KeyValueReader) (common.Hash, error) {
-	ok, err := db.Has(syncRootKey)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	if !ok {
-		return common.Hash{}, database.ErrNotFound
-	}
-	root, err := db.Get(syncRootKey)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	return common.BytesToHash(root), nil
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
 
 // WriteSyncRoot writes root as the root of the main trie of the in-progress sync.
 func WriteSyncRoot(db ethdb.KeyValueWriter, root common.Hash) error {
-	return db.Put(syncRootKey, root[:])
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WriteCodeToFetch adds a marker that we need to fetch the code for `hash`.
 func WriteCodeToFetch(db ethdb.KeyValueWriter, codeHash common.Hash) error {
-	return db.Put(codeToFetchKey(codeHash), nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DeleteCodeToFetch removes the marker that the code corresponding to `hash` needs to be fetched.
 func DeleteCodeToFetch(db ethdb.KeyValueWriter, codeHash common.Hash) error {
-	return db.Delete(codeToFetchKey(codeHash))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewCodeToFetchIterator returns a KeyLength iterator over all code
 // hashes that are pending syncing. It is the caller's responsibility to
 // parse the key and call Release on the returned iterator.
 func NewCodeToFetchIterator(db ethdb.Iteratee) ethdb.Iterator {
-	return rawdb.NewKeyLengthIterator(
-		db.NewIterator(CodeToFetchPrefix, nil),
-		codeToFetchKeyLength,
-	)
+	_ = "STUB: not implemented"
+	return *new(ethdb.Iterator)
 }
 
-func codeToFetchKey(codeHash common.Hash) []byte {
-	codeToFetchKey := make([]byte, codeToFetchKeyLength)
-	copy(codeToFetchKey, CodeToFetchPrefix)
-	copy(codeToFetchKey[len(CodeToFetchPrefix):], codeHash[:])
-	return codeToFetchKey
-}
+func codeToFetchKey(codeHash common.Hash) []byte { _ = "STUB: not implemented"; return nil }
 
 // NewSyncSegmentsIterator returns a KeyLength iterator over all trie segments
 // added for root. It is the caller's responsibility to parse the key and call
 // Release on the returned iterator.
 func NewSyncSegmentsIterator(db ethdb.Iteratee, root common.Hash) ethdb.Iterator {
-	segmentsPrefix := make([]byte, len(syncSegmentsPrefix)+common.HashLength)
-	copy(segmentsPrefix, syncSegmentsPrefix)
-	copy(segmentsPrefix[len(syncSegmentsPrefix):], root[:])
-
-	return rawdb.NewKeyLengthIterator(
-		db.NewIterator(segmentsPrefix, nil),
-		syncSegmentsKeyLength,
-	)
+	_ = "STUB: not implemented"
+	return *new(ethdb.Iterator)
 }
 
 // WriteSyncSegment adds a trie segment for root at the given start position.
 func WriteSyncSegment(db ethdb.KeyValueWriter, root common.Hash, start common.Hash) error {
+	_ = "STUB: not implemented"
 	// packs root and account into a key for storage in db.
-	bytes := make([]byte, syncSegmentsKeyLength)
-	copy(bytes, syncSegmentsPrefix)
-	copy(bytes[len(syncSegmentsPrefix):], root[:])
-	copy(bytes[len(syncSegmentsPrefix)+common.HashLength:], start.Bytes())
-	return db.Put(bytes, nil)
+	return nil
 }
 
 // ClearSyncSegments removes segment markers for root from db
 func ClearSyncSegments(db ethdb.KeyValueStore, root common.Hash) error {
-	segmentsPrefix := make([]byte, len(syncSegmentsPrefix)+common.HashLength)
-	copy(segmentsPrefix, syncSegmentsPrefix)
-	copy(segmentsPrefix[len(syncSegmentsPrefix):], root[:])
-	return clearPrefix(db, segmentsPrefix, syncSegmentsKeyLength)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ClearAllSyncSegments removes all segment markers from db
-func ClearAllSyncSegments(db ethdb.KeyValueStore) error {
-	return clearPrefix(db, syncSegmentsPrefix, syncSegmentsKeyLength)
-}
+func ClearAllSyncSegments(db ethdb.KeyValueStore) error { _ = "STUB: not implemented"; return nil }
 
 // ParseSyncSegmentKey returns the root and start position for a trie segment
 // key returned from NewSyncSegmentsIterator.
 func ParseSyncSegmentKey(keyBytes []byte) (common.Hash, []byte) {
-	keyBytes = keyBytes[len(syncSegmentsPrefix):] // skip prefix
-	root := common.BytesToHash(keyBytes[:common.HashLength])
-	start := keyBytes[common.HashLength:]
-	return root, start
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
+
+// skip prefix
 
 // NewSyncStorageTriesIterator returns a KeyLength iterator over all storage tries
 // added for syncing (beginning at seek). It is the caller's responsibility to parse
 // the key and call Release on the returned iterator.
 func NewSyncStorageTriesIterator(db ethdb.Iteratee, seek []byte) ethdb.Iterator {
-	return rawdb.NewKeyLengthIterator(db.NewIterator(syncStorageTriesPrefix, seek), syncStorageTriesKeyLength)
+	_ = "STUB: not implemented"
+	return *new(ethdb.Iterator)
 }
 
 // WriteSyncStorageTrie adds a storage trie for account (with the given root) to be synced.
 func WriteSyncStorageTrie(db ethdb.KeyValueWriter, root common.Hash, account common.Hash) error {
-	bytes := make([]byte, syncStorageTriesKeyLength)
-	copy(bytes, syncStorageTriesPrefix)
-	copy(bytes[len(syncStorageTriesPrefix):], root[:])
-	copy(bytes[len(syncStorageTriesPrefix)+common.HashLength:], account[:])
-	return db.Put(bytes, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ClearSyncStorageTrie removes all storage trie accounts (with the given root) from db.
 // Intended for use when the trie with root has completed syncing.
 func ClearSyncStorageTrie(db ethdb.KeyValueStore, root common.Hash) error {
-	accountsPrefix := make([]byte, len(syncStorageTriesPrefix)+common.HashLength)
-	copy(accountsPrefix, syncStorageTriesPrefix)
-	copy(accountsPrefix[len(syncStorageTriesPrefix):], root[:])
-	return clearPrefix(db, accountsPrefix, syncStorageTriesKeyLength)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ClearAllSyncStorageTries removes all storage tries added for syncing from db
-func ClearAllSyncStorageTries(db ethdb.KeyValueStore) error {
-	return clearPrefix(db, syncStorageTriesPrefix, syncStorageTriesKeyLength)
-}
+func ClearAllSyncStorageTries(db ethdb.KeyValueStore) error { _ = "STUB: not implemented"; return nil }
 
 // ParseSyncStorageTrieKey returns the root and account for a storage trie
 // key returned from NewSyncStorageTriesIterator. It assumes the key has the
 // `syncStorageTriesPrefix` followed by a 32-byte root and 32-byte account hash,
 // and panics if the key is shorter than len(syncStorageTriesPrefix)+2*common.HashLength.
 func ParseSyncStorageTrieKey(keyBytes []byte) (common.Hash, common.Hash) {
-	keyBytes = keyBytes[len(syncStorageTriesPrefix):] // skip prefix
-	root := common.BytesToHash(keyBytes[:common.HashLength])
-	account := common.BytesToHash(keyBytes[common.HashLength:])
-	return root, account
+	_ = "STUB: not implemented"
+	return *new(common.Hash), *new(common.Hash)
 }
+
+// skip prefix
 
 // WriteSyncPerformed logs an entry in `db` indicating the VM state synced to `blockNumber`.
 func WriteSyncPerformed(db ethdb.KeyValueWriter, blockNumber uint64) error {
-	bytes := make([]byte, syncPerformedKeyLength)
-	copy(bytes, syncPerformedPrefix)
-	binary.BigEndian.PutUint64(bytes[len(syncPerformedPrefix):], blockNumber)
-	return db.Put(bytes, nil)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetLatestSyncPerformed returns the latest block number state synced performed to.
 func GetLatestSyncPerformed(db ethdb.Iteratee) (uint64, error) {
-	it := newSyncPerformedIterator(db)
-	defer it.Release()
-
-	var latestSyncPerformed uint64
-	for it.Next() {
-		syncPerformed := parseSyncPerformedKey(it.Key())
-		if syncPerformed > latestSyncPerformed {
-			latestSyncPerformed = syncPerformed
-		}
-	}
-	return latestSyncPerformed, it.Error()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // newSyncPerformedIterator returns an iterator over all block numbers the VM
 // has state synced to.
 func newSyncPerformedIterator(db ethdb.Iteratee) ethdb.Iterator {
-	return rawdb.NewKeyLengthIterator(db.NewIterator(syncPerformedPrefix, nil), syncPerformedKeyLength)
+	_ = "STUB: not implemented"
+	return *new(ethdb.Iterator)
 }
 
 // parseSyncPerformedKey returns the block number from keys returned by
 // NewSyncPerformedIterator. It panics if the key is shorter than `syncPerformedKeyLength`.
-func parseSyncPerformedKey(key []byte) uint64 {
-	return binary.BigEndian.Uint64(key[len(syncPerformedPrefix):])
-}
+func parseSyncPerformedKey(key []byte) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // clearPrefix removes all keys in db that begin with prefix and match an
 // expected key length. `keyLen` must include the length of the prefix.
 func clearPrefix(db ethdb.KeyValueStore, prefix []byte, keyLen int) error {
-	it := db.NewIterator(prefix, nil)
-	defer it.Release()
-
-	batch := db.NewBatch()
-	for it.Next() {
-		key := it.Key()
-		if len(key) != keyLen {
-			continue
-		}
-		key = common.CopyBytes(key)
-
-		if err := batch.Delete(key); err != nil {
-			return err
-		}
-		if batch.ValueSize() > ethdb.IdealBatchSize {
-			if err := batch.Write(); err != nil {
-				return err
-			}
-			batch.Reset()
-		}
-	}
-	if err := it.Error(); err != nil {
-		return err
-	}
-	return batch.Write()
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -4,10 +4,7 @@
 package warp
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 // UnsignedMessage defines the standard format for an unsigned Warp message.
@@ -26,50 +23,32 @@ func NewUnsignedMessage(
 	sourceChainID ids.ID,
 	payload []byte,
 ) (*UnsignedMessage, error) {
-	msg := &UnsignedMessage{
-		NetworkID:     networkID,
-		SourceChainID: sourceChainID,
-		Payload:       payload,
-	}
-	return msg, msg.Initialize()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ParseUnsignedMessage converts a slice of bytes into an initialized
 // *UnsignedMessage.
 func ParseUnsignedMessage(b []byte) (*UnsignedMessage, error) {
-	msg := &UnsignedMessage{
-		bytes: b,
-		id:    hashing.ComputeHash256Array(b),
-	}
-	_, err := Codec.Unmarshal(b, msg)
-	return msg, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Initialize recalculates the result of Bytes().
-func (m *UnsignedMessage) Initialize() error {
-	bytes, err := Codec.Marshal(CodecVersion, m)
-	if err != nil {
-		return fmt.Errorf("couldn't marshal warp unsigned message: %w", err)
-	}
-	m.bytes = bytes
-	m.id = hashing.ComputeHash256Array(m.bytes)
-	return nil
-}
+func (m *UnsignedMessage) Initialize() error { _ = "STUB: not implemented"; return nil }
 
 // Bytes returns the binary representation of this message. It assumes that the
 // message is initialized from either New, Parse, or an explicit call to
 // Initialize.
 func (m *UnsignedMessage) Bytes() []byte {
-	return m.bytes
+	_ = "STUB: not implemented"
+
+	// ID returns an identifier for this message. It assumes that the
+	// message is initialized from either New, Parse, or an explicit call to
+	// Initialize.
+	return nil
 }
 
-// ID returns an identifier for this message. It assumes that the
-// message is initialized from either New, Parse, or an explicit call to
-// Initialize.
-func (m *UnsignedMessage) ID() ids.ID {
-	return m.id
-}
+func (m *UnsignedMessage) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (m *UnsignedMessage) String() string {
-	return fmt.Sprintf("UnsignedMessage(NetworkID = %d, SourceChainID = %s, Payload = %x)", m.NetworkID, m.SourceChainID, m.Payload)
-}
+func (m *UnsignedMessage) String() string { _ = "STUB: not implemented"; return "" }

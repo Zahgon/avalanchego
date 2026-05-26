@@ -12,7 +12,8 @@ import (
 )
 
 func (b *backend) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscription {
-	return b.Set.Pool.SubscribeTransactions(ch, true)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // A number of subscriptions don't make sense in SAE so are no-ops. The lack of
@@ -20,15 +21,18 @@ func (b *backend) SubscribeNewTxsEvent(ch chan<- core.NewTxsEvent) event.Subscri
 // refers to accepted but not executed blocks, pending logs are an oxymoron.
 
 func (*backend) SubscribeChainSideEvent(chan<- core.ChainSideEvent) event.Subscription {
-	return newNoopSubscription()
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 func (*backend) SubscribeRemovedLogsEvent(chan<- core.RemovedLogsEvent) event.Subscription {
-	return newNoopSubscription()
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 func (*backend) SubscribePendingLogsEvent(chan<- []*types.Log) event.Subscription {
-	return newNoopSubscription()
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 type noopSubscription struct {
@@ -36,18 +40,8 @@ type noopSubscription struct {
 	err  chan error
 }
 
-func newNoopSubscription() *noopSubscription {
-	return &noopSubscription{
-		err: make(chan error),
-	}
-}
+func newNoopSubscription() *noopSubscription { _ = "STUB: not implemented"; return nil }
 
-func (s *noopSubscription) Err() <-chan error {
-	return s.err
-}
+func (s *noopSubscription) Err() <-chan error { _ = "STUB: not implemented"; return nil }
 
-func (s *noopSubscription) Unsubscribe() {
-	s.once.Do(func() {
-		close(s.err)
-	})
-}
+func (s *noopSubscription) Unsubscribe() { _ = "STUB: not implemented"; return }

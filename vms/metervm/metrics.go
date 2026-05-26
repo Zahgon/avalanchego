@@ -11,10 +11,6 @@ import (
 )
 
 func newAverager(name string, reg prometheus.Registerer, errs *wrappers.Errs) metric.Averager {
-	return metric.NewAveragerWithErrs(
-		name,
-		"time (in ns) of a "+name,
-		reg,
-		errs,
-	)
+	_ = "STUB: not implemented"
+	return *new(metric.Averager)
 }

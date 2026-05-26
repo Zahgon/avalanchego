@@ -13,10 +13,8 @@ import (
 )
 
 func NewStopper(logger logging.Logger, cmd *exec.Cmd) runtime.Stopper {
-	return &stopper{
-		cmd:    cmd,
-		logger: logger,
-	}
+	_ = "STUB: not implemented"
+	return *new(runtime.Stopper)
 }
 
 type stopper struct {
@@ -25,8 +23,4 @@ type stopper struct {
 	logger logging.Logger
 }
 
-func (s *stopper) Stop(ctx context.Context) {
-	s.once.Do(func() {
-		stop(ctx, s.logger, s.cmd)
-	})
-}
+func (s *stopper) Stop(ctx context.Context) { _ = "STUB: not implemented"; return }

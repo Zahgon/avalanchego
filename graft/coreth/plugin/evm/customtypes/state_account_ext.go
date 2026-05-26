@@ -13,13 +13,16 @@ import (
 type isMultiCoin bool
 
 func IsMultiCoin(s *state.StateDB, addr common.Address) bool {
-	return bool(state.GetExtra(s, extras.StateAccount, addr))
+	_ = "STUB: not implemented"
+	return false
 }
 
 func SetMultiCoin(s *state.StateDB, addr common.Address, to bool) {
-	state.SetExtra(s, extras.StateAccount, addr, isMultiCoin(to))
+	_ = "STUB: not implemented"
+	return
 }
 
 func IsAccountMultiCoin(s ethtypes.StateOrSlimAccount) bool {
-	return bool(extras.StateAccount.Get(s))
+	_ = "STUB: not implemented"
+	return false
 }

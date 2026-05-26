@@ -10,38 +10,27 @@ import (
 )
 
 func (e *Executor) sendPostExecutionEvents(b *types.Block, receipts types.Receipts) {
-	e.headEvents.Send(core.ChainHeadEvent{Block: b})
-
-	var n int
-	for _, r := range receipts {
-		n += len(r.Logs)
-	}
-	logs := make([]*types.Log, 0, n)
-	for _, r := range receipts {
-		logs = append(logs, r.Logs...)
-	}
-	e.chainEvents.Send(core.ChainEvent{
-		Block: b,
-		Hash:  b.Hash(),
-		Logs:  logs,
-	})
-	e.logEvents.Send(logs)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SubscribeChainHeadEvent returns a new subscription for each
 // [core.ChainHeadEvent] emitted after execution of a [blocks.Block].
 func (e *Executor) SubscribeChainHeadEvent(ch chan<- core.ChainHeadEvent) event.Subscription {
-	return e.headEvents.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeChainEvent returns a new subscription for each [core.ChainEvent]
 // emitted after execution of a [blocks.Block].
 func (e *Executor) SubscribeChainEvent(ch chan<- core.ChainEvent) event.Subscription {
-	return e.chainEvents.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeLogsEvent returns a new subscription for logs emitted after
 // execution of a [blocks.Block].
 func (e *Executor) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	return e.logEvents.Subscribe(ch)
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }

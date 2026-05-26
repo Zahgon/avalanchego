@@ -6,12 +6,8 @@ package validators
 import (
 	"context"
 
-	"go.opentelemetry.io/otel/attribute"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/trace"
-
-	oteltrace "go.opentelemetry.io/otel/trace"
 )
 
 var _ State = (*tracedState)(nil)
@@ -28,51 +24,31 @@ type tracedState struct {
 }
 
 func Trace(s State, name string, tracer trace.Tracer) State {
-	return &tracedState{
-		s:                         s,
-		getMinimumHeightTag:       name + ".GetMinimumHeight",
-		getCurrentHeightTag:       name + ".GetCurrentHeight",
-		getSubnetIDTag:            name + ".GetSubnetID",
-		getWarpValidatorSetsTag:   name + ".GetWarpValidatorSets",
-		getValidatorSetTag:        name + ".GetValidatorSet",
-		getCurrentValidatorSetTag: name + ".GetCurrentValidatorSet",
-		tracer:                    tracer,
-	}
+	_ = "STUB: not implemented"
+	return *new(State)
 }
 
 func (s *tracedState) GetMinimumHeight(ctx context.Context) (uint64, error) {
-	ctx, span := s.tracer.Start(ctx, s.getMinimumHeightTag)
-	defer span.End()
-
-	return s.s.GetMinimumHeight(ctx)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *tracedState) GetCurrentHeight(ctx context.Context) (uint64, error) {
-	ctx, span := s.tracer.Start(ctx, s.getCurrentHeightTag)
-	defer span.End()
-
-	return s.s.GetCurrentHeight(ctx)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *tracedState) GetSubnetID(ctx context.Context, chainID ids.ID) (ids.ID, error) {
-	ctx, span := s.tracer.Start(ctx, s.getSubnetIDTag, oteltrace.WithAttributes(
-		attribute.Stringer("chainID", chainID),
-	))
-	defer span.End()
-
-	return s.s.GetSubnetID(ctx, chainID)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (s *tracedState) GetWarpValidatorSets(
 	ctx context.Context,
 	height uint64,
 ) (map[ids.ID]WarpSet, error) {
-	ctx, span := s.tracer.Start(ctx, s.getWarpValidatorSetsTag, oteltrace.WithAttributes(
-		attribute.Int64("height", int64(height)),
-	))
-	defer span.End()
-
-	return s.s.GetWarpValidatorSets(ctx, height)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *tracedState) GetValidatorSet(
@@ -80,23 +56,14 @@ func (s *tracedState) GetValidatorSet(
 	height uint64,
 	subnetID ids.ID,
 ) (map[ids.NodeID]*GetValidatorOutput, error) {
-	ctx, span := s.tracer.Start(ctx, s.getValidatorSetTag, oteltrace.WithAttributes(
-		attribute.Int64("height", int64(height)),
-		attribute.Stringer("subnetID", subnetID),
-	))
-	defer span.End()
-
-	return s.s.GetValidatorSet(ctx, height, subnetID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *tracedState) GetCurrentValidatorSet(
 	ctx context.Context,
 	subnetID ids.ID,
 ) (map[ids.ID]*GetCurrentValidatorOutput, uint64, error) {
-	ctx, span := s.tracer.Start(ctx, s.getCurrentValidatorSetTag, oteltrace.WithAttributes(
-		attribute.Stringer("subnetID", subnetID),
-	))
-	defer span.End()
-
-	return s.s.GetCurrentValidatorSet(ctx, subnetID)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }

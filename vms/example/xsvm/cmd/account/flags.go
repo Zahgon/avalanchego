@@ -6,9 +6,7 @@ package account
 import (
 	"github.com/spf13/pflag"
 
-	"github.com/ava-labs/avalanchego/genesis"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/wallet/subnet/primary"
 )
 
 const (
@@ -18,12 +16,7 @@ const (
 	AssetIDKey = "asset-id"
 )
 
-func AddFlags(flags *pflag.FlagSet) {
-	flags.String(URIKey, primary.LocalAPIURI, "API URI to use to fetch the account state")
-	flags.String(ChainIDKey, "", "Chain to fetch the account state on")
-	flags.String(AddressKey, genesis.EWOQKey.Address().String(), "Address of the account to fetch")
-	flags.String(AssetIDKey, "[chain-id]", "Asset balance to fetch")
-}
+func AddFlags(flags *pflag.FlagSet) { _ = "STUB: not implemented"; return }
 
 type Config struct {
 	URI     string
@@ -33,51 +26,6 @@ type Config struct {
 }
 
 func ParseFlags(flags *pflag.FlagSet, args []string) (*Config, error) {
-	if err := flags.Parse(args); err != nil {
-		return nil, err
-	}
-
-	if err := flags.Parse(args); err != nil {
-		return nil, err
-	}
-
-	uri, err := flags.GetString(URIKey)
-	if err != nil {
-		return nil, err
-	}
-
-	chainID, err := flags.GetString(ChainIDKey)
-	if err != nil {
-		return nil, err
-	}
-
-	addrStr, err := flags.GetString(AddressKey)
-	if err != nil {
-		return nil, err
-	}
-
-	addr, err := ids.ShortFromString(addrStr)
-	if err != nil {
-		return nil, err
-	}
-
-	assetIDStr := chainID
-	if flags.Changed(AssetIDKey) {
-		assetIDStr, err = flags.GetString(AssetIDKey)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	assetID, err := ids.FromString(assetIDStr)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Config{
-		URI:     uri,
-		ChainID: chainID,
-		Address: addr,
-		AssetID: assetID,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

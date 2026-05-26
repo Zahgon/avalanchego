@@ -21,41 +21,16 @@ type MintOperation struct {
 	Outputs   []*secp256k1fx.OutputOwners `serialize:"true" json:"outputs"`
 }
 
-func (op *MintOperation) InitCtx(ctx *snow.Context) {
-	for _, out := range op.Outputs {
-		out.InitCtx(ctx)
-	}
-}
+func (op *MintOperation) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 func (op *MintOperation) Cost() (uint64, error) {
-	return op.MintInput.Cost()
+	_ = "STUB: not implemented"
+	return 0,
+
+		// Outs Returns []TransferOutput as []verify.State
+		nil
 }
 
-// Outs Returns []TransferOutput as []verify.State
-func (op *MintOperation) Outs() []verify.State {
-	outs := make([]verify.State, 0, len(op.Outputs))
-	for _, out := range op.Outputs {
-		outs = append(outs, &TransferOutput{
-			GroupID:      op.GroupID,
-			Payload:      op.Payload,
-			OutputOwners: *out,
-		})
-	}
-	return outs
-}
+func (op *MintOperation) Outs() []verify.State { _ = "STUB: not implemented"; return nil }
 
-func (op *MintOperation) Verify() error {
-	switch {
-	case op == nil:
-		return errNilMintOperation
-	case len(op.Payload) > MaxPayloadSize:
-		return errPayloadTooLarge
-	}
-
-	for _, out := range op.Outputs {
-		if err := out.Verify(); err != nil {
-			return err
-		}
-	}
-	return op.MintInput.Verify()
-}
+func (op *MintOperation) Verify() error { _ = "STUB: not implemented"; return nil }

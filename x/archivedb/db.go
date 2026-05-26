@@ -61,45 +61,29 @@ type Database struct {
 	db database.Database
 }
 
-func New(db database.Database) *Database {
-	return &Database{
-		db: db,
-	}
-}
+func New(db database.Database) *Database { _ = "STUB: not implemented"; return nil }
 
 // Height returns the last written height.
-func (db *Database) Height() (uint64, error) {
-	return database.GetUInt64(db.db, heightKey)
-}
+func (db *Database) Height() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // Open returns a reader for the state at the given height.
-func (db *Database) Open(height uint64) *Reader {
-	return &Reader{
-		db:     db,
-		height: height,
-	}
-}
+func (db *Database) Open(height uint64) *Reader { _ = "STUB: not implemented"; return nil }
 
 // NewBatch creates a write batch to perform changes at a given height.
 //
 // Note: Committing multiple batches at the same height, or at a lower height
 // than the currently committed height will not error. It is left up to the
 // caller to enforce any guarantees they need around height consistency.
-func (db *Database) NewBatch(height uint64) *batch {
-	return &batch{
-		db:     db,
-		height: height,
-	}
-}
+func (db *Database) NewBatch(height uint64) *batch { _ = "STUB: not implemented"; return nil }
 
 func (db *Database) Compact(start []byte, limit []byte) error {
-	return db.db.Compact(start, limit)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (db *Database) HealthCheck(ctx context.Context) (interface{}, error) {
-	return db.db.HealthCheck(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (db *Database) Close() error {
-	return db.db.Close()
-}
+func (db *Database) Close() error { _ = "STUB: not implemented"; return nil }

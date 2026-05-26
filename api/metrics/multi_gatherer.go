@@ -4,13 +4,9 @@
 package metrics
 
 import (
-	"fmt"
-	"slices"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
-
-	"github.com/ava-labs/avalanchego/utils"
 
 	dto "github.com/prometheus/client_model/go"
 )
@@ -37,35 +33,18 @@ type multiGatherer struct {
 }
 
 func (g *multiGatherer) Gather() ([]*dto.MetricFamily, error) {
-	g.lock.RLock()
-	defer g.lock.RUnlock()
-
-	return g.gatherers.Gather()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (g *multiGatherer) register(name string, gatherer prometheus.Gatherer) {
-	g.names = append(g.names, name)
-	g.gatherers = append(g.gatherers, gatherer)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (g *multiGatherer) Deregister(name string) bool {
-	g.lock.Lock()
-	defer g.lock.Unlock()
-
-	index := slices.Index(g.names, name)
-	if index == -1 {
-		return false
-	}
-
-	g.names = utils.DeleteIndex(g.names, index)
-	g.gatherers = utils.DeleteIndex(g.gatherers, index)
-	return true
-}
+func (g *multiGatherer) Deregister(name string) bool { _ = "STUB: not implemented"; return false }
 
 func MakeAndRegister(gatherer MultiGatherer, name string) (*prometheus.Registry, error) {
-	reg := prometheus.NewRegistry()
-	if err := gatherer.Register(name, reg); err != nil {
-		return nil, fmt.Errorf("couldn't register %q metrics: %w", name, err)
-	}
-	return reg, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

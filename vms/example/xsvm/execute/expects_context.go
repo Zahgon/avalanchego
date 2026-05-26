@@ -11,28 +11,16 @@ import (
 var _ tx.Visitor = (*TxExpectsContext)(nil)
 
 func ExpectsContext(blk *block.Stateless) (bool, error) {
-	t := TxExpectsContext{}
-	for _, tx := range blk.Txs {
-		if err := tx.Unsigned.Visit(&t); err != nil {
-			return false, err
-		}
-	}
-	return t.Result, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 type TxExpectsContext struct {
 	Result bool
 }
 
-func (*TxExpectsContext) Transfer(*tx.Transfer) error {
-	return nil
-}
+func (*TxExpectsContext) Transfer(*tx.Transfer) error { _ = "STUB: not implemented"; return nil }
 
-func (*TxExpectsContext) Export(*tx.Export) error {
-	return nil
-}
+func (*TxExpectsContext) Export(*tx.Export) error { _ = "STUB: not implemented"; return nil }
 
-func (t *TxExpectsContext) Import(*tx.Import) error {
-	t.Result = true
-	return nil
-}
+func (t *TxExpectsContext) Import(*tx.Import) error { _ = "STUB: not implemented"; return nil }

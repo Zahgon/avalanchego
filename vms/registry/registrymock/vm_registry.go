@@ -11,7 +11,6 @@ package registrymock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	ids "github.com/ava-labs/avalanchego/ids"
 	gomock "go.uber.org/mock/gomock"
@@ -30,29 +29,23 @@ type VMRegistryMockRecorder struct {
 }
 
 // NewVMRegistry creates a new mock instance.
-func NewVMRegistry(ctrl *gomock.Controller) *VMRegistry {
-	mock := &VMRegistry{ctrl: ctrl}
-	mock.recorder = &VMRegistryMockRecorder{mock}
-	return mock
-}
+func NewVMRegistry(ctrl *gomock.Controller) *VMRegistry { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *VMRegistry) EXPECT() *VMRegistryMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Reload mocks base method.
+	return nil
 }
 
-// Reload mocks base method.
 func (m *VMRegistry) Reload(ctx context.Context) ([]ids.ID, map[ids.ID]error, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Reload", ctx)
-	ret0, _ := ret[0].([]ids.ID)
-	ret1, _ := ret[1].(map[ids.ID]error)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // Reload indicates an expected call of Reload.
 func (mr *VMRegistryMockRecorder) Reload(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reload", reflect.TypeOf((*VMRegistry)(nil).Reload), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

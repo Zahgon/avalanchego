@@ -28,12 +28,7 @@
 package core
 
 import (
-	"fmt"
-	"time"
-
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
 )
 
 // txIndexer is the module responsible for maintaining transaction indexes
@@ -54,145 +49,54 @@ type txIndexer struct {
 
 // newTxIndexer initializes the transaction indexer.
 func newTxIndexer(limit uint64, chain *BlockChain) *txIndexer {
-	indexer := &txIndexer{
-		limit:  limit,
-		db:     chain.db,
-		term:   make(chan chan struct{}),
-		closed: make(chan struct{}),
-		chain:  chain,
-	}
-	chain.wg.Add(1)
-	go func() {
-		defer chain.wg.Done()
-		indexer.loop(chain)
-	}()
-
-	var msg string
-	if limit == 0 {
-		msg = "entire chain"
-	} else {
-		msg = fmt.Sprintf("last %d blocks", limit)
-	}
-	log.Info("Initialized transaction indexer", "range", msg)
-
-	return indexer
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // run executes the scheduled indexing/unindexing task in a separate thread.
 // If the stop channel is closed, the task should be terminated as soon as
 // possible, the done channel will be closed once the task is finished.
 func (indexer *txIndexer) run(tail *uint64, head uint64, stop chan struct{}, done chan struct{}) {
-	start := time.Now()
-	defer func() {
-		txUnindexTimer.Inc(time.Since(start).Milliseconds())
-		close(done)
-	}()
-
-	// Short circuit if chain is empty and nothing to index.
-	if head == 0 {
-		return
-	}
-
-	// Defensively ensure tail is not nil.
-	tailValue := uint64(0)
-	if tail != nil {
-		// use intermediate variable to avoid modifying the pointer
-		tailValue = *tail
-	}
-
-	if head-indexer.limit+1 >= tailValue {
-		// Unindex a part of stale indices and forward index tail to HEAD-limit
-		rawdb.UnindexTransactions(indexer.db, tailValue, head-indexer.limit+1, stop, false)
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// Short circuit if chain is empty and nothing to index.
+
+// Defensively ensure tail is not nil.
+
+// use intermediate variable to avoid modifying the pointer
+
+// Unindex a part of stale indices and forward index tail to HEAD-limit
 
 // loop is the scheduler of the indexer, assigning indexing/unindexing tasks depending
 // on the received chain event.
-func (indexer *txIndexer) loop(chain *BlockChain) {
-	defer close(indexer.closed)
-	// Listening to chain events and manipulate the transaction indexes.
-	var (
-		stop        chan struct{} // Non-nil if background routine is active.
-		done        chan struct{} // Non-nil if background routine is active.
-		lastHead    uint64        // The latest announced chain head (whose tx indexes are assumed created)
-		runningHead uint64        // The head number being processed in background.
+func (indexer *txIndexer) loop(chain *BlockChain) { _ = "STUB: not implemented"; return }
 
-		headCh = make(chan ChainEvent)
-		sub    = chain.SubscribeChainAcceptedEvent(headCh)
-	)
-	if sub == nil {
-		log.Warn("could not create chain accepted subscription to unindex txs")
-		return
-	}
-	defer sub.Unsubscribe()
+// Listening to chain events and manipulate the transaction indexes.
 
-	// startRun launches the background unindexing task.
-	startRun := func(newHead uint64) {
-		stop = make(chan struct{})
-		done = make(chan struct{})
-		runningHead = newHead
-		indexer.chain.wg.Add(1)
-		go indexer.lockedRun(runningHead, stop, done)
-	}
+// Non-nil if background routine is active.
+// Non-nil if background routine is active.
+// The latest announced chain head (whose tx indexes are assumed created)
+// The head number being processed in background.
 
-	log.Info("Initialized transaction unindexer", "limit", indexer.limit)
+// startRun launches the background unindexing task.
 
-	// Launch the initial processing if chain is not empty (head != genesis).
-	// This step is useful in these scenarios that chain has no progress.
-	if head := indexer.chain.CurrentBlock(); head != nil && head.Number.Uint64() > indexer.limit {
-		startRun(head.Number.Uint64())
-	}
-	for {
-		select {
-		case head := <-headCh:
-			headNum := head.Block.NumberU64()
-			if headNum < indexer.limit {
-				break
-			}
+// Launch the initial processing if chain is not empty (head != genesis).
+// This step is useful in these scenarios that chain has no progress.
 
-			// If no background task is running, start a new one.
-			// We cannot block on the subscription channel because it can
-			// cause a fatal error.
-			if done == nil {
-				startRun(headNum)
-			}
-			lastHead = headNum
-		case <-done:
-			stop = nil
-			done = nil
-			// If there is a new head arrived during the last run, start a new one.
-			if runningHead < lastHead {
-				startRun(lastHead)
-			}
-		case ch := <-indexer.term:
-			if stop != nil {
-				close(stop)
-			}
-			if done != nil {
-				log.Info("Waiting background transaction unindexer to exit")
-				<-done
-			}
-			close(ch)
-			return
-		}
-	}
-}
+// If no background task is running, start a new one.
+// We cannot block on the subscription channel because it can
+// cause a fatal error.
+
+// If there is a new head arrived during the last run, start a new one.
 
 // close shutdown the indexer. Safe to be called for multiple times.
-func (indexer *txIndexer) close() {
-	ch := make(chan struct{})
-	select {
-	case indexer.term <- ch:
-		<-ch
-	case <-indexer.closed:
-	}
-}
+func (indexer *txIndexer) close() { _ = "STUB: not implemented"; return }
 
 // lockedRun runs the indexing/unindexing task in a locked manner. It reads
 // the current tail index from the database.
 func (indexer *txIndexer) lockedRun(head uint64, stop chan struct{}, done chan struct{}) {
-	indexer.chain.txIndexTailLock.Lock()
-	indexer.run(rawdb.ReadTxIndexTail(indexer.db), head, stop, done)
-	indexer.chain.txIndexTailLock.Unlock()
-	indexer.chain.wg.Done()
+	_ = "STUB: not implemented"
+	return
 }

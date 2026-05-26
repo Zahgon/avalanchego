@@ -8,8 +8,6 @@
 package sae
 
 import (
-	"errors"
-	"fmt"
 	"math/big"
 	"sync"
 	"time"
@@ -17,22 +15,13 @@ import (
 	"github.com/holiman/uint256"
 )
 
-func unix(t time.Time) uint64 {
-	return uint64(t.Unix()) //#nosec G115 -- Guaranteed to be positive
-}
+func unix(t time.Time) uint64 { _ = "STUB: not implemented"; return 0 }
+
+//#nosec G115 -- Guaranteed to be positive
 
 // uint256FromBig is a wrapper around [uint256.FromBig] with extra checks, for
 // nil input and for overflow.
-func uint256FromBig(b *big.Int) (*uint256.Int, error) {
-	if b == nil {
-		return nil, errors.New("nil big.Int")
-	}
-	u, overflow := uint256.FromBig(b)
-	if overflow {
-		return nil, fmt.Errorf("big.Int %v overflows 256 bits", b)
-	}
-	return u, nil
-}
+func uint256FromBig(b *big.Int) (*uint256.Int, error) { _ = "STUB: not implemented"; return nil, nil }
 
 type syncMap[K comparable, V any] struct {
 	m  map[K]V
@@ -47,39 +36,12 @@ type syncMap[K comparable, V any] struct {
 // respectively. If either function is nil, or the key to be deleted doesn't
 // exist, no operation will be performed.
 func newSyncMap[K comparable, V any](onStore func(V), onDelete func(V)) *syncMap[K, V] {
-	if onStore == nil {
-		onStore = func(V) {}
-	}
-	if onDelete == nil {
-		onDelete = func(V) {}
-	}
-
-	return &syncMap[K, V]{
-		m:        make(map[K]V),
-		onStore:  onStore,
-		onDelete: onDelete,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (m *syncMap[K, V]) Load(k K) (V, bool) {
-	m.mu.RLock()
-	v, ok := m.m[k]
-	m.mu.RUnlock()
-	return v, ok
-}
+func (m *syncMap[K, V]) Load(k K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }
 
-func (m *syncMap[K, V]) Store(k K, v V) {
-	m.onStore(v)
-	m.mu.Lock()
-	m.m[k] = v
-	m.mu.Unlock()
-}
+func (m *syncMap[K, V]) Store(k K, v V) { _ = "STUB: not implemented"; return }
 
-func (m *syncMap[K, V]) Delete(k K) {
-	m.mu.Lock()
-	if v, ok := m.m[k]; ok {
-		m.onDelete(v)
-	}
-	delete(m.m, k)
-	m.mu.Unlock()
-}
+func (m *syncMap[K, V]) Delete(k K) { _ = "STUB: not implemented"; return }

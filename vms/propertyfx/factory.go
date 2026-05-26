@@ -19,6 +19,4 @@ var (
 
 type Factory struct{}
 
-func (*Factory) New() any {
-	return &Fx{}
-}
+func (*Factory) New() any { _ = "STUB: not implemented"; return *new(any) }

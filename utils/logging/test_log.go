@@ -18,71 +18,48 @@ var (
 
 type NoLog struct{}
 
-func (NoLog) Write(b []byte) (int, error) {
-	return len(b), nil
-}
+func (NoLog) Write(b []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (NoLog) Fatal(string, ...zap.Field) {}
+func (NoLog) Fatal(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Error(string, ...zap.Field) {}
+func (NoLog) Error(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Warn(string, ...zap.Field) {}
+func (NoLog) Warn(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Info(string, ...zap.Field) {}
+func (NoLog) Info(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Trace(string, ...zap.Field) {}
+func (NoLog) Trace(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Debug(string, ...zap.Field) {}
+func (NoLog) Debug(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Verbo(string, ...zap.Field) {}
+func (NoLog) Verbo(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (n NoLog) With(...zap.Field) Logger {
-	return n
-}
+func (n NoLog) With(...zap.Field) Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
-func (n NoLog) WithOptions(...zap.Option) Logger {
-	return n
-}
+func (n NoLog) WithOptions(...zap.Option) Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
-func (NoLog) SetLevel(Level) {}
+func (NoLog) SetLevel(Level) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Enabled(Level) bool {
-	return false
-}
+func (NoLog) Enabled(Level) bool { _ = "STUB: not implemented"; return false }
 
-func (NoLog) StopOnPanic() {}
+func (NoLog) StopOnPanic() { _ = "STUB: not implemented"; return }
 
-func (NoLog) RecoverAndPanic(f func()) {
-	f()
-}
+func (NoLog) RecoverAndPanic(f func()) { _ = "STUB: not implemented"; return }
 
-func (NoLog) RecoverAndExit(f, exit func()) {
-	defer exit()
-	f()
-}
+func (NoLog) RecoverAndExit(f, exit func()) { _ = "STUB: not implemented"; return }
 
-func (NoLog) Stop() {}
+func (NoLog) Stop() { _ = "STUB: not implemented"; return }
 
 type NoWarn struct{ NoLog }
 
-func (NoWarn) Fatal(string, ...zap.Field) {
-	panic("unexpected Fatal")
-}
+func (NoWarn) Fatal(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoWarn) Error(string, ...zap.Field) {
-	panic("unexpected Error")
-}
+func (NoWarn) Error(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
-func (NoWarn) Warn(string, ...zap.Field) {
-	panic("unexpected Warn")
-}
+func (NoWarn) Warn(string, ...zap.Field) { _ = "STUB: not implemented"; return }
 
 type discard struct{}
 
-func (discard) Write(p []byte) (int, error) {
-	return len(p), nil
-}
+func (discard) Write(p []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (discard) Close() error {
-	return nil
-}
+func (discard) Close() error { _ = "STUB: not implemented"; return nil }

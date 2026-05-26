@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/tx"
 )
 
@@ -21,17 +20,8 @@ type Stateless struct {
 	Txs       []*tx.Tx `serialize:"true" json:"txs"`
 }
 
-func (b *Stateless) Time() time.Time {
-	return time.Unix(b.Timestamp, 0)
-}
+func (b *Stateless) Time() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (b *Stateless) ID() (ids.ID, error) {
-	bytes, err := Codec.Marshal(CodecVersion, b)
-	return hashing.ComputeHash256Array(bytes), err
-}
+func (b *Stateless) ID() (ids.ID, error) { _ = "STUB: not implemented"; return *new(ids.ID), nil }
 
-func Parse(bytes []byte) (*Stateless, error) {
-	blk := &Stateless{}
-	_, err := Codec.Unmarshal(bytes, blk)
-	return blk, err
-}
+func Parse(bytes []byte) (*Stateless, error) { _ = "STUB: not implemented"; return nil, nil }

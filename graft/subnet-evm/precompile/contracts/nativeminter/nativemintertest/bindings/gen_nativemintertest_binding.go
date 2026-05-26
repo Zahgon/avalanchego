@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -45,19 +45,8 @@ var NativeMinterTestBin = NativeMinterTestMetaData.Bin
 
 // DeployNativeMinterTest deploys a new Ethereum contract, binding an instance of NativeMinterTest to it.
 func DeployNativeMinterTest(auth *bind.TransactOpts, backend bind.ContractBackend, nativeMinterPrecompile common.Address) (common.Address, *types.Transaction, *NativeMinterTest, error) {
-	parsed, err := NativeMinterTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(NativeMinterTestBin), backend, nativeMinterPrecompile)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &NativeMinterTest{NativeMinterTestCaller: NativeMinterTestCaller{contract: contract}, NativeMinterTestTransactor: NativeMinterTestTransactor{contract: contract}, NativeMinterTestFilterer: NativeMinterTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // NativeMinterTest is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type NativeMinterTestTransactorRaw struct {
 
 // NewNativeMinterTest creates a new instance of NativeMinterTest, bound to a specific deployed contract.
 func NewNativeMinterTest(address common.Address, backend bind.ContractBackend) (*NativeMinterTest, error) {
-	contract, err := bindNativeMinterTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &NativeMinterTest{NativeMinterTestCaller: NativeMinterTestCaller{contract: contract}, NativeMinterTestTransactor: NativeMinterTestTransactor{contract: contract}, NativeMinterTestFilterer: NativeMinterTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewNativeMinterTestCaller creates a new read-only instance of NativeMinterTest, bound to a specific deployed contract.
 func NewNativeMinterTestCaller(address common.Address, caller bind.ContractCaller) (*NativeMinterTestCaller, error) {
-	contract, err := bindNativeMinterTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &NativeMinterTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewNativeMinterTestTransactor creates a new write-only instance of NativeMinterTest, bound to a specific deployed contract.
 func NewNativeMinterTestTransactor(address common.Address, transactor bind.ContractTransactor) (*NativeMinterTestTransactor, error) {
-	contract, err := bindNativeMinterTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &NativeMinterTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewNativeMinterTestFilterer creates a new log filterer instance of NativeMinterTest, bound to a specific deployed contract.
 func NewNativeMinterTestFilterer(address common.Address, filterer bind.ContractFilterer) (*NativeMinterTestFilterer, error) {
-	contract, err := bindNativeMinterTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &NativeMinterTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindNativeMinterTest binds a generic wrapper to an already deployed contract.
 func bindNativeMinterTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := NativeMinterTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindNativeMinterTest(address common.Address, caller bind.ContractCaller, tr
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_NativeMinterTest *NativeMinterTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _NativeMinterTest.Contract.NativeMinterTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_NativeMinterTest *NativeMinterTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.NativeMinterTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_NativeMinterTest *NativeMinterTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.NativeMinterTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,58 +165,69 @@ func (_NativeMinterTest *NativeMinterTestRaw) Transact(opts *bind.TransactOpts, 
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_NativeMinterTest *NativeMinterTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _NativeMinterTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_NativeMinterTest *NativeMinterTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_NativeMinterTest *NativeMinterTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_NativeMinterTest *NativeMinterTestTransactor) MintNativeCoin(opts *bind.TransactOpts, addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _NativeMinterTest.contract.Transact(opts, "mintNativeCoin", addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_NativeMinterTest *NativeMinterTestSession) MintNativeCoin(addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.MintNativeCoin(&_NativeMinterTest.TransactOpts, addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_NativeMinterTest *NativeMinterTestTransactorSession) MintNativeCoin(addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.MintNativeCoin(&_NativeMinterTest.TransactOpts, addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_NativeMinterTest *NativeMinterTestTransactor) Receive(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _NativeMinterTest.contract.RawTransact(opts, nil) // calldata is disallowed for receive function
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// calldata is disallowed for receive function
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_NativeMinterTest *NativeMinterTestSession) Receive() (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.Receive(&_NativeMinterTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_NativeMinterTest *NativeMinterTestTransactorSession) Receive() (*types.Transaction, error) {
-	return _NativeMinterTest.Contract.Receive(&_NativeMinterTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

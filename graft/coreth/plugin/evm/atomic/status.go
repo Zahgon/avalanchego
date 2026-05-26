@@ -5,7 +5,6 @@ package atomic
 
 import (
 	"errors"
-	"fmt"
 )
 
 var errUnknownStatus = errors.New("unknown status")
@@ -26,55 +25,12 @@ const (
 )
 
 // MarshalJSON ...
-func (s Status) MarshalJSON() ([]byte, error) {
-	if err := s.Valid(); err != nil {
-		return nil, err
-	}
-	return []byte(fmt.Sprintf("%q", s)), nil
-}
+func (s Status) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // UnmarshalJSON ...
-func (s *Status) UnmarshalJSON(b []byte) error {
-	str := string(b)
-	if str == "null" {
-		return nil
-	}
-	switch str {
-	case `"Unknown"`:
-		*s = Unknown
-	case `"Dropped"`:
-		*s = Dropped
-	case `"Processing"`:
-		*s = Processing
-	case `"Accepted"`:
-		*s = Accepted
-	default:
-		return errUnknownStatus
-	}
-	return nil
-}
+func (s *Status) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Valid returns nil if the status is a valid status.
-func (s Status) Valid() error {
-	switch s {
-	case Unknown, Dropped, Processing, Accepted:
-		return nil
-	default:
-		return errUnknownStatus
-	}
-}
+func (s Status) Valid() error { _ = "STUB: not implemented"; return nil }
 
-func (s Status) String() string {
-	switch s {
-	case Unknown:
-		return "Unknown"
-	case Dropped:
-		return "Dropped"
-	case Processing:
-		return "Processing"
-	case Accepted:
-		return "Accepted"
-	default:
-		return "Invalid status"
-	}
-}
+func (s Status) String() string { _ = "STUB: not implemented"; return "" }

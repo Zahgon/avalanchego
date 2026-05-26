@@ -6,7 +6,6 @@ package verify
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
@@ -21,16 +20,6 @@ var (
 // same subnet as [peerChainID], but not the same chain. If this verification
 // fails, a non-nil error will be returned.
 func SameSubnet(ctx context.Context, chainCtx *snow.Context, peerChainID ids.ID) error {
-	if peerChainID == chainCtx.ChainID {
-		return ErrSameChainID
-	}
-
-	subnetID, err := chainCtx.ValidatorState.GetSubnetID(ctx, peerChainID)
-	if err != nil {
-		return fmt.Errorf("failed to get subnet of %q: %w", peerChainID, err)
-	}
-	if chainCtx.SubnetID != subnetID {
-		return fmt.Errorf("%w; expected %q got %q", ErrMismatchedSubnetIDs, chainCtx.SubnetID, subnetID)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

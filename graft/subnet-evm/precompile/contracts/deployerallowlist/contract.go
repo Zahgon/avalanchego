@@ -16,12 +16,14 @@ var ContractDeployerAllowListPrecompile contract.StatefulPrecompiledContract = a
 // GetContractDeployerAllowListStatus returns the role of [address] for the contract deployer
 // allow list.
 func GetContractDeployerAllowListStatus(stateDB contract.StateReader, address common.Address) allowlist.Role {
-	return allowlist.GetAllowListStatus(stateDB, ContractAddress, address)
+	_ = "STUB: not implemented"
+	return *new(allowlist.Role)
 }
 
 // SetContractDeployerAllowListStatus sets the permissions of [address] to [role] for the
 // contract deployer allow list.
 // assumes [role] has already been verified as valid.
 func SetContractDeployerAllowListStatus(stateDB contract.StateDB, address common.Address, role allowlist.Role) {
-	allowlist.SetAllowListRole(stateDB, ContractAddress, address, role)
+	_ = "STUB: not implemented"
+	return
 }

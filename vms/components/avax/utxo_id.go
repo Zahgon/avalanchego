@@ -4,12 +4,7 @@
 package avax
 
 import (
-	"bytes"
-	"cmp"
 	"errors"
-	"fmt"
-	"strconv"
-	"strings"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils"
@@ -39,63 +34,22 @@ type UTXOID struct {
 
 // InputSource returns the source of the UTXO that this input is spending
 func (utxo *UTXOID) InputSource() (ids.ID, uint32) {
-	return utxo.TxID, utxo.OutputIndex
+	_ = "STUB: not implemented"
+	return *new(ids.ID), 0
 }
 
 // InputID returns a unique ID of the UTXO that this input is spending
-func (utxo *UTXOID) InputID() ids.ID {
-	if utxo.id == ids.Empty {
-		utxo.id = utxo.TxID.Prefix(uint64(utxo.OutputIndex))
-	}
-	return utxo.id
-}
+func (utxo *UTXOID) InputID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // Symbolic returns if this is the ID of a UTXO in the DB, or if it is a
 // symbolic input
-func (utxo *UTXOID) Symbolic() bool {
-	return utxo.Symbol
-}
+func (utxo *UTXOID) Symbolic() bool { _ = "STUB: not implemented"; return false }
 
-func (utxo *UTXOID) String() string {
-	return fmt.Sprintf("%s:%d", utxo.TxID, utxo.OutputIndex)
-}
+func (utxo *UTXOID) String() string { _ = "STUB: not implemented"; return "" }
 
 // UTXOIDFromString attempts to parse a string into a UTXOID
-func UTXOIDFromString(s string) (*UTXOID, error) {
-	ss := strings.Split(s, ":")
-	if len(ss) != 2 {
-		return nil, errMalformedUTXOIDString
-	}
+func UTXOIDFromString(s string) (*UTXOID, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	txID, err := ids.FromString(ss[0])
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedDecodingUTXOIDTxID, err)
-	}
+func (utxo *UTXOID) Verify() error { _ = "STUB: not implemented"; return nil }
 
-	idx, err := strconv.ParseUint(ss[1], 10, 32)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedDecodingUTXOIDIndex, err)
-	}
-
-	return &UTXOID{
-		TxID:        txID,
-		OutputIndex: uint32(idx),
-	}, nil
-}
-
-func (utxo *UTXOID) Verify() error {
-	if utxo == nil {
-		return errNilUTXOID
-	}
-
-	return nil
-}
-
-func (utxo *UTXOID) Compare(other *UTXOID) int {
-	utxoID, utxoIndex := utxo.InputSource()
-	otherID, otherIndex := other.InputSource()
-	if txIDComp := bytes.Compare(utxoID[:], otherID[:]); txIDComp != 0 {
-		return txIDComp
-	}
-	return cmp.Compare(utxoIndex, otherIndex)
-}
+func (utxo *UTXOID) Compare(other *UTXOID) int { _ = "STUB: not implemented"; return 0 }

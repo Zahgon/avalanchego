@@ -10,8 +10,6 @@
 package utxomock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	avax "github.com/ava-labs/avalanchego/vms/components/avax"
 	verify "github.com/ava-labs/avalanchego/vms/components/verify"
@@ -32,41 +30,35 @@ type VerifierMockRecorder struct {
 }
 
 // NewVerifier creates a new mock instance.
-func NewVerifier(ctrl *gomock.Controller) *Verifier {
-	mock := &Verifier{ctrl: ctrl}
-	mock.recorder = &VerifierMockRecorder{mock}
-	return mock
-}
+func NewVerifier(ctrl *gomock.Controller) *Verifier { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Verifier) EXPECT() *VerifierMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// VerifySpend mocks base method.
+	return nil
 }
 
-// VerifySpend mocks base method.
 func (m *Verifier) VerifySpend(tx txs.UnsignedTx, utxoDB avax.UTXOGetter, ins []*avax.TransferableInput, outs []*avax.TransferableOutput, creds []verify.Verifiable, unlockedProduced map[ids.ID]uint64) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifySpend", tx, utxoDB, ins, outs, creds, unlockedProduced)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifySpend indicates an expected call of VerifySpend.
 func (mr *VerifierMockRecorder) VerifySpend(tx, utxoDB, ins, outs, creds, unlockedProduced any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifySpend", reflect.TypeOf((*Verifier)(nil).VerifySpend), tx, utxoDB, ins, outs, creds, unlockedProduced)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifySpendUTXOs mocks base method.
 func (m *Verifier) VerifySpendUTXOs(tx txs.UnsignedTx, utxos []*avax.UTXO, ins []*avax.TransferableInput, outs []*avax.TransferableOutput, creds []verify.Verifiable, unlockedProduced map[ids.ID]uint64) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifySpendUTXOs", tx, utxos, ins, outs, creds, unlockedProduced)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifySpendUTXOs indicates an expected call of VerifySpendUTXOs.
 func (mr *VerifierMockRecorder) VerifySpendUTXOs(tx, utxos, ins, outs, creds, unlockedProduced any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifySpendUTXOs", reflect.TypeOf((*Verifier)(nil).VerifySpendUTXOs), tx, utxos, ins, outs, creds, unlockedProduced)
+	_ = "STUB: not implemented"
+	return nil
 }

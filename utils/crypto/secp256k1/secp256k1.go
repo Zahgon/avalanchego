@@ -6,19 +6,14 @@ package secp256k1
 import (
 	"errors"
 	"fmt"
-	"strings"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/crypto"
-	"github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 
 	"github.com/ava-labs/avalanchego/cache"
-	"github.com/ava-labs/avalanchego/cache/lru"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/cb58"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 
 	stdecdsa "crypto/ecdsa"
+
 	secp256k1 "github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 
@@ -56,94 +51,37 @@ var (
 	errMutatedSig              = errors.New("signature was mutated from its original format")
 )
 
-func NewPrivateKey() (*PrivateKey, error) {
-	k, err := secp256k1.GeneratePrivateKey()
-	return &PrivateKey{sk: k}, err
-}
+func NewPrivateKey() (*PrivateKey, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func ToPublicKey(b []byte) (*PublicKey, error) {
-	if len(b) != PublicKeyLen {
-		return nil, errInvalidPublicKeyLength
-	}
+func ToPublicKey(b []byte) (*PublicKey, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	key, err := secp256k1.ParsePubKey(b)
-	return &PublicKey{
-		pk:    key,
-		bytes: b,
-	}, err
-}
-
-func ToPrivateKey(b []byte) (*PrivateKey, error) {
-	if len(b) != PrivateKeyLen {
-		return nil, errInvalidPrivateKeyLength
-	}
-	return &PrivateKey{
-		sk:    secp256k1.PrivKeyFromBytes(b),
-		bytes: b,
-	}, nil
-}
+func ToPrivateKey(b []byte) (*PrivateKey, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func RecoverPublicKey(msg, sig []byte) (*PublicKey, error) {
-	return RecoverPublicKeyFromHash(hashing.ComputeHash256(msg), sig)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func RecoverPublicKeyFromHash(hash, sig []byte) (*PublicKey, error) {
-	if err := verifySECP256K1RSignatureFormat(sig); err != nil {
-		return nil, err
-	}
-
-	sig, err := sigToRawSig(sig)
-	if err != nil {
-		return nil, err
-	}
-
-	rawPubkey, compressed, err := ecdsa.RecoverCompact(sig, hash)
-	if err != nil {
-		return nil, ErrInvalidSig
-	}
-
-	if compressed {
-		return nil, errCompressed
-	}
-
-	return &PublicKey{pk: rawPubkey}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type RecoverCache struct {
 	cache cache.Cacher[ids.ID, *PublicKey]
 }
 
-func NewRecoverCache(size int) *RecoverCache {
-	return &RecoverCache{
-		cache: lru.NewCache[ids.ID, *PublicKey](size),
-	}
-}
+func NewRecoverCache(size int) *RecoverCache { _ = "STUB: not implemented"; return nil }
 
 func (r *RecoverCache) RecoverPublicKey(msg, sig []byte) (*PublicKey, error) {
-	return r.RecoverPublicKeyFromHash(hashing.ComputeHash256(msg), sig)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (r *RecoverCache) RecoverPublicKeyFromHash(hash, sig []byte) (*PublicKey, error) {
+	_ = "STUB: not implemented"
 	// TODO: This type should always be initialized by calling NewRecoverCache.
-	if r == nil || r.cache == nil {
-		return RecoverPublicKeyFromHash(hash, sig)
-	}
-
-	cacheBytes := make([]byte, len(hash)+len(sig))
-	copy(cacheBytes, hash)
-	copy(cacheBytes[len(hash):], sig)
-	id := hashing.ComputeHash256Array(cacheBytes)
-	if cachedPublicKey, ok := r.cache.Get(id); ok {
-		return cachedPublicKey, nil
-	}
-
-	pubKey, err := RecoverPublicKeyFromHash(hash, sig)
-	if err != nil {
-		return nil, err
-	}
-
-	r.cache.Put(id, pubKey)
-	return pubKey, nil
+	return nil, nil
 }
 
 type PublicKey struct {
@@ -152,44 +90,21 @@ type PublicKey struct {
 	bytes []byte
 }
 
-func (k *PublicKey) Verify(msg, sig []byte) bool {
-	return k.VerifyHash(hashing.ComputeHash256(msg), sig)
-}
+func (k *PublicKey) Verify(msg, sig []byte) bool { _ = "STUB: not implemented"; return false }
 
-func (k *PublicKey) VerifyHash(hash, sig []byte) bool {
-	pk, err := RecoverPublicKeyFromHash(hash, sig)
-	if err != nil {
-		return false
-	}
-	return k.Address() == pk.Address()
-}
+func (k *PublicKey) VerifyHash(hash, sig []byte) bool { _ = "STUB: not implemented"; return false }
 
 // ToECDSA returns the ecdsa representation of this public key
-func (k *PublicKey) ToECDSA() *stdecdsa.PublicKey {
-	return k.pk.ToECDSA()
-}
+func (k *PublicKey) ToECDSA() *stdecdsa.PublicKey { _ = "STUB: not implemented"; return nil }
 
-func (k *PublicKey) Address() ids.ShortID {
-	if k.addr == ids.ShortEmpty {
-		addr, err := ids.ToShortID(hashing.PubkeyBytesToAddress(k.Bytes()))
-		if err != nil {
-			panic(err)
-		}
-		k.addr = addr
-	}
-	return k.addr
-}
+func (k *PublicKey) Address() ids.ShortID { _ = "STUB: not implemented"; return *new(ids.ShortID) }
 
 func (k *PublicKey) EthAddress() common.Address {
-	return crypto.PubkeyToAddress(*(k.ToECDSA()))
+	_ = "STUB: not implemented"
+	return *new(common.Address)
 }
 
-func (k *PublicKey) Bytes() []byte {
-	if k.bytes == nil {
-		k.bytes = k.pk.SerializeCompressed()
-	}
-	return k.bytes
-}
+func (k *PublicKey) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type PrivateKey struct {
 	sk    *secp256k1.PrivateKey
@@ -197,131 +112,55 @@ type PrivateKey struct {
 	bytes []byte
 }
 
-func (k *PrivateKey) PublicKey() *PublicKey {
-	if k.pk == nil {
-		k.pk = &PublicKey{pk: k.sk.PubKey()}
-	}
-	return k.pk
-}
+func (k *PrivateKey) PublicKey() *PublicKey { _ = "STUB: not implemented"; return nil }
 
-func (k *PrivateKey) Address() ids.ShortID {
-	return k.PublicKey().Address()
-}
+func (k *PrivateKey) Address() ids.ShortID { _ = "STUB: not implemented"; return *new(ids.ShortID) }
 
 func (k *PrivateKey) EthAddress() common.Address {
-	return crypto.PubkeyToAddress(*(k.PublicKey().ToECDSA()))
+	_ = "STUB: not implemented"
+	return *new(common.Address)
 }
 
-func (k *PrivateKey) Sign(msg []byte) ([]byte, error) {
-	return k.SignHash(hashing.ComputeHash256(msg))
-}
+func (k *PrivateKey) Sign(msg []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (k *PrivateKey) SignHash(hash []byte) ([]byte, error) {
-	sig := ecdsa.SignCompact(k.sk, hash, false) // returns [v || r || s]
-	return rawSigToSig(sig)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// returns [v || r || s]
 
 // ToECDSA returns the ecdsa representation of this private key
-func (k *PrivateKey) ToECDSA() *stdecdsa.PrivateKey {
-	return k.sk.ToECDSA()
-}
+func (k *PrivateKey) ToECDSA() *stdecdsa.PrivateKey { _ = "STUB: not implemented"; return nil }
 
-func (k *PrivateKey) Bytes() []byte {
-	if k.bytes == nil {
-		k.bytes = k.sk.Serialize()
-	}
-	return k.bytes
-}
+func (k *PrivateKey) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func (k *PrivateKey) String() string {
+	_ = "STUB: not implemented"
 	// We assume that the maximum size of a byte slice that
 	// can be stringified is at least the length of a SECP256K1 private key
-	keyStr, _ := cb58.Encode(k.Bytes())
-	return PrivateKeyPrefix + keyStr
+	return ""
 }
 
-func (k *PrivateKey) MarshalJSON() ([]byte, error) {
-	return []byte(`"` + k.String() + `"`), nil
-}
+func (k *PrivateKey) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (k *PrivateKey) MarshalText() ([]byte, error) {
-	return []byte(k.String()), nil
-}
+func (k *PrivateKey) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (k *PrivateKey) UnmarshalJSON(b []byte) error {
-	str := string(b)
-	if str == nullStr { // If "null", do nothing
-		return nil
-	} else if len(str) < 2 {
-		return errMissingQuotes
-	}
+func (k *PrivateKey) UnmarshalJSON(b []byte) error { _ = "STUB: not implemented"; return nil }
 
-	lastIndex := len(str) - 1
-	if str[0] != '"' || str[lastIndex] != '"' {
-		return errMissingQuotes
-	}
+// If "null", do nothing
 
-	strNoQuotes := str[1:lastIndex]
-	return k.unmarshalText(strNoQuotes)
-}
+func (k *PrivateKey) UnmarshalText(text []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (k *PrivateKey) UnmarshalText(text []byte) error {
-	return k.unmarshalText(string(text))
-}
-
-func (k *PrivateKey) unmarshalText(text string) error {
-	if !strings.HasPrefix(text, PrivateKeyPrefix) {
-		return errMissingKeyPrefix
-	}
-
-	strNoPrefix := text[len(PrivateKeyPrefix):]
-	keyBytes, err := cb58.Decode(strNoPrefix)
-	if err != nil {
-		return err
-	}
-	if len(keyBytes) != PrivateKeyLen {
-		return errInvalidPrivateKeyLength
-	}
-
-	*k = PrivateKey{
-		sk:    secp256k1.PrivKeyFromBytes(keyBytes),
-		bytes: keyBytes,
-	}
-	return nil
-}
+func (k *PrivateKey) unmarshalText(text string) error { _ = "STUB: not implemented"; return nil }
 
 // raw sig has format [v || r || s] whereas the sig has format [r || s || v]
-func rawSigToSig(sig []byte) ([]byte, error) {
-	if len(sig) != SignatureLen {
-		return nil, errInvalidSigLen
-	}
-	recCode := sig[0]
-	copy(sig, sig[1:])
-	sig[SignatureLen-1] = recCode - compactSigMagicOffset
-	return sig, nil
-}
+func rawSigToSig(sig []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // sig has format [r || s || v] whereas the raw sig has format [v || r || s]
-func sigToRawSig(sig []byte) ([]byte, error) {
-	if len(sig) != SignatureLen {
-		return nil, errInvalidSigLen
-	}
-	newSig := make([]byte, SignatureLen)
-	newSig[0] = sig[SignatureLen-1] + compactSigMagicOffset //nolint:gosec // G602: length is validated above
-	copy(newSig[1:], sig)
-	return newSig, nil
-}
+func sigToRawSig(sig []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
+
+//nolint:gosec // G602: length is validated above
 
 // verifies the signature format in format [r || s || v]
-func verifySECP256K1RSignatureFormat(sig []byte) error {
-	if len(sig) != SignatureLen {
-		return errInvalidSigLen
-	}
-
-	var s secp256k1.ModNScalar
-	s.SetByteSlice(sig[32:64])
-	if s.IsOverHalfOrder() {
-		return errMutatedSig
-	}
-	return nil
-}
+func verifySECP256K1RSignatureFormat(sig []byte) error { _ = "STUB: not implemented"; return nil }

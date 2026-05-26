@@ -7,41 +7,43 @@ import (
 	"context"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/rpc"
-
-	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
 )
 
-func (b *backend) CurrentBlock() *types.Header {
-	return b.CurrentHeader()
-}
+func (b *backend) CurrentBlock() *types.Header { _ = "STUB: not implemented"; return nil }
 
 func (b *backend) HeaderByNumber(ctx context.Context, n rpc.BlockNumber) (*types.Header, error) {
-	return readByNumber(b, n, rawdb.ReadHeader)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) BlockByNumber(ctx context.Context, n rpc.BlockNumber) (*types.Block, error) {
-	return readByNumber(b, n, rawdb.ReadBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) HeaderByHash(ctx context.Context, hash common.Hash) (*types.Header, error) {
-	return readByHash(b, hash, (*blocks.Block).Header, rawdb.ReadHeader)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) BlockByHash(ctx context.Context, hash common.Hash) (*types.Block, error) {
-	return readByHash(b, hash, (*blocks.Block).EthBlock, rawdb.ReadBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) HeaderByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*types.Header, error) {
-	return readByNumberOrHash(b, blockNrOrHash, (*blocks.Block).Header, neverErrs(rawdb.ReadHeader))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) BlockByNumberOrHash(ctx context.Context, blockNrOrHash rpc.BlockNumberOrHash) (*types.Block, error) {
-	return readByNumberOrHash(b, blockNrOrHash, (*blocks.Block).EthBlock, neverErrs(rawdb.ReadBlock))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) GetBody(ctx context.Context, hash common.Hash, number rpc.BlockNumber) (*types.Body, error) {
-	return readByNumberAndHash(b, hash, number, (*blocks.Block).Body, rawdb.ReadBody)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

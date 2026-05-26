@@ -16,18 +16,13 @@ type MockFile struct {
 	MockInfoErr error
 }
 
-func (m MockFile) Name() string {
-	return m.MockName
-}
+func (m MockFile) Name() string { _ = "STUB: not implemented"; return "" }
 
-func (m MockFile) IsDir() bool {
-	return m.MockIsDir
-}
+func (m MockFile) IsDir() bool { _ = "STUB: not implemented"; return false }
 
-func (m MockFile) Type() fs.FileMode {
-	return m.MockType
-}
+func (m MockFile) Type() fs.FileMode { _ = "STUB: not implemented"; return *new(fs.FileMode) }
 
 func (m MockFile) Info() (fs.FileInfo, error) {
-	return m.MockInfo, m.MockInfoErr
+	_ = "STUB: not implemented"
+	return *new(fs.FileInfo), nil
 }

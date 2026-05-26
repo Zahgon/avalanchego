@@ -49,42 +49,20 @@ type boundedQueue[T any] struct {
 // [maxSize] must be >= 1.
 // Not safe for concurrent use.
 func NewBoundedQueue[T any](maxSize int, onEvict func(T)) (Queue[T], error) {
-	if maxSize < 1 {
-		return nil, errInvalidMaxSize
-	}
-	return &boundedQueue[T]{
-		deque:   NewUnboundedDeque[T](maxSize + 1), // +1 so we never resize
-		maxSize: maxSize,
-		onEvict: onEvict,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (b *boundedQueue[T]) Push(elt T) {
-	if b.deque.Len() == b.maxSize {
-		evicted, _ := b.deque.PopLeft()
-		if b.onEvict != nil {
-			b.onEvict(evicted)
-		}
-	}
-	_ = b.deque.PushRight(elt)
-}
+// +1 so we never resize
 
-func (b *boundedQueue[T]) Pop() (T, bool) {
-	return b.deque.PopLeft()
-}
+func (b *boundedQueue[T]) Push(elt T) { _ = "STUB: not implemented"; return }
 
-func (b *boundedQueue[T]) Peek() (T, bool) {
-	return b.deque.PeekLeft()
-}
+func (b *boundedQueue[T]) Pop() (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
-func (b *boundedQueue[T]) Index(i int) (T, bool) {
-	return b.deque.Index(i)
-}
+func (b *boundedQueue[T]) Peek() (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
-func (b *boundedQueue[T]) Len() int {
-	return b.deque.Len()
-}
+func (b *boundedQueue[T]) Index(i int) (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
-func (b *boundedQueue[T]) List() []T {
-	return b.deque.List()
-}
+func (b *boundedQueue[T]) Len() int { _ = "STUB: not implemented"; return 0 }
+
+func (b *boundedQueue[T]) List() []T { _ = "STUB: not implemented"; return nil }

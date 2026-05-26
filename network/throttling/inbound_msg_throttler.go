@@ -60,57 +60,8 @@ func NewInboundMsgThrottler(
 	cpuTargeter tracker.Targeter,
 	diskTargeter tracker.Targeter,
 ) (InboundMsgThrottler, error) {
-	byteThrottler, err := newInboundMsgByteThrottler(
-		log,
-		registerer,
-		vdrs,
-		throttlerConfig.MsgByteThrottlerConfig,
-	)
-	if err != nil {
-		return nil, err
-	}
-	bufferThrottler, err := newInboundMsgBufferThrottler(
-		registerer,
-		throttlerConfig.MaxProcessingMsgsPerNode,
-	)
-	if err != nil {
-		return nil, err
-	}
-	bandwidthThrottler, err := newBandwidthThrottler(
-		log,
-		registerer,
-		throttlerConfig.BandwidthThrottlerConfig,
-	)
-	if err != nil {
-		return nil, err
-	}
-	cpuThrottler, err := NewSystemThrottler(
-		"cpu",
-		registerer,
-		throttlerConfig.CPUThrottlerConfig,
-		resourceTracker.CPUTracker(),
-		cpuTargeter,
-	)
-	if err != nil {
-		return nil, err
-	}
-	diskThrottler, err := NewSystemThrottler(
-		"disk",
-		registerer,
-		throttlerConfig.DiskThrottlerConfig,
-		resourceTracker.DiskTracker(),
-		diskTargeter,
-	)
-	if err != nil {
-		return nil, err
-	}
-	return &inboundMsgThrottler{
-		byteThrottler:      byteThrottler,
-		bufferThrottler:    bufferThrottler,
-		bandwidthThrottler: bandwidthThrottler,
-		cpuThrottler:       cpuThrottler,
-		diskThrottler:      diskThrottler,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(InboundMsgThrottler), nil
 }
 
 // A sybil-safe inbound message throttler.
@@ -149,28 +100,21 @@ type inboundMsgThrottler struct {
 // Even if [ctx] is canceled, The returned release function
 // needs to be called so that any allocated resources will be released.
 func (t *inboundMsgThrottler) Acquire(ctx context.Context, msgSize uint64, nodeID ids.NodeID) ReleaseFunc {
+	_ = "STUB: not implemented"
 	// Acquire space on the inbound message buffer
-	bufferRelease := t.bufferThrottler.Acquire(ctx, nodeID)
-	// Acquire bandwidth
-	t.bandwidthThrottler.Acquire(ctx, msgSize, nodeID)
-	// Wait until our CPU usage drops to an acceptable level.
-	t.cpuThrottler.Acquire(ctx, nodeID)
-	// Wait until our disk usage drops to an acceptable level.
-	t.diskThrottler.Acquire(ctx, nodeID)
-	// Acquire space on the inbound message byte buffer
-	byteRelease := t.byteThrottler.Acquire(ctx, msgSize, nodeID)
-	return func() {
-		bufferRelease()
-		byteRelease()
-	}
+	return *new(ReleaseFunc)
 }
 
-// See BandwidthThrottler.
-func (t *inboundMsgThrottler) AddNode(nodeID ids.NodeID) {
-	t.bandwidthThrottler.AddNode(nodeID)
-}
+// Acquire bandwidth
+
+// Wait until our CPU usage drops to an acceptable level.
+
+// Wait until our disk usage drops to an acceptable level.
+
+// Acquire space on the inbound message byte buffer
 
 // See BandwidthThrottler.
-func (t *inboundMsgThrottler) RemoveNode(nodeID ids.NodeID) {
-	t.bandwidthThrottler.RemoveNode(nodeID)
-}
+func (t *inboundMsgThrottler) AddNode(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
+
+// See BandwidthThrottler.
+func (t *inboundMsgThrottler) RemoveNode(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }

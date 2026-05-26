@@ -28,27 +28,12 @@
 package node
 
 import (
-	"github.com/ava-labs/avalanchego/graft/coreth/internal/debug"
 	"github.com/ava-labs/avalanchego/graft/evm/rpc"
 	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/ava-labs/libevm/crypto"
 )
 
 // apis returns the collection of built-in RPC APIs.
-func (n *Node) apis() []rpc.API {
-	return []rpc.API{
-		{
-			Namespace: "debug",
-			Service:   debug.Handler,
-			Name:      "debug-handler",
-		},
-		{
-			Namespace: "web3",
-			Service:   &web3API{n},
-			Name:      "web3",
-		},
-	}
-}
+func (n *Node) apis() []rpc.API { _ = "STUB: not implemented"; return nil }
 
 // web3API offers helper utils
 type web3API struct {
@@ -56,12 +41,11 @@ type web3API struct {
 }
 
 // ClientVersion returns the node name
-func (s *web3API) ClientVersion() string {
-	return s.stack.config.CorethVersion
-}
+func (s *web3API) ClientVersion() string { _ = "STUB: not implemented"; return "" }
 
 // Sha3 applies the ethereum sha3 implementation on the input.
 // It assumes the input is hex encoded.
 func (s *web3API) Sha3(input hexutil.Bytes) hexutil.Bytes {
-	return crypto.Keccak256(input)
+	_ = "STUB: not implemented"
+	return *new(hexutil.Bytes)
 }

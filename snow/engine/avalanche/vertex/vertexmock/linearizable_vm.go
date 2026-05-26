@@ -12,7 +12,6 @@ package vertexmock
 import (
 	context "context"
 	http "net/http"
-	reflect "reflect"
 	time "time"
 
 	database "github.com/ava-labs/avalanchego/database"
@@ -39,331 +38,277 @@ type LinearizableVMMockRecorder struct {
 
 // NewLinearizableVM creates a new mock instance.
 func NewLinearizableVM(ctrl *gomock.Controller) *LinearizableVM {
-	mock := &LinearizableVM{ctrl: ctrl}
-	mock.recorder = &LinearizableVMMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *LinearizableVM) EXPECT() *LinearizableVMMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AppGossip mocks base method.
+	return nil
 }
 
-// AppGossip mocks base method.
 func (m *LinearizableVM) AppGossip(ctx context.Context, nodeID ids.NodeID, msg []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppGossip", ctx, nodeID, msg)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppGossip indicates an expected call of AppGossip.
 func (mr *LinearizableVMMockRecorder) AppGossip(ctx, nodeID, msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppGossip", reflect.TypeOf((*LinearizableVM)(nil).AppGossip), ctx, nodeID, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest mocks base method.
 func (m *LinearizableVM) AppRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, deadline time.Time, request []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppRequest", ctx, nodeID, requestID, deadline, request)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest indicates an expected call of AppRequest.
 func (mr *LinearizableVMMockRecorder) AppRequest(ctx, nodeID, requestID, deadline, request any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppRequest", reflect.TypeOf((*LinearizableVM)(nil).AppRequest), ctx, nodeID, requestID, deadline, request)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequestFailed mocks base method.
 func (m *LinearizableVM) AppRequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32, appErr *common.AppError) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppRequestFailed", ctx, nodeID, requestID, appErr)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequestFailed indicates an expected call of AppRequestFailed.
 func (mr *LinearizableVMMockRecorder) AppRequestFailed(ctx, nodeID, requestID, appErr any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppRequestFailed", reflect.TypeOf((*LinearizableVM)(nil).AppRequestFailed), ctx, nodeID, requestID, appErr)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppResponse mocks base method.
 func (m *LinearizableVM) AppResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, response []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppResponse", ctx, nodeID, requestID, response)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppResponse indicates an expected call of AppResponse.
 func (mr *LinearizableVMMockRecorder) AppResponse(ctx, nodeID, requestID, response any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppResponse", reflect.TypeOf((*LinearizableVM)(nil).AppResponse), ctx, nodeID, requestID, response)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BuildBlock mocks base method.
 func (m *LinearizableVM) BuildBlock(arg0 context.Context) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BuildBlock", arg0)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // BuildBlock indicates an expected call of BuildBlock.
 func (mr *LinearizableVMMockRecorder) BuildBlock(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BuildBlock", reflect.TypeOf((*LinearizableVM)(nil).BuildBlock), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Connected mocks base method.
 func (m *LinearizableVM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *version.Application) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Connected", ctx, nodeID, nodeVersion)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Connected indicates an expected call of Connected.
 func (mr *LinearizableVMMockRecorder) Connected(ctx, nodeID, nodeVersion any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Connected", reflect.TypeOf((*LinearizableVM)(nil).Connected), ctx, nodeID, nodeVersion)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CreateHandlers mocks base method.
 func (m *LinearizableVM) CreateHandlers(arg0 context.Context) (map[string]http.Handler, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateHandlers", arg0)
-	ret0, _ := ret[0].(map[string]http.Handler)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // CreateHandlers indicates an expected call of CreateHandlers.
 func (mr *LinearizableVMMockRecorder) CreateHandlers(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHandlers", reflect.TypeOf((*LinearizableVM)(nil).CreateHandlers), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Disconnected mocks base method.
 func (m *LinearizableVM) Disconnected(ctx context.Context, nodeID ids.NodeID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Disconnected", ctx, nodeID)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Disconnected indicates an expected call of Disconnected.
 func (mr *LinearizableVMMockRecorder) Disconnected(ctx, nodeID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Disconnected", reflect.TypeOf((*LinearizableVM)(nil).Disconnected), ctx, nodeID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlock mocks base method.
 func (m *LinearizableVM) GetBlock(ctx context.Context, blkID ids.ID) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlock", ctx, blkID)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // GetBlock indicates an expected call of GetBlock.
 func (mr *LinearizableVMMockRecorder) GetBlock(ctx, blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*LinearizableVM)(nil).GetBlock), ctx, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlockIDAtHeight mocks base method.
 func (m *LinearizableVM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlockIDAtHeight", ctx, height)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // GetBlockIDAtHeight indicates an expected call of GetBlockIDAtHeight.
 func (mr *LinearizableVMMockRecorder) GetBlockIDAtHeight(ctx, height any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockIDAtHeight", reflect.TypeOf((*LinearizableVM)(nil).GetBlockIDAtHeight), ctx, height)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HealthCheck mocks base method.
 func (m *LinearizableVM) HealthCheck(arg0 context.Context) (any, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HealthCheck", arg0)
-	ret0, _ := ret[0].(any)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 // HealthCheck indicates an expected call of HealthCheck.
 func (mr *LinearizableVMMockRecorder) HealthCheck(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*LinearizableVM)(nil).HealthCheck), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize mocks base method.
 func (m *LinearizableVM) Initialize(ctx context.Context, chainCtx *snow.Context, db database.Database, genesisBytes, upgradeBytes, configBytes []byte, fxs []*common.Fx, appSender common.AppSender) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Initialize", ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize indicates an expected call of Initialize.
 func (mr *LinearizableVMMockRecorder) Initialize(ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Initialize", reflect.TypeOf((*LinearizableVM)(nil).Initialize), ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LastAccepted mocks base method.
 func (m *LinearizableVM) LastAccepted(arg0 context.Context) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LastAccepted", arg0)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // LastAccepted indicates an expected call of LastAccepted.
 func (mr *LinearizableVMMockRecorder) LastAccepted(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LastAccepted", reflect.TypeOf((*LinearizableVM)(nil).LastAccepted), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Linearize mocks base method.
 func (m *LinearizableVM) Linearize(ctx context.Context, stopVertexID ids.ID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Linearize", ctx, stopVertexID)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Linearize indicates an expected call of Linearize.
 func (mr *LinearizableVMMockRecorder) Linearize(ctx, stopVertexID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Linearize", reflect.TypeOf((*LinearizableVM)(nil).Linearize), ctx, stopVertexID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewHTTPHandler mocks base method.
 func (m *LinearizableVM) NewHTTPHandler(ctx context.Context) (http.Handler, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewHTTPHandler", ctx)
-	ret0, _ := ret[0].(http.Handler)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(http.Handler), nil
 }
 
 // NewHTTPHandler indicates an expected call of NewHTTPHandler.
 func (mr *LinearizableVMMockRecorder) NewHTTPHandler(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewHTTPHandler", reflect.TypeOf((*LinearizableVM)(nil).NewHTTPHandler), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ParseBlock mocks base method.
 func (m *LinearizableVM) ParseBlock(ctx context.Context, blockBytes []byte) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseBlock", ctx, blockBytes)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // ParseBlock indicates an expected call of ParseBlock.
 func (mr *LinearizableVMMockRecorder) ParseBlock(ctx, blockBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBlock", reflect.TypeOf((*LinearizableVM)(nil).ParseBlock), ctx, blockBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ParseTx mocks base method.
 func (m *LinearizableVM) ParseTx(ctx context.Context, txBytes []byte) (snowstorm.Tx, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseTx", ctx, txBytes)
-	ret0, _ := ret[0].(snowstorm.Tx)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowstorm.Tx), nil
 }
 
 // ParseTx indicates an expected call of ParseTx.
 func (mr *LinearizableVMMockRecorder) ParseTx(ctx, txBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseTx", reflect.TypeOf((*LinearizableVM)(nil).ParseTx), ctx, txBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPreference mocks base method.
 func (m *LinearizableVM) SetPreference(ctx context.Context, blkID ids.ID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetPreference", ctx, blkID)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPreference indicates an expected call of SetPreference.
 func (mr *LinearizableVMMockRecorder) SetPreference(ctx, blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetPreference", reflect.TypeOf((*LinearizableVM)(nil).SetPreference), ctx, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetState mocks base method.
 func (m *LinearizableVM) SetState(ctx context.Context, state snow.State) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetState", ctx, state)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetState indicates an expected call of SetState.
 func (mr *LinearizableVMMockRecorder) SetState(ctx, state any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetState", reflect.TypeOf((*LinearizableVM)(nil).SetState), ctx, state)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Shutdown mocks base method.
 func (m *LinearizableVM) Shutdown(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Shutdown", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Shutdown indicates an expected call of Shutdown.
 func (mr *LinearizableVMMockRecorder) Shutdown(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Shutdown", reflect.TypeOf((*LinearizableVM)(nil).Shutdown), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Version mocks base method.
 func (m *LinearizableVM) Version(arg0 context.Context) (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Version", arg0)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 // Version indicates an expected call of Version.
 func (mr *LinearizableVMMockRecorder) Version(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Version", reflect.TypeOf((*LinearizableVM)(nil).Version), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WaitForEvent mocks base method.
 func (m *LinearizableVM) WaitForEvent(ctx context.Context) (common.Message, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "WaitForEvent", ctx)
-	ret0, _ := ret[0].(common.Message)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(common.Message), nil
 }
 
 // WaitForEvent indicates an expected call of WaitForEvent.
 func (mr *LinearizableVMMockRecorder) WaitForEvent(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WaitForEvent", reflect.TypeOf((*LinearizableVM)(nil).WaitForEvent), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

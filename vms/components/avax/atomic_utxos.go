@@ -4,8 +4,6 @@
 package avax
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/chains/atomic"
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
@@ -31,41 +29,6 @@ func GetAtomicUTXOs(
 	startUTXOID ids.ID,
 	limit int,
 ) ([]*UTXO, ids.ShortID, ids.ID, error) {
-	addrsList := make([][]byte, addrs.Len())
-	i := 0
-	for addr := range addrs {
-		copied := addr
-		addrsList[i] = copied[:]
-		i++
-	}
-
-	allUTXOBytes, lastAddr, lastUTXO, err := sharedMemory.Indexed(
-		chainID,
-		addrsList,
-		startAddr.Bytes(),
-		startUTXOID[:],
-		limit,
-	)
-	if err != nil {
-		return nil, ids.ShortID{}, ids.Empty, fmt.Errorf("error fetching atomic UTXOs: %w", err)
-	}
-
-	lastAddrID, err := ids.ToShortID(lastAddr)
-	if err != nil {
-		lastAddrID = ids.ShortEmpty
-	}
-	lastUTXOID, err := ids.ToID(lastUTXO)
-	if err != nil {
-		lastUTXOID = ids.Empty
-	}
-
-	utxos := make([]*UTXO, len(allUTXOBytes))
-	for i, utxoBytes := range allUTXOBytes {
-		utxo := &UTXO{}
-		if _, err := codec.Unmarshal(utxoBytes, utxo); err != nil {
-			return nil, ids.ShortID{}, ids.Empty, fmt.Errorf("error parsing UTXO: %w", err)
-		}
-		utxos[i] = utxo
-	}
-	return utxos, lastAddrID, lastUTXOID, nil
+	_ = "STUB: not implemented"
+	return nil, *new(ids.ShortID), *new(ids.ID), nil
 }

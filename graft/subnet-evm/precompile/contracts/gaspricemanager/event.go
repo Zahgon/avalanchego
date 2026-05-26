@@ -17,12 +17,12 @@ type GasPriceConfigUpdatedEventData struct {
 
 // PackGasPriceConfigUpdatedEvent returns topic hashes and ABI-encoded non-indexed data.
 func PackGasPriceConfigUpdatedEvent(sender common.Address, oldConfig commontype.GasPriceConfig, newConfig commontype.GasPriceConfig) ([]common.Hash, []byte, error) {
-	return GasPriceManagerABI.PackEvent("GasPriceConfigUpdated", sender, oldConfig, newConfig)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // UnpackGasPriceConfigUpdatedEventData decodes the non-indexed portion of a GasPriceConfigUpdated log.
 func UnpackGasPriceConfigUpdatedEventData(dataBytes []byte) (GasPriceConfigUpdatedEventData, error) {
-	var data GasPriceConfigUpdatedEventData
-	err := GasPriceManagerABI.UnpackIntoInterface(&data, "GasPriceConfigUpdated", dataBytes)
-	return data, err
+	_ = "STUB: not implemented"
+	return *new(GasPriceConfigUpdatedEventData), nil
 }

@@ -7,11 +7,10 @@
 package sdk
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -29,49 +28,23 @@ type PullGossipRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PullGossipRequest) Reset() {
-	*x = PullGossipRequest{}
-	mi := &file_sdk_sdk_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PullGossipRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PullGossipRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PullGossipRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PullGossipRequest) ProtoMessage() {}
+func (*PullGossipRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PullGossipRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sdk_sdk_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PullGossipRequest.ProtoReflect.Descriptor instead.
-func (*PullGossipRequest) Descriptor() ([]byte, []int) {
-	return file_sdk_sdk_proto_rawDescGZIP(), []int{0}
-}
+func (*PullGossipRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PullGossipRequest) GetSalt() []byte {
-	if x != nil {
-		return x.Salt
-	}
-	return nil
-}
+func (x *PullGossipRequest) GetSalt() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *PullGossipRequest) GetFilter() []byte {
-	if x != nil {
-		return x.Filter
-	}
-	return nil
-}
+func (x *PullGossipRequest) GetFilter() []byte { _ = "STUB: not implemented"; return nil }
 
 type PullGossipResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -80,42 +53,21 @@ type PullGossipResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PullGossipResponse) Reset() {
-	*x = PullGossipResponse{}
-	mi := &file_sdk_sdk_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PullGossipResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PullGossipResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PullGossipResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PullGossipResponse) ProtoMessage() {}
+func (*PullGossipResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PullGossipResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sdk_sdk_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PullGossipResponse.ProtoReflect.Descriptor instead.
-func (*PullGossipResponse) Descriptor() ([]byte, []int) {
-	return file_sdk_sdk_proto_rawDescGZIP(), []int{1}
-}
+func (*PullGossipResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PullGossipResponse) GetGossip() [][]byte {
-	if x != nil {
-		return x.Gossip
-	}
-	return nil
-}
+func (x *PullGossipResponse) GetGossip() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type PushGossip struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -124,42 +76,21 @@ type PushGossip struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PushGossip) Reset() {
-	*x = PushGossip{}
-	mi := &file_sdk_sdk_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PushGossip) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PushGossip) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PushGossip) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PushGossip) ProtoMessage() {}
+func (*PushGossip) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PushGossip) ProtoReflect() protoreflect.Message {
-	mi := &file_sdk_sdk_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PushGossip.ProtoReflect.Descriptor instead.
-func (*PushGossip) Descriptor() ([]byte, []int) {
-	return file_sdk_sdk_proto_rawDescGZIP(), []int{2}
-}
+func (*PushGossip) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PushGossip) GetGossip() [][]byte {
-	if x != nil {
-		return x.Gossip
-	}
-	return nil
-}
+func (x *PushGossip) GetGossip() [][]byte { _ = "STUB: not implemented"; return nil }
 
 // SignatureRequest is an AppRequest message type for requesting
 // a BLS signature over a Warp message, as defined in ACP-118:
@@ -174,49 +105,23 @@ type SignatureRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignatureRequest) Reset() {
-	*x = SignatureRequest{}
-	mi := &file_sdk_sdk_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignatureRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignatureRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignatureRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignatureRequest) ProtoMessage() {}
+func (*SignatureRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignatureRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sdk_sdk_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignatureRequest.ProtoReflect.Descriptor instead.
-func (*SignatureRequest) Descriptor() ([]byte, []int) {
-	return file_sdk_sdk_proto_rawDescGZIP(), []int{3}
-}
+func (*SignatureRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SignatureRequest) GetMessage() []byte {
-	if x != nil {
-		return x.Message
-	}
-	return nil
-}
+func (x *SignatureRequest) GetMessage() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SignatureRequest) GetJustification() []byte {
-	if x != nil {
-		return x.Justification
-	}
-	return nil
-}
+func (x *SignatureRequest) GetJustification() []byte { _ = "STUB: not implemented"; return nil }
 
 // SignatureResponse is an AppResponse message type for providing
 // a requested BLS signature over a Warp message, as defined in ACP-118:
@@ -229,42 +134,21 @@ type SignatureResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SignatureResponse) Reset() {
-	*x = SignatureResponse{}
-	mi := &file_sdk_sdk_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SignatureResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SignatureResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SignatureResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SignatureResponse) ProtoMessage() {}
+func (*SignatureResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SignatureResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sdk_sdk_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SignatureResponse.ProtoReflect.Descriptor instead.
-func (*SignatureResponse) Descriptor() ([]byte, []int) {
-	return file_sdk_sdk_proto_rawDescGZIP(), []int{4}
-}
+func (*SignatureResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SignatureResponse) GetSignature() []byte {
-	if x != nil {
-		return x.Signature
-	}
-	return nil
-}
+func (x *SignatureResponse) GetSignature() []byte { _ = "STUB: not implemented"; return nil }
 
 var File_sdk_sdk_proto protoreflect.FileDescriptor
 
@@ -290,12 +174,7 @@ var (
 	file_sdk_sdk_proto_rawDescData []byte
 )
 
-func file_sdk_sdk_proto_rawDescGZIP() []byte {
-	file_sdk_sdk_proto_rawDescOnce.Do(func() {
-		file_sdk_sdk_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_sdk_sdk_proto_rawDesc), len(file_sdk_sdk_proto_rawDesc)))
-	})
-	return file_sdk_sdk_proto_rawDescData
-}
+func file_sdk_sdk_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_sdk_sdk_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_sdk_sdk_proto_goTypes = []any{
@@ -313,26 +192,5 @@ var file_sdk_sdk_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_sdk_sdk_proto_init() }
-func file_sdk_sdk_proto_init() {
-	if File_sdk_sdk_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sdk_sdk_proto_rawDesc), len(file_sdk_sdk_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   5,
-			NumExtensions: 0,
-			NumServices:   0,
-		},
-		GoTypes:           file_sdk_sdk_proto_goTypes,
-		DependencyIndexes: file_sdk_sdk_proto_depIdxs,
-		MessageInfos:      file_sdk_sdk_proto_msgTypes,
-	}.Build()
-	File_sdk_sdk_proto = out.File
-	file_sdk_sdk_proto_goTypes = nil
-	file_sdk_sdk_proto_depIdxs = nil
-}
+func init()                    { file_sdk_sdk_proto_init() }
+func file_sdk_sdk_proto_init() { _ = "STUB: not implemented"; return }

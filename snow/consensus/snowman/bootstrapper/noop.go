@@ -14,14 +14,11 @@ var Noop Poll = noop{}
 
 type noop struct{}
 
-func (noop) GetPeers(context.Context) set.Set[ids.NodeID] {
-	return nil
-}
+func (noop) GetPeers(context.Context) set.Set[ids.NodeID] { _ = "STUB: not implemented"; return nil }
 
 func (noop) RecordOpinion(context.Context, ids.NodeID, set.Set[ids.ID]) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (noop) Result(context.Context) ([]ids.ID, bool) {
-	return nil, false
-}
+func (noop) Result(context.Context) ([]ids.ID, bool) { _ = "STUB: not implemented"; return nil, false }

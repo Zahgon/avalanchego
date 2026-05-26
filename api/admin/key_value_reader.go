@@ -4,8 +4,6 @@
 package admin
 
 import (
-	"context"
-
 	"github.com/ava-labs/avalanchego/database"
 )
 
@@ -15,20 +13,14 @@ type KeyValueReader struct {
 	client *Client
 }
 
-func NewKeyValueReader(client *Client) *KeyValueReader {
-	return &KeyValueReader{
-		client: client,
-	}
-}
+func NewKeyValueReader(client *Client) *KeyValueReader { _ = "STUB: not implemented"; return nil }
 
 func (r *KeyValueReader) Has(key []byte) (bool, error) {
-	_, err := r.client.DBGet(context.Background(), key)
-	if err == database.ErrNotFound {
-		return false, nil
-	}
-	return err == nil, err
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (r *KeyValueReader) Get(key []byte) ([]byte, error) {
-	return r.client.DBGet(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

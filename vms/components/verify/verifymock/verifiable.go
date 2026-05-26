@@ -10,8 +10,6 @@
 package verifymock
 
 import (
-	reflect "reflect"
-
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -28,27 +26,17 @@ type VerifiableMockRecorder struct {
 }
 
 // NewVerifiable creates a new mock instance.
-func NewVerifiable(ctrl *gomock.Controller) *Verifiable {
-	mock := &Verifiable{ctrl: ctrl}
-	mock.recorder = &VerifiableMockRecorder{mock}
-	return mock
-}
+func NewVerifiable(ctrl *gomock.Controller) *Verifiable { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Verifiable) EXPECT() *VerifiableMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Verify mocks base method.
+	return nil
 }
 
-// Verify mocks base method.
-func (m *Verifiable) Verify() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Verifiable) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
-func (mr *VerifiableMockRecorder) Verify() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*Verifiable)(nil).Verify))
-}
+func (mr *VerifiableMockRecorder) Verify() *gomock.Call { _ = "STUB: not implemented"; return nil }

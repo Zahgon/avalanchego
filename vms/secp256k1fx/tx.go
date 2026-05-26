@@ -14,6 +14,4 @@ var _ UnsignedTx = (*TestTx)(nil)
 type TestTx struct{ UnsignedBytes []byte }
 
 // Bytes returns UnsignedBytes
-func (tx *TestTx) Bytes() []byte {
-	return tx.UnsignedBytes
-}
+func (tx *TestTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }

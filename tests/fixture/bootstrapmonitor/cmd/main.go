@@ -107,26 +107,11 @@ func main() {
 }
 
 func checkArgs(namespace string, podName string, nodeContainerName string, dataDir string) error {
-	if len(namespace) == 0 {
-		return errors.New("--namespace is required")
-	}
-	if len(podName) == 0 {
-		return errors.New("--pod-name is required")
-	}
-	if len(nodeContainerName) == 0 {
-		return errors.New("--node-container-name is required")
-	}
-	if len(dataDir) == 0 {
-		return errors.New("--data-dir is required")
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func newLogger(rawLogFormat string) (logging.Logger, error) {
-	writeCloser := os.Stdout
-	logFormat, err := logging.ToFormat(rawLogFormat, writeCloser.Fd())
-	if err != nil {
-		return nil, err
-	}
-	return logging.NewLogger("", logging.NewWrappedCore(logging.Verbo, writeCloser, logFormat.ConsoleEncoder())), nil
+	_ = "STUB: not implemented"
+	return *new(logging.Logger), nil
 }

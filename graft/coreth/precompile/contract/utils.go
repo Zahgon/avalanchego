@@ -4,13 +4,9 @@
 package contract
 
 import (
-	"fmt"
 	"regexp"
-	"strings"
 
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/libevm/core/vm"
-	"github.com/ava-labs/libevm/crypto"
 )
 
 // Gas costs for stateful precompiles
@@ -33,28 +29,16 @@ var functionSignatureRegex = regexp.MustCompile(`\w+\((\w*|(\w+,)+\w+)\)`)
 // "setBalance(address,uint256)"
 // TODO: remove this after moving to ABI based function selectors.
 func CalculateFunctionSelector(functionSignature string) []byte {
-	if !functionSignatureRegex.MatchString(functionSignature) {
-		panic(fmt.Errorf("invalid function signature: %q", functionSignature))
-	}
-	hash := crypto.Keccak256([]byte(functionSignature))
-	return hash[:4]
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DeductGas checks if [suppliedGas] is sufficient against [requiredGas] and deducts [requiredGas] from [suppliedGas].
 func DeductGas(suppliedGas uint64, requiredGas uint64) (uint64, error) {
-	if suppliedGas < requiredGas {
-		return 0, vm.ErrOutOfGas
-	}
-	return suppliedGas - requiredGas, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // ParseABI parses the given ABI string and returns the parsed ABI.
 // If the ABI is invalid, it panics.
-func ParseABI(rawABI string) abi.ABI {
-	parsed, err := abi.JSON(strings.NewReader(rawABI))
-	if err != nil {
-		panic(err)
-	}
-
-	return parsed
-}
+func ParseABI(rawABI string) abi.ABI { _ = "STUB: not implemented"; return *new(abi.ABI) }

@@ -17,20 +17,16 @@ import (
 )
 
 // GetHeaderExtra returns the [HeaderExtra] from the given [Header].
-func GetHeaderExtra(h *ethtypes.Header) *HeaderExtra {
-	return extras.Header.Get(h)
-}
+func GetHeaderExtra(h *ethtypes.Header) *HeaderExtra { _ = "STUB: not implemented"; return nil }
 
 // SetHeaderExtra sets the given [HeaderExtra] on the [Header].
-func SetHeaderExtra(h *ethtypes.Header, extra *HeaderExtra) {
-	extras.Header.Set(h, extra)
-}
+func SetHeaderExtra(h *ethtypes.Header, extra *HeaderExtra) { _ = "STUB: not implemented"; return }
 
 // WithHeaderExtra sets the given [HeaderExtra] on the [Header]
 // and returns the [Header] for chaining.
 func WithHeaderExtra(h *ethtypes.Header, extra *HeaderExtra) *ethtypes.Header {
-	SetHeaderExtra(h, extra)
-	return h
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HeaderExtra is a struct that contains extra fields used by Avalanche
@@ -48,144 +44,48 @@ type HeaderExtra struct {
 // HeaderTimeMilliseconds returns the header timestamp in milliseconds.
 // If the header has the Granite field TimeMilliseconds set in extras, it is used.
 // Otherwise, it falls back to seconds-based Time multiplied by 1000.
-func HeaderTimeMilliseconds(h *ethtypes.Header) uint64 {
-	extra := GetHeaderExtra(h)
-	if extra != nil && extra.TimeMilliseconds != nil {
-		return *extra.TimeMilliseconds
-	}
-	return h.Time * 1000
-}
+func HeaderTimeMilliseconds(h *ethtypes.Header) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // EncodeRLP RLP encodes the given [ethtypes.Header] and [HeaderExtra] together
 // to the `writer`. It does merge both structs into a single [HeaderSerializable].
 func (h *HeaderExtra) EncodeRLP(eth *ethtypes.Header, writer io.Writer) error {
-	temp := new(HeaderSerializable)
-
-	temp.updateFromEth(eth)
-	temp.updateFromExtras(h)
-
-	return rlp.Encode(writer, temp)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // DecodeRLP RLP decodes from the [*rlp.Stream] and writes the output to both the
 // [ethtypes.Header] passed as argument and to the receiver [HeaderExtra].
 func (h *HeaderExtra) DecodeRLP(eth *ethtypes.Header, stream *rlp.Stream) error {
-	temp := new(HeaderSerializable)
-	if err := stream.Decode(temp); err != nil {
-		return err
-	}
-
-	temp.updateToEth(eth)
-	temp.updateToExtras(h)
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // EncodeJSON JSON encodes the given [ethtypes.Header] and [HeaderExtra] together
 // to the `writer`. It does merge both structs into a single [HeaderSerializable].
 func (h *HeaderExtra) EncodeJSON(eth *ethtypes.Header) ([]byte, error) {
-	temp := new(HeaderSerializable)
-
-	temp.updateFromEth(eth)
-	temp.updateFromExtras(h)
-
-	return temp.MarshalJSON()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DecodeJSON JSON decodes from the `input` bytes and writes the output to both the
 // [ethtypes.Header] passed as argument and to the receiver [HeaderExtra].
 func (h *HeaderExtra) DecodeJSON(eth *ethtypes.Header, input []byte) error {
-	temp := new(HeaderSerializable)
-	if err := temp.UnmarshalJSON(input); err != nil {
-		return err
-	}
-
-	temp.updateToEth(eth)
-	temp.updateToExtras(h)
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (h *HeaderExtra) PostCopy(dst *ethtypes.Header) {
-	cp := &HeaderExtra{
-		ExtDataHash: h.ExtDataHash,
-	}
-	if h.BlockGasCost != nil {
-		cp.BlockGasCost = new(big.Int).Set(h.BlockGasCost)
-	}
-	if h.ExtDataGasUsed != nil {
-		cp.ExtDataGasUsed = new(big.Int).Set(h.ExtDataGasUsed)
-	}
-	if h.TimeMilliseconds != nil {
-		m := *h.TimeMilliseconds
-		cp.TimeMilliseconds = &m
-	}
-	if h.MinDelayExcess != nil {
-		e := *h.MinDelayExcess
-		cp.MinDelayExcess = &e
-	}
-	SetHeaderExtra(dst, cp)
-}
+func (h *HeaderExtra) PostCopy(dst *ethtypes.Header) { _ = "STUB: not implemented"; return }
 
-func (h *HeaderSerializable) updateFromEth(eth *ethtypes.Header) {
-	h.ParentHash = eth.ParentHash
-	h.UncleHash = eth.UncleHash
-	h.Coinbase = eth.Coinbase
-	h.Root = eth.Root
-	h.TxHash = eth.TxHash
-	h.ReceiptHash = eth.ReceiptHash
-	h.Bloom = eth.Bloom
-	h.Difficulty = eth.Difficulty
-	h.Number = eth.Number
-	h.GasLimit = eth.GasLimit
-	h.GasUsed = eth.GasUsed
-	h.Time = eth.Time
-	h.Extra = eth.Extra
-	h.MixDigest = eth.MixDigest
-	h.Nonce = eth.Nonce
-	h.BaseFee = eth.BaseFee
-	h.BlobGasUsed = eth.BlobGasUsed
-	h.ExcessBlobGas = eth.ExcessBlobGas
-	h.ParentBeaconRoot = eth.ParentBeaconRoot
-}
+func (h *HeaderSerializable) updateFromEth(eth *ethtypes.Header) { _ = "STUB: not implemented"; return }
 
-func (h *HeaderSerializable) updateToEth(eth *ethtypes.Header) {
-	eth.ParentHash = h.ParentHash
-	eth.UncleHash = h.UncleHash
-	eth.Coinbase = h.Coinbase
-	eth.Root = h.Root
-	eth.TxHash = h.TxHash
-	eth.ReceiptHash = h.ReceiptHash
-	eth.Bloom = h.Bloom
-	eth.Difficulty = h.Difficulty
-	eth.Number = h.Number
-	eth.GasLimit = h.GasLimit
-	eth.GasUsed = h.GasUsed
-	eth.Time = h.Time
-	eth.Extra = h.Extra
-	eth.MixDigest = h.MixDigest
-	eth.Nonce = h.Nonce
-	eth.BaseFee = h.BaseFee
-	eth.BlobGasUsed = h.BlobGasUsed
-	eth.ExcessBlobGas = h.ExcessBlobGas
-	eth.ParentBeaconRoot = h.ParentBeaconRoot
-}
+func (h *HeaderSerializable) updateToEth(eth *ethtypes.Header) { _ = "STUB: not implemented"; return }
 
 func (h *HeaderSerializable) updateFromExtras(extras *HeaderExtra) {
-	h.ExtDataHash = extras.ExtDataHash
-	h.ExtDataGasUsed = extras.ExtDataGasUsed
-	h.BlockGasCost = extras.BlockGasCost
-	h.TimeMilliseconds = extras.TimeMilliseconds
-	h.MinDelayExcess = (*uint64)(extras.MinDelayExcess)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (h *HeaderSerializable) updateToExtras(extras *HeaderExtra) {
-	extras.ExtDataHash = h.ExtDataHash
-	extras.ExtDataGasUsed = h.ExtDataGasUsed
-	extras.BlockGasCost = h.BlockGasCost
-	extras.TimeMilliseconds = h.TimeMilliseconds
-	extras.MinDelayExcess = (*acp226.DelayExcess)(h.MinDelayExcess)
-}
+func (h *HeaderSerializable) updateToExtras(extras *HeaderExtra) { _ = "STUB: not implemented"; return }
 
 // NOTE: both generators currently do not support type aliases.
 // We are using custom versions of these programs for now to support type aliases,
@@ -270,5 +170,6 @@ type headerMarshaling struct {
 // This function MUST be exported and is used in [HeaderSerializable.EncodeJSON] which is
 // generated to the file gen_header_json.go.
 func (h *HeaderSerializable) Hash() common.Hash {
-	return ethtypes.RLPHash(h)
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }

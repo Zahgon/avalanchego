@@ -4,10 +4,8 @@
 package c
 
 import (
-	"math/big"
 	"time"
 
-	"github.com/ava-labs/libevm/core/types"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
@@ -17,7 +15,6 @@ import (
 	"github.com/ava-labs/avalanchego/tests"
 	"github.com/ava-labs/avalanchego/tests/fixture/e2e"
 	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
-	"github.com/ava-labs/avalanchego/utils/units"
 	"github.com/ava-labs/avalanchego/vms/proposervm"
 )
 
@@ -80,28 +77,8 @@ func issueTransaction(
 	ethClient *ethclient.Client,
 	senderKey *secp256k1.PrivateKey,
 ) {
-	ctx := tc.DefaultContext()
-	addr := senderKey.EthAddress()
-	acceptedNonce, err := ethClient.AcceptedNonceAt(ctx, addr)
-	require.NoError(tc, err)
-
-	gasPrice := e2e.SuggestGasPrice(tc, ethClient)
-	const amount = 10 * units.Avax // Arbitrary amount to transfer
-	tx := types.NewTransaction(
-		acceptedNonce,
-		addr,
-		new(big.Int).SetUint64(amount),
-		e2e.DefaultGasLimit,
-		gasPrice,
-		nil,
-	)
-
-	cChainID, err := ethClient.ChainID(ctx)
-	require.NoError(tc, err)
-	signer := types.LatestSignerForChainID(cChainID)
-	signedTx, err := types.SignTx(tx, signer, senderKey.ToECDSA())
-	require.NoError(tc, err)
-
-	receipt := e2e.SendEthTransaction(tc, ethClient, signedTx)
-	require.Equal(tc, types.ReceiptStatusSuccessful, receipt.Status)
+	_ = "STUB: not implemented"
+	return
 }
+
+// Arbitrary amount to transfer

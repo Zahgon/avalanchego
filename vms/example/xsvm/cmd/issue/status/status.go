@@ -4,8 +4,6 @@
 package status
 
 import (
-	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
@@ -19,10 +17,4 @@ type TxIssuance struct {
 	StartTime time.Time
 }
 
-func (s *TxIssuance) String() string {
-	txJSON, err := json.MarshalIndent(s.Tx, "", "  ")
-	if err != nil {
-		return "failed to marshal transaction: " + err.Error()
-	}
-	return fmt.Sprintf("issued tx %s in %s\n%s\n", s.TxID, time.Since(s.StartTime), string(txJSON))
-}
+func (s *TxIssuance) String() string { _ = "STUB: not implemented"; return "" }

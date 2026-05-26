@@ -6,12 +6,8 @@ package bootstrapper
 import (
 	"context"
 
-	"go.uber.org/zap"
-	"golang.org/x/exp/maps"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
 
@@ -44,66 +40,18 @@ func NewMajority(
 	nodeWeights map[ids.NodeID]uint64,
 	maxOutstanding int,
 ) *Majority {
-	return &Majority{
-		requests: requests{
-			maxOutstanding: maxOutstanding,
-			pendingSend:    set.Of(maps.Keys(nodeWeights)...),
-		},
-		log:         log,
-		nodeWeights: nodeWeights,
-		received:    make(map[ids.ID]uint64),
-	}
-}
-
-func (m *Majority) RecordOpinion(_ context.Context, nodeID ids.NodeID, blkIDs set.Set[ids.ID]) error {
-	if !m.recordResponse(nodeID) {
-		// The chain router should have already dropped unexpected messages.
-		m.log.Error("received unexpected opinion",
-			zap.String("pollType", "majority"),
-			zap.Stringer("nodeID", nodeID),
-			zap.Reflect("blkIDs", blkIDs),
-		)
-		return nil
-	}
-
-	weight := m.nodeWeights[nodeID]
-	for blkID := range blkIDs {
-		newWeight, err := math.Add(m.received[blkID], weight)
-		if err != nil {
-			return err
-		}
-		m.received[blkID] = newWeight
-	}
-
-	if !m.finished() {
-		return nil
-	}
-
-	var (
-		totalWeight uint64
-		err         error
-	)
-	for _, weight := range m.nodeWeights {
-		totalWeight, err = math.Add(totalWeight, weight)
-		if err != nil {
-			return err
-		}
-	}
-
-	requiredWeight := totalWeight/2 + 1
-	for blkID, weight := range m.received {
-		if weight >= requiredWeight {
-			m.accepted = append(m.accepted, blkID)
-		}
-	}
-
-	m.log.Debug("finalized bootstrapping poll",
-		zap.String("pollType", "majority"),
-		zap.Stringers("accepted", m.accepted),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (m *Majority) RecordOpinion(_ context.Context, nodeID ids.NodeID, blkIDs set.Set[ids.ID]) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+// The chain router should have already dropped unexpected messages.
+
 func (m *Majority) Result(context.Context) ([]ids.ID, bool) {
-	return m.accepted, m.finished()
+	_ = "STUB: not implemented"
+	return nil, false
 }

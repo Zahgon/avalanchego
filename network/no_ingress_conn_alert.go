@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
-	"github.com/ava-labs/avalanchego/utils/constants"
 )
 
 // ErrNoIngressConnections denotes that no node is connected to this validator.
@@ -23,17 +22,6 @@ type validatorRetriever interface {
 }
 
 func checkNoIngressConnections(selfID ids.NodeID, ingressConnections ingressConnectionCounter, validators validatorRetriever) (interface{}, error) {
-	connCount := ingressConnections.IngressConnCount()
-	_, areWeValidator := validators.GetValidator(constants.PrimaryNetworkID, selfID)
-
-	result := map[string]interface{}{
-		"ingressConnectionCount":  connCount,
-		"primaryNetworkValidator": areWeValidator,
-	}
-
-	if connCount > 0 || !areWeValidator {
-		return result, nil
-	}
-
-	return result, ErrNoIngressConnections
+	_ = "STUB: not implemented"
+	return nil, nil
 }

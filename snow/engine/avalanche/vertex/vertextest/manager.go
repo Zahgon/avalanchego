@@ -17,16 +17,6 @@ type Manager struct {
 	Storage
 }
 
-func NewManager(t *testing.T) *Manager {
-	return &Manager{
-		Builder: Builder{T: t},
-		Parser:  Parser{T: t},
-		Storage: Storage{T: t},
-	}
-}
+func NewManager(t *testing.T) *Manager { _ = "STUB: not implemented"; return nil }
 
-func (m *Manager) Default(cant bool) {
-	m.Builder.Default(cant)
-	m.Parser.Default(cant)
-	m.Storage.Default(cant)
-}
+func (m *Manager) Default(cant bool) { _ = "STUB: not implemented"; return }

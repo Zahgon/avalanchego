@@ -27,28 +27,11 @@ type ImportTx struct {
 }
 
 // InputUTXOs track which UTXOs this transaction is consuming.
-func (t *ImportTx) InputUTXOs() []*avax.UTXOID {
-	utxos := t.BaseTx.InputUTXOs()
-	for _, in := range t.ImportedIns {
-		in.Symbol = true
-		utxos = append(utxos, &in.UTXOID)
-	}
-	return utxos
-}
+func (t *ImportTx) InputUTXOs() []*avax.UTXOID { _ = "STUB: not implemented"; return nil }
 
-func (t *ImportTx) InputIDs() set.Set[ids.ID] {
-	inputs := t.BaseTx.InputIDs()
-	for _, in := range t.ImportedIns {
-		inputs.Add(in.InputID())
-	}
-	return inputs
-}
+func (t *ImportTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // NumCredentials returns the number of expected credentials
-func (t *ImportTx) NumCredentials() int {
-	return t.BaseTx.NumCredentials() + len(t.ImportedIns)
-}
+func (t *ImportTx) NumCredentials() int { _ = "STUB: not implemented"; return 0 }
 
-func (t *ImportTx) Visit(v Visitor) error {
-	return v.ImportTx(t)
-}
+func (t *ImportTx) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

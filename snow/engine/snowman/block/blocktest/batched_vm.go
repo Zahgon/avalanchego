@@ -9,8 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
@@ -44,10 +42,7 @@ type BatchedVM struct {
 	) ([]snowman.Block, error)
 }
 
-func (vm *BatchedVM) Default(cant bool) {
-	vm.CantGetAncestors = cant
-	vm.CantBatchParseBlock = cant
-}
+func (vm *BatchedVM) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (vm *BatchedVM) GetAncestors(
 	ctx context.Context,
@@ -56,30 +51,14 @@ func (vm *BatchedVM) GetAncestors(
 	maxBlocksSize int,
 	maxBlocksRetrivalTime time.Duration,
 ) ([][]byte, error) {
-	if vm.GetAncestorsF != nil {
-		return vm.GetAncestorsF(
-			ctx,
-			blkID,
-			maxBlocksNum,
-			maxBlocksSize,
-			maxBlocksRetrivalTime,
-		)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantGetAncestors, errGetAncestor)
-	}
-	return nil, errGetAncestor
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (vm *BatchedVM) BatchedParseBlock(
 	ctx context.Context,
 	blks [][]byte,
 ) ([]snowman.Block, error) {
-	if vm.BatchedParseBlockF != nil {
-		return vm.BatchedParseBlockF(ctx, blks)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantBatchParseBlock, errBatchedParseBlock)
-	}
-	return nil, errBatchedParseBlock
+	_ = "STUB: not implemented"
+	return nil, nil
 }

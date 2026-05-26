@@ -57,11 +57,4 @@ func init() {
 	}
 }
 
-func GetCompatibility(upgradeTime time.Time) *Compatibility {
-	return &Compatibility{
-		Current:                   Current,
-		MinCompatibleAfterUpgrade: MinimumCompatibleVersion,
-		MinCompatible:             PrevMinimumCompatibleVersion,
-		UpgradeTime:               upgradeTime,
-	}
-}
+func GetCompatibility(upgradeTime time.Time) *Compatibility { _ = "STUB: not implemented"; return nil }

@@ -6,21 +6,13 @@ package sae
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/rlp"
-	"github.com/ava-labs/libevm/trie"
-	"go.uber.org/zap"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
 
@@ -48,64 +40,24 @@ var (
 // NOT populate the block ancestry, which is done by [VM.VerifyBlock] i.f.f.
 // verification passes.
 func (vm *VM) ParseBlock(ctx context.Context, buf []byte) (*blocks.Block, error) {
-	b := new(types.Block)
-	if err := rlp.DecodeBytes(buf, b); err != nil {
-		return nil, fmt.Errorf("rlp.DecodeBytes(..., %T): %v", b, err)
-	}
-
-	if !b.Number().IsUint64() {
-		return nil, errBlockHeightNotUint64
-	}
-	// The uint64 timestamp can't underflow [time.Time] but it can overflow so
-	// make this some future engineer's problem in a few millennia.
-	if b.Time() > unix(vm.config.Now())+maxFutureBlockSeconds {
-		return nil, fmt.Errorf("%w: >%s", errBlockTooFarInFuture, maxFutureBlockDuration)
-	}
-
-	// Block body must match what is declared by the header.
-	hasher := trie.NewStackTrie(nil)
-	hdr := b.Header()
-	if types.DeriveSha(b.Transactions(), hasher) != hdr.TxHash {
-		return nil, errTxHashMismatch
-	}
-	if types.CalcUncleHash(b.Uncles()) != hdr.UncleHash {
-		return nil, errUncleHashMismatch
-	}
-	{
-		// The withdrawals hash being set depends on the Ethereum hard fork.
-		var want *common.Hash
-		switch w := b.Withdrawals(); {
-		case w == nil:
-			want = nil
-		case len(w) == 0:
-			want = &types.EmptyWithdrawalsHash
-		default:
-			h := types.DeriveSha(w, hasher)
-			want = &h
-		}
-		if !compareHashPtrs(want, hdr.WithdrawalsHash) {
-			return nil, errWithdrawalHashMismatch
-		}
-	}
-
-	return vm.blockBuilder.new(b, nil, nil)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func compareHashPtrs(a, b *common.Hash) bool {
-	switch an, bn := a == nil, b == nil; {
-	case an && bn:
-		return true
-	case an || bn:
-		return false
-	default:
-		return *a == *b
-	}
-}
+// The uint64 timestamp can't underflow [time.Time] but it can overflow so
+// make this some future engineer's problem in a few millennia.
+
+// Block body must match what is declared by the header.
+
+// The withdrawals hash being set depends on the Ethereum hard fork.
+
+func compareHashPtrs(a, b *common.Hash) bool { _ = "STUB: not implemented"; return false }
 
 // BuildBlock builds a new block, using the last block passed to
 // [VM.SetPreference] as the parent. The block context MAY be nil.
 func (vm *VM) BuildBlock(ctx context.Context, bCtx *block.Context) (*blocks.Block, error) {
-	return vm.blockBuilder.build(ctx, bCtx, vm.preference.Load())
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var (
@@ -117,42 +69,15 @@ var (
 // VerifyBlock validates the block and, if successful, populates its ancestry.
 // The block context MAY be nil.
 func (vm *VM) VerifyBlock(ctx context.Context, bCtx *block.Context, b *blocks.Block) error {
-	parent, err := vm.GetBlock(ctx, b.Parent())
-	if err != nil {
-		return fmt.Errorf("%w %#x: %w", errUnknownParent, b.ParentHash(), err)
-	}
-
-	// Sanity check that we aren't verifying an accepted block.
-	if height, accepted := b.Height(), vm.last.accepted.Load().Height(); height <= accepted {
-		return fmt.Errorf("%w at height %d <= last-accepted (%d)", errBlockHeightTooLow, height, accepted)
-	}
-
-	if vm.consensusState.Get() == snow.Bootstrapping {
-		return vm.verifyWhenBootstrapping(b, parent)
-	}
-
-	rebuilt, err := vm.blockBuilder.rebuild(ctx, bCtx, parent, b)
-	if err != nil {
-		return err
-	}
-	// Although this is also checked in [blocks.Block.CopyAncestorsFrom], it is
-	// key to the purpose of this method so included here to be defensive. It
-	// also provides a clearer failure message.
-	if reH, verH := rebuilt.Hash(), b.Hash(); reH != verH {
-		vm.log().Debug("block verification failed",
-			zap.Reflect("block", b.Header()),
-			zap.Reflect("rebuilt", rebuilt.Header()),
-		)
-		return fmt.Errorf("%w; rebuilt as %#x when verifying %#x", errHashMismatch, reH, verH)
-	}
-	if err := b.CopyAncestorsFrom(rebuilt); err != nil {
-		return err
-	}
-	b.SetWorstCaseBounds(rebuilt.WorstCaseBounds())
-
-	vm.consensusCritical.Store(b.Hash(), b)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Sanity check that we aren't verifying an accepted block.
+
+// Although this is also checked in [blocks.Block.CopyAncestorsFrom], it is
+// key to the purpose of this method so included here to be defensive. It
+// also provides a clearer failure message.
 
 var (
 	errSettledRootMismatch   = errors.New("settled root mismatch")
@@ -164,37 +89,20 @@ var (
 // hooks, such as Coreth and Subnet-EVM, that are unable to fully verify blocks
 // during bootstrapping.
 func (vm *VM) verifyWhenBootstrapping(b, parent *blocks.Block) error {
-	header := b.Header()
-	lastSettled, err := lastToSettle(vm.hooks, header, parent, vm.config.Now(), vm.log())
-	if err != nil {
-		return err
-	}
-
-	// Sanity checks to ensure the in-memory settled block matches the expected
-	// settled block.
-	if got, want := lastSettled.PostExecutionStateRoot(), b.SettledStateRoot(); got != want {
-		return fmt.Errorf("%w: got %#x ; want %#x", errSettledRootMismatch, got, want)
-	}
-	if got, want := lastSettled.NumberU64(), vm.hooks.SettledHeight(header); got != want {
-		return fmt.Errorf("%w: got %d ; want %d", errSettledHeightMismatch, got, want)
-	}
-	if err := b.SetAncestors(parent, lastSettled); err != nil {
-		return err
-	}
-
-	vm.consensusCritical.Store(b.Hash(), b)
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// Sanity checks to ensure the in-memory settled block matches the expected
+// settled block.
+
 func canonicalBlock(db ethdb.Database, num uint64) (*types.Block, error) {
-	b := rawdb.ReadBlock(db, rawdb.ReadCanonicalHash(db, num), num)
-	if b == nil {
-		return nil, fmt.Errorf("no canonical block at height %d", num)
-	}
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (vm *VM) settledBlockFromDB(db ethdb.Reader, hash common.Hash, num uint64) (*blocks.Block, error) {
+	_ = "STUB: not implemented"
 	// Before doing any disk IO, we sanity check that num is for a settled
 	// block.
 	//
@@ -207,33 +115,12 @@ func (vm *VM) settledBlockFromDB(db ethdb.Reader, hash common.Hash, num uint64) 
 	//
 	// TODO(arr4n) I think [readHash] should be providing this guarantee
 	// as it has access to the [syncMap] and its lock.
-	if vm.last.settled.Load().Height() < num {
-		return nil, database.ErrNotFound
-	}
-
-	ethB := rawdb.ReadBlock(db, hash, num)
-	if num > vm.last.synchronous {
-		return blocks.RestoreSettledBlock(
-			ethB,
-			vm.log(),
-			vm.db,
-			vm.xdb,
-			vm.exec.ChainConfig(),
-		)
-	}
-
-	b, err := vm.blockBuilder.new(ethB, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	// Excess is only used for executing the next block, which can never
-	// be the case if `b` isn't actually the last synchronous block, so
-	// passing the same value for all is OK.
-	if err := b.MarkSynchronous(vm.hooks, vm.db, vm.xdb, vm.config.ExcessAfterLastSynchronous); err != nil {
-		return nil, err
-	}
-	return b, nil
+	return nil, nil
 }
+
+// Excess is only used for executing the next block, which can never
+// be the case if `b` isn't actually the last synchronous block, so
+// passing the same value for all is OK.
 
 // GetBlock returns the block with the given ID, or [database.ErrNotFound].
 //
@@ -243,31 +130,18 @@ func (vm *VM) settledBlockFromDB(db ethdb.Reader, hash common.Hash, num uint64) 
 // required for blocks that have been rejected by the consensus engine to be
 // able to be fetched.
 func (vm *VM) GetBlock(ctx context.Context, id ids.ID) (*blocks.Block, error) {
-	var _ snowman.Block // protect the input to allow comment linking
-
-	b, err := blocks.FromHash(
-		vm.chain(),
-		common.Hash(id),
-		false, // consensus MAY request verified-but-not-accepted blocks
-		func(b *blocks.Block) *blocks.Block {
-			return b
-		},
-		vm.settledBlockFromDB,
-	)
-	if errors.Is(err, blocks.ErrNotFound) {
-		return nil, database.ErrNotFound
-	}
-	return b, nil
+	_ = "STUB: not implemented"
+	// protect the input to allow comment linking
+	return nil, nil
 }
+
+// consensus MAY request verified-but-not-accepted blocks
 
 // GetBlockIDAtHeight returns the accepted block at the given height, or
 // [database.ErrNotFound].
 func (vm *VM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	id := ids.ID(rawdb.ReadCanonicalHash(vm.db, height))
-	if id == ids.Empty {
-		return id, database.ErrNotFound
-	}
-	return id, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 var (
@@ -276,20 +150,16 @@ var (
 )
 
 func (vm *VM) ethBlockSource(hash common.Hash, num uint64) (*types.Block, bool) {
-	return source(vm, hash, num, (*blocks.Block).EthBlock, rawdb.ReadBlock)
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (vm *VM) headerSource(hash common.Hash, num uint64) (*types.Header, bool) {
-	return source(vm, hash, num, (*blocks.Block).Header, rawdb.ReadHeader)
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func source[T any](vm *VM, hash common.Hash, num uint64, fromMem blocks.Extractor[T], fromDB blocks.DBReader[T]) (*T, bool) {
-	if b, ok := vm.consensusCritical.Load(hash); ok {
-		if b.NumberU64() != num {
-			return nil, false
-		}
-		return fromMem(b), true
-	}
-	x := fromDB(vm.db, hash, num)
-	return x, x != nil
+	_ = "STUB: not implemented"
+	return nil, false
 }

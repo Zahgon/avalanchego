@@ -37,7 +37,6 @@ import (
 	"hash"
 
 	"github.com/ava-labs/libevm/common"
-	"golang.org/x/crypto/sha3"
 )
 
 // testHasher is the helper tool for transaction/receipt list hashing.
@@ -48,23 +47,17 @@ type testHasher struct {
 }
 
 // NewHasher returns a new testHasher instance.
-func NewHasher() *testHasher {
-	return &testHasher{hasher: sha3.NewLegacyKeccak256()}
-}
+func NewHasher() *testHasher { _ = "STUB: not implemented"; return nil }
 
 // Reset resets the hash state.
 func (h *testHasher) Reset() {
-	h.hasher.Reset()
+	_ = "STUB: not implemented"
+
+	// Update updates the hash state with the given key and value.
+	return
 }
 
-// Update updates the hash state with the given key and value.
-func (h *testHasher) Update(key, val []byte) error {
-	h.hasher.Write(key)
-	h.hasher.Write(val)
-	return nil
-}
+func (h *testHasher) Update(key, val []byte) error { _ = "STUB: not implemented"; return nil }
 
 // Hash returns the hash value.
-func (h *testHasher) Hash() common.Hash {
-	return common.BytesToHash(h.hasher.Sum(nil))
-}
+func (h *testHasher) Hash() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }

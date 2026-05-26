@@ -4,17 +4,12 @@
 package state
 
 import (
-	"errors"
-	"fmt"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/cache"
-	"github.com/ava-labs/avalanchego/cache/lru"
-	"github.com/ava-labs/avalanchego/cache/metercacher"
 	"github.com/ava-labs/avalanchego/database"
-	"github.com/ava-labs/avalanchego/database/prefixdb"
 	"github.com/ava-labs/avalanchego/database/versiondb"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/vms/avm/block"
@@ -143,369 +138,85 @@ func New(
 	metrics prometheus.Registerer,
 	trackChecksums bool,
 ) (State, error) {
-	utxoDB := prefixdb.New(utxoPrefix, db)
-	txDB := prefixdb.New(txPrefix, db)
-	blockIDDB := prefixdb.New(blockIDPrefix, db)
-	blockDB := prefixdb.New(blockPrefix, db)
-	singletonDB := prefixdb.New(singletonPrefix, db)
-
-	txCache, err := metercacher.New[ids.ID, *txs.Tx](
-		"tx_cache",
-		metrics,
-		lru.NewCache[ids.ID, *txs.Tx](txCacheSize),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	blockIDCache, err := metercacher.New[uint64, ids.ID](
-		"block_id_cache",
-		metrics,
-		lru.NewCache[uint64, ids.ID](blockIDCacheSize),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	blockCache, err := metercacher.New[ids.ID, block.Block](
-		"block_cache",
-		metrics,
-		lru.NewCache[ids.ID, block.Block](blockCacheSize),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	utxoState, err := avax.NewMeteredUTXOState(utxoDB, parser.Codec(), metrics, trackChecksums)
-	if err != nil {
-		return nil, err
-	}
-
-	return &state{
-		parser: parser,
-		db:     db,
-
-		modifiedUTXOs: make(map[ids.ID]*avax.UTXO),
-		utxoDB:        utxoDB,
-		utxoState:     utxoState,
-
-		addedTxs: make(map[ids.ID]*txs.Tx),
-		txCache:  txCache,
-		txDB:     txDB,
-
-		addedBlockIDs: make(map[uint64]ids.ID),
-		blockIDCache:  blockIDCache,
-		blockIDDB:     blockIDDB,
-
-		addedBlocks: make(map[ids.ID]block.Block),
-		blockCache:  blockCache,
-		blockDB:     blockDB,
-
-		singletonDB: singletonDB,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(State), nil
 }
 
 func (s *state) GetUTXO(utxoID ids.ID) (*avax.UTXO, error) {
-	if utxo, exists := s.modifiedUTXOs[utxoID]; exists {
-		if utxo == nil {
-			return nil, database.ErrNotFound
-		}
-		return utxo, nil
-	}
-	return s.utxoState.GetUTXO(utxoID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (s *state) UTXOIDs(addr []byte, start ids.ID, limit int) ([]ids.ID, error) {
-	return s.utxoState.UTXOIDs(addr, start, limit)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (s *state) AddUTXO(utxo *avax.UTXO) {
-	s.modifiedUTXOs[utxo.InputID()] = utxo
-}
+func (s *state) AddUTXO(utxo *avax.UTXO) { _ = "STUB: not implemented"; return }
 
-func (s *state) DeleteUTXO(utxoID ids.ID) {
-	s.modifiedUTXOs[utxoID] = nil
-}
+func (s *state) DeleteUTXO(utxoID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (s *state) GetTx(txID ids.ID) (*txs.Tx, error) {
-	if tx, exists := s.addedTxs[txID]; exists {
-		return tx, nil
-	}
-	if tx, exists := s.txCache.Get(txID); exists {
-		if tx == nil {
-			return nil, database.ErrNotFound
-		}
-		return tx, nil
-	}
+func (s *state) GetTx(txID ids.ID) (*txs.Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	txBytes, err := s.txDB.Get(txID[:])
-	if err == database.ErrNotFound {
-		s.txCache.Put(txID, nil)
-		return nil, database.ErrNotFound
-	}
-	if err != nil {
-		return nil, err
-	}
+// The key was in the database
 
-	// The key was in the database
-	tx, err := s.parser.ParseGenesisTx(txBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	s.txCache.Put(txID, tx)
-	return tx, nil
-}
-
-func (s *state) AddTx(tx *txs.Tx) {
-	txID := tx.ID()
-	s.addedTxs[txID] = tx
-}
+func (s *state) AddTx(tx *txs.Tx) { _ = "STUB: not implemented"; return }
 
 func (s *state) GetBlockIDAtHeight(height uint64) (ids.ID, error) {
-	if blkID, exists := s.addedBlockIDs[height]; exists {
-		return blkID, nil
-	}
-	if blkID, cached := s.blockIDCache.Get(height); cached {
-		if blkID == ids.Empty {
-			return ids.Empty, database.ErrNotFound
-		}
-
-		return blkID, nil
-	}
-
-	heightKey := database.PackUInt64(height)
-
-	blkID, err := database.GetID(s.blockIDDB, heightKey)
-	if err == database.ErrNotFound {
-		s.blockIDCache.Put(height, ids.Empty)
-		return ids.Empty, database.ErrNotFound
-	}
-	if err != nil {
-		return ids.Empty, err
-	}
-
-	s.blockIDCache.Put(height, blkID)
-	return blkID, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (s *state) GetBlock(blkID ids.ID) (block.Block, error) {
-	if blk, exists := s.addedBlocks[blkID]; exists {
-		return blk, nil
-	}
-	if blk, cached := s.blockCache.Get(blkID); cached {
-		if blk == nil {
-			return nil, database.ErrNotFound
-		}
-
-		return blk, nil
-	}
-
-	blkBytes, err := s.blockDB.Get(blkID[:])
-	if err == database.ErrNotFound {
-		s.blockCache.Put(blkID, nil)
-		return nil, database.ErrNotFound
-	}
-	if err != nil {
-		return nil, err
-	}
-
-	blk, err := s.parser.ParseBlock(blkBytes)
-	if err != nil {
-		return nil, err
-	}
-
-	s.blockCache.Put(blkID, blk)
-	return blk, nil
+	_ = "STUB: not implemented"
+	return *new(block.Block), nil
 }
 
-func (s *state) AddBlock(block block.Block) {
-	blkID := block.ID()
-	s.addedBlockIDs[block.Height()] = blkID
-	s.addedBlocks[blkID] = block
-}
+func (s *state) AddBlock(block block.Block) { _ = "STUB: not implemented"; return }
 
 func (s *state) InitializeChainState(stopVertexID ids.ID, genesisTimestamp time.Time) error {
-	lastAccepted, err := database.GetID(s.singletonDB, lastAcceptedKey)
-	if err == database.ErrNotFound {
-		return s.initializeChainState(stopVertexID, genesisTimestamp)
-	} else if err != nil {
-		return fmt.Errorf("failed to get last accepted block: %w", err)
-	}
-	s.lastAccepted = lastAccepted
-	s.persistedLastAccepted = lastAccepted
-
-	timestamp, err := database.GetTimestamp(s.singletonDB, timestampKey)
-	if err != nil {
-		return fmt.Errorf("failed to get last accepted timestamp: %w", err)
-	}
-
-	s.timestamp = timestamp
-	s.persistedTimestamp = timestamp
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (s *state) initializeChainState(stopVertexID ids.ID, genesisTimestamp time.Time) error {
-	genesis, err := block.NewStandardBlock(
-		stopVertexID,
-		0,
-		genesisTimestamp,
-		nil,
-		s.parser.Codec(),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to initialize genesis block: %w", err)
-	}
-
-	s.SetLastAccepted(genesis.ID())
-	s.SetTimestamp(genesis.Timestamp())
-	s.AddBlock(genesis)
-
-	if err := s.Commit(); err != nil {
-		return fmt.Errorf("failed to commit genesis block: %w", err)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (s *state) IsInitialized() (bool, error) {
-	return s.singletonDB.Has(isInitializedKey)
-}
+func (s *state) IsInitialized() (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-func (s *state) SetInitialized() error {
-	return s.singletonDB.Put(isInitializedKey, nil)
-}
+func (s *state) SetInitialized() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) GetLastAccepted() ids.ID {
-	return s.lastAccepted
-}
+func (s *state) GetLastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (s *state) SetLastAccepted(lastAccepted ids.ID) {
-	s.lastAccepted = lastAccepted
-}
+func (s *state) SetLastAccepted(lastAccepted ids.ID) { _ = "STUB: not implemented"; return }
 
-func (s *state) GetTimestamp() time.Time {
-	return s.timestamp
-}
+func (s *state) GetTimestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (s *state) SetTimestamp(t time.Time) {
-	s.timestamp = t
-}
+func (s *state) SetTimestamp(t time.Time) { _ = "STUB: not implemented"; return }
 
-func (s *state) Commit() error {
-	defer s.Abort()
-	batch, err := s.CommitBatch()
-	if err != nil {
-		return err
-	}
-	return batch.Write()
-}
+func (s *state) Commit() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) Abort() {
-	s.db.Abort()
-}
+func (s *state) Abort() { _ = "STUB: not implemented"; return }
 
 func (s *state) CommitBatch() (database.Batch, error) {
-	if err := s.write(); err != nil {
-		return nil, err
-	}
-	return s.db.CommitBatch()
+	_ = "STUB: not implemented"
+	return *new(database.Batch), nil
 }
 
-func (s *state) Close() error {
-	return errors.Join(
-		s.utxoDB.Close(),
-		s.txDB.Close(),
-		s.blockIDDB.Close(),
-		s.blockDB.Close(),
-		s.singletonDB.Close(),
-		s.db.Close(),
-	)
-}
+func (s *state) Close() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) write() error {
-	return errors.Join(
-		s.writeUTXOs(),
-		s.writeTxs(),
-		s.writeBlockIDs(),
-		s.writeBlocks(),
-		s.writeMetadata(),
-	)
-}
+func (s *state) write() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) writeUTXOs() error {
-	for utxoID, utxo := range s.modifiedUTXOs {
-		delete(s.modifiedUTXOs, utxoID)
+func (s *state) writeUTXOs() error { _ = "STUB: not implemented"; return nil }
 
-		if utxo != nil {
-			if err := s.utxoState.PutUTXO(utxo); err != nil {
-				return fmt.Errorf("failed to add utxo: %w", err)
-			}
-		} else {
-			if err := s.utxoState.DeleteUTXO(utxoID); err != nil {
-				return fmt.Errorf("failed to remove utxo: %w", err)
-			}
-		}
-	}
-	return nil
-}
+func (s *state) writeTxs() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) writeTxs() error {
-	for txID, tx := range s.addedTxs {
-		txBytes := tx.Bytes()
+func (s *state) writeBlockIDs() error { _ = "STUB: not implemented"; return nil }
 
-		delete(s.addedTxs, txID)
-		s.txCache.Put(txID, tx)
-		if err := s.txDB.Put(txID[:], txBytes); err != nil {
-			return fmt.Errorf("failed to add tx: %w", err)
-		}
-	}
-	return nil
-}
+func (s *state) writeBlocks() error { _ = "STUB: not implemented"; return nil }
 
-func (s *state) writeBlockIDs() error {
-	for height, blkID := range s.addedBlockIDs {
-		heightKey := database.PackUInt64(height)
+func (s *state) writeMetadata() error { _ = "STUB: not implemented"; return nil }
 
-		delete(s.addedBlockIDs, height)
-		s.blockIDCache.Put(height, blkID)
-		if err := database.PutID(s.blockIDDB, heightKey, blkID); err != nil {
-			return fmt.Errorf("failed to add blockID: %w", err)
-		}
-	}
-	return nil
-}
-
-func (s *state) writeBlocks() error {
-	for blkID, blk := range s.addedBlocks {
-		blkBytes := blk.Bytes()
-
-		delete(s.addedBlocks, blkID)
-		s.blockCache.Put(blkID, blk)
-		if err := s.blockDB.Put(blkID[:], blkBytes); err != nil {
-			return fmt.Errorf("failed to add block: %w", err)
-		}
-	}
-	return nil
-}
-
-func (s *state) writeMetadata() error {
-	if !s.persistedTimestamp.Equal(s.timestamp) {
-		if err := database.PutTimestamp(s.singletonDB, timestampKey, s.timestamp); err != nil {
-			return fmt.Errorf("failed to write timestamp: %w", err)
-		}
-		s.persistedTimestamp = s.timestamp
-	}
-	if s.persistedLastAccepted != s.lastAccepted {
-		if err := database.PutID(s.singletonDB, lastAcceptedKey, s.lastAccepted); err != nil {
-			return fmt.Errorf("failed to write last accepted: %w", err)
-		}
-		s.persistedLastAccepted = s.lastAccepted
-	}
-	return nil
-}
-
-func (s *state) Checksum() ids.ID {
-	return s.utxoState.Checksum()
-}
+func (s *state) Checksum() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }

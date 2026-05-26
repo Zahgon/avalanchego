@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/buffer"
 	"github.com/ava-labs/avalanchego/utils/timer/mockable"
 )
@@ -47,68 +46,27 @@ type Config struct {
 }
 
 // New returns an instance of window
-func New[T any](config Config) Window[T] {
-	return &window[T]{
-		clock:    config.Clock,
-		ttl:      config.TTL,
-		maxSize:  config.MaxSize,
-		minSize:  config.MinSize,
-		elements: buffer.NewUnboundedDeque[node[T]](config.MaxSize + 1),
-	}
-}
+func New[T any](config Config) Window[T] { _ = "STUB: not implemented"; return nil }
 
 // Add adds an element to a window and also evicts any elements if they've been
 // present in the window beyond the configured time-to-live
-func (w *window[T]) Add(value T) {
-	w.lock.Lock()
-	defer w.lock.Unlock()
+func (w *window[T]) Add(value T) { _ = "STUB: not implemented"; return }
 
-	// add the new block id
-	w.elements.PushRight(node[T]{
-		value:     value,
-		entryTime: w.clock.Time(),
-	})
-
-	w.removeStaleNodes()
-	if w.elements.Len() > w.maxSize {
-		_, _ = w.elements.PopLeft()
-	}
-}
+// add the new block id
 
 // Oldest returns the oldest element in the window.
-func (w *window[T]) Oldest() (T, bool) {
-	w.lock.Lock()
-	defer w.lock.Unlock()
-	w.removeStaleNodes()
-
-	oldest, ok := w.elements.PeekLeft()
-	if !ok {
-		return utils.Zero[T](), false
-	}
-	return oldest.value, true
-}
+func (w *window[T]) Oldest() (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
 // Length returns the number of elements in the window.
-func (w *window[T]) Length() int {
-	w.lock.Lock()
-	defer w.lock.Unlock()
-	w.removeStaleNodes()
-
-	return w.elements.Len()
-}
+func (w *window[T]) Length() int { _ = "STUB: not implemented"; return 0 }
 
 // removeStaleNodes removes any nodes beyond the configured ttl of a window node.
 func (w *window[T]) removeStaleNodes() {
+	_ = "STUB: not implemented"
 	// If we're beyond the expiry threshold, removeStaleNodes this node from our
 	// window. Nodes are guaranteed to be strictly increasing in entry time,
 	// so we can break this loop once we find the first non-stale one.
-	for w.elements.Len() > w.minSize {
-		oldest, ok := w.elements.PeekLeft()
-		if !ok || w.clock.Time().Sub(oldest.entryTime) <= w.ttl {
-			return
-		}
-		_, _ = w.elements.PopLeft()
-	}
+	return
 }
 
 // helper struct to represent elements in the window

@@ -6,8 +6,6 @@ package enginetest
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -24,41 +22,16 @@ type BootstrapTracker struct {
 }
 
 // Default set the default callable value to [cant]
-func (s *BootstrapTracker) Default(cant bool) {
-	s.CantIsBootstrapped = cant
-	s.CantBootstrapped = cant
-	s.CantOnBootstrapCompleted = cant
-}
+func (s *BootstrapTracker) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 // IsBootstrapped calls IsBootstrappedF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail. Defaults to returning false.
-func (s *BootstrapTracker) IsBootstrapped() bool {
-	if s.IsBootstrappedF != nil {
-		return s.IsBootstrappedF()
-	}
-	if s.T != nil {
-		require.False(s.T, s.CantIsBootstrapped, "Unexpectedly called IsBootstrapped")
-	}
-	return false
-}
+func (s *BootstrapTracker) IsBootstrapped() bool { _ = "STUB: not implemented"; return false }
 
 // Bootstrapped calls BootstrappedF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
-func (s *BootstrapTracker) Bootstrapped(chainID ids.ID) {
-	if s.BootstrappedF != nil {
-		s.BootstrappedF(chainID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantBootstrapped, "Unexpectedly called Bootstrapped")
-	}
-}
+func (s *BootstrapTracker) Bootstrapped(chainID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (s *BootstrapTracker) AllBootstrapped() <-chan struct{} {
-	if s.OnBootstrapCompletedF != nil {
-		return s.OnBootstrapCompletedF()
-	} else if s.T != nil {
-		require.False(s.T, s.CantOnBootstrapCompleted, "Unexpectedly called OnBootstrapCompleted")
-	}
-	return nil
-}
+func (s *BootstrapTracker) AllBootstrapped() <-chan struct{} { _ = "STUB: not implemented"; return nil }

@@ -26,18 +26,13 @@ type Rules struct {
 	AccepterPrecompiles map[common.Address]precompileconfig.Accepter
 }
 
-func (r *Rules) PredicatersExist() bool {
-	return len(r.Predicaters) > 0
-}
+func (r *Rules) PredicatersExist() bool { _ = "STUB: not implemented"; return false }
 
 // HasPredicate implements the avalanchego predicate.Predicates interface.
-func (r *Rules) HasPredicate(addr common.Address) bool {
-	_, ok := r.Predicaters[addr]
-	return ok
-}
+func (r *Rules) HasPredicate(addr common.Address) bool { _ = "STUB: not implemented"; return false }
 
 // IsPrecompileEnabled returns true if the precompile at `addr` is enabled for this rule set.
 func (r *Rules) IsPrecompileEnabled(addr common.Address) bool {
-	_, ok := r.Precompiles[addr]
-	return ok
+	_ = "STUB: not implemented"
+	return false
 }

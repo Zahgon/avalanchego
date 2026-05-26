@@ -10,6 +10,4 @@ var NoOpAllower Allower = noOpAllower{}
 
 type noOpAllower struct{}
 
-func (noOpAllower) IsAllowed(ids.NodeID, bool) bool {
-	return true
-}
+func (noOpAllower) IsAllowed(ids.NodeID, bool) bool { _ = "STUB: not implemented"; return false }

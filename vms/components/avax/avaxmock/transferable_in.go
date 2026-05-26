@@ -10,8 +10,6 @@
 package avaxmock
 
 import (
-	reflect "reflect"
-
 	snow "github.com/ava-labs/avalanchego/snow"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -30,67 +28,40 @@ type TransferableInMockRecorder struct {
 
 // NewTransferableIn creates a new mock instance.
 func NewTransferableIn(ctrl *gomock.Controller) *TransferableIn {
-	mock := &TransferableIn{ctrl: ctrl}
-	mock.recorder = &TransferableInMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *TransferableIn) EXPECT() *TransferableInMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Amount mocks base method.
+	return nil
 }
 
-// Amount mocks base method.
-func (m *TransferableIn) Amount() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Amount")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *TransferableIn) Amount() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Amount indicates an expected call of Amount.
-func (mr *TransferableInMockRecorder) Amount() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Amount", reflect.TypeOf((*TransferableIn)(nil).Amount))
-}
+func (mr *TransferableInMockRecorder) Amount() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Cost mocks base method.
-func (m *TransferableIn) Cost() (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Cost")
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
+func (m *TransferableIn) Cost() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 // Cost indicates an expected call of Cost.
-func (mr *TransferableInMockRecorder) Cost() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cost", reflect.TypeOf((*TransferableIn)(nil).Cost))
-}
+func (mr *TransferableInMockRecorder) Cost() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // InitCtx mocks base method.
-func (m *TransferableIn) InitCtx(ctx *snow.Context) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "InitCtx", ctx)
-}
+func (m *TransferableIn) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 // InitCtx indicates an expected call of InitCtx.
 func (mr *TransferableInMockRecorder) InitCtx(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InitCtx", reflect.TypeOf((*TransferableIn)(nil).InitCtx), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Verify mocks base method.
-func (m *TransferableIn) Verify() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *TransferableIn) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
-func (mr *TransferableInMockRecorder) Verify() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*TransferableIn)(nil).Verify))
-}
+func (mr *TransferableInMockRecorder) Verify() *gomock.Call { _ = "STUB: not implemented"; return nil }

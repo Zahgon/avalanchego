@@ -8,12 +8,9 @@ package rpc
 
 import (
 	"context"
-	"errors"
-	"fmt"
 	"io"
 	"time"
 
-	"github.com/ava-labs/libevm/accounts"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/types"
@@ -25,7 +22,6 @@ import (
 	"github.com/ava-labs/avalanchego/network/p2p"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/saevm/blocks"
-	"github.com/ava-labs/avalanchego/vms/saevm/gasprice"
 	"github.com/ava-labs/avalanchego/vms/saevm/hook"
 	"github.com/ava-labs/avalanchego/vms/saevm/saedb"
 	"github.com/ava-labs/avalanchego/vms/saevm/saexec"
@@ -79,56 +75,20 @@ type Provider struct {
 }
 
 // New constructs a new [Provider].
-func New(chain Chain, config Config) (*Provider, error) {
-	price, err := gasprice.NewEstimator(&estimatorBackend{chain}, chain.Logger(), gasprice.DefaultConfig())
-	if err != nil {
-		return nil, fmt.Errorf("gasprice.NewEstimator(...): %v", err)
-	}
+func New(chain Chain, config Config) (*Provider, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	chainIdx := chainIndexer{chain}
-	override := bloomOverrider{chain}
+// An empty account manager provides graceful errors for signing RPCs
+// (e.g. eth_sign) instead of nil-pointer panics. No actual account
+// functionality is expected.
 
-	back := &backend{
-		chain,
-		config,
-		// An empty account manager provides graceful errors for signing RPCs
-		// (e.g. eth_sign) instead of nil-pointer panics. No actual account
-		// functionality is expected.
-		accounts.NewManager(&accounts.Config{}),
-		price,
-		chain.Mempool(),
-		chainIdx,
-		override,
-		newBloomIndexer(
-			// TODO(alarso16): if we are state syncing, we need to provide the
-			// first block available to the indexer via
-			// [core.ChainIndexer.AddCheckpoint].
-			chain.DB(),
-			chainIdx,
-			override,
-			config.BlocksPerBloomSection,
-		),
-	}
+// TODO(alarso16): if we are state syncing, we need to provide the
+// first block available to the indexer via
+// [core.ChainIndexer.AddCheckpoint].
 
-	filter := filters.NewFilterAPI(
-		filters.NewFilterSystem(back, filters.Config{}),
-		false, /*isLightClient*/
-	)
-	srv, err := back.server(filter)
-	if err != nil {
-		filters.CloseAPI(filter)
-		return nil, errors.Join(err, back.close())
-	}
-
-	return &Provider{back, srv, filter}, nil
-}
+/*isLightClient*/
 
 var _ io.Closer = (*Provider)(nil)
 
 // Close releases all resources in use by the [GethBackends], and stops the
 // [Provider.Server].
-func (p *Provider) Close() error {
-	filters.CloseAPI(p.filter)
-	p.server.Stop()
-	return p.backend.close()
-}
+func (p *Provider) Close() error { _ = "STUB: not implemented"; return nil }

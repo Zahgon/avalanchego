@@ -4,7 +4,6 @@
 package block
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
@@ -23,40 +22,18 @@ type BanffProposalBlock struct {
 	ApricotProposalBlock `serialize:"true"`
 }
 
-func (b *BanffProposalBlock) initialize(bytes []byte) error {
-	if err := b.ApricotProposalBlock.initialize(bytes); err != nil {
-		return err
-	}
-	for _, tx := range b.Transactions {
-		if err := tx.Initialize(txs.Codec); err != nil {
-			return fmt.Errorf("failed to initialize tx: %w", err)
-		}
-	}
-	return nil
-}
+func (b *BanffProposalBlock) initialize(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b *BanffProposalBlock) InitCtx(ctx *snow.Context) {
-	for _, tx := range b.Transactions {
-		tx.Unsigned.InitCtx(ctx)
-	}
-	b.ApricotProposalBlock.InitCtx(ctx)
-}
+func (b *BanffProposalBlock) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 func (b *BanffProposalBlock) Timestamp() time.Time {
-	return time.Unix(int64(b.Time), 0)
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
-func (b *BanffProposalBlock) Txs() []*txs.Tx {
-	l := len(b.Transactions)
-	txs := make([]*txs.Tx, l+1)
-	copy(txs, b.Transactions)
-	txs[l] = b.Tx
-	return txs
-}
+func (b *BanffProposalBlock) Txs() []*txs.Tx { _ = "STUB: not implemented"; return nil }
 
-func (b *BanffProposalBlock) Visit(v Visitor) error {
-	return v.BanffProposalBlock(b)
-}
+func (b *BanffProposalBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 func NewBanffProposalBlock(
 	timestamp time.Time,
@@ -65,18 +42,8 @@ func NewBanffProposalBlock(
 	proposalTx *txs.Tx,
 	decisionTxs []*txs.Tx,
 ) (*BanffProposalBlock, error) {
-	blk := &BanffProposalBlock{
-		Transactions: decisionTxs,
-		Time:         uint64(timestamp.Unix()),
-		ApricotProposalBlock: ApricotProposalBlock{
-			CommonBlock: CommonBlock{
-				PrntID: parentID,
-				Hght:   height,
-			},
-			Tx: proposalTx,
-		},
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type ApricotProposalBlock struct {
@@ -85,24 +52,15 @@ type ApricotProposalBlock struct {
 }
 
 func (b *ApricotProposalBlock) initialize(bytes []byte) error {
-	b.CommonBlock.initialize(bytes)
-	if err := b.Tx.Initialize(txs.Codec); err != nil {
-		return fmt.Errorf("failed to initialize tx: %w", err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (b *ApricotProposalBlock) InitCtx(ctx *snow.Context) {
-	b.Tx.Unsigned.InitCtx(ctx)
-}
+func (b *ApricotProposalBlock) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (b *ApricotProposalBlock) Txs() []*txs.Tx {
-	return []*txs.Tx{b.Tx}
-}
+func (b *ApricotProposalBlock) Txs() []*txs.Tx { _ = "STUB: not implemented"; return nil }
 
-func (b *ApricotProposalBlock) Visit(v Visitor) error {
-	return v.ApricotProposalBlock(b)
-}
+func (b *ApricotProposalBlock) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }
 
 // NewApricotProposalBlock is kept for testing purposes only.
 // Following Banff activation and subsequent code cleanup, Apricot Proposal blocks
@@ -112,12 +70,6 @@ func NewApricotProposalBlock(
 	height uint64,
 	tx *txs.Tx,
 ) (*ApricotProposalBlock, error) {
-	blk := &ApricotProposalBlock{
-		CommonBlock: CommonBlock{
-			PrntID: parentID,
-			Hght:   height,
-		},
-		Tx: tx,
-	}
-	return blk, initialize(blk, &blk.CommonBlock)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

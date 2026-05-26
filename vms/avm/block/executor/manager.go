@@ -56,18 +56,8 @@ func NewManager(
 	clk *mockable.Clock,
 	onAccept func(*txs.Tx),
 ) Manager {
-	lastAccepted := state.GetLastAccepted()
-	return &manager{
-		backend:      backend,
-		state:        state,
-		metrics:      metrics,
-		mempool:      mempool,
-		clk:          clk,
-		onAccept:     onAccept,
-		blkIDToState: map[ids.ID]*blockState{},
-		lastAccepted: lastAccepted,
-		preferred:    lastAccepted,
-	}
+	_ = "STUB: not implemented"
+	return *new(Manager)
 }
 
 type manager struct {
@@ -98,107 +88,45 @@ type blockState struct {
 }
 
 func (m *manager) GetState(blkID ids.ID) (state.Chain, bool) {
+	_ = "STUB: not implemented"
 	// If the block is in the map, it is processing.
-	if state, ok := m.blkIDToState[blkID]; ok {
-		return state.onAcceptState, true
-	}
-	return m.state, blkID == m.lastAccepted
+	return *new(state.Chain), false
 }
 
-func (m *manager) LastAccepted() ids.ID {
-	return m.lastAccepted
-}
+func (m *manager) LastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (m *manager) SetPreference(blockID ids.ID) {
-	m.preferred = blockID
-}
+func (m *manager) SetPreference(blockID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (m *manager) Preferred() ids.ID {
-	return m.preferred
-}
+func (m *manager) Preferred() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 func (m *manager) GetBlock(blkID ids.ID) (snowman.Block, error) {
-	blk, err := m.GetStatelessBlock(blkID)
-	if err != nil {
-		return nil, err
-	}
-	return m.NewBlock(blk), nil
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (m *manager) GetStatelessBlock(blkID ids.ID) (block.Block, error) {
+	_ = "STUB: not implemented"
 	// See if the block is in memory.
-	if blkState, ok := m.blkIDToState[blkID]; ok {
-		return blkState.statelessBlock, nil
-	}
-	// The block isn't in memory. Check the database.
-	return m.state.GetBlock(blkID)
+	return *new(block.Block), nil
 }
+
+// The block isn't in memory. Check the database.
 
 func (m *manager) NewBlock(blk block.Block) snowman.Block {
-	return &Block{
-		Block:   blk,
-		manager: m,
-	}
+	_ = "STUB: not implemented"
+	return *new(snowman.Block)
 }
 
-func (m *manager) VerifyTx(tx *txs.Tx) error {
-	if !m.backend.Bootstrapped {
-		return ErrChainNotSynced
-	}
-
-	err := tx.Unsigned.Visit(&executor.SyntacticVerifier{
-		Backend: m.backend,
-		Tx:      tx,
-	})
-	if err != nil {
-		return err
-	}
-
-	stateDiff, err := state.NewDiff(m.lastAccepted, m)
-	if err != nil {
-		return err
-	}
-
-	err = tx.Unsigned.Visit(&executor.SemanticVerifier{
-		Backend: m.backend,
-		State:   stateDiff,
-		Tx:      tx,
-	})
-	if err != nil {
-		return err
-	}
-
-	executor := &executor.Executor{
-		Codec: m.backend.Codec,
-		State: stateDiff,
-		Tx:    tx,
-	}
-	return tx.Unsigned.Visit(executor)
-}
+func (m *manager) VerifyTx(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 func (m *manager) VerifyUniqueInputs(blkID ids.ID, inputs set.Set[ids.ID]) error {
-	if inputs.Len() == 0 {
-		return nil
-	}
-
-	// Check for conflicts in ancestors.
-	for {
-		state, ok := m.blkIDToState[blkID]
-		if !ok {
-			// The parent state isn't pinned in memory.
-			// This means the parent must be accepted already.
-			return nil
-		}
-
-		if state.importedInputs.Overlaps(inputs) {
-			return ErrConflictingParentTxs
-		}
-
-		blk := state.statelessBlock
-		blkID = blk.Parent()
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (m *manager) free(blkID ids.ID) {
-	delete(m.blkIDToState, blkID)
-}
+// Check for conflicts in ancestors.
+
+// The parent state isn't pinned in memory.
+// This means the parent must be accepted already.
+
+func (m *manager) free(blkID ids.ID) { _ = "STUB: not implemented"; return }

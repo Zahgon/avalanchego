@@ -21,69 +21,23 @@ type merged[T any] struct {
 // Merge returns an iterator that returns all of the elements of [iterators] in
 // order.
 func Merge[T any](less btree.LessFunc[T], iterators ...Iterator[T]) Iterator[T] {
+	_ = "STUB: not implemented"
 	// Filter out iterators that are already exhausted.
-	i := 0
-	for i < len(iterators) {
-		it := iterators[i]
-		if it.Next() {
-			i++
-			continue
-		}
-		it.Release()
-
-		newLength := len(iterators) - 1
-		iterators[i] = iterators[newLength]
-		iterators[newLength] = nil
-		iterators = iterators[:newLength]
-	}
-
-	it := &merged[T]{
-		heap: heap.QueueOf(
-			func(a, b Iterator[T]) bool {
-				return less(a.Value(), b.Value())
-			},
-			iterators...,
-		),
-	}
-
-	return it
+	return nil
 }
 
-func (it *merged[_]) Next() bool {
-	if it.heap.Len() == 0 {
-		return false
-	}
+func (it *merged[_]) Next() bool { _ = "STUB: not implemented"; return false }
 
-	if !it.initialized {
-		// Note that on the first call to Next() (i.e. here) we don't call
-		// Next() on the current iterator. This is because we already called
-		// Next() on each iterator in Merge.
-		it.initialized = true
-		return true
-	}
+// Note that on the first call to Next() (i.e. here) we don't call
+// Next() on the current iterator. This is because we already called
+// Next() on each iterator in Merge.
 
-	// Update the heap root.
-	current, _ := it.heap.Peek()
-	if current.Next() {
-		// Calling Next() above modifies [current] so we fix the heap.
-		it.heap.Fix(0)
-		return true
-	}
+// Update the heap root.
 
-	// The old root is exhausted. Remove it from the heap.
-	current.Release()
-	it.heap.Pop()
-	return it.heap.Len() > 0
-}
+// Calling Next() above modifies [current] so we fix the heap.
 
-func (it *merged[T]) Value() T {
-	peek, _ := it.heap.Peek()
-	return peek.Value()
-}
+// The old root is exhausted. Remove it from the heap.
 
-func (it *merged[_]) Release() {
-	for it.heap.Len() > 0 {
-		removed, _ := it.heap.Pop()
-		removed.Release()
-	}
-}
+func (it *merged[T]) Value() T { _ = "STUB: not implemented"; return *new(T) }
+
+func (it *merged[_]) Release() { _ = "STUB: not implemented"; return }

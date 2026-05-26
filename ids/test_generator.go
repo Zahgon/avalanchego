@@ -3,32 +3,18 @@
 
 package ids
 
-import "sync/atomic"
-
 var offset = uint64(0)
 
 // GenerateTestID returns a new ID that should only be used for testing
-func GenerateTestID() ID {
-	return Empty.Prefix(atomic.AddUint64(&offset, 1))
-}
+func GenerateTestID() ID { _ = "STUB: not implemented"; return *new(ID) }
 
 // GenerateTestShortID returns a new ID that should only be used for testing
-func GenerateTestShortID() ShortID {
-	newID := GenerateTestID()
-	newShortID, _ := ToShortID(newID[:20])
-	return newShortID
-}
+func GenerateTestShortID() ShortID { _ = "STUB: not implemented"; return *new(ShortID) }
 
 // GenerateTestNodeID returns a new ID that should only be used for testing
-func GenerateTestNodeID() NodeID {
-	return NodeID(GenerateTestShortID())
-}
+func GenerateTestNodeID() NodeID { _ = "STUB: not implemented"; return *new(NodeID) }
 
 // BuildTestNodeID is an utility to build NodeID from bytes in UTs
 // It must not be used in production code. In production code we should
 // use ToNodeID, which performs proper length checking.
-func BuildTestNodeID(src []byte) NodeID {
-	res := NodeID{}
-	copy(res[:], src)
-	return res
-}
+func BuildTestNodeID(src []byte) NodeID { _ = "STUB: not implemented"; return *new(NodeID) }

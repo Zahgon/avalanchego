@@ -6,11 +6,7 @@ package avax
 import "github.com/ava-labs/avalanchego/ids"
 
 // Removes the UTXOs consumed by [ins] from the UTXO set
-func Consume(utxoDB UTXODeleter, ins []*TransferableInput) {
-	for _, input := range ins {
-		utxoDB.DeleteUTXO(input.InputID())
-	}
-}
+func Consume(utxoDB UTXODeleter, ins []*TransferableInput) { _ = "STUB: not implemented"; return }
 
 // Adds the UTXOs created by [outs] to the UTXO set.
 // [txID] is the ID of the tx that created [outs].
@@ -19,14 +15,6 @@ func Produce(
 	txID ids.ID,
 	outs []*TransferableOutput,
 ) {
-	for index, out := range outs {
-		utxoDB.AddUTXO(&UTXO{
-			UTXOID: UTXOID{
-				TxID:        txID,
-				OutputIndex: uint32(index),
-			},
-			Asset: out.Asset,
-			Out:   out.Output(),
-		})
-	}
+	_ = "STUB: not implemented"
+	return
 }

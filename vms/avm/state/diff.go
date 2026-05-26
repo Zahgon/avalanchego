@@ -5,10 +5,8 @@ package state
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/vms/avm/block"
 	"github.com/ava-labs/avalanchego/vms/avm/txs"
@@ -46,20 +44,8 @@ func NewDiff(
 	parentID ids.ID,
 	stateVersions Versions,
 ) (Diff, error) {
-	parentState, ok := stateVersions.GetState(parentID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", ErrMissingParentState, parentID)
-	}
-	return &diff{
-		parentID:      parentID,
-		stateVersions: stateVersions,
-		modifiedUTXOs: make(map[ids.ID]*avax.UTXO),
-		addedTxs:      make(map[ids.ID]*txs.Tx),
-		addedBlockIDs: make(map[uint64]ids.ID),
-		addedBlocks:   make(map[ids.ID]block.Block),
-		lastAccepted:  parentState.GetLastAccepted(),
-		timestamp:     parentState.GetTimestamp(),
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(Diff), nil
 }
 
 type stateGetter struct {
@@ -67,117 +53,43 @@ type stateGetter struct {
 }
 
 func (s stateGetter) GetState(ids.ID) (Chain, bool) {
-	return s.state, true
+	_ = "STUB: not implemented"
+	return *new(Chain), false
 }
 
-func NewDiffOn(parentState Chain) (Diff, error) {
-	return NewDiff(ids.Empty, stateGetter{
-		state: parentState,
-	})
-}
+func NewDiffOn(parentState Chain) (Diff, error) { _ = "STUB: not implemented"; return *new(Diff), nil }
 
 func (d *diff) GetUTXO(utxoID ids.ID) (*avax.UTXO, error) {
-	if utxo, modified := d.modifiedUTXOs[utxoID]; modified {
-		if utxo == nil {
-			return nil, database.ErrNotFound
-		}
-		return utxo, nil
-	}
-
-	parentState, ok := d.stateVersions.GetState(d.parentID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", ErrMissingParentState, d.parentID)
-	}
-	return parentState.GetUTXO(utxoID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (d *diff) AddUTXO(utxo *avax.UTXO) {
-	d.modifiedUTXOs[utxo.InputID()] = utxo
-}
+func (d *diff) AddUTXO(utxo *avax.UTXO) { _ = "STUB: not implemented"; return }
 
-func (d *diff) DeleteUTXO(utxoID ids.ID) {
-	d.modifiedUTXOs[utxoID] = nil
-}
+func (d *diff) DeleteUTXO(utxoID ids.ID) { _ = "STUB: not implemented"; return }
 
-func (d *diff) GetTx(txID ids.ID) (*txs.Tx, error) {
-	if tx, exists := d.addedTxs[txID]; exists {
-		return tx, nil
-	}
+func (d *diff) GetTx(txID ids.ID) (*txs.Tx, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	parentState, ok := d.stateVersions.GetState(d.parentID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", ErrMissingParentState, d.parentID)
-	}
-	return parentState.GetTx(txID)
-}
-
-func (d *diff) AddTx(tx *txs.Tx) {
-	d.addedTxs[tx.ID()] = tx
-}
+func (d *diff) AddTx(tx *txs.Tx) { _ = "STUB: not implemented"; return }
 
 func (d *diff) GetBlockIDAtHeight(height uint64) (ids.ID, error) {
-	if blkID, exists := d.addedBlockIDs[height]; exists {
-		return blkID, nil
-	}
-
-	parentState, ok := d.stateVersions.GetState(d.parentID)
-	if !ok {
-		return ids.Empty, fmt.Errorf("%w: %s", ErrMissingParentState, d.parentID)
-	}
-	return parentState.GetBlockIDAtHeight(height)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (d *diff) GetBlock(blkID ids.ID) (block.Block, error) {
-	if blk, exists := d.addedBlocks[blkID]; exists {
-		return blk, nil
-	}
-
-	parentState, ok := d.stateVersions.GetState(d.parentID)
-	if !ok {
-		return nil, fmt.Errorf("%w: %s", ErrMissingParentState, d.parentID)
-	}
-	return parentState.GetBlock(blkID)
+	_ = "STUB: not implemented"
+	return *new(block.Block), nil
 }
 
-func (d *diff) AddBlock(blk block.Block) {
-	blkID := blk.ID()
-	d.addedBlockIDs[blk.Height()] = blkID
-	d.addedBlocks[blkID] = blk
-}
+func (d *diff) AddBlock(blk block.Block) { _ = "STUB: not implemented"; return }
 
-func (d *diff) GetLastAccepted() ids.ID {
-	return d.lastAccepted
-}
+func (d *diff) GetLastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (d *diff) SetLastAccepted(lastAccepted ids.ID) {
-	d.lastAccepted = lastAccepted
-}
+func (d *diff) SetLastAccepted(lastAccepted ids.ID) { _ = "STUB: not implemented"; return }
 
-func (d *diff) GetTimestamp() time.Time {
-	return d.timestamp
-}
+func (d *diff) GetTimestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (d *diff) SetTimestamp(t time.Time) {
-	d.timestamp = t
-}
+func (d *diff) SetTimestamp(t time.Time) { _ = "STUB: not implemented"; return }
 
-func (d *diff) Apply(state Chain) {
-	for utxoID, utxo := range d.modifiedUTXOs {
-		if utxo != nil {
-			state.AddUTXO(utxo)
-		} else {
-			state.DeleteUTXO(utxoID)
-		}
-	}
-
-	for _, tx := range d.addedTxs {
-		state.AddTx(tx)
-	}
-
-	for _, blk := range d.addedBlocks {
-		state.AddBlock(blk)
-	}
-
-	state.SetLastAccepted(d.lastAccepted)
-	state.SetTimestamp(d.timestamp)
-}
+func (d *diff) Apply(state Chain) { _ = "STUB: not implemented"; return }

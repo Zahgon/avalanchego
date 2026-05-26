@@ -8,9 +8,8 @@ package aliasreader
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -38,37 +37,23 @@ type aliasReaderClient struct {
 }
 
 func NewAliasReaderClient(cc grpc.ClientConnInterface) AliasReaderClient {
-	return &aliasReaderClient{cc}
+	_ = "STUB: not implemented"
+	return *new(AliasReaderClient)
 }
 
 func (c *aliasReaderClient) Lookup(ctx context.Context, in *Alias, opts ...grpc.CallOption) (*ID, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ID)
-	err := c.cc.Invoke(ctx, AliasReader_Lookup_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *aliasReaderClient) PrimaryAlias(ctx context.Context, in *ID, opts ...grpc.CallOption) (*Alias, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Alias)
-	err := c.cc.Invoke(ctx, AliasReader_PrimaryAlias_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *aliasReaderClient) Aliases(ctx context.Context, in *ID, opts ...grpc.CallOption) (*AliasList, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AliasList)
-	err := c.cc.Invoke(ctx, AliasReader_Aliases_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AliasReaderServer is the server API for AliasReader service.
@@ -89,87 +74,59 @@ type AliasReaderServer interface {
 type UnimplementedAliasReaderServer struct{}
 
 func (UnimplementedAliasReaderServer) Lookup(context.Context, *Alias) (*ID, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Lookup not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedAliasReaderServer) PrimaryAlias(context.Context, *ID) (*Alias, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PrimaryAlias not implemented")
-}
-func (UnimplementedAliasReaderServer) Aliases(context.Context, *ID) (*AliasList, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Aliases not implemented")
-}
-func (UnimplementedAliasReaderServer) mustEmbedUnimplementedAliasReaderServer() {}
-func (UnimplementedAliasReaderServer) testEmbeddedByValue()                     {}
 
-// UnsafeAliasReaderServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AliasReaderServer will
-// result in compilation errors.
+func (UnimplementedAliasReaderServer) PrimaryAlias(context.Context, *ID) (*Alias, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedAliasReaderServer) Aliases(context.Context, *ID) (*AliasList, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedAliasReaderServer) mustEmbedUnimplementedAliasReaderServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedAliasReaderServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeAliasReaderServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to AliasReaderServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeAliasReaderServer interface {
 	mustEmbedUnimplementedAliasReaderServer()
 }
 
 func RegisterAliasReaderServer(s grpc.ServiceRegistrar, srv AliasReaderServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedAliasReaderServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&AliasReader_ServiceDesc, srv)
+	return
 }
 
 func _AliasReader_Lookup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Alias)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AliasReaderServer).Lookup(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AliasReader_Lookup_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AliasReaderServer).Lookup(ctx, req.(*Alias))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _AliasReader_PrimaryAlias_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ID)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AliasReaderServer).PrimaryAlias(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AliasReader_PrimaryAlias_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AliasReaderServer).PrimaryAlias(ctx, req.(*ID))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _AliasReader_Aliases_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ID)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AliasReaderServer).Aliases(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: AliasReader_Aliases_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AliasReaderServer).Aliases(ctx, req.(*ID))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AliasReader_ServiceDesc is the grpc.ServiceDesc for AliasReader service.

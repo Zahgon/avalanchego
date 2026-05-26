@@ -5,7 +5,6 @@ package nat
 
 import (
 	"errors"
-	"net"
 	"net/netip"
 	"time"
 )
@@ -24,49 +23,21 @@ type noRouter struct {
 	ipErr error
 }
 
-func (noRouter) SupportsNAT() bool {
-	return false
-}
+func (noRouter) SupportsNAT() bool { _ = "STUB: not implemented"; return false }
 
 func (noRouter) MapPort(uint16, uint16, string, time.Duration) error {
-	return errNoRouterCantMapPorts
-}
-
-func (noRouter) UnmapPort(uint16, uint16) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (noRouter) UnmapPort(uint16, uint16) error { _ = "STUB: not implemented"; return nil }
+
 func (r noRouter) ExternalIP() (netip.Addr, error) {
-	return r.ip, r.ipErr
+	_ = "STUB: not implemented"
+	return *new(netip.Addr), nil
 }
 
-func getOutboundIP() (netip.Addr, error) {
-	conn, err := net.Dial("udp", googleDNSServer)
-	if err != nil {
-		return netip.Addr{}, err
-	}
-
-	localAddr := conn.LocalAddr()
-	if err := conn.Close(); err != nil {
-		return netip.Addr{}, err
-	}
-
-	udpAddr, ok := localAddr.(*net.UDPAddr)
-	if !ok {
-		return netip.Addr{}, errFetchingIP
-	}
-	addr := udpAddr.AddrPort().Addr()
-	if addr.Is4In6() {
-		addr = addr.Unmap()
-	}
-	return addr, nil
-}
+func getOutboundIP() (netip.Addr, error) { _ = "STUB: not implemented"; return *new(netip.Addr), nil }
 
 // NewNoRouter returns a router that assumes the network is public
-func NewNoRouter() Router {
-	ip, err := getOutboundIP()
-	return &noRouter{
-		ip:    ip,
-		ipErr: err,
-	}
-}
+func NewNoRouter() Router { _ = "STUB: not implemented"; return *new(Router) }

@@ -4,17 +4,14 @@
 package txs
 
 import (
-	"bytes"
 	"errors"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/signer"
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp/message"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 	"github.com/ava-labs/avalanchego/vms/types"
 )
 
@@ -47,41 +44,13 @@ type ConvertSubnetToL1Tx struct {
 }
 
 func (tx *ConvertSubnetToL1Tx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified:
-		// already passed syntactic verification
-		return nil
-	case tx.Subnet == constants.PrimaryNetworkID:
-		return ErrConvertPermissionlessSubnet
-	case len(tx.Address) > MaxSubnetAddressLength:
-		return ErrAddressTooLong
-	case len(tx.Validators) == 0:
-		return ErrConvertMustIncludeValidators
-	case !utils.IsSortedAndUnique(tx.Validators):
-		return ErrConvertValidatorsNotSortedAndUnique
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	for _, vdr := range tx.Validators {
-		if err := vdr.Verify(); err != nil {
-			return err
-		}
-	}
-	if err := tx.SubnetAuth.Verify(); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *ConvertSubnetToL1Tx) Visit(visitor Visitor) error {
-	return visitor.ConvertSubnetToL1Tx(tx)
-}
+// already passed syntactic verification
+
+func (tx *ConvertSubnetToL1Tx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }
 
 type ConvertSubnetToL1Validator struct {
 	// NodeID of this validator
@@ -103,29 +72,8 @@ type ConvertSubnetToL1Validator struct {
 }
 
 func (v *ConvertSubnetToL1Validator) Compare(o *ConvertSubnetToL1Validator) int {
-	return bytes.Compare(v.NodeID, o.NodeID)
+	_ = "STUB: not implemented"
+	return 0
 }
 
-func (v *ConvertSubnetToL1Validator) Verify() error {
-	if v.Weight == 0 {
-		return ErrZeroWeight
-	}
-	nodeID, err := ids.ToNodeID(v.NodeID)
-	if err != nil {
-		return err
-	}
-	if nodeID == ids.EmptyNodeID {
-		return errEmptyNodeID
-	}
-	return verify.All(
-		&v.Signer,
-		&secp256k1fx.OutputOwners{
-			Threshold: v.RemainingBalanceOwner.Threshold,
-			Addrs:     v.RemainingBalanceOwner.Addresses,
-		},
-		&secp256k1fx.OutputOwners{
-			Threshold: v.DeactivationOwner.Threshold,
-			Addrs:     v.DeactivationOwner.Addresses,
-		},
-	)
-}
+func (v *ConvertSubnetToL1Validator) Verify() error { _ = "STUB: not implemented"; return nil }

@@ -5,8 +5,6 @@ package message
 
 import (
 	"context"
-	"fmt"
-	"strings"
 
 	"github.com/ava-labs/libevm/common"
 
@@ -21,22 +19,16 @@ type CodeRequest struct {
 	Hashes []common.Hash `serialize:"true"`
 }
 
-func (c CodeRequest) String() string {
-	hashStrs := make([]string, len(c.Hashes))
-	for i, hash := range c.Hashes {
-		hashStrs[i] = hash.String()
-	}
-	return fmt.Sprintf("CodeRequest(Hashes=%s)", strings.Join(hashStrs, ", "))
-}
+func (c CodeRequest) String() string { _ = "STUB: not implemented"; return "" }
 
 func (c CodeRequest) Handle(ctx context.Context, nodeID ids.NodeID, requestID uint32, handler RequestHandler) ([]byte, error) {
-	return handler.HandleCodeRequest(ctx, nodeID, requestID, c)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func NewCodeRequest(hashes []common.Hash) CodeRequest {
-	return CodeRequest{
-		Hashes: hashes,
-	}
+	_ = "STUB: not implemented"
+	return *new(CodeRequest)
 }
 
 // CodeResponse is a response to a CodeRequest

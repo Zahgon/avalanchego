@@ -6,7 +6,6 @@ package state
 import (
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/ava-labs/avalanchego/database/prefixdb"
 	"github.com/ava-labs/avalanchego/database/versiondb"
 )
 
@@ -28,31 +27,9 @@ type state struct {
 	HeightIndex
 }
 
-func New(db *versiondb.Database) State {
-	chainDB := prefixdb.New(chainStatePrefix, db)
-	blockDB := prefixdb.New(blockStatePrefix, db)
-	heightDB := prefixdb.New(heightIndexPrefix, db)
-
-	return &state{
-		ChainState:  NewChainState(chainDB),
-		BlockState:  NewBlockState(blockDB),
-		HeightIndex: NewHeightIndex(heightDB, db),
-	}
-}
+func New(db *versiondb.Database) State { _ = "STUB: not implemented"; return *new(State) }
 
 func NewMetered(db *versiondb.Database, namespace string, metrics prometheus.Registerer) (State, error) {
-	chainDB := prefixdb.New(chainStatePrefix, db)
-	blockDB := prefixdb.New(blockStatePrefix, db)
-	heightDB := prefixdb.New(heightIndexPrefix, db)
-
-	blockState, err := NewMeteredBlockState(blockDB, namespace, metrics)
-	if err != nil {
-		return nil, err
-	}
-
-	return &state{
-		ChainState:  NewChainState(chainDB),
-		BlockState:  blockState,
-		HeightIndex: NewHeightIndex(heightDB, db),
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(State), nil
 }

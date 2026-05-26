@@ -4,12 +4,7 @@
 package profiler
 
 import (
-	"fmt"
 	"time"
-
-	"golang.org/x/sync/errgroup"
-
-	"github.com/ava-labs/avalanchego/utils/filesystem"
 )
 
 // Config that is used to describe the options of the continuous profiler.
@@ -36,79 +31,24 @@ type continuousProfiler struct {
 }
 
 func NewContinuous(dir string, freq time.Duration, maxNumFiles int) ContinuousProfiler {
-	return &continuousProfiler{
-		profiler:    newProfiler(dir),
-		freq:        freq,
-		maxNumFiles: maxNumFiles,
-		closer:      make(chan struct{}),
-	}
+	_ = "STUB: not implemented"
+	return *new(ContinuousProfiler)
 }
 
-func (p *continuousProfiler) Dispatch() error {
-	t := time.NewTicker(p.freq)
-	defer t.Stop()
+func (p *continuousProfiler) Dispatch() error { _ = "STUB: not implemented"; return nil }
 
-	for {
-		if err := p.start(); err != nil {
-			return err
-		}
+func (p *continuousProfiler) start() error { _ = "STUB: not implemented"; return nil }
 
-		select {
-		case <-p.closer:
-			return p.stop()
-		case <-t.C:
-			if err := p.stop(); err != nil {
-				return err
-			}
-		}
+func (p *continuousProfiler) stop() error { _ = "STUB: not implemented"; return nil }
 
-		if err := p.rotate(); err != nil {
-			return err
-		}
-	}
-}
-
-func (p *continuousProfiler) start() error {
-	return p.profiler.StartCPUProfiler()
-}
-
-func (p *continuousProfiler) stop() error {
-	g := errgroup.Group{}
-	g.Go(p.profiler.StopCPUProfiler)
-	g.Go(p.profiler.MemoryProfile)
-	g.Go(p.profiler.LockProfile)
-	return g.Wait()
-}
-
-func (p *continuousProfiler) rotate() error {
-	g := errgroup.Group{}
-	g.Go(func() error {
-		return rotate(p.profiler.cpuProfileName, p.maxNumFiles)
-	})
-	g.Go(func() error {
-		return rotate(p.profiler.memProfileName, p.maxNumFiles)
-	})
-	g.Go(func() error {
-		return rotate(p.profiler.lockProfileName, p.maxNumFiles)
-	})
-	return g.Wait()
-}
+func (p *continuousProfiler) rotate() error { _ = "STUB: not implemented"; return nil }
 
 func (p *continuousProfiler) Shutdown() {
-	close(p.closer)
+	_ = "STUB: not implemented"
+
+	// Renames the file at [name] to [name].1, the file at [name].1 to [name].2, etc.
+	// Assumes that there is a file at [name].
+	return
 }
 
-// Renames the file at [name] to [name].1, the file at [name].1 to [name].2, etc.
-// Assumes that there is a file at [name].
-func rotate(name string, maxNumFiles int) error {
-	for i := maxNumFiles - 1; i > 0; i-- {
-		sourceFilename := fmt.Sprintf("%s.%d", name, i)
-		destFilename := fmt.Sprintf("%s.%d", name, i+1)
-		if _, err := filesystem.RenameIfExists(sourceFilename, destFilename); err != nil {
-			return err
-		}
-	}
-	destFilename := name + ".1"
-	_, err := filesystem.RenameIfExists(name, destFilename)
-	return err
-}
+func rotate(name string, maxNumFiles int) error { _ = "STUB: not implemented"; return nil }

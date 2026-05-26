@@ -14,9 +14,6 @@ func New(
 	namespace string,
 	registerer prometheus.Registerer,
 ) (mempool.Mempool[*txs.Tx], error) {
-	metrics, err := mempool.NewMetrics(namespace, registerer)
-	if err != nil {
-		return nil, err
-	}
-	return mempool.New[*txs.Tx](metrics), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

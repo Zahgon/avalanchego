@@ -20,17 +20,13 @@ type staticExecutor struct {
 }
 
 func newStaticExecutor(registry *SyncerRegistry, acceptor Acceptor) *staticExecutor {
-	return &staticExecutor{
-		registry: registry,
-		acceptor: acceptor,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Execute runs the sync process and blocks until completion or error.
 // For static sync, this runs all syncers and then accepts the synced state into the VM.
 func (e *staticExecutor) Execute(ctx context.Context, summary message.Syncable) error {
-	if err := e.registry.RunSyncerTasks(ctx, summary); err != nil {
-		return err
-	}
-	return e.acceptor.AcceptSync(ctx, summary)
+	_ = "STUB: not implemented"
+	return nil
 }

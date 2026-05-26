@@ -5,14 +5,6 @@
 // https://github.com/avalanche-foundation/ACPs/blob/main/ACPs/226-dynamic-minimum-block-times/README.md
 package acp226
 
-import (
-	"sort"
-
-	"github.com/ava-labs/avalanchego/vms/components/gas"
-
-	safemath "github.com/ava-labs/avalanchego/utils/math"
-)
-
 const (
 	// MinDelayMilliseconds (M) is the minimum block delay in milliseconds
 	MinDelayMilliseconds = 1 // ms
@@ -35,39 +27,28 @@ type DelayExcess uint64
 // Delay returns the minimum block delay in milliseconds, `m`.
 //
 // Delay = MinDelayMilliseconds * e^(DelayExcess / ConversionRate)
-func (t DelayExcess) Delay() uint64 {
-	return uint64(gas.CalculatePrice(
-		MinDelayMilliseconds,
-		gas.Gas(t),
-		ConversionRate,
-	))
-}
+func (t DelayExcess) Delay() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // UpdateDelayExcess updates the DelayExcess to be as close as possible to the
 // desiredDelayExcess without exceeding the maximum DelayExcess change.
 func (t *DelayExcess) UpdateDelayExcess(desiredDelayExcess DelayExcess) {
-	*t = calculateDelayExcess(*t, desiredDelayExcess)
+	_ = "STUB: not implemented"
+	return
 }
 
 // DesiredDelayExcess calculates the optimal delay excess given the desired
 // delay in milliseconds.
 func DesiredDelayExcess(desiredDelay uint64) DelayExcess {
+	_ = "STUB: not implemented"
 	// This could be solved directly by calculating D * ln(desired / M)
 	// using floating point math. However, it introduces inaccuracies. So, we
 	// use a binary search to find the closest integer solution.
-	return DelayExcess(sort.Search(int(maxDelayExcess), func(delayExcessGuess int) bool {
-		excess := DelayExcess(delayExcessGuess)
-		return excess.Delay() >= desiredDelay
-	}))
+	return *new(DelayExcess)
 }
 
 // calculateDelayExcess calculates the optimal new DelayExcess for a block
 // proposer to include given the current and desired excess values.
 func calculateDelayExcess(excess, desired DelayExcess) DelayExcess {
-	change := safemath.AbsDiff(excess, desired)
-	change = min(change, MaxDelayExcessDiff)
-	if excess < desired {
-		return excess + change
-	}
-	return excess - change
+	_ = "STUB: not implemented"
+	return *new(DelayExcess)
 }

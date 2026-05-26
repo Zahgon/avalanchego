@@ -28,16 +28,6 @@ func NewCreator(
 	compressionType compression.Type,
 	maxMessageTimeout time.Duration,
 ) (Creator, error) {
-	builder, err := newMsgBuilder(
-		metrics,
-		maxMessageTimeout,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &creator{
-		OutboundMsgBuilder: newOutboundBuilder(compressionType, builder),
-		InboundMsgBuilder:  newInboundBuilder(builder),
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(Creator), nil
 }

@@ -27,14 +27,8 @@ type Compatibility struct {
 //
 // This means that the version is connectable and that consensus messages can be
 // made to the peer.
-func (c *Compatibility) Compatible(peer *Application) bool {
-	if c.Current.Major < peer.Major {
-		return false // If we are on an older major version, we are incompatible.
-	}
+func (c *Compatibility) Compatible(peer *Application) bool { _ = "STUB: not implemented"; return false }
 
-	minCompatibleVersion := c.MinCompatibleAfterUpgrade
-	if now := c.clock.Time(); now.Before(c.UpgradeTime) {
-		minCompatibleVersion = c.MinCompatible
-	}
-	return peer.Compare(minCompatibleVersion) >= 0 // Peer must be at least the min compatible version
-}
+// If we are on an older major version, we are incompatible.
+
+// Peer must be at least the min compatible version

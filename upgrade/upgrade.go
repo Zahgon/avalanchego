@@ -5,11 +5,9 @@ package upgrade
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
 )
 
 var (
@@ -109,105 +107,60 @@ type Config struct {
 	HeliconTime                  time.Time     `json:"heliconTime"`
 }
 
-func (c *Config) Validate() error {
-	upgrades := []time.Time{
-		c.ApricotPhase1Time,
-		c.ApricotPhase2Time,
-		c.ApricotPhase3Time,
-		c.ApricotPhase4Time,
-		c.ApricotPhase5Time,
-		c.ApricotPhasePre6Time,
-		c.ApricotPhase6Time,
-		c.ApricotPhasePost6Time,
-		c.BanffTime,
-		c.CortinaTime,
-		c.DurangoTime,
-		c.EtnaTime,
-		c.FortunaTime,
-		c.GraniteTime,
-		c.HeliconTime,
-	}
-	for i := 0; i < len(upgrades)-1; i++ {
-		if upgrades[i].After(upgrades[i+1]) {
-			return fmt.Errorf("%w: upgrade %d (%s) is after upgrade %d (%s)",
-				ErrInvalidUpgradeTimes,
-				i,
-				upgrades[i],
-				i+1,
-				upgrades[i+1],
-			)
-		}
-	}
-	return nil
-}
+func (c *Config) Validate() error { _ = "STUB: not implemented"; return nil }
 
 func (c *Config) IsApricotPhase1Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase1Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhase2Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase2Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhase3Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase3Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhase4Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase4Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhase5Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase5Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhasePre6Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhasePre6Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhase6Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhase6Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (c *Config) IsApricotPhasePost6Activated(t time.Time) bool {
-	return !t.Before(c.ApricotPhasePost6Time)
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (c *Config) IsBanffActivated(t time.Time) bool {
-	return !t.Before(c.BanffTime)
-}
+func (c *Config) IsBanffActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsCortinaActivated(t time.Time) bool {
-	return !t.Before(c.CortinaTime)
-}
+func (c *Config) IsCortinaActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsDurangoActivated(t time.Time) bool {
-	return !t.Before(c.DurangoTime)
-}
+func (c *Config) IsDurangoActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsEtnaActivated(t time.Time) bool {
-	return !t.Before(c.EtnaTime)
-}
+func (c *Config) IsEtnaActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsFortunaActivated(t time.Time) bool {
-	return !t.Before(c.FortunaTime)
-}
+func (c *Config) IsFortunaActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsGraniteActivated(t time.Time) bool {
-	return !t.Before(c.GraniteTime)
-}
+func (c *Config) IsGraniteActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func (c *Config) IsHeliconActivated(t time.Time) bool {
-	return !t.Before(c.HeliconTime)
-}
+func (c *Config) IsHeliconActivated(t time.Time) bool { _ = "STUB: not implemented"; return false }
 
-func GetConfig(networkID uint32) Config {
-	switch networkID {
-	case constants.MainnetID:
-		return Mainnet
-	case constants.FujiID:
-		return Fuji
-	default:
-		return Default
-	}
-}
+func GetConfig(networkID uint32) Config { _ = "STUB: not implemented"; return *new(Config) }

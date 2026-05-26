@@ -11,7 +11,6 @@ package contract
 
 import (
 	big "math/big"
-	reflect "reflect"
 
 	precompileconfig "github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/precompileconfig"
 	snow "github.com/ava-labs/avalanchego/snow"
@@ -38,56 +37,45 @@ type MockBlockContextMockRecorder struct {
 
 // NewMockBlockContext creates a new mock instance.
 func NewMockBlockContext(ctrl *gomock.Controller) *MockBlockContext {
-	mock := &MockBlockContext{ctrl: ctrl}
-	mock.recorder = &MockBlockContextMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockBlockContext) EXPECT() *MockBlockContextMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetPredicateResults mocks base method.
+	return nil
 }
 
-// GetPredicateResults mocks base method.
 func (m *MockBlockContext) GetPredicateResults(txHash common.Hash, precompileAddress common.Address) set.Bits {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPredicateResults", txHash, precompileAddress)
-	ret0, _ := ret[0].(set.Bits)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(set.Bits)
 }
 
 // GetPredicateResults indicates an expected call of GetPredicateResults.
 func (mr *MockBlockContextMockRecorder) GetPredicateResults(txHash, precompileAddress any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPredicateResults", reflect.TypeOf((*MockBlockContext)(nil).GetPredicateResults), txHash, precompileAddress)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Number mocks base method.
-func (m *MockBlockContext) Number() *big.Int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Number")
-	ret0, _ := ret[0].(*big.Int)
-	return ret0
-}
+func (m *MockBlockContext) Number() *big.Int { _ = "STUB: not implemented"; return nil }
 
 // Number indicates an expected call of Number.
 func (mr *MockBlockContextMockRecorder) Number() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Number", reflect.TypeOf((*MockBlockContext)(nil).Number))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Timestamp mocks base method.
-func (m *MockBlockContext) Timestamp() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Timestamp")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockBlockContext) Timestamp() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Timestamp indicates an expected call of Timestamp.
 func (mr *MockBlockContextMockRecorder) Timestamp() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Timestamp", reflect.TypeOf((*MockBlockContext)(nil).Timestamp))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockAccessibleState is a mock of AccessibleState interface.
@@ -104,70 +92,57 @@ type MockAccessibleStateMockRecorder struct {
 
 // NewMockAccessibleState creates a new mock instance.
 func NewMockAccessibleState(ctrl *gomock.Controller) *MockAccessibleState {
-	mock := &MockAccessibleState{ctrl: ctrl}
-	mock.recorder = &MockAccessibleStateMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockAccessibleState) EXPECT() *MockAccessibleStateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetBlockContext mocks base method.
+	return nil
 }
 
-// GetBlockContext mocks base method.
 func (m *MockAccessibleState) GetBlockContext() BlockContext {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlockContext")
-	ret0, _ := ret[0].(BlockContext)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(BlockContext)
 }
 
 // GetBlockContext indicates an expected call of GetBlockContext.
 func (mr *MockAccessibleStateMockRecorder) GetBlockContext() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockContext", reflect.TypeOf((*MockAccessibleState)(nil).GetBlockContext))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetRules mocks base method.
 func (m *MockAccessibleState) GetRules() precompileconfig.Rules {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetRules")
-	ret0, _ := ret[0].(precompileconfig.Rules)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(precompileconfig.Rules)
 }
 
 // GetRules indicates an expected call of GetRules.
 func (mr *MockAccessibleStateMockRecorder) GetRules() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRules", reflect.TypeOf((*MockAccessibleState)(nil).GetRules))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetSnowContext mocks base method.
-func (m *MockAccessibleState) GetSnowContext() *snow.Context {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSnowContext")
-	ret0, _ := ret[0].(*snow.Context)
-	return ret0
-}
+func (m *MockAccessibleState) GetSnowContext() *snow.Context { _ = "STUB: not implemented"; return nil }
 
 // GetSnowContext indicates an expected call of GetSnowContext.
 func (mr *MockAccessibleStateMockRecorder) GetSnowContext() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSnowContext", reflect.TypeOf((*MockAccessibleState)(nil).GetSnowContext))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStateDB mocks base method.
-func (m *MockAccessibleState) GetStateDB() StateDB {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStateDB")
-	ret0, _ := ret[0].(StateDB)
-	return ret0
-}
+func (m *MockAccessibleState) GetStateDB() StateDB { _ = "STUB: not implemented"; return *new(StateDB) }
 
 // GetStateDB indicates an expected call of GetStateDB.
 func (mr *MockAccessibleStateMockRecorder) GetStateDB() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStateDB", reflect.TypeOf((*MockAccessibleState)(nil).GetStateDB))
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MockStateDB is a mock of StateDB interface.
@@ -183,194 +158,137 @@ type MockStateDBMockRecorder struct {
 }
 
 // NewMockStateDB creates a new mock instance.
-func NewMockStateDB(ctrl *gomock.Controller) *MockStateDB {
-	mock := &MockStateDB{ctrl: ctrl}
-	mock.recorder = &MockStateDBMockRecorder{mock}
-	return mock
-}
+func NewMockStateDB(ctrl *gomock.Controller) *MockStateDB { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *MockStateDB) EXPECT() *MockStateDBMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AddBalance mocks base method.
+	return nil
 }
 
-// AddBalance mocks base method.
 func (m *MockStateDB) AddBalance(arg0 common.Address, arg1 *uint256.Int) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddBalance", arg0, arg1)
+	_ = "STUB: not implemented"
+	return
 }
 
 // AddBalance indicates an expected call of AddBalance.
 func (mr *MockStateDBMockRecorder) AddBalance(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddBalance", reflect.TypeOf((*MockStateDB)(nil).AddBalance), arg0, arg1)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddLog mocks base method.
-func (m *MockStateDB) AddLog(arg0 *types.Log) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "AddLog", arg0)
-}
+func (m *MockStateDB) AddLog(arg0 *types.Log) { _ = "STUB: not implemented"; return }
 
 // AddLog indicates an expected call of AddLog.
 func (mr *MockStateDBMockRecorder) AddLog(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddLog", reflect.TypeOf((*MockStateDB)(nil).AddLog), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CreateAccount mocks base method.
-func (m *MockStateDB) CreateAccount(arg0 common.Address) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "CreateAccount", arg0)
-}
+func (m *MockStateDB) CreateAccount(arg0 common.Address) { _ = "STUB: not implemented"; return }
 
 // CreateAccount indicates an expected call of CreateAccount.
 func (mr *MockStateDBMockRecorder) CreateAccount(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAccount", reflect.TypeOf((*MockStateDB)(nil).CreateAccount), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Exist mocks base method.
-func (m *MockStateDB) Exist(arg0 common.Address) bool {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Exist", arg0)
-	ret0, _ := ret[0].(bool)
-	return ret0
-}
+func (m *MockStateDB) Exist(arg0 common.Address) bool { _ = "STUB: not implemented"; return false }
 
 // Exist indicates an expected call of Exist.
 func (mr *MockStateDBMockRecorder) Exist(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exist", reflect.TypeOf((*MockStateDB)(nil).Exist), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBalance mocks base method.
 func (m *MockStateDB) GetBalance(arg0 common.Address) *uint256.Int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBalance", arg0)
-	ret0, _ := ret[0].(*uint256.Int)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBalance indicates an expected call of GetBalance.
 func (mr *MockStateDBMockRecorder) GetBalance(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBalance", reflect.TypeOf((*MockStateDB)(nil).GetBalance), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetNonce mocks base method.
-func (m *MockStateDB) GetNonce(arg0 common.Address) uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetNonce", arg0)
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *MockStateDB) GetNonce(arg0 common.Address) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // GetNonce indicates an expected call of GetNonce.
 func (mr *MockStateDBMockRecorder) GetNonce(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetNonce", reflect.TypeOf((*MockStateDB)(nil).GetNonce), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetPredicate mocks base method.
 func (m *MockStateDB) GetPredicate(address common.Address, index int) (predicate.Predicate, bool) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetPredicate", address, index)
-	ret0, _ := ret[0].(predicate.Predicate)
-	ret1, _ := ret[1].(bool)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(predicate.Predicate), false
 }
 
 // GetPredicate indicates an expected call of GetPredicate.
 func (mr *MockStateDBMockRecorder) GetPredicate(address, index any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPredicate", reflect.TypeOf((*MockStateDB)(nil).GetPredicate), address, index)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetState mocks base method.
 func (m *MockStateDB) GetState(arg0 common.Address, arg1 common.Hash, arg2 ...stateconf.StateDBStateOption) common.Hash {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "GetState", varargs...)
-	ret0, _ := ret[0].(common.Hash)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 // GetState indicates an expected call of GetState.
 func (mr *MockStateDBMockRecorder) GetState(arg0, arg1 any, arg2 ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetState", reflect.TypeOf((*MockStateDB)(nil).GetState), varargs...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // RevertToSnapshot mocks base method.
-func (m *MockStateDB) RevertToSnapshot(arg0 int) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "RevertToSnapshot", arg0)
-}
+func (m *MockStateDB) RevertToSnapshot(arg0 int) { _ = "STUB: not implemented"; return }
 
 // RevertToSnapshot indicates an expected call of RevertToSnapshot.
 func (mr *MockStateDBMockRecorder) RevertToSnapshot(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RevertToSnapshot", reflect.TypeOf((*MockStateDB)(nil).RevertToSnapshot), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetNonce mocks base method.
-func (m *MockStateDB) SetNonce(arg0 common.Address, arg1 uint64) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetNonce", arg0, arg1)
-}
+func (m *MockStateDB) SetNonce(arg0 common.Address, arg1 uint64) { _ = "STUB: not implemented"; return }
 
 // SetNonce indicates an expected call of SetNonce.
 func (mr *MockStateDBMockRecorder) SetNonce(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetNonce", reflect.TypeOf((*MockStateDB)(nil).SetNonce), arg0, arg1)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetState mocks base method.
 func (m *MockStateDB) SetState(arg0 common.Address, arg1, arg2 common.Hash, arg3 ...stateconf.StateDBStateOption) {
-	m.ctrl.T.Helper()
-	varargs := []any{arg0, arg1, arg2}
-	for _, a := range arg3 {
-		varargs = append(varargs, a)
-	}
-	m.ctrl.Call(m, "SetState", varargs...)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetState indicates an expected call of SetState.
 func (mr *MockStateDBMockRecorder) SetState(arg0, arg1, arg2 any, arg3 ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{arg0, arg1, arg2}, arg3...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetState", reflect.TypeOf((*MockStateDB)(nil).SetState), varargs...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Snapshot mocks base method.
-func (m *MockStateDB) Snapshot() int {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Snapshot")
-	ret0, _ := ret[0].(int)
-	return ret0
-}
+func (m *MockStateDB) Snapshot() int { _ = "STUB: not implemented"; return 0 }
 
 // Snapshot indicates an expected call of Snapshot.
-func (mr *MockStateDBMockRecorder) Snapshot() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Snapshot", reflect.TypeOf((*MockStateDB)(nil).Snapshot))
-}
+func (mr *MockStateDBMockRecorder) Snapshot() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // TxHash mocks base method.
-func (m *MockStateDB) TxHash() common.Hash {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TxHash")
-	ret0, _ := ret[0].(common.Hash)
-	return ret0
-}
+func (m *MockStateDB) TxHash() common.Hash { _ = "STUB: not implemented"; return *new(common.Hash) }
 
 // TxHash indicates an expected call of TxHash.
-func (mr *MockStateDBMockRecorder) TxHash() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TxHash", reflect.TypeOf((*MockStateDB)(nil).TxHash))
-}
+func (mr *MockStateDBMockRecorder) TxHash() *gomock.Call { _ = "STUB: not implemented"; return nil }

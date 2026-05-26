@@ -6,8 +6,6 @@ package tracedvm
 import (
 	"context"
 
-	"go.opentelemetry.io/otel/attribute"
-
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
@@ -15,8 +13,6 @@ import (
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	"github.com/ava-labs/avalanchego/trace"
-
-	oteltrace "go.opentelemetry.io/otel/trace"
 )
 
 var (
@@ -65,40 +61,8 @@ type blockVM struct {
 }
 
 func NewBlockVM(vm block.ChainVM, name string, tracer trace.Tracer) block.ChainVM {
-	buildBlockVM, _ := vm.(block.BuildBlockWithContextChainVM)
-	setPreferenceVM, _ := vm.(block.SetPreferenceWithContextChainVM)
-	batchedVM, _ := vm.(block.BatchedChainVM)
-	ssVM, _ := vm.(block.StateSyncableVM)
-	return &blockVM{
-		ChainVM:                       vm,
-		buildBlockVM:                  buildBlockVM,
-		setPreferenceVM:               setPreferenceVM,
-		batchedVM:                     batchedVM,
-		ssVM:                          ssVM,
-		initializeTag:                 name + ".initialize",
-		buildBlockTag:                 name + ".buildBlock",
-		parseBlockTag:                 name + ".parseBlock",
-		getBlockTag:                   name + ".getBlock",
-		setPreferenceTag:              name + ".setPreference",
-		lastAcceptedTag:               name + ".lastAccepted",
-		verifyTag:                     name + ".verify",
-		acceptTag:                     name + ".accept",
-		rejectTag:                     name + ".reject",
-		optionsTag:                    name + ".options",
-		shouldVerifyWithContextTag:    name + ".shouldVerifyWithContext",
-		verifyWithContextTag:          name + ".verifyWithContext",
-		buildBlockWithContextTag:      name + ".buildBlockWithContext",
-		setPreferenceWithContextTag:   name + ".setPreferenceWithContext",
-		getAncestorsTag:               name + ".getAncestors",
-		batchedParseBlockTag:          name + ".batchedParseBlock",
-		getBlockIDAtHeightTag:         name + ".getBlockIDAtHeight",
-		stateSyncEnabledTag:           name + ".stateSyncEnabled",
-		getOngoingSyncStateSummaryTag: name + ".getOngoingSyncStateSummary",
-		getLastStateSummaryTag:        name + ".getLastStateSummary",
-		parseStateSummaryTag:          name + ".parseStateSummary",
-		getStateSummaryTag:            name + ".getStateSummary",
-		tracer:                        tracer,
-	}
+	_ = "STUB: not implemented"
+	return *new(block.ChainVM)
 }
 
 func (vm *blockVM) Initialize(
@@ -111,79 +75,36 @@ func (vm *blockVM) Initialize(
 	fxs []*common.Fx,
 	appSender common.AppSender,
 ) error {
-	ctx, span := vm.tracer.Start(ctx, vm.initializeTag)
-	defer span.End()
-
-	return vm.ChainVM.Initialize(
-		ctx,
-		chainCtx,
-		db,
-		genesisBytes,
-		upgradeBytes,
-		configBytes,
-		fxs,
-		appSender,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *blockVM) BuildBlock(ctx context.Context) (snowman.Block, error) {
-	ctx, span := vm.tracer.Start(ctx, vm.buildBlockTag)
-	defer span.End()
-
-	blk, err := vm.ChainVM.BuildBlock(ctx)
-	return &tracedBlock{
-		Block: blk,
-		vm:    vm,
-	}, err
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) ParseBlock(ctx context.Context, block []byte) (snowman.Block, error) {
-	ctx, span := vm.tracer.Start(ctx, vm.parseBlockTag, oteltrace.WithAttributes(
-		attribute.Int("blockLen", len(block)),
-	))
-	defer span.End()
-
-	blk, err := vm.ChainVM.ParseBlock(ctx, block)
-	return &tracedBlock{
-		Block: blk,
-		vm:    vm,
-	}, err
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) GetBlock(ctx context.Context, blkID ids.ID) (snowman.Block, error) {
-	ctx, span := vm.tracer.Start(ctx, vm.getBlockTag, oteltrace.WithAttributes(
-		attribute.Stringer("blkID", blkID),
-	))
-	defer span.End()
-
-	blk, err := vm.ChainVM.GetBlock(ctx, blkID)
-	return &tracedBlock{
-		Block: blk,
-		vm:    vm,
-	}, err
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 func (vm *blockVM) SetPreference(ctx context.Context, blkID ids.ID) error {
-	ctx, span := vm.tracer.Start(ctx, vm.setPreferenceTag, oteltrace.WithAttributes(
-		attribute.Stringer("blkID", blkID),
-	))
-	defer span.End()
-
-	return vm.ChainVM.SetPreference(ctx, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *blockVM) LastAccepted(ctx context.Context) (ids.ID, error) {
-	ctx, span := vm.tracer.Start(ctx, vm.lastAcceptedTag)
-	defer span.End()
-
-	return vm.ChainVM.LastAccepted(ctx)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (vm *blockVM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	ctx, span := vm.tracer.Start(ctx, vm.getBlockIDAtHeightTag, oteltrace.WithAttributes(
-		attribute.Int64("height", int64(height)),
-	))
-	defer span.End()
-
-	return vm.ChainVM.GetBlockIDAtHeight(ctx, height)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

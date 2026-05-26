@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/ava-labs/avalanchego/cache"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/linked"
 )
 
@@ -35,106 +34,34 @@ type SizedCache[K comparable, V any] struct {
 }
 
 func NewSizedCache[K comparable, V any](maxSize int, size func(K, V) int) *SizedCache[K, V] {
-	return &SizedCache[K, V]{
-		elements: linked.NewHashmap[K, *sizedElement[V]](),
-		maxSize:  maxSize,
-		size:     size,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *SizedCache[K, V]) Put(key K, value V) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[K, V]) Put(key K, value V) { _ = "STUB: not implemented"; return }
 
-	c.put(key, value)
-}
+func (c *SizedCache[K, V]) Get(key K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }
 
-func (c *SizedCache[K, V]) Get(key K) (V, bool) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[K, V]) Evict(key K) { _ = "STUB: not implemented"; return }
 
-	return c.get(key)
-}
+func (c *SizedCache[K, V]) Flush() { _ = "STUB: not implemented"; return }
 
-func (c *SizedCache[K, V]) Evict(key K) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[_, _]) Len() int { _ = "STUB: not implemented"; return 0 }
 
-	c.evict(key)
-}
+func (c *SizedCache[_, _]) PortionFilled() float64 { _ = "STUB: not implemented"; return 0 }
 
-func (c *SizedCache[K, V]) Flush() {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[K, V]) put(key K, value V) { _ = "STUB: not implemented"; return }
 
-	c.flush()
-}
+// Remove elements until the size of elements in the cache <= [c.maxSize].
 
-func (c *SizedCache[_, _]) Len() int {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[K, V]) get(key K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }
 
-	return c.len()
-}
+// Mark [k] as MRU.
 
-func (c *SizedCache[_, _]) PortionFilled() float64 {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *SizedCache[K, _]) evict(key K) { _ = "STUB: not implemented"; return }
 
-	return c.portionFilled()
-}
+func (c *SizedCache[K, V]) flush() { _ = "STUB: not implemented"; return }
 
-func (c *SizedCache[K, V]) put(key K, value V) {
-	newEntrySize := c.size(key, value)
-	if newEntrySize > c.maxSize {
-		c.flush()
-		return
-	}
+func (c *SizedCache[_, _]) len() int { _ = "STUB: not implemented"; return 0 }
 
-	if oldElement, ok := c.elements.Get(key); ok {
-		c.currentSize -= oldElement.size
-	}
-
-	// Remove elements until the size of elements in the cache <= [c.maxSize].
-	for c.currentSize > c.maxSize-newEntrySize {
-		oldestKey, oldestElement, _ := c.elements.Oldest()
-		c.elements.Delete(oldestKey)
-		c.currentSize -= oldestElement.size
-	}
-
-	c.elements.Put(key, &sizedElement[V]{
-		value: value,
-		size:  newEntrySize,
-	})
-	c.currentSize += newEntrySize
-}
-
-func (c *SizedCache[K, V]) get(key K) (V, bool) {
-	element, ok := c.elements.Get(key)
-	if !ok {
-		return utils.Zero[V](), false
-	}
-
-	c.elements.Put(key, element) // Mark [k] as MRU.
-	return element.value, true
-}
-
-func (c *SizedCache[K, _]) evict(key K) {
-	if element, ok := c.elements.Get(key); ok {
-		c.elements.Delete(key)
-		c.currentSize -= element.size
-	}
-}
-
-func (c *SizedCache[K, V]) flush() {
-	c.elements.Clear()
-	c.currentSize = 0
-}
-
-func (c *SizedCache[_, _]) len() int {
-	return c.elements.Len()
-}
-
-func (c *SizedCache[_, _]) portionFilled() float64 {
-	return float64(c.currentSize) / float64(c.maxSize)
-}
+func (c *SizedCache[_, _]) portionFilled() float64 { _ = "STUB: not implemented"; return 0 }

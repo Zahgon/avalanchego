@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -60,229 +58,150 @@ type Sender struct {
 }
 
 // Default set the default callable value to [cant]
-func (s *Sender) Default(cant bool) {
-	s.CantSendGetStateSummaryFrontier = cant
-	s.CantSendStateSummaryFrontier = cant
-	s.CantSendGetAcceptedStateSummary = cant
-	s.CantSendAcceptedStateSummary = cant
-	s.CantSendGetAcceptedFrontier = cant
-	s.CantSendAcceptedFrontier = cant
-	s.CantSendGetAccepted = cant
-	s.CantSendAccepted = cant
-	s.CantSendGet = cant
-	s.CantSendGetAccepted = cant
-	s.CantSendPut = cant
-	s.CantSendAncestors = cant
-	s.CantSendPullQuery = cant
-	s.CantSendPushQuery = cant
-	s.CantSendChits = cant
-	s.CantSendAppRequest = cant
-	s.CantSendAppResponse = cant
-	s.CantSendAppGossip = cant
-}
+func (s *Sender) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 // SendGetStateSummaryFrontier calls SendGetStateSummaryFrontierF if it was
 // initialized. If it wasn't initialized and this function shouldn't be called
 // and testing was initialized, then testing will fail.
 func (s *Sender) SendGetStateSummaryFrontier(ctx context.Context, validatorIDs set.Set[ids.NodeID], requestID uint32) {
-	if s.SendGetStateSummaryFrontierF != nil {
-		s.SendGetStateSummaryFrontierF(ctx, validatorIDs, requestID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGetStateSummaryFrontier, "Unexpectedly called SendGetStateSummaryFrontier")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendStateSummaryFrontier calls SendStateSummaryFrontierF if it was
 // initialized. If it wasn't initialized and this function shouldn't be called
 // and testing was initialized, then testing will fail.
 func (s *Sender) SendStateSummaryFrontier(ctx context.Context, validatorID ids.NodeID, requestID uint32, summary []byte) {
-	if s.SendStateSummaryFrontierF != nil {
-		s.SendStateSummaryFrontierF(ctx, validatorID, requestID, summary)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendStateSummaryFrontier, "Unexpectedly called SendStateSummaryFrontier")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAcceptedStateSummary calls SendGetAcceptedStateSummaryF if it was
 // initialized. If it wasn't initialized and this function shouldn't be called
 // and testing was initialized, then testing will fail.
 func (s *Sender) SendGetAcceptedStateSummary(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, heights []uint64) {
-	if s.SendGetAcceptedStateSummaryF != nil {
-		s.SendGetAcceptedStateSummaryF(ctx, nodeIDs, requestID, heights)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGetAcceptedStateSummary, "Unexpectedly called SendGetAcceptedStateSummaryF")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAcceptedStateSummary calls SendAcceptedStateSummaryF if it was
 // initialized. If it wasn't initialized and this function shouldn't be called
 // and testing was initialized, then testing will fail.
 func (s *Sender) SendAcceptedStateSummary(ctx context.Context, validatorID ids.NodeID, requestID uint32, summaryIDs []ids.ID) {
-	if s.SendAcceptedStateSummaryF != nil {
-		s.SendAcceptedStateSummaryF(ctx, validatorID, requestID, summaryIDs)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendAcceptedStateSummary, "Unexpectedly called SendAcceptedStateSummary")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAcceptedFrontier calls SendGetAcceptedFrontierF if it was initialized.
 // If it wasn't initialized and this function shouldn't be called and testing
 // was initialized, then testing will fail.
 func (s *Sender) SendGetAcceptedFrontier(ctx context.Context, validatorIDs set.Set[ids.NodeID], requestID uint32) {
-	if s.SendGetAcceptedFrontierF != nil {
-		s.SendGetAcceptedFrontierF(ctx, validatorIDs, requestID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGetAcceptedFrontier, "Unexpectedly called SendGetAcceptedFrontier")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAcceptedFrontier calls SendAcceptedFrontierF if it was initialized. If it
 // wasn't initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAcceptedFrontier(ctx context.Context, validatorID ids.NodeID, requestID uint32, containerID ids.ID) {
-	if s.SendAcceptedFrontierF != nil {
-		s.SendAcceptedFrontierF(ctx, validatorID, requestID, containerID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendAcceptedFrontier, "Unexpectedly called SendAcceptedFrontier")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAccepted calls SendGetAcceptedF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendGetAccepted(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, containerIDs []ids.ID) {
-	if s.SendGetAcceptedF != nil {
-		s.SendGetAcceptedF(ctx, nodeIDs, requestID, containerIDs)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGetAccepted, "Unexpectedly called SendGetAccepted")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAccepted calls SendAcceptedF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAccepted(ctx context.Context, validatorID ids.NodeID, requestID uint32, containerIDs []ids.ID) {
-	if s.SendAcceptedF != nil {
-		s.SendAcceptedF(ctx, validatorID, requestID, containerIDs)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendAccepted, "Unexpectedly called SendAccepted")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGet calls SendGetF if it was initialized. If it wasn't initialized and
 // this function shouldn't be called and testing was initialized, then testing
 // will fail.
 func (s *Sender) SendGet(ctx context.Context, vdr ids.NodeID, requestID uint32, containerID ids.ID) {
-	if s.SendGetF != nil {
-		s.SendGetF(ctx, vdr, requestID, containerID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGet, "Unexpectedly called SendGet")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendGetAncestors calls SendGetAncestorsF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendGetAncestors(ctx context.Context, validatorID ids.NodeID, requestID uint32, containerID ids.ID) {
-	if s.SendGetAncestorsF != nil {
-		s.SendGetAncestorsF(ctx, validatorID, requestID, containerID)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendGetAncestors, "Unexpectedly called SendCantSendGetAncestors")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPut calls SendPutF if it was initialized. If it wasn't initialized and
 // this function shouldn't be called and testing was initialized, then testing
 // will fail.
 func (s *Sender) SendPut(ctx context.Context, vdr ids.NodeID, requestID uint32, container []byte) {
-	if s.SendPutF != nil {
-		s.SendPutF(ctx, vdr, requestID, container)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendPut, "Unexpectedly called SendPut")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAncestors calls SendAncestorsF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAncestors(ctx context.Context, vdr ids.NodeID, requestID uint32, containers [][]byte) {
-	if s.SendAncestorsF != nil {
-		s.SendAncestorsF(ctx, vdr, requestID, containers)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendAncestors, "Unexpectedly called SendAncestors")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPushQuery calls SendPushQueryF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendPushQuery(ctx context.Context, vdrs set.Set[ids.NodeID], requestID uint32, container []byte, requestedHeight uint64) {
-	if s.SendPushQueryF != nil {
-		s.SendPushQueryF(ctx, vdrs, requestID, container, requestedHeight)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendPushQuery, "Unexpectedly called SendPushQuery")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendPullQuery calls SendPullQueryF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendPullQuery(ctx context.Context, vdrs set.Set[ids.NodeID], requestID uint32, containerID ids.ID, requestedHeight uint64) {
-	if s.SendPullQueryF != nil {
-		s.SendPullQueryF(ctx, vdrs, requestID, containerID, requestedHeight)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendPullQuery, "Unexpectedly called SendPullQuery")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendChits calls SendChitsF if it was initialized. If it wasn't initialized
 // and this function shouldn't be called and testing was initialized, then
 // testing will fail.
 func (s *Sender) SendChits(ctx context.Context, vdr ids.NodeID, requestID uint32, preferredID ids.ID, preferredIDAtHeight ids.ID, acceptedID ids.ID, acceptedHeight uint64) {
-	if s.SendChitsF != nil {
-		s.SendChitsF(ctx, vdr, requestID, preferredID, preferredIDAtHeight, acceptedID, acceptedHeight)
-	} else if s.T != nil {
-		require.False(s.T, s.CantSendChits, "Unexpectedly called SendChits")
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // SendAppRequest calls SendAppRequestF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAppRequest(ctx context.Context, nodeIDs set.Set[ids.NodeID], requestID uint32, appRequestBytes []byte) error {
-	switch {
-	case s.SendAppRequestF != nil:
-		return s.SendAppRequestF(ctx, nodeIDs, requestID, appRequestBytes)
-	case s.T != nil:
-		require.False(s.T, s.CantSendAppRequest, errSendAppRequest)
-	}
-	return errSendAppRequest
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppResponse calls SendAppResponseF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAppResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, appResponseBytes []byte) error {
-	switch {
-	case s.SendAppResponseF != nil:
-		return s.SendAppResponseF(ctx, nodeID, requestID, appResponseBytes)
-	case s.T != nil:
-		require.False(s.T, s.CantSendAppResponse, errSendAppResponse)
-	}
-	return errSendAppResponse
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppError calls SendAppErrorF if it was initialized. If it wasn't
 // initialized and this function shouldn't be called and testing was
 // initialized, then testing will fail.
 func (s *Sender) SendAppError(ctx context.Context, nodeID ids.NodeID, requestID uint32, code int32, message string) error {
-	switch {
-	case s.SendAppErrorF != nil:
-		return s.SendAppErrorF(ctx, nodeID, requestID, code, message)
-	case s.T != nil:
-		require.False(s.T, s.CantSendAppError, errSendAppError)
-	}
-	return errSendAppError
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SendAppGossip calls SendAppGossipF if it was initialized. If it wasn't
@@ -293,13 +212,8 @@ func (s *Sender) SendAppGossip(
 	config common.SendConfig,
 	appGossipBytes []byte,
 ) error {
-	switch {
-	case s.SendAppGossipF != nil:
-		return s.SendAppGossipF(ctx, config, appGossipBytes)
-	case s.T != nil:
-		require.False(s.T, s.CantSendAppGossip, errSendAppGossip)
-	}
-	return errSendAppGossip
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SenderStub is a stub sender that returns values received on method-specific channels.
@@ -311,40 +225,21 @@ type SenderStub struct {
 }
 
 func (f SenderStub) SendAppRequest(_ context.Context, _ set.Set[ids.NodeID], _ uint32, bytes []byte) error {
-	if f.SentAppRequest == nil {
-		return nil
-	}
-
-	f.SentAppRequest <- bytes
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (f SenderStub) SendAppResponse(_ context.Context, _ ids.NodeID, _ uint32, bytes []byte) error {
-	if f.SentAppResponse == nil {
-		return nil
-	}
-
-	f.SentAppResponse <- bytes
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (f SenderStub) SendAppError(_ context.Context, _ ids.NodeID, _ uint32, errorCode int32, errorMessage string) error {
-	if f.SentAppError == nil {
-		return nil
-	}
-
-	f.SentAppError <- &common.AppError{
-		Code:    errorCode,
-		Message: errorMessage,
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (f SenderStub) SendAppGossip(_ context.Context, _ common.SendConfig, bytes []byte) error {
-	if f.SentAppGossip == nil {
-		return nil
-	}
-
-	f.SentAppGossip <- bytes
+	_ = "STUB: not implemented"
 	return nil
 }

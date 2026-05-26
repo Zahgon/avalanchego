@@ -27,75 +27,35 @@ type prefixedState struct {
 }
 
 func newPrefixedState(state *state, idCacheSizes int) *prefixedState {
-	return &prefixedState{
-		state:     state,
-		vtx:       lru.NewCache[ids.ID, ids.ID](idCacheSizes),
-		status:    lru.NewCache[ids.ID, ids.ID](idCacheSizes),
-		uniqueVtx: lru.NewDeduplicator[ids.ID, *uniqueVertex](idCacheSizes),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *prefixedState) UniqueVertex(vtx *uniqueVertex) *uniqueVertex {
-	return s.uniqueVtx.Deduplicate(vtx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *prefixedState) Vertex(id ids.ID) vertex.StatelessVertex {
-	var (
-		vID ids.ID
-		ok  bool
-	)
-	if vID, ok = s.vtx.Get(id); !ok {
-		vID = id.Prefix(vtxID)
-		s.vtx.Put(id, vID)
-	}
-
-	return s.state.Vertex(vID)
+	_ = "STUB: not implemented"
+	return *new(vertex.StatelessVertex)
 }
 
 func (s *prefixedState) SetVertex(vtx vertex.StatelessVertex) error {
-	var (
-		rawVertexID = vtx.ID()
-		vID         ids.ID
-		ok          bool
-	)
-	if vID, ok = s.vtx.Get(rawVertexID); !ok {
-		vID = rawVertexID.Prefix(vtxID)
-		s.vtx.Put(rawVertexID, vID)
-	}
-
-	return s.state.SetVertex(vID, vtx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *prefixedState) Status(id ids.ID) choices.Status {
-	var (
-		sID ids.ID
-		ok  bool
-	)
-	if sID, ok = s.status.Get(id); !ok {
-		sID = id.Prefix(vtxStatusID)
-		s.status.Put(id, sID)
-	}
-
-	return s.state.Status(sID)
+	_ = "STUB: not implemented"
+	return *new(choices.Status)
 }
 
 func (s *prefixedState) SetStatus(id ids.ID, status choices.Status) error {
-	var (
-		sID ids.ID
-		ok  bool
-	)
-	if sID, ok = s.status.Get(id); !ok {
-		sID = id.Prefix(vtxStatusID)
-		s.status.Put(id, sID)
-	}
-
-	return s.state.SetStatus(sID, status)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *prefixedState) Edge() []ids.ID {
-	return s.state.Edge(uniqueEdgeID)
-}
+func (s *prefixedState) Edge() []ids.ID { _ = "STUB: not implemented"; return nil }
 
-func (s *prefixedState) SetEdge(frontier []ids.ID) error {
-	return s.state.SetEdge(uniqueEdgeID, frontier)
-}
+func (s *prefixedState) SetEdge(frontier []ids.ID) error { _ = "STUB: not implemented"; return nil }

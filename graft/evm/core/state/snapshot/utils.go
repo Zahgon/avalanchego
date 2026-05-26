@@ -28,55 +28,18 @@
 package snapshot
 
 import (
-	"bytes"
-	"fmt"
-	"time"
-
-	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/log"
 )
 
 // CheckDanglingStorage iterates the snap storage data, and verifies that all
 // storage also has corresponding account data.
-func CheckDanglingStorage(chaindb ethdb.KeyValueStore) error {
-	if err := checkDanglingDiskStorage(chaindb); err != nil {
-		log.Error("Database check error", "err", err)
-		return err
-	}
-	return nil
-}
+func CheckDanglingStorage(chaindb ethdb.KeyValueStore) error { _ = "STUB: not implemented"; return nil }
 
 // checkDanglingDiskStorage checks if there is any 'dangling' storage data in the
 // disk-backed snapshot layer.
 func checkDanglingDiskStorage(chaindb ethdb.KeyValueStore) error {
-	var (
-		lastReport = time.Now()
-		start      = time.Now()
-		lastKey    []byte
-		it         = rawdb.NewKeyLengthIterator(chaindb.NewIterator(rawdb.SnapshotStoragePrefix, nil), 1+2*common.HashLength)
-	)
-	log.Info("Checking dangling snapshot disk storage")
-
-	defer it.Release()
-	for it.Next() {
-		k := it.Key()
-		accKey := k[1:33]
-		if bytes.Equal(accKey, lastKey) {
-			// No need to look up for every slot
-			continue
-		}
-		lastKey = common.CopyBytes(accKey)
-		if time.Since(lastReport) > time.Second*8 {
-			log.Info("Iterating snap storage", "at", fmt.Sprintf("%#x", accKey), "elapsed", common.PrettyDuration(time.Since(start)))
-			lastReport = time.Now()
-		}
-		if data := rawdb.ReadAccountSnapshot(chaindb, common.BytesToHash(accKey)); len(data) == 0 {
-			log.Warn("Dangling storage - missing account", "account", fmt.Sprintf("%#x", accKey), "storagekey", fmt.Sprintf("%#x", k))
-			return fmt.Errorf("dangling snapshot storage account %#x", accKey)
-		}
-	}
-	log.Info("Verified the snapshot disk storage", "time", common.PrettyDuration(time.Since(start)), "err", it.Error())
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// No need to look up for every slot

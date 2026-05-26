@@ -5,15 +5,11 @@ package state
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/google/btree"
 
-	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/iterator"
-
-	safemath "github.com/ava-labs/avalanchego/utils/math"
 )
 
 var (
@@ -138,142 +134,46 @@ type baseStaker struct {
 	delegators *btree.BTreeG[*Staker]
 }
 
-func newBaseStakers() *baseStakers {
-	return &baseStakers{
-		validators:     make(map[ids.ID]map[ids.NodeID]*baseStaker),
-		stakers:        btree.NewG(defaultTreeDegree, (*Staker).Less),
-		validatorDiffs: make(map[ids.ID]map[ids.NodeID]*diffValidator),
-	}
-}
+func newBaseStakers() *baseStakers { _ = "STUB: not implemented"; return nil }
 
 func (v *baseStakers) GetValidator(subnetID ids.ID, nodeID ids.NodeID) (*Staker, error) {
-	subnetValidators, ok := v.validators[subnetID]
-	if !ok {
-		return nil, database.ErrNotFound
-	}
-	validator, ok := subnetValidators[nodeID]
-	if !ok {
-		return nil, database.ErrNotFound
-	}
-	if validator.validator == nil {
-		return nil, database.ErrNotFound
-	}
-	return validator.validator, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (v *baseStakers) PutValidator(staker *Staker) {
-	validator := v.getOrCreateValidator(staker.SubnetID, staker.NodeID)
-	validator.validator = staker
+func (v *baseStakers) PutValidator(staker *Staker) { _ = "STUB: not implemented"; return }
 
-	validatorDiff := v.getOrCreateValidatorDiff(staker.SubnetID, staker.NodeID)
-	validatorDiff.added = staker
-
-	v.stakers.ReplaceOrInsert(staker)
-}
-
-func (v *baseStakers) DeleteValidator(staker *Staker) {
-	validator := v.getOrCreateValidator(staker.SubnetID, staker.NodeID)
-	validator.validator = nil
-	v.pruneValidator(staker.SubnetID, staker.NodeID)
-
-	validatorDiff := v.getOrCreateValidatorDiff(staker.SubnetID, staker.NodeID)
-	validatorDiff.added = nil
-	validatorDiff.removed = staker
-
-	v.stakers.Delete(staker)
-}
+func (v *baseStakers) DeleteValidator(staker *Staker) { _ = "STUB: not implemented"; return }
 
 func (v *baseStakers) GetDelegatorIterator(subnetID ids.ID, nodeID ids.NodeID) iterator.Iterator[*Staker] {
-	subnetValidators, ok := v.validators[subnetID]
-	if !ok {
-		return iterator.Empty[*Staker]{}
-	}
-	validator, ok := subnetValidators[nodeID]
-	if !ok {
-		return iterator.Empty[*Staker]{}
-	}
-	return iterator.FromTree(validator.delegators)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (v *baseStakers) PutDelegator(staker *Staker) {
-	validator := v.getOrCreateValidator(staker.SubnetID, staker.NodeID)
-	if validator.delegators == nil {
-		validator.delegators = btree.NewG(defaultTreeDegree, (*Staker).Less)
-	}
-	validator.delegators.ReplaceOrInsert(staker)
+func (v *baseStakers) PutDelegator(staker *Staker) { _ = "STUB: not implemented"; return }
 
-	validatorDiff := v.getOrCreateValidatorDiff(staker.SubnetID, staker.NodeID)
-	if validatorDiff.addedDelegators == nil {
-		validatorDiff.addedDelegators = btree.NewG(defaultTreeDegree, (*Staker).Less)
-	}
-	validatorDiff.addedDelegators.ReplaceOrInsert(staker)
-
-	v.stakers.ReplaceOrInsert(staker)
-}
-
-func (v *baseStakers) DeleteDelegator(staker *Staker) {
-	validator := v.getOrCreateValidator(staker.SubnetID, staker.NodeID)
-	if validator.delegators != nil {
-		validator.delegators.Delete(staker)
-	}
-	v.pruneValidator(staker.SubnetID, staker.NodeID)
-
-	validatorDiff := v.getOrCreateValidatorDiff(staker.SubnetID, staker.NodeID)
-	if validatorDiff.deletedDelegators == nil {
-		validatorDiff.deletedDelegators = make(map[ids.ID]*Staker)
-	}
-	validatorDiff.deletedDelegators[staker.TxID] = staker
-
-	v.stakers.Delete(staker)
-}
+func (v *baseStakers) DeleteDelegator(staker *Staker) { _ = "STUB: not implemented"; return }
 
 func (v *baseStakers) GetStakerIterator() iterator.Iterator[*Staker] {
-	return iterator.FromTree(v.stakers)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (v *baseStakers) getOrCreateValidator(subnetID ids.ID, nodeID ids.NodeID) *baseStaker {
-	subnetValidators, ok := v.validators[subnetID]
-	if !ok {
-		subnetValidators = make(map[ids.NodeID]*baseStaker)
-		v.validators[subnetID] = subnetValidators
-	}
-	validator, ok := subnetValidators[nodeID]
-	if !ok {
-		validator = &baseStaker{}
-		subnetValidators[nodeID] = validator
-	}
-	return validator
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // pruneValidator assumes that the named validator is currently in the
 // [validators] map.
 func (v *baseStakers) pruneValidator(subnetID ids.ID, nodeID ids.NodeID) {
-	subnetValidators := v.validators[subnetID]
-	validator := subnetValidators[nodeID]
-	if validator.validator != nil {
-		return
-	}
-	if validator.delegators != nil && validator.delegators.Len() > 0 {
-		return
-	}
-	delete(subnetValidators, nodeID)
-	if len(subnetValidators) == 0 {
-		delete(v.validators, subnetID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (v *baseStakers) getOrCreateValidatorDiff(subnetID ids.ID, nodeID ids.NodeID) *diffValidator {
-	subnetValidatorDiffs, ok := v.validatorDiffs[subnetID]
-	if !ok {
-		subnetValidatorDiffs = make(map[ids.NodeID]*diffValidator)
-		v.validatorDiffs[subnetID] = subnetValidatorDiffs
-	}
-	validatorDiff, ok := subnetValidatorDiffs[nodeID]
-	if !ok {
-		validatorDiff = &diffValidator{}
-		subnetValidatorDiffs[nodeID] = validatorDiff
-	}
-	return validatorDiff
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type diffStakers struct {
@@ -303,206 +203,57 @@ type diffValidator struct {
 // added delegators. The removed weight includes the removed validator and all
 // deleted delegators.
 func (d *diffValidator) weightChanges() (addedWeight uint64, removedWeight uint64, err error) {
-	if d.added != nil {
-		addedWeight = d.added.Weight
-	}
-
-	addedDelegatorIterator := iterator.FromTree(d.addedDelegators)
-	defer addedDelegatorIterator.Release()
-
-	for addedDelegatorIterator.Next() {
-		addedWeight, err = safemath.Add(addedWeight, addedDelegatorIterator.Value().Weight)
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to calculate added weight: %w", err)
-		}
-	}
-
-	if d.removed != nil {
-		removedWeight = d.removed.Weight
-	}
-	for _, staker := range d.deletedDelegators {
-		removedWeight, err = safemath.Add(removedWeight, staker.Weight)
-		if err != nil {
-			return 0, 0, fmt.Errorf("failed to calculate removed weight: %w", err)
-		}
-	}
-
-	return addedWeight, removedWeight, nil
+	_ = "STUB: not implemented"
+	return 0, 0, nil
 }
 
 func (d *diffValidator) WeightDiff() (ValidatorWeightDiff, error) {
-	addedWeight, removedWeight, err := d.weightChanges()
-	if err != nil {
-		return ValidatorWeightDiff{}, err
-	}
-
-	var weightDiff ValidatorWeightDiff
-	if err := weightDiff.Add(addedWeight); err != nil {
-		return ValidatorWeightDiff{}, fmt.Errorf("failed to increase node weight diff: %w", err)
-	}
-	if err := weightDiff.Sub(removedWeight); err != nil {
-		return ValidatorWeightDiff{}, fmt.Errorf("failed to decrease node weight diff: %w", err)
-	}
-	return weightDiff, nil
+	_ = "STUB: not implemented"
+	return *new(ValidatorWeightDiff), nil
 }
 
 // GetValidator attempts to fetch the validator with the given subnetID and
 // nodeID.
 func (s *diffStakers) GetValidator(subnetID ids.ID, nodeID ids.NodeID) (*Staker, diffValidatorStatus) {
-	subnetValidatorDiffs, ok := s.validatorDiffs[subnetID]
-	if !ok {
-		return nil, unmodified
-	}
-
-	validatorDiff, ok := subnetValidatorDiffs[nodeID]
-	if !ok {
-		return nil, unmodified
-	}
-
-	switch {
-	case validatorDiff.added != nil:
-		return validatorDiff.added, added
-	case validatorDiff.removed != nil:
-		return nil, deleted
-	default:
-		return nil, unmodified
-	}
+	_ = "STUB: not implemented"
+	return nil, *new(diffValidatorStatus)
 }
 
-func (s *diffStakers) PutValidator(staker *Staker) error {
-	validatorDiff := s.getOrCreateDiff(staker.SubnetID, staker.NodeID)
+func (s *diffStakers) PutValidator(staker *Staker) error { _ = "STUB: not implemented"; return nil }
 
-	if validatorDiff.removed != nil && !s.isAdditionAfterDeletionAllowed {
-		// Enforce the invariant that a validator cannot be added after being
-		// deleted.
-		return ErrAddingStakerAfterDeletion
-	}
+// Enforce the invariant that a validator cannot be added after being
+// deleted.
 
-	if validatorDiff.removed != nil && validatorDiff.removed.Equals(staker) {
-		// We set the removed field when we delete the validator that was not added in this diff before.
-		// So if we reached here, it means we removed it first and now either re-adding it.
-		// If we're re-adding the exact same validator, we should remove it from the deleted stakers set since it's no longer deleted.
+// We set the removed field when we delete the validator that was not added in this diff before.
+// So if we reached here, it means we removed it first and now either re-adding it.
+// If we're re-adding the exact same validator, we should remove it from the deleted stakers set since it's no longer deleted.
 
-		delete(s.deletedStakers, validatorDiff.removed.TxID)
-		if len(s.deletedStakers) == 0 {
-			s.deletedStakers = nil
-		}
+// If we're re-adding the exact same validator that was removed,
+// the two operations cancel out.
 
-		// If we're re-adding the exact same validator that was removed,
-		// the two operations cancel out.
-		validatorDiff.removed = nil
-		return nil
-	}
+func (s *diffStakers) DeleteValidator(staker *Staker) { _ = "STUB: not implemented"; return }
 
-	validatorDiff.added = staker
-
-	if s.addedStakers == nil {
-		s.addedStakers = btree.NewG(defaultTreeDegree, (*Staker).Less)
-	}
-	s.addedStakers.ReplaceOrInsert(staker)
-	return nil
-}
-
-func (s *diffStakers) DeleteValidator(staker *Staker) {
-	validatorDiff := s.getOrCreateDiff(staker.SubnetID, staker.NodeID)
-	if validatorDiff.added != nil {
-		// This validator was added in this diff. Rollback the addition.
-		s.addedStakers.Delete(validatorDiff.added)
-		validatorDiff.added = nil
-	} else {
-		validatorDiff.removed = staker
-		if s.deletedStakers == nil {
-			s.deletedStakers = make(map[ids.ID]*Staker)
-		}
-		s.deletedStakers[staker.TxID] = staker
-	}
-}
+// This validator was added in this diff. Rollback the addition.
 
 func (s *diffStakers) GetDelegatorIterator(
 	parentIterator iterator.Iterator[*Staker],
 	subnetID ids.ID,
 	nodeID ids.NodeID,
 ) iterator.Iterator[*Staker] {
-	var (
-		addedDelegatorIterator iterator.Iterator[*Staker] = iterator.Empty[*Staker]{}
-		deletedDelegators      map[ids.ID]*Staker
-	)
-	if subnetValidatorDiffs, ok := s.validatorDiffs[subnetID]; ok {
-		if validatorDiff, ok := subnetValidatorDiffs[nodeID]; ok {
-			addedDelegatorIterator = iterator.FromTree(validatorDiff.addedDelegators)
-			deletedDelegators = validatorDiff.deletedDelegators
-		}
-	}
-
-	return iterator.Filter(
-		iterator.Merge(
-			(*Staker).Less,
-			parentIterator,
-			addedDelegatorIterator,
-		),
-		func(staker *Staker) bool {
-			_, ok := deletedDelegators[staker.TxID]
-			return ok
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *diffStakers) PutDelegator(staker *Staker) {
-	validatorDiff := s.getOrCreateDiff(staker.SubnetID, staker.NodeID)
-	if validatorDiff.addedDelegators == nil {
-		validatorDiff.addedDelegators = btree.NewG(defaultTreeDegree, (*Staker).Less)
-	}
-	validatorDiff.addedDelegators.ReplaceOrInsert(staker)
+func (s *diffStakers) PutDelegator(staker *Staker) { _ = "STUB: not implemented"; return }
 
-	if s.addedStakers == nil {
-		s.addedStakers = btree.NewG(defaultTreeDegree, (*Staker).Less)
-	}
-	s.addedStakers.ReplaceOrInsert(staker)
-}
-
-func (s *diffStakers) DeleteDelegator(staker *Staker) {
-	validatorDiff := s.getOrCreateDiff(staker.SubnetID, staker.NodeID)
-	if validatorDiff.deletedDelegators == nil {
-		validatorDiff.deletedDelegators = make(map[ids.ID]*Staker)
-	}
-	validatorDiff.deletedDelegators[staker.TxID] = staker
-
-	if s.deletedStakers == nil {
-		s.deletedStakers = make(map[ids.ID]*Staker)
-	}
-	s.deletedStakers[staker.TxID] = staker
-}
+func (s *diffStakers) DeleteDelegator(staker *Staker) { _ = "STUB: not implemented"; return }
 
 func (s *diffStakers) GetStakerIterator(parentIterator iterator.Iterator[*Staker]) iterator.Iterator[*Staker] {
-	return iterator.Filter(
-		iterator.Merge(
-			(*Staker).Less,
-			parentIterator,
-			iterator.FromTree(s.addedStakers),
-		),
-		func(staker *Staker) bool {
-			deletedStaker, ok := s.deletedStakers[staker.TxID]
-			if !ok {
-				return false
-			}
-			return deletedStaker.Equals(staker)
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *diffStakers) getOrCreateDiff(subnetID ids.ID, nodeID ids.NodeID) *diffValidator {
-	if s.validatorDiffs == nil {
-		s.validatorDiffs = make(map[ids.ID]map[ids.NodeID]*diffValidator)
-	}
-	subnetValidatorDiffs, ok := s.validatorDiffs[subnetID]
-	if !ok {
-		subnetValidatorDiffs = make(map[ids.NodeID]*diffValidator)
-		s.validatorDiffs[subnetID] = subnetValidatorDiffs
-	}
-	validatorDiff, ok := subnetValidatorDiffs[nodeID]
-	if !ok {
-		validatorDiff = &diffValidator{}
-		subnetValidatorDiffs[nodeID] = validatorDiff
-	}
-	return validatorDiff
+	_ = "STUB: not implemented"
+	return nil
 }

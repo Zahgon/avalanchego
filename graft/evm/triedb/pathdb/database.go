@@ -28,17 +28,12 @@
 package pathdb
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"sync"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
-	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/libevm/stateconf"
-	"github.com/ava-labs/libevm/log"
 	"github.com/ava-labs/libevm/params"
 	"github.com/ava-labs/libevm/trie/trienode"
 	"github.com/ava-labs/libevm/trie/triestate"
@@ -106,19 +101,15 @@ type Config struct {
 }
 
 func (c Config) BackendConstructor(diskdb ethdb.Database) triedb.DBOverride {
-	return New(diskdb, &c)
+	_ = "STUB: not implemented"
+	return *
+
+	// sanitize checks the provided user configurations and changes anything that's
+	// unreasonable or unworkable.
+	new(triedb.DBOverride)
 }
 
-// sanitize checks the provided user configurations and changes anything that's
-// unreasonable or unworkable.
-func (c *Config) sanitize() *Config {
-	conf := *c
-	if conf.DirtyCacheSize > maxBufferSize {
-		log.Warn("Sanitizing invalid node buffer size", "provided", common.StorageSize(conf.DirtyCacheSize), "updated", common.StorageSize(maxBufferSize))
-		conf.DirtyCacheSize = maxBufferSize
-	}
-	return &conf
-}
+func (c *Config) sanitize() *Config { _ = "STUB: not implemented"; return nil }
 
 // Defaults contains default settings for Ethereum mainnet.
 var Defaults = &Config{
@@ -160,80 +151,63 @@ type Database struct {
 // New attempts to load an already existing layer from a persistent key-value
 // store (with a number of memory layers from a journal). If the journal is not
 // matched with the base persistent layer, all the recorded diff layers are discarded.
-func New(diskdb ethdb.Database, config *Config) *Database {
-	if config == nil {
-		config = Defaults
-	}
-	config = config.sanitize()
+func New(diskdb ethdb.Database, config *Config) *Database { _ = "STUB: not implemented"; return nil }
 
-	db := &Database{
-		readOnly:   config.ReadOnly,
-		bufferSize: config.DirtyCacheSize,
-		config:     config,
-		diskdb:     diskdb,
-	}
-	// Construct the layer tree by resolving the in-disk singleton state
-	// and in-memory layer journal.
-	db.tree = newLayerTree(db.loadLayers())
+// Construct the layer tree by resolving the in-disk singleton state
+// and in-memory layer journal.
 
-	// NOTE(freezer): This is disabled since we do not have a freezer.
-	// Open the freezer for state history if the passed database contains an
-	// ancient store. Otherwise, all the relevant functionalities are disabled.
-	//
-	// Because the freezer can only be opened once at the same time, this
-	// mechanism also ensures that at most one **non-readOnly** database
-	// is opened at the same time to prevent accidental mutation.
-	// if ancient, err := diskdb.AncientDatadir(); err == nil && ancient != "" && !db.readOnly {
-	// 	freezer, err := rawdb.NewStateFreezer(ancient, false)
-	// 	if err != nil {
-	// 		log.Crit("Failed to open state history freezer", "err", err)
-	// 	}
-	// 	db.freezer = freezer
-	//
-	// 	diskLayerID := db.tree.bottom().stateID()
-	// 	if diskLayerID == 0 {
-	// 		// Reset the entire state histories in case the trie database is
-	// 		// not initialized yet, as these state histories are not expected.
-	// 		frozen, err := db.freezer.Ancients()
-	// 		if err != nil {
-	// 			log.Crit("Failed to retrieve head of state history", "err", err)
-	// 		}
-	// 		if frozen != 0 {
-	// 			err := db.freezer.Reset()
-	// 			if err != nil {
-	// 				log.Crit("Failed to reset state histories", "err", err)
-	// 			}
-	// 			log.Info("Truncated extraneous state history")
-	// 		}
-	// 	} else {
-	// 		// Truncate the extra state histories above in freezer in case
-	// 		// it's not aligned with the disk layer.
-	// 		pruned, err := truncateFromHead(db.diskdb, freezer, diskLayerID)
-	// 		if err != nil {
-	// 			log.Crit("Failed to truncate extra state histories", "err", err)
-	// 		}
-	// 		if pruned != 0 {
-	// 			log.Warn("Truncated extra state histories", "number", pruned)
-	// 		}
-	// 	}
-	// }
-	// // Disable database in case node is still in the initial state sync stage.
-	// if rawdb.ReadSnapSyncStatusFlag(diskdb) == rawdb.StateSyncRunning && !db.readOnly {
-	// 	if err := db.Disable(); err != nil {
-	// 		log.Crit("Failed to disable database", "err", err) // impossible to happen
-	// 	}
-	// }
-	log.Warn("Path-based state scheme is an experimental feature")
-	return db
-}
+// NOTE(freezer): This is disabled since we do not have a freezer.
+// Open the freezer for state history if the passed database contains an
+// ancient store. Otherwise, all the relevant functionalities are disabled.
+//
+// Because the freezer can only be opened once at the same time, this
+// mechanism also ensures that at most one **non-readOnly** database
+// is opened at the same time to prevent accidental mutation.
+// if ancient, err := diskdb.AncientDatadir(); err == nil && ancient != "" && !db.readOnly {
+// 	freezer, err := rawdb.NewStateFreezer(ancient, false)
+// 	if err != nil {
+// 		log.Crit("Failed to open state history freezer", "err", err)
+// 	}
+// 	db.freezer = freezer
+//
+// 	diskLayerID := db.tree.bottom().stateID()
+// 	if diskLayerID == 0 {
+// 		// Reset the entire state histories in case the trie database is
+// 		// not initialized yet, as these state histories are not expected.
+// 		frozen, err := db.freezer.Ancients()
+// 		if err != nil {
+// 			log.Crit("Failed to retrieve head of state history", "err", err)
+// 		}
+// 		if frozen != 0 {
+// 			err := db.freezer.Reset()
+// 			if err != nil {
+// 				log.Crit("Failed to reset state histories", "err", err)
+// 			}
+// 			log.Info("Truncated extraneous state history")
+// 		}
+// 	} else {
+// 		// Truncate the extra state histories above in freezer in case
+// 		// it's not aligned with the disk layer.
+// 		pruned, err := truncateFromHead(db.diskdb, freezer, diskLayerID)
+// 		if err != nil {
+// 			log.Crit("Failed to truncate extra state histories", "err", err)
+// 		}
+// 		if pruned != 0 {
+// 			log.Warn("Truncated extra state histories", "number", pruned)
+// 		}
+// 	}
+// }
+// // Disable database in case node is still in the initial state sync stage.
+// if rawdb.ReadSnapSyncStatusFlag(diskdb) == rawdb.StateSyncRunning && !db.readOnly {
+// 	if err := db.Disable(); err != nil {
+// 		log.Crit("Failed to disable database", "err", err) // impossible to happen
+// 	}
+// }
 
 // Reader retrieves a layer belonging to the given state root.
 func (db *Database) Reader(root common.Hash) (database.Reader, error) {
-	l := db.tree.get(root)
-	if l == nil {
-		return nil, fmt.Errorf("state %#x is not available", root)
-	}
-	return l, nil
+	_ = "STUB: not implemented"
+	return *new(database.Reader), nil
 }
 
 // Update adds a new layer into the tree, if that can be linked to an existing
@@ -244,229 +218,147 @@ func (db *Database) Reader(root common.Hash) (database.Reader, error) {
 // The passed in maps(nodes, states) will be retained to avoid copying everything.
 // Therefore, these maps must not be changed afterwards.
 func (db *Database) Update(root common.Hash, parentRoot common.Hash, block uint64, nodes *trienode.MergedNodeSet, states *triestate.Set, _ ...stateconf.TrieDBUpdateOption) error {
+	_ = "STUB: not implemented"
 	// Hold the lock to prevent concurrent mutations.
-	db.lock.Lock()
-	defer db.lock.Unlock()
-
-	// Short circuit if the mutation is not allowed.
-	if err := db.modifyAllowed(); err != nil {
-		return err
-	}
-	if err := db.tree.add(root, parentRoot, block, nodes, states); err != nil {
-		return err
-	}
-	// Keep 128 diff layers in the memory, persistent layer is 129th.
-	// - head layer is paired with HEAD state
-	// - head-1 layer is paired with HEAD-1 state
-	// - head-127 layer(bottom-most diff layer) is paired with HEAD-127 state
-	// - head-128 layer(disk layer) is paired with HEAD-128 state
-	return db.tree.cap(root, maxDiffLayers)
+	return nil
 }
+
+// Short circuit if the mutation is not allowed.
+
+// Keep 128 diff layers in the memory, persistent layer is 129th.
+// - head layer is paired with HEAD state
+// - head-1 layer is paired with HEAD-1 state
+// - head-127 layer(bottom-most diff layer) is paired with HEAD-127 state
+// - head-128 layer(disk layer) is paired with HEAD-128 state
 
 // Commit traverses downwards the layer tree from a specified layer with the
 // provided state root and all the layers below are flattened downwards. It
 // can be used alone and mostly for test purposes.
 func (db *Database) Commit(root common.Hash, report bool) error {
+	_ = "STUB: not implemented"
 	// Hold the lock to prevent concurrent mutations.
-	db.lock.Lock()
-	defer db.lock.Unlock()
-
-	// Short circuit if the mutation is not allowed.
-	if err := db.modifyAllowed(); err != nil {
-		return err
-	}
-	return db.tree.cap(root, 0)
+	return nil
 }
+
+// Short circuit if the mutation is not allowed.
 
 // Disable deactivates the database and invalidates all available state layers
 // as stale to prevent access to the persistent state, which is in the syncing
 // stage.
-func (db *Database) Disable() error {
-	db.lock.Lock()
-	defer db.lock.Unlock()
+func (db *Database) Disable() error { _ = "STUB: not implemented"; return nil }
 
-	// Short circuit if the database is in read only mode.
-	if db.readOnly {
-		return errDatabaseReadOnly
-	}
-	// Prevent duplicated disable operation.
-	if db.waitSync {
-		log.Error("Reject duplicated disable operation")
-		return nil
-	}
-	db.waitSync = true
+// Short circuit if the database is in read only mode.
 
-	// Mark the disk layer as stale to prevent access to persistent state.
-	db.tree.bottom().markStale()
+// Prevent duplicated disable operation.
 
-	// Write the initial sync flag to persist it across restarts.
-	// rawdb.WriteSnapSyncStatusFlag(db.diskdb, rawdb.StateSyncRunning)
-	log.Info("Disabled trie database due to state sync")
-	return nil
-}
+// Mark the disk layer as stale to prevent access to persistent state.
+
+// Write the initial sync flag to persist it across restarts.
+// rawdb.WriteSnapSyncStatusFlag(db.diskdb, rawdb.StateSyncRunning)
 
 // Enable activates database and resets the state tree with the provided persistent
 // state root once the state sync is finished.
-func (db *Database) Enable(root common.Hash) error {
-	db.lock.Lock()
-	defer db.lock.Unlock()
+func (db *Database) Enable(root common.Hash) error { _ = "STUB: not implemented"; return nil }
 
-	// Short circuit if the database is in read only mode.
-	if db.readOnly {
-		return errDatabaseReadOnly
-	}
-	// Ensure the provided state root matches the stored one.
-	root = types.TrieRootHash(root)
-	_, stored := rawdb.ReadAccountTrieNode(db.diskdb, nil)
-	if stored != root {
-		return fmt.Errorf("state root mismatch: stored %x, synced %x", stored, root)
-	}
-	// Drop the stale state journal in persistent database and
-	// reset the persistent state id back to zero.
-	batch := db.diskdb.NewBatch()
-	rawdb.DeleteTrieJournal(batch)
-	rawdb.WritePersistentStateID(batch, 0)
-	if err := batch.Write(); err != nil {
-		return err
-	}
-	// NOTE(freezer): This is disabled since we do not have a freezer.
-	// Clean up all state histories in freezer. Theoretically
-	// all root->id mappings should be removed as well. Since
-	// mappings can be huge and might take a while to clear
-	// them, just leave them in disk and wait for overwriting.
-	// if db.freezer != nil {
-	// 	if err := db.freezer.Reset(); err != nil {
-	// 		return err
-	// 	}
-	// }
-	// Re-construct a new disk layer backed by persistent state
-	// with **empty clean cache and node buffer**.
-	db.tree.reset(newDiskLayer(root, 0, db, nil, newNodeBuffer(db.bufferSize, nil, 0)))
+// Short circuit if the database is in read only mode.
 
-	// Re-enable the database as the final step.
-	db.waitSync = false
-	// rawdb.WriteSnapSyncStatusFlag(db.diskdb, rawdb.StateSyncFinished)
-	log.Info("Rebuilt trie database", "root", root)
-	return nil
-}
+// Ensure the provided state root matches the stored one.
+
+// Drop the stale state journal in persistent database and
+// reset the persistent state id back to zero.
+
+// NOTE(freezer): This is disabled since we do not have a freezer.
+// Clean up all state histories in freezer. Theoretically
+// all root->id mappings should be removed as well. Since
+// mappings can be huge and might take a while to clear
+// them, just leave them in disk and wait for overwriting.
+// if db.freezer != nil {
+// 	if err := db.freezer.Reset(); err != nil {
+// 		return err
+// 	}
+// }
+// Re-construct a new disk layer backed by persistent state
+// with **empty clean cache and node buffer**.
+
+// Re-enable the database as the final step.
+
+// rawdb.WriteSnapSyncStatusFlag(db.diskdb, rawdb.StateSyncFinished)
 
 // Recover rollbacks the database to a specified historical point.
 // The state is supported as the rollback destination only if it's
 // canonical state and the corresponding trie histories are existent.
 func (db *Database) Recover(root common.Hash, loader triestate.TrieLoader) error {
+	_ = "STUB: not implemented"
 	// NOTE(freezer): This is disabled since we do not have a freezer.
-	return errors.New("state rollback is non-supported")
+	return nil
 }
 
 // Recoverable returns the indicator if the specified state is recoverable.
 func (db *Database) Recoverable(root common.Hash) bool {
+	_ = "STUB: not implemented"
 	// Ensure the requested state is a known state.
-	root = types.TrieRootHash(root)
-	id := rawdb.ReadStateID(db.diskdb, root)
-	if id == nil {
-		return false
-	}
-	// Recoverable state must below the disk layer. The recoverable
-	// state only refers the state that is currently not available,
-	// but can be restored by applying state history.
-	dl := db.tree.bottom()
-	if *id >= dl.stateID() {
-		return false
-	}
 	return false
-	// NOTE(freezer): This is disabled since we do not have a freezer.
-	// Ensure the requested state is a canonical state and all state
-	// histories in range [id+1, disklayer.ID] are present and complete.
-	// parent := root
-	// return checkHistories(db.freezer, *id+1, dl.stateID()-*id, func(m *meta) error {
-	// 	if m.parent != parent {
-	// 		return errors.New("unexpected state history")
-	// 	}
-	// 	if len(m.incomplete) > 0 {
-	// 		return errors.New("incomplete state history")
-	// 	}
-	// 	parent = m.root
-	// 	return nil
-	// }) == nil
 }
+
+// Recoverable state must below the disk layer. The recoverable
+// state only refers the state that is currently not available,
+// but can be restored by applying state history.
+
+// NOTE(freezer): This is disabled since we do not have a freezer.
+// Ensure the requested state is a canonical state and all state
+// histories in range [id+1, disklayer.ID] are present and complete.
+// parent := root
+// return checkHistories(db.freezer, *id+1, dl.stateID()-*id, func(m *meta) error {
+// 	if m.parent != parent {
+// 		return errors.New("unexpected state history")
+// 	}
+// 	if len(m.incomplete) > 0 {
+// 		return errors.New("incomplete state history")
+// 	}
+// 	parent = m.root
+// 	return nil
+// }) == nil
 
 // Close closes the trie database and the held freezer.
-func (db *Database) Close() error {
-	db.lock.Lock()
-	defer db.lock.Unlock()
+func (db *Database) Close() error { _ = "STUB: not implemented"; return nil }
 
-	// Set the database to read-only mode to prevent all
-	// following mutations.
-	db.readOnly = true
+// Set the database to read-only mode to prevent all
+// following mutations.
 
-	// Release the memory held by clean cache.
-	db.tree.bottom().resetCache()
+// Release the memory held by clean cache.
 
-	// NOTE(freezer): This is disabled since we do not have a freezer.
-	// Close the attached state history freezer.
-	//if db.freezer == nil {
-	//	return nil
-	//}
-	//return db.freezer.Close()
-	return nil
-}
+// NOTE(freezer): This is disabled since we do not have a freezer.
+// Close the attached state history freezer.
+//if db.freezer == nil {
+//	return nil
+//}
+//return db.freezer.Close()
 
 // Size returns the current storage size of the memory cache in front of the
 // persistent database layer.
 func (db *Database) Size() (diffs common.StorageSize, nodes common.StorageSize) {
-	db.tree.forEach(func(layer layer) {
-		if diff, ok := layer.(*diffLayer); ok {
-			diffs += common.StorageSize(diff.memory)
-		}
-		if disk, ok := layer.(*diskLayer); ok {
-			nodes += disk.size()
-		}
-	})
-	return diffs, nodes
+	_ = "STUB: not implemented"
+	return *new(common.StorageSize), *new(common.StorageSize)
 }
 
 // Initialized returns an indicator if the state data is already
 // initialized in path-based scheme.
 func (db *Database) Initialized(genesisRoot common.Hash) bool {
-	var inited bool
-	db.tree.forEach(func(layer layer) {
-		if layer.rootHash() != types.EmptyRootHash {
-			inited = true
-		}
-	})
-	// NOTE: This is disabled since we don't have SnapSyncStatusFlag.
-	// if !inited {
-	// 	inited = rawdb.ReadSnapSyncStatusFlag(db.diskdb) != rawdb.StateSyncUnknown
-	// }
-	return inited
+	_ = "STUB: not implemented"
+	return false
 }
+
+// NOTE: This is disabled since we don't have SnapSyncStatusFlag.
+// if !inited {
+// 	inited = rawdb.ReadSnapSyncStatusFlag(db.diskdb) != rawdb.StateSyncUnknown
+// }
 
 // SetBufferSize sets the node buffer size to the provided value(in bytes).
-func (db *Database) SetBufferSize(size int) error {
-	db.lock.Lock()
-	defer db.lock.Unlock()
-
-	if size > maxBufferSize {
-		log.Info("Capped node buffer size", "provided", common.StorageSize(size), "adjusted", common.StorageSize(maxBufferSize))
-		size = maxBufferSize
-	}
-	db.bufferSize = size
-	return db.tree.bottom().setBufferSize(db.bufferSize)
-}
+func (db *Database) SetBufferSize(size int) error { _ = "STUB: not implemented"; return nil }
 
 // Scheme returns the node scheme used in the database.
-func (db *Database) Scheme() string {
-	return rawdb.PathScheme
-}
+func (db *Database) Scheme() string { _ = "STUB: not implemented"; return "" }
 
 // modifyAllowed returns the indicator if mutation is allowed. This function
 // assumes the db.lock is already held.
-func (db *Database) modifyAllowed() error {
-	if db.readOnly {
-		return errDatabaseReadOnly
-	}
-	if db.waitSync {
-		return errDatabaseWaitSync
-	}
-	return nil
-}
+func (db *Database) modifyAllowed() error { _ = "STUB: not implemented"; return nil }

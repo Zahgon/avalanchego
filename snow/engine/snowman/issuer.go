@@ -25,15 +25,11 @@ type issuer struct {
 }
 
 func (i *issuer) Execute(ctx context.Context, _ []ids.ID, abandoned []ids.ID) error {
-	if len(abandoned) == 0 {
-		// If the parent block wasn't abandoned, this block can be issued.
-		return i.e.deliver(ctx, i.nodeID, i.blk, i.push, i.issuedMetric)
-	}
+	_ = "STUB: not implemented"
+	return nil
 
-	// If the parent block was abandoned, this block should be abandoned as
-	// well.
-	blkID := i.blk.ID()
-	delete(i.e.pending, blkID)
-	i.e.markAsUnverified(i.blk)
-	return i.e.blocked.Abandon(ctx, blkID)
+	// If the parent block wasn't abandoned, this block can be issued.
 }
+
+// If the parent block was abandoned, this block should be abandoned as
+// well.

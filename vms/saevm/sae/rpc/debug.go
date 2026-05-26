@@ -3,6 +3,4 @@
 
 package rpc
 
-func (b *backend) SetHead(uint64) {
-	b.Logger().Info("debug_setHead called but not supported by SAE")
-}
+func (b *backend) SetHead(uint64) { _ = "STUB: not implemented"; return }

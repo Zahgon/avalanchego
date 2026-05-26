@@ -3,17 +3,11 @@
 
 package snowball
 
-import (
-	"fmt"
-	"slices"
-)
-
 var _ Unary = (*unarySnowball)(nil)
 
 func newUnarySnowball(alphaPreference int, terminationConditions []terminationCondition) unarySnowball {
-	return unarySnowball{
-		unarySnowflake: newUnarySnowflake(alphaPreference, terminationConditions),
-	}
+	_ = "STUB: not implemented"
+	return *new(unarySnowball)
 }
 
 // unarySnowball is the implementation of a unary snowball instance
@@ -25,36 +19,10 @@ type unarySnowball struct {
 	preferenceStrength int
 }
 
-func (sb *unarySnowball) RecordPoll(count int) {
-	if count >= sb.alphaPreference {
-		sb.preferenceStrength++
-	}
-	sb.unarySnowflake.RecordPoll(count)
-}
+func (sb *unarySnowball) RecordPoll(count int) { _ = "STUB: not implemented"; return }
 
-func (sb *unarySnowball) Extend(choice int) Binary {
-	bs := &binarySnowball{
-		binarySnowflake: binarySnowflake{
-			binarySlush:           binarySlush{preference: choice},
-			confidence:            slices.Clone(sb.confidence),
-			alphaPreference:       sb.alphaPreference,
-			terminationConditions: sb.terminationConditions,
-			finalized:             sb.Finalized(),
-		},
-		preference: choice,
-	}
-	bs.preferenceStrength[choice] = sb.preferenceStrength
-	return bs
-}
+func (sb *unarySnowball) Extend(choice int) Binary { _ = "STUB: not implemented"; return *new(Binary) }
 
-func (sb *unarySnowball) Clone() Unary {
-	newSnowball := *sb
-	newSnowball.confidence = slices.Clone(sb.confidence)
-	return &newSnowball
-}
+func (sb *unarySnowball) Clone() Unary { _ = "STUB: not implemented"; return *new(Unary) }
 
-func (sb *unarySnowball) String() string {
-	return fmt.Sprintf("SB(PreferenceStrength = %d, %s)",
-		sb.preferenceStrength,
-		&sb.unarySnowflake)
-}
+func (sb *unarySnowball) String() string { _ = "STUB: not implemented"; return "" }

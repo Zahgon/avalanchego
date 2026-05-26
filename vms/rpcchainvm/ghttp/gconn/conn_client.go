@@ -4,17 +4,9 @@
 package gconn
 
 import (
-	"context"
-	"errors"
-	"fmt"
 	"io"
 	"net"
-	"os"
 	"time"
-
-	"google.golang.org/protobuf/types/known/emptypb"
-
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 
 	connpb "github.com/ava-labs/avalanchego/proto/pb/net/conn"
 )
@@ -31,98 +23,22 @@ type Client struct {
 
 // NewClient returns a connection connected to a remote connection
 func NewClient(client connpb.ConnClient, local, remote net.Addr, toClose ...io.Closer) *Client {
-	return &Client{
-		client:  client,
-		local:   local,
-		remote:  remote,
-		toClose: toClose,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (c *Client) Read(p []byte) (int, error) {
-	resp, err := c.client.Read(context.Background(), &connpb.ReadRequest{
-		Length: int32(len(p)),
-	})
-	if err != nil {
-		return 0, err
-	}
+func (c *Client) Read(p []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-	copy(p, resp.Read)
+func (c *Client) Write(b []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-	if resp.Error != nil {
-		switch resp.Error.ErrorCode {
-		case connpb.ErrorCode_ERROR_CODE_EOF:
-			err = io.EOF
-		case connpb.ErrorCode_ERROR_CODE_OS_ERR_DEADLINE_EXCEEDED:
-			err = fmt.Errorf("%w: %s", os.ErrDeadlineExceeded, resp.Error.Message)
-		default:
-			err = errors.New(resp.Error.Message)
-		}
-	}
-	return len(resp.Read), err
-}
+func (c *Client) Close() error { _ = "STUB: not implemented"; return nil }
 
-func (c *Client) Write(b []byte) (int, error) {
-	resp, err := c.client.Write(context.Background(), &connpb.WriteRequest{
-		Payload: b,
-	})
-	if err != nil {
-		return 0, err
-	}
+func (c *Client) LocalAddr() net.Addr { _ = "STUB: not implemented"; return *new(net.Addr) }
 
-	if resp.Error != nil {
-		err = errors.New(*resp.Error)
-	}
-	return int(resp.Length), err
-}
+func (c *Client) RemoteAddr() net.Addr { _ = "STUB: not implemented"; return *new(net.Addr) }
 
-func (c *Client) Close() error {
-	_, err := c.client.Close(context.Background(), &emptypb.Empty{})
-	errs := wrappers.Errs{}
-	errs.Add(err)
-	for _, toClose := range c.toClose {
-		errs.Add(toClose.Close())
-	}
-	return errs.Err
-}
+func (c *Client) SetDeadline(t time.Time) error { _ = "STUB: not implemented"; return nil }
 
-func (c *Client) LocalAddr() net.Addr {
-	return c.local
-}
+func (c *Client) SetReadDeadline(t time.Time) error { _ = "STUB: not implemented"; return nil }
 
-func (c *Client) RemoteAddr() net.Addr {
-	return c.remote
-}
-
-func (c *Client) SetDeadline(t time.Time) error {
-	bytes, err := t.MarshalBinary()
-	if err != nil {
-		return err
-	}
-	_, err = c.client.SetDeadline(context.Background(), &connpb.SetDeadlineRequest{
-		Time: bytes,
-	})
-	return err
-}
-
-func (c *Client) SetReadDeadline(t time.Time) error {
-	bytes, err := t.MarshalBinary()
-	if err != nil {
-		return err
-	}
-	_, err = c.client.SetReadDeadline(context.Background(), &connpb.SetDeadlineRequest{
-		Time: bytes,
-	})
-	return err
-}
-
-func (c *Client) SetWriteDeadline(t time.Time) error {
-	bytes, err := t.MarshalBinary()
-	if err != nil {
-		return err
-	}
-	_, err = c.client.SetWriteDeadline(context.Background(), &connpb.SetDeadlineRequest{
-		Time: bytes,
-	})
-	return err
-}
+func (c *Client) SetWriteDeadline(t time.Time) error { _ = "STUB: not implemented"; return nil }

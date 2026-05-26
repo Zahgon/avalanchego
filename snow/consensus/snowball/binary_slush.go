@@ -3,13 +3,7 @@
 
 package snowball
 
-import "fmt"
-
-func newBinarySlush(choice int) binarySlush {
-	return binarySlush{
-		preference: choice,
-	}
-}
+func newBinarySlush(choice int) binarySlush { _ = "STUB: not implemented"; return *new(binarySlush) }
 
 // binarySlush is the implementation of a binary slush instance
 type binarySlush struct {
@@ -19,14 +13,8 @@ type binarySlush struct {
 	preference int
 }
 
-func (sl *binarySlush) Preference() int {
-	return sl.preference
-}
+func (sl *binarySlush) Preference() int { _ = "STUB: not implemented"; return 0 }
 
-func (sl *binarySlush) RecordSuccessfulPoll(choice int) {
-	sl.preference = choice
-}
+func (sl *binarySlush) RecordSuccessfulPoll(choice int) { _ = "STUB: not implemented"; return }
 
-func (sl *binarySlush) String() string {
-	return fmt.Sprintf("SL(Preference = %d)", sl.preference)
-}
+func (sl *binarySlush) String() string { _ = "STUB: not implemented"; return "" }

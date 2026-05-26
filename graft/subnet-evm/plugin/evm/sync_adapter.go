@@ -19,15 +19,18 @@ type chainContextAdapter struct {
 
 // newChainContextAdapter creates a new adapter for the given Ethereum instance.
 func newChainContextAdapter(eth *eth.Ethereum) engine.ChainContext {
-	return &chainContextAdapter{eth: eth}
+	_ = "STUB: not implemented"
+	return *new(engine.ChainContext)
 }
 
 // BloomIndexer returns the bloom indexer, which implements engine.BloomIndexer.
 func (a *chainContextAdapter) BloomIndexer() engine.BloomIndexer {
-	return a.eth.BloomIndexer()
+	_ = "STUB: not implemented"
+	return *new(engine.BloomIndexer)
 }
 
 // BlockChain returns the blockchain, which implements engine.BlockChain.
 func (a *chainContextAdapter) BlockChain() engine.BlockChain {
-	return a.eth.BlockChain()
+	_ = "STUB: not implemented"
+	return *new(engine.BlockChain)
 }

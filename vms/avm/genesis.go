@@ -4,13 +4,8 @@
 package avm
 
 import (
-	"cmp"
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/codec"
-	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/formatting/address"
 	"github.com/ava-labs/avalanchego/vms/avm/fxs"
 	"github.com/ava-labs/avalanchego/vms/avm/txs"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
@@ -51,9 +46,7 @@ type GenesisAsset struct {
 	txs.CreateAssetTx `serialize:"true"`
 }
 
-func (g *GenesisAsset) Compare(other *GenesisAsset) int {
-	return cmp.Compare(g.Alias, other.Alias)
-}
+func (g *GenesisAsset) Compare(other *GenesisAsset) int { _ = "STUB: not implemented"; return 0 }
 
 // AssetInitialState describes the initial state of an asset
 type AssetInitialState struct {
@@ -87,100 +80,16 @@ func NewGenesis(
 	networkID uint32,
 	genesisData map[string]AssetDefinition,
 ) (*Genesis, error) {
-	g := &Genesis{}
-	for assetAlias, assetDefinition := range genesisData {
-		asset := GenesisAsset{
-			Alias: assetAlias,
-			CreateAssetTx: txs.CreateAssetTx{
-				BaseTx: txs.BaseTx{BaseTx: avax.BaseTx{
-					NetworkID:    networkID,
-					BlockchainID: ids.Empty,
-					Memo:         assetDefinition.Memo,
-				}},
-				Name:         assetDefinition.Name,
-				Symbol:       assetDefinition.Symbol,
-				Denomination: assetDefinition.Denomination,
-			},
-		}
-
-		initialState := &txs.InitialState{
-			FxIndex: 0, // TODO: Should lookup secp256k1fx FxID
-		}
-		for _, holder := range assetDefinition.InitialState.FixedCap {
-			_, addrbuff, err := address.ParseBech32(holder.Address)
-			if err != nil {
-				return nil, fmt.Errorf("problem parsing holder address: %w", err)
-			}
-			addr, err := ids.ToShortID(addrbuff)
-			if err != nil {
-				return nil, fmt.Errorf("problem parsing holder address: %w", err)
-			}
-			initialState.Outs = append(initialState.Outs, &secp256k1fx.TransferOutput{
-				Amt: holder.Amount,
-				OutputOwners: secp256k1fx.OutputOwners{
-					Threshold: 1,
-					Addrs:     []ids.ShortID{addr},
-				},
-			})
-		}
-		for _, owners := range assetDefinition.InitialState.VariableCap {
-			out := &secp256k1fx.MintOutput{
-				OutputOwners: secp256k1fx.OutputOwners{
-					Threshold: 1,
-				},
-			}
-			for _, addrStr := range owners.Minters {
-				_, addrBytes, err := address.ParseBech32(addrStr)
-				if err != nil {
-					return nil, fmt.Errorf("problem parsing minters address: %w", err)
-				}
-				addr, err := ids.ToShortID(addrBytes)
-				if err != nil {
-					return nil, fmt.Errorf("problem parsing minters address: %w", err)
-				}
-				out.Addrs = append(out.Addrs, addr)
-			}
-			out.Sort()
-
-			initialState.Outs = append(initialState.Outs, out)
-		}
-
-		if len(initialState.Outs) > 0 {
-			codec, err := newGenesisCodec()
-			if err != nil {
-				return nil, err
-			}
-			initialState.Sort(codec)
-			asset.States = append(asset.States, initialState)
-		}
-
-		utils.Sort(asset.States)
-		g.Txs = append(g.Txs, &asset)
-	}
-	utils.Sort(g.Txs)
-
-	return g, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// TODO: Should lookup secp256k1fx FxID
 
 // Bytes serializes the Genesis to bytes using the AVM genesis codec
-func (g *Genesis) Bytes() ([]byte, error) {
-	codec, err := newGenesisCodec()
-	if err != nil {
-		return nil, err
-	}
-	return codec.Marshal(txs.CodecVersion, g)
-}
+func (g *Genesis) Bytes() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func newGenesisCodec() (codec.Manager, error) {
-	parser, err := txs.NewParser(
-		[]fxs.Fx{
-			&secp256k1fx.Fx{},
-			&nftfx.Fx{},
-			&propertyfx.Fx{},
-		},
-	)
-	if err != nil {
-		return nil, fmt.Errorf("problem creating parser: %w", err)
-	}
-	return parser.GenesisCodec(), nil
+	_ = "STUB: not implemented"
+	return *new(codec.Manager), nil
 }

@@ -4,10 +4,7 @@
 package snow
 
 import (
-	"fmt"
 	"sync"
-
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/logging"
@@ -61,70 +58,21 @@ type acceptorGroup struct {
 }
 
 func NewAcceptorGroup(log logging.Logger) AcceptorGroup {
-	return &acceptorGroup{
-		log:       log,
-		acceptors: make(map[ids.ID]map[string]acceptorWrapper),
-	}
+	_ = "STUB: not implemented"
+	return *new(AcceptorGroup)
 }
 
 func (a *acceptorGroup) Accept(ctx *ConsensusContext, containerID ids.ID, container []byte) error {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	for acceptorName, acceptor := range a.acceptors[ctx.ChainID] {
-		if err := acceptor.Accept(ctx, containerID, container); err != nil {
-			a.log.Error("failed accepting container",
-				zap.String("acceptorName", acceptorName),
-				zap.Stringer("chainID", ctx.ChainID),
-				zap.Stringer("containerID", containerID),
-				zap.Error(err),
-			)
-			if acceptor.dieOnError {
-				return fmt.Errorf("acceptor %s on chain %s erred while accepting %s: %w", acceptorName, ctx.ChainID, containerID, err)
-			}
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (a *acceptorGroup) RegisterAcceptor(chainID ids.ID, acceptorName string, acceptor Acceptor, dieOnError bool) error {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	acceptors, exist := a.acceptors[chainID]
-	if !exist {
-		acceptors = make(map[string]acceptorWrapper)
-		a.acceptors[chainID] = acceptors
-	}
-
-	if _, ok := acceptors[acceptorName]; ok {
-		return fmt.Errorf("callback %s already exists on chain %s", acceptorName, chainID)
-	}
-
-	acceptors[acceptorName] = acceptorWrapper{
-		Acceptor:   acceptor,
-		dieOnError: dieOnError,
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (a *acceptorGroup) DeregisterAcceptor(chainID ids.ID, acceptorName string) error {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	acceptors, exist := a.acceptors[chainID]
-	if !exist {
-		return fmt.Errorf("chain %s has no callbacks", chainID)
-	}
-
-	if _, ok := acceptors[acceptorName]; !ok {
-		return fmt.Errorf("callback %s does not exist on chain %s", acceptorName, chainID)
-	}
-
-	if len(acceptors) == 1 {
-		delete(a.acceptors, chainID)
-	} else {
-		delete(acceptors, acceptorName)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

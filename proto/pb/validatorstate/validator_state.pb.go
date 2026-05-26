@@ -7,12 +7,11 @@
 package validatorstate
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -29,42 +28,24 @@ type GetMinimumHeightResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetMinimumHeightResponse) Reset() {
-	*x = GetMinimumHeightResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetMinimumHeightResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetMinimumHeightResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetMinimumHeightResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetMinimumHeightResponse) ProtoMessage() {}
+func (*GetMinimumHeightResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetMinimumHeightResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetMinimumHeightResponse.ProtoReflect.Descriptor instead.
 func (*GetMinimumHeightResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{0}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetMinimumHeightResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetMinimumHeightResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type GetCurrentHeightResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -73,42 +54,24 @@ type GetCurrentHeightResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentHeightResponse) Reset() {
-	*x = GetCurrentHeightResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetCurrentHeightResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetCurrentHeightResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetCurrentHeightResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetCurrentHeightResponse) ProtoMessage() {}
+func (*GetCurrentHeightResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetCurrentHeightResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetCurrentHeightResponse.ProtoReflect.Descriptor instead.
 func (*GetCurrentHeightResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{1}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetCurrentHeightResponse) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetCurrentHeightResponse) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type GetSubnetIDRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -117,42 +80,21 @@ type GetSubnetIDRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSubnetIDRequest) Reset() {
-	*x = GetSubnetIDRequest{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetSubnetIDRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetSubnetIDRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetSubnetIDRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetSubnetIDRequest) ProtoMessage() {}
+func (*GetSubnetIDRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetSubnetIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetSubnetIDRequest.ProtoReflect.Descriptor instead.
-func (*GetSubnetIDRequest) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{2}
-}
+func (*GetSubnetIDRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *GetSubnetIDRequest) GetChainId() []byte {
-	if x != nil {
-		return x.ChainId
-	}
-	return nil
-}
+func (x *GetSubnetIDRequest) GetChainId() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetSubnetIDResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -161,42 +103,24 @@ type GetSubnetIDResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSubnetIDResponse) Reset() {
-	*x = GetSubnetIDResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetSubnetIDResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetSubnetIDResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetSubnetIDResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetSubnetIDResponse) ProtoMessage() {}
+func (*GetSubnetIDResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetSubnetIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetSubnetIDResponse.ProtoReflect.Descriptor instead.
 func (*GetSubnetIDResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{3}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetSubnetIDResponse) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *GetSubnetIDResponse) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetWarpValidatorSetsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -205,42 +129,24 @@ type GetWarpValidatorSetsRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetWarpValidatorSetsRequest) Reset() {
-	*x = GetWarpValidatorSetsRequest{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetWarpValidatorSetsRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetWarpValidatorSetsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetWarpValidatorSetsRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetWarpValidatorSetsRequest) ProtoMessage() {}
+func (*GetWarpValidatorSetsRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetWarpValidatorSetsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetWarpValidatorSetsRequest.ProtoReflect.Descriptor instead.
 func (*GetWarpValidatorSetsRequest) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{4}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetWarpValidatorSetsRequest) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetWarpValidatorSetsRequest) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
 type GetValidatorSetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -250,49 +156,26 @@ type GetValidatorSetRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetValidatorSetRequest) Reset() {
-	*x = GetValidatorSetRequest{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetValidatorSetRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetValidatorSetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetValidatorSetRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetValidatorSetRequest) ProtoMessage() {}
+func (*GetValidatorSetRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetValidatorSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetValidatorSetRequest.ProtoReflect.Descriptor instead.
 func (*GetValidatorSetRequest) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{5}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetValidatorSetRequest) GetHeight() uint64 {
-	if x != nil {
-		return x.Height
-	}
-	return 0
-}
+func (x *GetValidatorSetRequest) GetHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *GetValidatorSetRequest) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *GetValidatorSetRequest) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type GetCurrentValidatorSetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -301,42 +184,24 @@ type GetCurrentValidatorSetRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentValidatorSetRequest) Reset() {
-	*x = GetCurrentValidatorSetRequest{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetCurrentValidatorSetRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetCurrentValidatorSetRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetCurrentValidatorSetRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetCurrentValidatorSetRequest) ProtoMessage() {}
+func (*GetCurrentValidatorSetRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetCurrentValidatorSetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetCurrentValidatorSetRequest.ProtoReflect.Descriptor instead.
 func (*GetCurrentValidatorSetRequest) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{6}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (x *GetCurrentValidatorSetRequest) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *GetCurrentValidatorSetRequest) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
 type Validator struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -352,91 +217,35 @@ type Validator struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Validator) Reset() {
-	*x = Validator{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Validator) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Validator) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Validator) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Validator) ProtoMessage() {}
+func (*Validator) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Validator) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Validator.ProtoReflect.Descriptor instead.
-func (*Validator) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{7}
-}
+func (*Validator) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Validator) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *Validator) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Validator) GetWeight() uint64 {
-	if x != nil {
-		return x.Weight
-	}
-	return 0
-}
+func (x *Validator) GetWeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Validator) GetPublicKey() []byte {
-	if x != nil {
-		return x.PublicKey
-	}
-	return nil
-}
+func (x *Validator) GetPublicKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Validator) GetStartTime() uint64 {
-	if x != nil {
-		return x.StartTime
-	}
-	return 0
-}
+func (x *Validator) GetStartTime() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Validator) GetMinNonce() uint64 {
-	if x != nil {
-		return x.MinNonce
-	}
-	return 0
-}
+func (x *Validator) GetMinNonce() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Validator) GetIsActive() bool {
-	if x != nil {
-		return x.IsActive
-	}
-	return false
-}
+func (x *Validator) GetIsActive() bool { _ = "STUB: not implemented"; return false }
 
-func (x *Validator) GetValidationId() []byte {
-	if x != nil {
-		return x.ValidationId
-	}
-	return nil
-}
+func (x *Validator) GetValidationId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *Validator) GetIsL1Validator() bool {
-	if x != nil {
-		return x.IsL1Validator
-	}
-	return false
-}
+func (x *Validator) GetIsL1Validator() bool { _ = "STUB: not implemented"; return false }
 
 type GetWarpValidatorSetsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -445,40 +254,25 @@ type GetWarpValidatorSetsResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetWarpValidatorSetsResponse) Reset() {
-	*x = GetWarpValidatorSetsResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetWarpValidatorSetsResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetWarpValidatorSetsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetWarpValidatorSetsResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetWarpValidatorSetsResponse) ProtoMessage() {}
+func (*GetWarpValidatorSetsResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetWarpValidatorSetsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetWarpValidatorSetsResponse.ProtoReflect.Descriptor instead.
 func (*GetWarpValidatorSetsResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{8}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *GetWarpValidatorSetsResponse) GetValidatorSets() []*WarpValidatorSet {
-	if x != nil {
-		return x.ValidatorSets
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -491,56 +285,25 @@ type WarpValidatorSet struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WarpValidatorSet) Reset() {
-	*x = WarpValidatorSet{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WarpValidatorSet) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WarpValidatorSet) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WarpValidatorSet) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WarpValidatorSet) ProtoMessage() {}
+func (*WarpValidatorSet) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WarpValidatorSet) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WarpValidatorSet.ProtoReflect.Descriptor instead.
-func (*WarpValidatorSet) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{9}
-}
+func (*WarpValidatorSet) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WarpValidatorSet) GetSubnetId() []byte {
-	if x != nil {
-		return x.SubnetId
-	}
-	return nil
-}
+func (x *WarpValidatorSet) GetSubnetId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *WarpValidatorSet) GetTotalWeight() uint64 {
-	if x != nil {
-		return x.TotalWeight
-	}
-	return 0
-}
+func (x *WarpValidatorSet) GetTotalWeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *WarpValidatorSet) GetValidators() []*WarpValidator {
-	if x != nil {
-		return x.Validators
-	}
-	return nil
-}
+func (x *WarpValidatorSet) GetValidators() []*WarpValidator { _ = "STUB: not implemented"; return nil }
 
 type WarpValidator struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -551,56 +314,25 @@ type WarpValidator struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WarpValidator) Reset() {
-	*x = WarpValidator{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WarpValidator) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WarpValidator) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WarpValidator) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WarpValidator) ProtoMessage() {}
+func (*WarpValidator) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WarpValidator) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WarpValidator.ProtoReflect.Descriptor instead.
-func (*WarpValidator) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{10}
-}
+func (*WarpValidator) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WarpValidator) GetPublicKey() []byte {
-	if x != nil {
-		return x.PublicKey
-	}
-	return nil
-}
+func (x *WarpValidator) GetPublicKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *WarpValidator) GetWeight() uint64 {
-	if x != nil {
-		return x.Weight
-	}
-	return 0
-}
+func (x *WarpValidator) GetWeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *WarpValidator) GetNodeIds() [][]byte {
-	if x != nil {
-		return x.NodeIds
-	}
-	return nil
-}
+func (x *WarpValidator) GetNodeIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type GetValidatorSetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -609,40 +341,25 @@ type GetValidatorSetResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetValidatorSetResponse) Reset() {
-	*x = GetValidatorSetResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetValidatorSetResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetValidatorSetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetValidatorSetResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetValidatorSetResponse) ProtoMessage() {}
+func (*GetValidatorSetResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetValidatorSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetValidatorSetResponse.ProtoReflect.Descriptor instead.
 func (*GetValidatorSetResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{11}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *GetValidatorSetResponse) GetValidators() []*Validator {
-	if x != nil {
-		return x.Validators
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -654,47 +371,30 @@ type GetCurrentValidatorSetResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetCurrentValidatorSetResponse) Reset() {
-	*x = GetCurrentValidatorSetResponse{}
-	mi := &file_validatorstate_validator_state_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *GetCurrentValidatorSetResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *GetCurrentValidatorSetResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *GetCurrentValidatorSetResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*GetCurrentValidatorSetResponse) ProtoMessage() {}
+func (*GetCurrentValidatorSetResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *GetCurrentValidatorSetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_validatorstate_validator_state_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use GetCurrentValidatorSetResponse.ProtoReflect.Descriptor instead.
 func (*GetCurrentValidatorSetResponse) Descriptor() ([]byte, []int) {
-	return file_validatorstate_validator_state_proto_rawDescGZIP(), []int{12}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (x *GetCurrentValidatorSetResponse) GetValidators() []*Validator {
-	if x != nil {
-		return x.Validators
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (x *GetCurrentValidatorSetResponse) GetCurrentHeight() uint64 {
-	if x != nil {
-		return x.CurrentHeight
-	}
+	_ = "STUB: not implemented"
 	return 0
 }
 
@@ -765,10 +465,8 @@ var (
 )
 
 func file_validatorstate_validator_state_proto_rawDescGZIP() []byte {
-	file_validatorstate_validator_state_proto_rawDescOnce.Do(func() {
-		file_validatorstate_validator_state_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_validatorstate_validator_state_proto_rawDesc), len(file_validatorstate_validator_state_proto_rawDesc)))
-	})
-	return file_validatorstate_validator_state_proto_rawDescData
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var file_validatorstate_validator_state_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
@@ -812,26 +510,5 @@ var file_validatorstate_validator_state_proto_depIdxs = []int32{
 	0,  // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_validatorstate_validator_state_proto_init() }
-func file_validatorstate_validator_state_proto_init() {
-	if File_validatorstate_validator_state_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_validatorstate_validator_state_proto_rawDesc), len(file_validatorstate_validator_state_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   13,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_validatorstate_validator_state_proto_goTypes,
-		DependencyIndexes: file_validatorstate_validator_state_proto_depIdxs,
-		MessageInfos:      file_validatorstate_validator_state_proto_msgTypes,
-	}.Build()
-	File_validatorstate_validator_state_proto = out.File
-	file_validatorstate_validator_state_proto_goTypes = nil
-	file_validatorstate_validator_state_proto_depIdxs = nil
-}
+func init()                                           { file_validatorstate_validator_state_proto_init() }
+func file_validatorstate_validator_state_proto_init() { _ = "STUB: not implemented"; return }

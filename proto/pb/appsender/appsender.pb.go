@@ -7,12 +7,11 @@
 package appsender
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -34,56 +33,25 @@ type SendAppRequestMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendAppRequestMsg) Reset() {
-	*x = SendAppRequestMsg{}
-	mi := &file_appsender_appsender_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SendAppRequestMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SendAppRequestMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SendAppRequestMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SendAppRequestMsg) ProtoMessage() {}
+func (*SendAppRequestMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SendAppRequestMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_appsender_appsender_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SendAppRequestMsg.ProtoReflect.Descriptor instead.
-func (*SendAppRequestMsg) Descriptor() ([]byte, []int) {
-	return file_appsender_appsender_proto_rawDescGZIP(), []int{0}
-}
+func (*SendAppRequestMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SendAppRequestMsg) GetNodeIds() [][]byte {
-	if x != nil {
-		return x.NodeIds
-	}
-	return nil
-}
+func (x *SendAppRequestMsg) GetNodeIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SendAppRequestMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *SendAppRequestMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppRequestMsg) GetRequest() []byte {
-	if x != nil {
-		return x.Request
-	}
-	return nil
-}
+func (x *SendAppRequestMsg) GetRequest() []byte { _ = "STUB: not implemented"; return nil }
 
 type SendAppResponseMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -97,56 +65,25 @@ type SendAppResponseMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendAppResponseMsg) Reset() {
-	*x = SendAppResponseMsg{}
-	mi := &file_appsender_appsender_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SendAppResponseMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SendAppResponseMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SendAppResponseMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SendAppResponseMsg) ProtoMessage() {}
+func (*SendAppResponseMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SendAppResponseMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_appsender_appsender_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SendAppResponseMsg.ProtoReflect.Descriptor instead.
-func (*SendAppResponseMsg) Descriptor() ([]byte, []int) {
-	return file_appsender_appsender_proto_rawDescGZIP(), []int{1}
-}
+func (*SendAppResponseMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SendAppResponseMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *SendAppResponseMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SendAppResponseMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *SendAppResponseMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppResponseMsg) GetResponse() []byte {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
+func (x *SendAppResponseMsg) GetResponse() []byte { _ = "STUB: not implemented"; return nil }
 
 type SendAppErrorMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -162,63 +99,27 @@ type SendAppErrorMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendAppErrorMsg) Reset() {
-	*x = SendAppErrorMsg{}
-	mi := &file_appsender_appsender_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SendAppErrorMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SendAppErrorMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SendAppErrorMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SendAppErrorMsg) ProtoMessage() {}
+func (*SendAppErrorMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SendAppErrorMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_appsender_appsender_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SendAppErrorMsg.ProtoReflect.Descriptor instead.
-func (*SendAppErrorMsg) Descriptor() ([]byte, []int) {
-	return file_appsender_appsender_proto_rawDescGZIP(), []int{2}
-}
+func (*SendAppErrorMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SendAppErrorMsg) GetNodeId() []byte {
-	if x != nil {
-		return x.NodeId
-	}
-	return nil
-}
+func (x *SendAppErrorMsg) GetNodeId() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SendAppErrorMsg) GetRequestId() uint32 {
-	if x != nil {
-		return x.RequestId
-	}
-	return 0
-}
+func (x *SendAppErrorMsg) GetRequestId() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppErrorMsg) GetErrorCode() int32 {
-	if x != nil {
-		return x.ErrorCode
-	}
-	return 0
-}
+func (x *SendAppErrorMsg) GetErrorCode() int32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppErrorMsg) GetErrorMessage() string {
-	if x != nil {
-		return x.ErrorMessage
-	}
-	return ""
-}
+func (x *SendAppErrorMsg) GetErrorMessage() string { _ = "STUB: not implemented"; return "" }
 
 type SendAppGossipMsg struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -233,70 +134,29 @@ type SendAppGossipMsg struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SendAppGossipMsg) Reset() {
-	*x = SendAppGossipMsg{}
-	mi := &file_appsender_appsender_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *SendAppGossipMsg) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *SendAppGossipMsg) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *SendAppGossipMsg) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*SendAppGossipMsg) ProtoMessage() {}
+func (*SendAppGossipMsg) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *SendAppGossipMsg) ProtoReflect() protoreflect.Message {
-	mi := &file_appsender_appsender_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use SendAppGossipMsg.ProtoReflect.Descriptor instead.
-func (*SendAppGossipMsg) Descriptor() ([]byte, []int) {
-	return file_appsender_appsender_proto_rawDescGZIP(), []int{3}
-}
+func (*SendAppGossipMsg) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *SendAppGossipMsg) GetNodeIds() [][]byte {
-	if x != nil {
-		return x.NodeIds
-	}
-	return nil
-}
+func (x *SendAppGossipMsg) GetNodeIds() [][]byte { _ = "STUB: not implemented"; return nil }
 
-func (x *SendAppGossipMsg) GetValidators() uint64 {
-	if x != nil {
-		return x.Validators
-	}
-	return 0
-}
+func (x *SendAppGossipMsg) GetValidators() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppGossipMsg) GetNonValidators() uint64 {
-	if x != nil {
-		return x.NonValidators
-	}
-	return 0
-}
+func (x *SendAppGossipMsg) GetNonValidators() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppGossipMsg) GetPeers() uint64 {
-	if x != nil {
-		return x.Peers
-	}
-	return 0
-}
+func (x *SendAppGossipMsg) GetPeers() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *SendAppGossipMsg) GetMsg() []byte {
-	if x != nil {
-		return x.Msg
-	}
-	return nil
-}
+func (x *SendAppGossipMsg) GetMsg() []byte { _ = "STUB: not implemented"; return nil }
 
 var File_appsender_appsender_proto protoreflect.FileDescriptor
 
@@ -339,12 +199,7 @@ var (
 	file_appsender_appsender_proto_rawDescData []byte
 )
 
-func file_appsender_appsender_proto_rawDescGZIP() []byte {
-	file_appsender_appsender_proto_rawDescOnce.Do(func() {
-		file_appsender_appsender_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_appsender_appsender_proto_rawDesc), len(file_appsender_appsender_proto_rawDesc)))
-	})
-	return file_appsender_appsender_proto_rawDescData
-}
+func file_appsender_appsender_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_appsender_appsender_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_appsender_appsender_proto_goTypes = []any{
@@ -370,26 +225,5 @@ var file_appsender_appsender_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_appsender_appsender_proto_init() }
-func file_appsender_appsender_proto_init() {
-	if File_appsender_appsender_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_appsender_appsender_proto_rawDesc), len(file_appsender_appsender_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   4,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_appsender_appsender_proto_goTypes,
-		DependencyIndexes: file_appsender_appsender_proto_depIdxs,
-		MessageInfos:      file_appsender_appsender_proto_msgTypes,
-	}.Build()
-	File_appsender_appsender_proto = out.File
-	file_appsender_appsender_proto_goTypes = nil
-	file_appsender_appsender_proto_depIdxs = nil
-}
+func init()                                { file_appsender_appsender_proto_init() }
+func file_appsender_appsender_proto_init() { _ = "STUB: not implemented"; return }

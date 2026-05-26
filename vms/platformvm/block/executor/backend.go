@@ -37,90 +37,58 @@ type backend struct {
 }
 
 func (b *backend) GetState(blkID ids.ID) (state.Chain, bool) {
+	_ = "STUB: not implemented"
 	// If the block is in the map, it is either processing or a proposal block
 	// that was accepted without an accepted child.
-	if state, ok := b.blkIDToState[blkID]; ok {
-		if state.onAcceptState != nil {
-			return state.onAcceptState, true
-		}
-		return nil, false
-	}
-
-	// Note: If the last accepted block is a proposal block, we will have
-	//       returned in the above if statement.
-	return b.state, blkID == b.state.GetLastAccepted()
+	return *new(state.Chain), false
 }
 
+// Note: If the last accepted block is a proposal block, we will have
+//       returned in the above if statement.
+
 func (b *backend) getOnAbortState(blkID ids.ID) (*state.Diff, bool) {
-	state, ok := b.blkIDToState[blkID]
-	if !ok || state.onAbortState == nil {
-		return nil, false
-	}
-	return state.onAbortState, true
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (b *backend) getOnCommitState(blkID ids.ID) (*state.Diff, bool) {
-	state, ok := b.blkIDToState[blkID]
-	if !ok || state.onCommitState == nil {
-		return nil, false
-	}
-	return state.onCommitState, true
+	_ = "STUB: not implemented"
+	return nil, false
 }
 
 func (b *backend) GetBlock(blkID ids.ID) (block.Block, error) {
+	_ = "STUB: not implemented"
 	// See if the block is in memory.
-	if blk, ok := b.blkIDToState[blkID]; ok {
-		return blk.statelessBlock, nil
-	}
-
-	// The block isn't in memory. Check the database.
-	return b.state.GetStatelessBlock(blkID)
+	return *new(block.Block), nil
 }
 
-func (b *backend) LastAccepted() ids.ID {
-	return b.lastAccepted
-}
+// The block isn't in memory. Check the database.
 
-func (b *backend) free(blkID ids.ID) {
-	delete(b.blkIDToState, blkID)
-}
+func (b *backend) LastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
+
+func (b *backend) free(blkID ids.ID) { _ = "STUB: not implemented"; return }
 
 func (b *backend) getTimestamp(blkID ids.ID) time.Time {
+	_ = "STUB: not implemented"
 	// Check if the block is processing.
 	// If the block is processing, then we are guaranteed to have populated its
 	// timestamp in its state.
-	if blkState, ok := b.blkIDToState[blkID]; ok {
-		return blkState.timestamp
-	}
-
-	// The block isn't processing.
-	// According to the snowman.Block interface, the last accepted
-	// block is the only accepted block that must return a correct timestamp,
-	// so we just return the chain time.
-	return b.state.GetTimestamp()
+	return *new(time.Time)
 }
+
+// The block isn't processing.
+// According to the snowman.Block interface, the last accepted
+// block is the only accepted block that must return a correct timestamp,
+// so we just return the chain time.
 
 // verifyUniqueInputs returns nil iff no blocks in the inclusive
 // ancestry of [blkID] consume an input in [inputs].
 func (b *backend) verifyUniqueInputs(blkID ids.ID, inputs set.Set[ids.ID]) error {
-	if inputs.Len() == 0 {
-		return nil
-	}
-
-	// Check for conflicts in ancestors.
-	for {
-		state, ok := b.blkIDToState[blkID]
-		if !ok {
-			// The parent state isn't pinned in memory.
-			// This means the parent must be accepted already.
-			return nil
-		}
-
-		if state.inputs.Overlaps(inputs) {
-			return errConflictingParentTxs
-		}
-
-		blk := state.statelessBlock
-		blkID = blk.Parent()
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Check for conflicts in ancestors.
+
+// The parent state isn't pinned in memory.
+// This means the parent must be accepted already.

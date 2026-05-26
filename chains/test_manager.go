@@ -11,42 +11,32 @@ var TestManager Manager = testManager{}
 
 type testManager struct{}
 
-func (testManager) QueueChainCreation(ChainParameters) {}
+func (testManager) QueueChainCreation(ChainParameters) { _ = "STUB: not implemented"; return }
 
-func (testManager) AddRegistrant(Registrant) {}
+func (testManager) AddRegistrant(Registrant) { _ = "STUB: not implemented"; return }
 
-func (testManager) Aliases(ids.ID) ([]string, error) {
-	return nil, nil
-}
+func (testManager) Aliases(ids.ID) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (testManager) PrimaryAlias(ids.ID) (string, error) {
-	return "", nil
-}
+func (testManager) PrimaryAlias(ids.ID) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (testManager) PrimaryAliasOrDefault(ids.ID) string {
-	return ""
-}
+func (testManager) PrimaryAliasOrDefault(ids.ID) string { _ = "STUB: not implemented"; return "" }
 
-func (testManager) Alias(ids.ID, string) error {
-	return nil
-}
+func (testManager) Alias(ids.ID, string) error { _ = "STUB: not implemented"; return nil }
 
-func (testManager) RemoveAliases(ids.ID) {}
+func (testManager) RemoveAliases(ids.ID) { _ = "STUB: not implemented"; return }
 
-func (testManager) Shutdown() {}
+func (testManager) Shutdown() { _ = "STUB: not implemented"; return }
 
-func (testManager) StartChainCreator(ChainParameters) error {
-	return nil
-}
+func (testManager) StartChainCreator(ChainParameters) error { _ = "STUB: not implemented"; return nil }
 
-func (testManager) IsBootstrapped(ids.ID) bool {
-	return false
-}
+func (testManager) IsBootstrapped(ids.ID) bool { _ = "STUB: not implemented"; return false }
 
 func (testManager) Lookup(s string) (ids.ID, error) {
-	return ids.FromString(s)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 func (testManager) LookupVM(s string) (ids.ID, error) {
-	return ids.FromString(s)
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

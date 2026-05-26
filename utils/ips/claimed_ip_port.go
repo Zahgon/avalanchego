@@ -9,7 +9,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/staking"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
@@ -45,24 +44,9 @@ func NewClaimedIPPort(
 	timestamp uint64,
 	signature []byte,
 ) *ClaimedIPPort {
-	ip := &ClaimedIPPort{
-		Cert:      cert,
-		AddrPort:  ipPort,
-		Timestamp: timestamp,
-		Signature: signature,
-		NodeID:    ids.NodeIDFromCert(cert),
-	}
-
-	packer := wrappers.Packer{
-		Bytes: make([]byte, preimageLen),
-	}
-	packer.PackFixedBytes(ip.NodeID[:])
-	packer.PackLong(timestamp)
-	ip.GossipID = hashing.ComputeHash256Array(packer.Bytes)
-	return ip
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Returns the approximate size of the binary representation of this ClaimedIPPort.
-func (i *ClaimedIPPort) Size() int {
-	return baseIPCertDescLen + len(i.Cert.Raw) + len(i.Signature)
-}
+func (i *ClaimedIPPort) Size() int { _ = "STUB: not implemented"; return 0 }

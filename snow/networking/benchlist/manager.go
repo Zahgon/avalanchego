@@ -60,125 +60,55 @@ func NewManager(
 	reg metrics.MultiGatherer,
 	config Config,
 ) Manager {
-	if config.MaxPortion <= 0 {
-		return NewNoBenchlist()
-	}
-
-	return &manager{
-		benchable: benchable,
-		vdrs:      vdrs,
-		reg:       reg,
-		config:    config,
-		chains:    make(map[ids.ID]*benchlist),
-	}
+	_ = "STUB: not implemented"
+	return *new(Manager)
 }
 
 // IsBenched returns true if messages to [nodeID] regarding [chainID]
 // should not be sent over the network and should immediately fail.
 func (m *manager) IsBenched(chainID ids.ID, nodeID ids.NodeID) bool {
-	m.lock.RLock()
-	benchlist, ok := m.chains[chainID]
-	m.lock.RUnlock()
-	return ok && benchlist.IsBenched(nodeID)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // GetBenched returns an array of chainIDs where the specified
 // [nodeID] is benched. If called on an id.ShortID that does
 // not map to a validator, it will return an empty array.
-func (m *manager) GetBenched(nodeID ids.NodeID) []ids.ID {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	chainIDs := []ids.ID{}
-	for chainID, benchlist := range m.chains {
-		if benchlist.IsBenched(nodeID) {
-			chainIDs = append(chainIDs, chainID)
-		}
-	}
-	return chainIDs
-}
+func (m *manager) GetBenched(nodeID ids.NodeID) []ids.ID { _ = "STUB: not implemented"; return nil }
 
 func (m *manager) RegisterChain(ctx *snow.ConsensusContext) error {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	if m.shutdown {
-		return nil
-	}
-	if _, exists := m.chains[ctx.ChainID]; exists {
-		return nil
-	}
-
-	reg, err := metrics.MakeAndRegister(m.reg, ctx.PrimaryAlias)
-	if err != nil {
-		return err
-	}
-
-	benchlist, err := newBenchlist(ctx, m.benchable, m.vdrs, m.config, reg)
-	if err != nil {
-		return err
-	}
-
-	m.chains[ctx.ChainID] = benchlist
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *manager) RegisterResponse(chainID ids.ID, nodeID ids.NodeID) {
-	m.lock.RLock()
-	benchlist, ok := m.chains[chainID]
-	m.lock.RUnlock()
-	if ok {
-		benchlist.RegisterResponse(nodeID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (m *manager) RegisterFailure(chainID ids.ID, nodeID ids.NodeID) {
-	m.lock.RLock()
-	benchlist, ok := m.chains[chainID]
-	m.lock.RUnlock()
-	if ok {
-		benchlist.RegisterFailure(nodeID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
-func (m *manager) Shutdown() {
-	m.shutdownOnce.Do(func() {
-		m.lock.Lock()
-		chainBenchlists := make([]*benchlist, 0, len(m.chains))
-		for _, chainBenchlist := range m.chains {
-			chainBenchlists = append(chainBenchlists, chainBenchlist)
-		}
-		clear(m.chains)
-		m.shutdown = true
-		m.lock.Unlock()
-
-		for _, chainBenchlist := range chainBenchlists {
-			chainBenchlist.shutdown()
-		}
-	})
-}
+func (m *manager) Shutdown() { _ = "STUB: not implemented"; return }
 
 type noBenchlist struct{}
 
 // NewNoBenchlist returns an empty benchlist that will never stop any queries
-func NewNoBenchlist() Manager {
-	return &noBenchlist{}
-}
+func NewNoBenchlist() Manager { _ = "STUB: not implemented"; return *new(Manager) }
 
 func (noBenchlist) RegisterChain(*snow.ConsensusContext) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (noBenchlist) RegisterResponse(ids.ID, ids.NodeID) {}
+func (noBenchlist) RegisterResponse(ids.ID, ids.NodeID) { _ = "STUB: not implemented"; return }
 
-func (noBenchlist) RegisterFailure(ids.ID, ids.NodeID) {}
+func (noBenchlist) RegisterFailure(ids.ID, ids.NodeID) { _ = "STUB: not implemented"; return }
 
-func (noBenchlist) IsBenched(ids.ID, ids.NodeID) bool {
-	return false
-}
+func (noBenchlist) IsBenched(ids.ID, ids.NodeID) bool { _ = "STUB: not implemented"; return false }
 
-func (noBenchlist) GetBenched(ids.NodeID) []ids.ID {
-	return []ids.ID{}
-}
+func (noBenchlist) GetBenched(ids.NodeID) []ids.ID { _ = "STUB: not implemented"; return nil }
 
-func (noBenchlist) Shutdown() {}
+func (noBenchlist) Shutdown() { _ = "STUB: not implemented"; return }

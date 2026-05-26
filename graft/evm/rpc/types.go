@@ -29,14 +29,8 @@ package rpc
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"math"
-	"strings"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/common/hexutil"
 )
 
 // API describes the set of methods offered over the RPC interface
@@ -87,82 +81,28 @@ const (
 // Returned errors:
 // - an invalid block number error when the given argument isn't a known strings
 // - an out of range error when the given block number is either too little or too large
-func (bn *BlockNumber) UnmarshalJSON(data []byte) error {
-	input := strings.TrimSpace(string(data))
-	if len(input) >= 2 && input[0] == '"' && input[len(input)-1] == '"' {
-		input = input[1 : len(input)-1]
-	}
+func (bn *BlockNumber) UnmarshalJSON(data []byte) error { _ = "STUB: not implemented"; return nil }
 
-	switch input {
-	case "earliest":
-		*bn = EarliestBlockNumber
-		return nil
-	case "latest":
-		*bn = LatestBlockNumber
-		return nil
-	case "pending":
-		*bn = PendingBlockNumber
-		return nil
-	// Include "finalized" as an option for compatibility with FinalizedBlockNumber from geth.
-	case "accepted", "finalized":
-		*bn = FinalizedBlockNumber
-		return nil
-	case "safe":
-		*bn = SafeBlockNumber
-		return nil
-	}
-
-	blckNum, err := hexutil.DecodeUint64(input)
-	if err != nil {
-		return err
-	}
-	if blckNum > math.MaxInt64 {
-		return errors.New("block number larger than int64")
-	}
-	*bn = BlockNumber(blckNum)
-	return nil
-}
+// Include "finalized" as an option for compatibility with FinalizedBlockNumber from geth.
 
 // Int64 returns the block number as int64.
 func (bn BlockNumber) Int64() int64 {
-	return (int64)(bn)
+	_ = "STUB: not implemented"
+
+	// MarshalText implements encoding.TextMarshaler. It marshals:
+	// - "accepted", "latest", "earliest" or "pending" as strings
+	// - other numbers as hex
+	return 0
 }
 
-// MarshalText implements encoding.TextMarshaler. It marshals:
-// - "accepted", "latest", "earliest" or "pending" as strings
-// - other numbers as hex
-func (bn BlockNumber) MarshalText() ([]byte, error) {
-	return []byte(bn.String()), nil
-}
+func (bn BlockNumber) MarshalText() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (bn BlockNumber) String() string {
-	switch bn {
-	case EarliestBlockNumber:
-		return "earliest"
-	case LatestBlockNumber:
-		return "latest"
-	case PendingBlockNumber:
-		return "pending"
-	case FinalizedBlockNumber:
-		return "accepted"
-	case SafeBlockNumber:
-		return "safe"
-	default:
-		if bn < 0 {
-			return fmt.Sprintf("<invalid %d>", bn)
-		}
-		return hexutil.Uint64(bn).String()
-	}
-}
+func (bn BlockNumber) String() string { _ = "STUB: not implemented"; return "" }
 
 // IsAccepted returns true if this blockNumber should be treated as a request for the last accepted block
-func (bn BlockNumber) IsAccepted() bool {
-	return bn < EarliestBlockNumber && bn >= SafeBlockNumber
-}
+func (bn BlockNumber) IsAccepted() bool { _ = "STUB: not implemented"; return false }
 
-func (bn BlockNumber) IsLatest() bool {
-	return bn == LatestBlockNumber || bn == PendingBlockNumber
-}
+func (bn BlockNumber) IsLatest() bool { _ = "STUB: not implemented"; return false }
 
 type BlockNumberOrHash struct {
 	BlockNumber      *BlockNumber `json:"blockNumber,omitempty"`
@@ -171,105 +111,30 @@ type BlockNumberOrHash struct {
 }
 
 func (bnh *BlockNumberOrHash) UnmarshalJSON(data []byte) error {
-	type erased BlockNumberOrHash
-	e := erased{}
-	err := json.Unmarshal(data, &e)
-	if err == nil {
-		if e.BlockNumber != nil && e.BlockHash != nil {
-			return errors.New("cannot specify both BlockHash and BlockNumber, choose one or the other")
-		}
-		bnh.BlockNumber = e.BlockNumber
-		bnh.BlockHash = e.BlockHash
-		bnh.RequireCanonical = e.RequireCanonical
-		return nil
-	}
-	var input string
-	err = json.Unmarshal(data, &input)
-	if err != nil {
-		return err
-	}
-	switch input {
-	case "earliest":
-		bn := EarliestBlockNumber
-		bnh.BlockNumber = &bn
-		return nil
-	case "latest":
-		bn := LatestBlockNumber
-		bnh.BlockNumber = &bn
-		return nil
-	case "pending":
-		bn := PendingBlockNumber
-		bnh.BlockNumber = &bn
-		return nil
-	// Include "finalized" as an option for compatibility with FinalizedBlockNumber from geth.
-	case "accepted", "finalized":
-		bn := FinalizedBlockNumber
-		bnh.BlockNumber = &bn
-		return nil
-	case "safe":
-		bn := SafeBlockNumber
-		bnh.BlockNumber = &bn
-		return nil
-	default:
-		if len(input) == 66 {
-			hash := common.Hash{}
-			err := hash.UnmarshalText([]byte(input))
-			if err != nil {
-				return err
-			}
-			bnh.BlockHash = &hash
-			return nil
-		} else {
-			blckNum, err := hexutil.DecodeUint64(input)
-			if err != nil {
-				return err
-			}
-			if blckNum > math.MaxInt64 {
-				return errors.New("blocknumber too high")
-			}
-			bn := BlockNumber(blckNum)
-			bnh.BlockNumber = &bn
-			return nil
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Include "finalized" as an option for compatibility with FinalizedBlockNumber from geth.
 
 func (bnh *BlockNumberOrHash) Number() (BlockNumber, bool) {
-	if bnh.BlockNumber != nil {
-		return *bnh.BlockNumber, true
-	}
-	return BlockNumber(0), false
+	_ = "STUB: not implemented"
+	return *new(BlockNumber), false
 }
 
-func (bnh *BlockNumberOrHash) String() string {
-	if bnh.BlockNumber != nil {
-		return bnh.BlockNumber.String()
-	}
-	if bnh.BlockHash != nil {
-		return bnh.BlockHash.String()
-	}
-	return "nil"
-}
+func (bnh *BlockNumberOrHash) String() string { _ = "STUB: not implemented"; return "" }
 
 func (bnh *BlockNumberOrHash) Hash() (common.Hash, bool) {
-	if bnh.BlockHash != nil {
-		return *bnh.BlockHash, true
-	}
-	return common.Hash{}, false
+	_ = "STUB: not implemented"
+	return *new(common.Hash), false
 }
 
 func BlockNumberOrHashWithNumber(blockNr BlockNumber) BlockNumberOrHash {
-	return BlockNumberOrHash{
-		BlockNumber:      &blockNr,
-		BlockHash:        nil,
-		RequireCanonical: false,
-	}
+	_ = "STUB: not implemented"
+	return *new(BlockNumberOrHash)
 }
 
 func BlockNumberOrHashWithHash(hash common.Hash, canonical bool) BlockNumberOrHash {
-	return BlockNumberOrHash{
-		BlockNumber:      nil,
-		BlockHash:        &hash,
-		RequireCanonical: canonical,
-	}
+	_ = "STUB: not implemented"
+	return *new(BlockNumberOrHash)
 }

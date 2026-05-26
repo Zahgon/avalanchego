@@ -5,38 +5,17 @@ package tmpnet
 
 import (
 	"context"
-	"encoding/json"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
-
-	"github.com/ava-labs/avalanchego/tests/fixture/stacktrace"
-	"github.com/ava-labs/avalanchego/utils/perms"
 )
 
 // The Node type is defined in this file node_config.go
 // (reading/writing configuration) and node.go (orchestration).
 
 // For consumption outside of avalanchego. Needs to be kept exported.
-func (n *Node) GetFlagsPath() string {
-	return filepath.Join(n.DataDir, "flags.json")
-}
+func (n *Node) GetFlagsPath() string { _ = "STUB: not implemented"; return "" }
 
-func (n *Node) getConfigPath() string {
-	return filepath.Join(n.DataDir, defaultConfigFilename)
-}
+func (n *Node) getConfigPath() string { _ = "STUB: not implemented"; return "" }
 
-func (n *Node) readConfig() error {
-	bytes, err := os.ReadFile(n.getConfigPath())
-	if err != nil {
-		return stacktrace.Errorf("failed to read node config: %w", err)
-	}
-	if err := json.Unmarshal(bytes, n); err != nil {
-		return stacktrace.Errorf("failed to unmarshal node config: %w", err)
-	}
-	return nil
-}
+func (n *Node) readConfig() error { _ = "STUB: not implemented"; return nil }
 
 type serializedNodeConfig struct {
 	IsEphemeral   bool               `json:"isEphemeral,omitempty"`
@@ -44,50 +23,15 @@ type serializedNodeConfig struct {
 	RuntimeConfig *NodeRuntimeConfig `json:"runtimeConfig,omitempty"`
 }
 
-func (n *Node) writeConfig() error {
-	config := serializedNodeConfig{
-		IsEphemeral:   n.IsEphemeral,
-		Flags:         n.Flags,
-		RuntimeConfig: n.RuntimeConfig,
-	}
-	bytes, err := DefaultJSONMarshal(config)
-	if err != nil {
-		return stacktrace.Errorf("failed to marshal node config: %w", err)
-	}
-	if err := os.WriteFile(n.getConfigPath(), bytes, perms.ReadWrite); err != nil {
-		return stacktrace.Errorf("failed to write node config: %w", err)
-	}
+func (n *Node) writeConfig() error { _ = "STUB: not implemented"; return nil }
+
+func (n *Node) Read(ctx context.Context, network *Network, dataDir string) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (n *Node) Read(ctx context.Context, network *Network, dataDir string) error {
-	n.network = network
-	n.DataDir = dataDir
+func (n *Node) Write() error { _ = "STUB: not implemented"; return nil }
 
-	if err := n.readConfig(); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	if err := n.EnsureNodeID(); err != nil {
-		return stacktrace.Wrap(err)
-	}
-	return n.readState(ctx)
-}
+func (n *Node) writeMetricsSnapshot(data []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (n *Node) Write() error {
-	if err := os.MkdirAll(n.DataDir, perms.ReadWriteExecute); err != nil {
-		return stacktrace.Errorf("failed to create node dir: %w", err)
-	}
-	return n.writeConfig()
-}
-
-func (n *Node) writeMetricsSnapshot(data []byte) error {
-	metricsDir := filepath.Join(n.DataDir, "metrics")
-	if err := os.MkdirAll(metricsDir, perms.ReadWriteExecute); err != nil {
-		return stacktrace.Errorf("failed to create metrics dir: %w", err)
-	}
-	// Create a compatible filesystem from the current timestamp
-	ts := time.Now().UTC().Format(time.RFC3339)
-	ts = strings.ReplaceAll(strings.ReplaceAll(ts, ":", ""), "-", "")
-	metricsPath := filepath.Join(metricsDir, ts)
-	return os.WriteFile(metricsPath, data, perms.ReadWrite)
-}
+// Create a compatible filesystem from the current timestamp

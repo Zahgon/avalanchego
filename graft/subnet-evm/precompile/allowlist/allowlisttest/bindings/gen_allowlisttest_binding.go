@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -45,19 +45,8 @@ var AllowListTestBin = AllowListTestMetaData.Bin
 
 // DeployAllowListTest deploys a new Ethereum contract, binding an instance of AllowListTest to it.
 func DeployAllowListTest(auth *bind.TransactOpts, backend bind.ContractBackend, precompileAddr common.Address) (common.Address, *types.Transaction, *AllowListTest, error) {
-	parsed, err := AllowListTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(AllowListTestBin), backend, precompileAddr)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &AllowListTest{AllowListTestCaller: AllowListTestCaller{contract: contract}, AllowListTestTransactor: AllowListTestTransactor{contract: contract}, AllowListTestFilterer: AllowListTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // AllowListTest is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type AllowListTestTransactorRaw struct {
 
 // NewAllowListTest creates a new instance of AllowListTest, bound to a specific deployed contract.
 func NewAllowListTest(address common.Address, backend bind.ContractBackend) (*AllowListTest, error) {
-	contract, err := bindAllowListTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &AllowListTest{AllowListTestCaller: AllowListTestCaller{contract: contract}, AllowListTestTransactor: AllowListTestTransactor{contract: contract}, AllowListTestFilterer: AllowListTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewAllowListTestCaller creates a new read-only instance of AllowListTest, bound to a specific deployed contract.
 func NewAllowListTestCaller(address common.Address, caller bind.ContractCaller) (*AllowListTestCaller, error) {
-	contract, err := bindAllowListTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &AllowListTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewAllowListTestTransactor creates a new write-only instance of AllowListTest, bound to a specific deployed contract.
 func NewAllowListTestTransactor(address common.Address, transactor bind.ContractTransactor) (*AllowListTestTransactor, error) {
-	contract, err := bindAllowListTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &AllowListTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewAllowListTestFilterer creates a new log filterer instance of AllowListTest, bound to a specific deployed contract.
 func NewAllowListTestFilterer(address common.Address, filterer bind.ContractFilterer) (*AllowListTestFilterer, error) {
-	contract, err := bindAllowListTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &AllowListTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindAllowListTest binds a generic wrapper to an already deployed contract.
 func bindAllowListTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := AllowListTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindAllowListTest(address common.Address, caller bind.ContractCaller, trans
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_AllowListTest *AllowListTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _AllowListTest.Contract.AllowListTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_AllowListTest *AllowListTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _AllowListTest.Contract.AllowListTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_AllowListTest *AllowListTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _AllowListTest.Contract.AllowListTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,266 +165,259 @@ func (_AllowListTest *AllowListTestRaw) Transact(opts *bind.TransactOpts, method
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_AllowListTest *AllowListTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _AllowListTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_AllowListTest *AllowListTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _AllowListTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_AllowListTest *AllowListTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _AllowListTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // IsAdmin is a free data retrieval call binding the contract method 0x24d7806c.
 //
 // Solidity: function isAdmin(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCaller) IsAdmin(opts *bind.CallOpts, addr common.Address) (bool, error) {
-	var out []interface{}
-	err := _AllowListTest.contract.Call(opts, &out, "isAdmin", addr)
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsAdmin is a free data retrieval call binding the contract method 0x24d7806c.
 //
 // Solidity: function isAdmin(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestSession) IsAdmin(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsAdmin(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsAdmin is a free data retrieval call binding the contract method 0x24d7806c.
 //
 // Solidity: function isAdmin(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCallerSession) IsAdmin(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsAdmin(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsEnabled is a free data retrieval call binding the contract method 0x9015d371.
 //
 // Solidity: function isEnabled(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCaller) IsEnabled(opts *bind.CallOpts, addr common.Address) (bool, error) {
-	var out []interface{}
-	err := _AllowListTest.contract.Call(opts, &out, "isEnabled", addr)
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsEnabled is a free data retrieval call binding the contract method 0x9015d371.
 //
 // Solidity: function isEnabled(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestSession) IsEnabled(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsEnabled(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsEnabled is a free data retrieval call binding the contract method 0x9015d371.
 //
 // Solidity: function isEnabled(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCallerSession) IsEnabled(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsEnabled(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsManager is a free data retrieval call binding the contract method 0xf3ae2415.
 //
 // Solidity: function isManager(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCaller) IsManager(opts *bind.CallOpts, addr common.Address) (bool, error) {
-	var out []interface{}
-	err := _AllowListTest.contract.Call(opts, &out, "isManager", addr)
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsManager is a free data retrieval call binding the contract method 0xf3ae2415.
 //
 // Solidity: function isManager(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestSession) IsManager(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsManager(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // IsManager is a free data retrieval call binding the contract method 0xf3ae2415.
 //
 // Solidity: function isManager(address addr) view returns(bool)
 func (_AllowListTest *AllowListTestCallerSession) IsManager(addr common.Address) (bool, error) {
-	return _AllowListTest.Contract.IsManager(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256)
 func (_AllowListTest *AllowListTestCaller) ReadAllowList(opts *bind.CallOpts, addr common.Address) (*big.Int, error) {
-	var out []interface{}
-	err := _AllowListTest.contract.Call(opts, &out, "readAllowList", addr)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256)
 func (_AllowListTest *AllowListTestSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _AllowListTest.Contract.ReadAllowList(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256)
 func (_AllowListTest *AllowListTestCallerSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _AllowListTest.Contract.ReadAllowList(&_AllowListTest.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DeployContract is a paid mutator transaction binding the contract method 0x6cd5c39b.
 //
 // Solidity: function deployContract() returns()
 func (_AllowListTest *AllowListTestTransactor) DeployContract(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "deployContract")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DeployContract is a paid mutator transaction binding the contract method 0x6cd5c39b.
 //
 // Solidity: function deployContract() returns()
 func (_AllowListTest *AllowListTestSession) DeployContract() (*types.Transaction, error) {
-	return _AllowListTest.Contract.DeployContract(&_AllowListTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DeployContract is a paid mutator transaction binding the contract method 0x6cd5c39b.
 //
 // Solidity: function deployContract() returns()
 func (_AllowListTest *AllowListTestTransactorSession) DeployContract() (*types.Transaction, error) {
-	return _AllowListTest.Contract.DeployContract(&_AllowListTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Revoke is a paid mutator transaction binding the contract method 0x74a8f103.
 //
 // Solidity: function revoke(address addr) returns()
 func (_AllowListTest *AllowListTestTransactor) Revoke(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "revoke", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Revoke is a paid mutator transaction binding the contract method 0x74a8f103.
 //
 // Solidity: function revoke(address addr) returns()
 func (_AllowListTest *AllowListTestSession) Revoke(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.Revoke(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Revoke is a paid mutator transaction binding the contract method 0x74a8f103.
 //
 // Solidity: function revoke(address addr) returns()
 func (_AllowListTest *AllowListTestTransactorSession) Revoke(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.Revoke(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_AllowListTest *AllowListTestTransactor) SetAdmin(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "setAdmin", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_AllowListTest *AllowListTestSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetAdmin(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_AllowListTest *AllowListTestTransactorSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetAdmin(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_AllowListTest *AllowListTestTransactor) SetEnabled(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "setEnabled", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_AllowListTest *AllowListTestSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetEnabled(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_AllowListTest *AllowListTestTransactorSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetEnabled(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_AllowListTest *AllowListTestTransactor) SetManager(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "setManager", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_AllowListTest *AllowListTestSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetManager(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_AllowListTest *AllowListTestTransactorSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetManager(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_AllowListTest *AllowListTestTransactor) SetNone(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.contract.Transact(opts, "setNone", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_AllowListTest *AllowListTestSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetNone(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_AllowListTest *AllowListTestTransactorSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _AllowListTest.Contract.SetNone(&_AllowListTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

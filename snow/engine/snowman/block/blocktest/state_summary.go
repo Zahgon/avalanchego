@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
@@ -30,24 +28,13 @@ type StateSummary struct {
 	AcceptF    func(context.Context) (block.StateSyncMode, error)
 }
 
-func (s *StateSummary) ID() ids.ID {
-	return s.IDV
-}
+func (s *StateSummary) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (s *StateSummary) Height() uint64 {
-	return s.HeightV
-}
+func (s *StateSummary) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *StateSummary) Bytes() []byte {
-	return s.BytesV
-}
+func (s *StateSummary) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func (s *StateSummary) Accept(ctx context.Context) (block.StateSyncMode, error) {
-	if s.AcceptF != nil {
-		return s.AcceptF(ctx)
-	}
-	if s.T != nil {
-		require.False(s.T, s.CantAccept, errAccept)
-	}
-	return block.StateSyncSkipped, errAccept
+	_ = "STUB: not implemented"
+	return *new(block.StateSyncMode), nil
 }

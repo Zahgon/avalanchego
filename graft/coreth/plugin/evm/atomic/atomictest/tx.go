@@ -4,15 +4,12 @@
 package atomictest
 
 import (
-	"math/rand"
-
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/codec/linearcodec"
 	"github.com/ava-labs/avalanchego/graft/coreth/params/extras"
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/atomic"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
 
@@ -55,116 +52,81 @@ type TestUnsignedTx struct {
 }
 
 // GasUsed implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) GasUsed(bool) (uint64, error) { return t.GasUsedV, nil }
+func (t *TestUnsignedTx) GasUsed(bool) (uint64, error) {
+	_ = "STUB: not implemented"
+	return 0,
 
-// Verify implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) Verify(*snow.Context, extras.Rules) error { return t.VerifyV }
+		// Verify implements the UnsignedAtomicTx interface
+		nil
+}
 
-// AtomicOps implements the UnsignedAtomicTx interface
+func (t *TestUnsignedTx) Verify(*snow.Context, extras.Rules) error {
+	_ = "STUB: not implemented"
+
+	// AtomicOps implements the UnsignedAtomicTx interface
+	return nil
+}
+
 func (t *TestUnsignedTx) AtomicOps() (ids.ID, *avalancheatomic.Requests, error) {
-	return t.AcceptRequestsBlockchainIDV, t.AcceptRequestsV, nil
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil, nil
 }
 
 // Initialize implements the UnsignedAtomicTx interface
-func (*TestUnsignedTx) Initialize(_, _ []byte) {}
+func (*TestUnsignedTx) Initialize(_, _ []byte) {
+	_ = "STUB: not implemented"
 
-// ID implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) ID() ids.ID { return t.IDV }
+	// ID implements the UnsignedAtomicTx interface
+	return
+}
 
-// Burned implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) Burned(ids.ID) (uint64, error) { return t.BurnedV, nil }
+func (t *TestUnsignedTx) ID() ids.ID {
+	_ = "STUB: not implemented"
 
-// Bytes implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) Bytes() []byte { return t.UnsignedBytesV }
+	// Burned implements the UnsignedAtomicTx interface
+	return *new(ids.ID)
+}
+
+func (t *TestUnsignedTx) Burned(ids.ID) (uint64, error) {
+	_ = "STUB: not implemented"
+	return 0,
+
+		// Bytes implements the UnsignedAtomicTx interface
+		nil
+}
+
+func (t *TestUnsignedTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // SignedBytes implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) SignedBytes() []byte { return t.SignedBytesV }
+func (t *TestUnsignedTx) SignedBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // InputUTXOs implements the UnsignedAtomicTx interface
-func (t *TestUnsignedTx) InputUTXOs() set.Set[ids.ID] { return t.InputUTXOsV }
+func (t *TestUnsignedTx) InputUTXOs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 // Visit implements the UnsignedAtomicTx interface
 func (t *TestUnsignedTx) Visit(atomic.Visitor) error {
-	return t.VisitV
+	_ = "STUB: not implemented"
+
+	// EVMStateTransfer implements the UnsignedAtomicTx interface
+	return nil
 }
 
-// EVMStateTransfer implements the UnsignedAtomicTx interface
 func (t *TestUnsignedTx) EVMStateTransfer(*snow.Context, atomic.StateDB) error {
-	return t.EVMStateTransferV
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var TestBlockchainID = ids.GenerateTestID()
 
 func GenerateTestImportTxWithGas(gasUsed uint64, burned uint64) *atomic.Tx {
-	return &atomic.Tx{
-		UnsignedAtomicTx: &TestUnsignedTx{
-			IDV:                         ids.GenerateTestID(),
-			GasUsedV:                    gasUsed,
-			BurnedV:                     burned,
-			AcceptRequestsBlockchainIDV: TestBlockchainID,
-			AcceptRequestsV: &avalancheatomic.Requests{
-				RemoveRequests: [][]byte{
-					utils.RandomBytes(32),
-					utils.RandomBytes(32),
-				},
-			},
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func GenerateTestImportTx() *atomic.Tx {
-	return &atomic.Tx{
-		UnsignedAtomicTx: &TestUnsignedTx{
-			IDV:                         ids.GenerateTestID(),
-			AcceptRequestsBlockchainIDV: TestBlockchainID,
-			AcceptRequestsV: &avalancheatomic.Requests{
-				RemoveRequests: [][]byte{
-					utils.RandomBytes(32),
-					utils.RandomBytes(32),
-				},
-			},
-		},
-	}
-}
+func GenerateTestImportTx() *atomic.Tx { _ = "STUB: not implemented"; return nil }
 
-func GenerateTestExportTx() *atomic.Tx {
-	return &atomic.Tx{
-		UnsignedAtomicTx: &TestUnsignedTx{
-			IDV:                         ids.GenerateTestID(),
-			AcceptRequestsBlockchainIDV: TestBlockchainID,
-			AcceptRequestsV: &avalancheatomic.Requests{
-				PutRequests: []*avalancheatomic.Element{
-					{
-						Key:   utils.RandomBytes(16),
-						Value: utils.RandomBytes(24),
-						Traits: [][]byte{
-							utils.RandomBytes(32),
-							utils.RandomBytes(32),
-						},
-					},
-				},
-			},
-		},
-	}
-}
+func GenerateTestExportTx() *atomic.Tx { _ = "STUB: not implemented"; return nil }
 
-func NewTestTx() *atomic.Tx {
-	txType := rand.Intn(2)
-	switch txType {
-	case 0:
-		return GenerateTestImportTx()
-	case 1:
-		return GenerateTestExportTx()
-	default:
-		panic("rng generated unexpected value for tx type")
-	}
-}
+func NewTestTx() *atomic.Tx { _ = "STUB: not implemented"; return nil }
 
-func NewTestTxs(numTxs int) []*atomic.Tx {
-	txs := make([]*atomic.Tx, 0, numTxs)
-	for i := 0; i < numTxs; i++ {
-		txs = append(txs, NewTestTx())
-	}
-
-	return txs
-}
+func NewTestTxs(numTxs int) []*atomic.Tx { _ = "STUB: not implemented"; return nil }

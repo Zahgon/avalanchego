@@ -6,9 +6,7 @@ package simplex
 //go:generate go tool canoto $GOFILE
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/simplex"
 
@@ -47,81 +45,21 @@ type canotoQC struct {
 }
 
 // Signers returns the list of signers for the quorum certificate.
-func (qc *QC) Signers() []simplex.NodeID {
-	signers := make([]simplex.NodeID, len(qc.signers))
-	for i, signer := range qc.signers {
-		signers[i] = signer[:]
-	}
-
-	return signers
-}
+func (qc *QC) Signers() []simplex.NodeID { _ = "STUB: not implemented"; return nil }
 
 // Verify checks if the quorum certificate is valid by verifying the aggregated signature against the signers' public keys.
-func (qc *QC) Verify(msg []byte) error {
-	quorum := simplex.Quorum(len(qc.verifier.nodeID2PK))
-	if len(qc.signers) != quorum {
-		return fmt.Errorf("%w: expected %d signers but got %d", errUnexpectedSigners, quorum, len(qc.signers))
-	}
+func (qc *QC) Verify(msg []byte) error { _ = "STUB: not implemented"; return nil }
 
-	uniqueSigners := set.NewSet[ids.NodeID](len(qc.signers))
-	pks := make([]*bls.PublicKey, 0, len(qc.signers))
+// ensure signers are not double counted and are in the membership set
 
-	// ensure signers are not double counted and are in the membership set
-	for _, signer := range qc.signers {
-		if uniqueSigners.Contains(signer) {
-			return fmt.Errorf("%w: %x", errDuplicateSigner, signer)
-		}
-
-		pk, exists := qc.verifier.nodeID2PK[signer]
-		if !exists {
-			return fmt.Errorf("%w: %x", errSignerNotFound, signer)
-		}
-
-		uniqueSigners.Add(signer)
-		pks = append(pks, pk)
-	}
-
-	// aggregate the public keys
-	aggPK, err := bls.AggregatePublicKeys(pks)
-	if err != nil {
-		return fmt.Errorf("%w: %w", errSignatureAggregation, err)
-	}
-
-	message2Verify, err := encodeMessageToSign(msg, qc.verifier.chainID, qc.verifier.networkID)
-	if err != nil {
-		return fmt.Errorf("%w: %w", errEncodingMessageToSign, err)
-	}
-
-	if !bls.Verify(aggPK, qc.sig, message2Verify) {
-		return errSignatureVerificationFailed
-	}
-
-	return nil
-}
+// aggregate the public keys
 
 // Bytes serializes the quorum certificate into bytes.
-func (qc *QC) Bytes() []byte {
-	sigBytes := bls.SignatureToBytes(qc.sig)
-	signers := qc.createSignersBitSet()
+func (qc *QC) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-	canotoQC := &canotoQC{
-		Sig:     [bls.SignatureLen]byte(sigBytes),
-		Signers: signers,
-	}
+func (qc *QC) createSignersBitSet() []byte { _ = "STUB: not implemented"; return nil }
 
-	return canotoQC.MarshalCanoto()
-}
-
-func (qc *QC) createSignersBitSet() []byte {
-	bitset := set.NewBits()
-	for _, signer := range qc.signers {
-		// index should always exist, since we deserialized the signers from the same verifier
-		index := qc.verifier.canonicalNodeIDIndices[signer]
-		bitset.Add(index)
-	}
-
-	return bitset.Bytes()
-}
+// index should always exist, since we deserialized the signers from the same verifier
 
 type QCDeserializer struct {
 	verifier *BLSVerifier
@@ -129,26 +67,8 @@ type QCDeserializer struct {
 
 // DeserializeQuorumCertificate deserializes a quorum certificate from bytes.
 func (d *QCDeserializer) DeserializeQuorumCertificate(bytes []byte) (simplex.QuorumCertificate, error) {
-	var canotoQC canotoQC
-	if err := canotoQC.UnmarshalCanoto(bytes); err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedToParseQC, err)
-	}
-
-	sig, err := bls.SignatureFromBytes(canotoQC.Sig[:])
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedToParseSignature, err)
-	}
-
-	signers, err := d.signersFromBytes(canotoQC.Signers)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errInvalidBitSet, err)
-	}
-
-	return &QC{
-		sig:      sig,
-		signers:  signers,
-		verifier: d.verifier,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(simplex.QuorumCertificate), nil
 }
 
 // SignatureAggregator aggregates signatures into a quorum certificate.
@@ -160,74 +80,21 @@ type SignatureAggregator struct {
 // It requires at least a quorum of signatures to succeed.
 // If any signature is from a signer not in the membership set, it returns an error.
 func (a *SignatureAggregator) Aggregate(signatures []simplex.Signature) (simplex.QuorumCertificate, error) {
-	quorumSize := simplex.Quorum(len(a.verifier.nodeID2PK))
-	if len(signatures) < quorumSize {
-		return nil, fmt.Errorf("%w: expected %d signatures but got %d", errUnexpectedSigners, quorumSize, len(signatures))
-	}
-	signatures = signatures[:quorumSize]
-
-	signers := make([]ids.NodeID, 0, quorumSize)
-	sigs := make([]*bls.Signature, 0, quorumSize)
-	for _, signature := range signatures {
-		signer := signature.Signer
-		id, err := ids.ToNodeID(signer)
-		if err != nil {
-			return nil, fmt.Errorf("%w: %w", errInvalidNodeID, err)
-		}
-
-		if _, exists := a.verifier.nodeID2PK[id]; !exists {
-			return nil, fmt.Errorf("%w: %x", errSignerNotFound, signer)
-		}
-		sig, err := bls.SignatureFromBytes(signature.Value)
-		if err != nil {
-			return nil, fmt.Errorf("%w: %w", errFailedToParseSignature, err)
-		}
-
-		signers = append(signers, id)
-		sigs = append(sigs, sig)
-	}
-
-	aggregatedSig, err := bls.AggregateSignatures(sigs)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errSignatureAggregation, err)
-	}
-
-	return &QC{
-		verifier: a.verifier,
-		signers:  signers,
-		sig:      aggregatedSig,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(simplex.QuorumCertificate), nil
 }
 
 // IsQuorum checks if the provided nodes are a quorum of the membership set.
 // For now, this is calculated using one node = one vote, but in the future we can adjust
 // this calculation to cross reference validator weights if we want to support PoS.
 func (a *SignatureAggregator) IsQuorum(nodes []simplex.NodeID) bool {
-	uniqueNodes := set.NewSet[ids.NodeID](len(nodes))
-	for _, node := range nodes {
-		nodeID := ids.NodeID(node)
-		if _, exists := a.verifier.nodeID2PK[nodeID]; !exists {
-			return false
-		}
-		uniqueNodes.Add(nodeID)
-	}
-
-	quorumSize := simplex.Quorum(len(a.verifier.nodeID2PK))
-
-	return len(uniqueNodes) >= quorumSize
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (d *QCDeserializer) signersFromBytes(signerBytes []byte) ([]ids.NodeID, error) {
-	signerIndices := set.BitsFromBytes(signerBytes)
-	if !bytes.Equal(signerIndices.Bytes(), signerBytes) {
-		return nil, errInvalidBitSet
-	}
-
-	signers, err := filterNodes(signerIndices, d.verifier.canonicalNodeIDs)
-	if err != nil {
-		return nil, fmt.Errorf("%w: %w", errFailedToFilterSigners, err)
-	}
-	return signers, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // filterNodes returns the nodeIDs in nodeIDs whose
@@ -238,23 +105,9 @@ func filterNodes(
 	indices set.Bits,
 	nodeIDs []ids.NodeID,
 ) ([]ids.NodeID, error) {
+	_ = "STUB: not implemented"
 	// Verify that all alleged signers exist
-	if indices.BitLen() > len(nodeIDs) {
-		return nil, fmt.Errorf(
-			"%w: NumIndices (%d) >= NumFilteredValidators (%d)",
-			errNodeNotFound,
-			indices.BitLen()-1, // -1 to convert from length to index
-			len(nodeIDs),
-		)
-	}
-
-	filteredNodes := make([]ids.NodeID, 0, len(nodeIDs))
-	for i, nodeID := range nodeIDs {
-		if !indices.Contains(i) {
-			continue
-		}
-
-		filteredNodes = append(filteredNodes, nodeID)
-	}
-	return filteredNodes, nil
+	return nil, nil
 }
+
+// -1 to convert from length to index

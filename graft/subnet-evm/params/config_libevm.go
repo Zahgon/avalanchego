@@ -6,22 +6,19 @@ package params
 import (
 	"math/big"
 
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/libevm"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/modules"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/precompileconfig"
 
 	ethparams "github.com/ava-labs/libevm/params"
 )
 
 func extrasToRegister() ethparams.Extras[*extras.ChainConfig, RulesExtra] {
-	return ethparams.Extras[*extras.ChainConfig, RulesExtra]{
-		ReuseJSONRoot: true, // Reuse the root JSON input when unmarshalling the extra payload.
-		NewRules:      constructRulesExtra,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Reuse the root JSON input when unmarshalling the extra payload.
 
 // RegisterExtras registers hooks and payloads with libevm. It MUST NOT be
 // called more than once and therefore is only allowed to be used in tests and
@@ -30,9 +27,7 @@ func extrasToRegister() ethparams.Extras[*extras.ChainConfig, RulesExtra] {
 //
 // Without a call to RegisterExtras, much of the functionality of this package
 // will work, and most will simply panic.
-func RegisterExtras() {
-	payloads = ethparams.RegisterExtras(extrasToRegister())
-}
+func RegisterExtras() { _ = "STUB: not implemented"; return }
 
 // WithTempRegisteredExtras runs `fn` with temporary registration otherwise
 // equivalent to a call to [RegisterExtras], but limited to the life of `fn`.
@@ -41,16 +36,8 @@ func RegisterExtras() {
 // `evm.WithTempRegisteredLibEVMExtras()` instead as it calls this along with
 // all other temporary-registration functions.
 func WithTempRegisteredExtras(lock libevm.ExtrasLock, fn func() error) error {
-	old := payloads
-	defer func() { payloads = old }()
-
-	return ethparams.WithTempRegisteredExtras(
-		lock, extrasToRegister(),
-		func(extras ethparams.ExtraPayloads[*extras.ChainConfig, RulesExtra]) error {
-			payloads = extras
-			return fn()
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var payloads ethparams.ExtraPayloads[*extras.ChainConfig, RulesExtra]
@@ -61,27 +48,8 @@ var payloads ethparams.ExtraPayloads[*extras.ChainConfig, RulesExtra]
 //
 //nolint:revive // General-purpose types lose the meaning of args if unused ones are removed
 func constructRulesExtra(c *ethparams.ChainConfig, r *ethparams.Rules, cEx *extras.ChainConfig, blockNum *big.Int, isMerge bool, timestamp uint64) RulesExtra {
-	var rules RulesExtra
-	if cEx == nil {
-		return rules
-	}
-	rules.AvalancheRules = cEx.GetAvalancheRules(timestamp)
-
-	// Initialize the stateful precompiles that should be enabled at [blockTimestamp].
-	rules.Precompiles = make(map[common.Address]precompileconfig.Config)
-	rules.Predicaters = make(map[common.Address]precompileconfig.Predicater)
-	rules.AccepterPrecompiles = make(map[common.Address]precompileconfig.Accepter)
-	for _, module := range modules.RegisteredModules() {
-		if config := cEx.GetActivePrecompileConfig(module.Address, timestamp); config != nil && !config.IsDisabled() {
-			rules.Precompiles[module.Address] = config
-			if predicater, ok := config.(precompileconfig.Predicater); ok {
-				rules.Predicaters[module.Address] = predicater
-			}
-			if precompileAccepter, ok := config.(precompileconfig.Accepter); ok {
-				rules.AccepterPrecompiles[module.Address] = precompileAccepter
-			}
-		}
-	}
-
-	return rules
+	_ = "STUB: not implemented"
+	return *new(RulesExtra)
 }
+
+// Initialize the stateful precompiles that should be enabled at [blockTimestamp].

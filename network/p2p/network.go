@@ -5,9 +5,6 @@ package p2p
 
 import (
 	"context"
-	"encoding/binary"
-	"errors"
-	"strconv"
 	"sync"
 	"time"
 
@@ -48,38 +45,8 @@ func NewNetwork(
 	namespace string,
 	connectionHandlers ...ConnectionHandler,
 ) (*Network, error) {
-	metrics := metrics{
-		msgTime: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Namespace: namespace,
-				Name:      "msg_time",
-				Help:      "message handling time (ns)",
-			},
-			labelNames,
-		),
-		msgCount: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Namespace: namespace,
-				Name:      "msg_count",
-				Help:      "message count (n)",
-			},
-			labelNames,
-		),
-	}
-
-	err := errors.Join(
-		registerer.Register(metrics.msgTime),
-		registerer.Register(metrics.msgCount),
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Network{
-		sender:             sender,
-		connectionHandlers: connectionHandlers,
-		router:             newRouter(log, sender, metrics),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Network exposes networking state and supports building p2p application
@@ -92,52 +59,46 @@ type Network struct {
 }
 
 func (n *Network) AppRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, deadline time.Time, request []byte) error {
-	return n.router.AppRequest(ctx, nodeID, requestID, deadline, request)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (n *Network) AppResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, response []byte) error {
-	return n.router.AppResponse(ctx, nodeID, requestID, response)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (n *Network) AppRequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32, appErr *common.AppError) error {
-	return n.router.AppRequestFailed(ctx, nodeID, requestID, appErr)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (n *Network) AppGossip(ctx context.Context, nodeID ids.NodeID, msg []byte) error {
-	return n.router.AppGossip(ctx, nodeID, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (n *Network) Connected(_ context.Context, nodeID ids.NodeID, _ *version.Application) error {
-	for _, c := range n.connectionHandlers {
-		c.Connected(nodeID)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (n *Network) Disconnected(_ context.Context, nodeID ids.NodeID) error {
-	for _, c := range n.connectionHandlers {
-		c.Disconnected(nodeID)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // NewClient returns a Client that can be used to send messages for the
 // corresponding protocol.
 func (n *Network) NewClient(handlerID uint64, nodeSampler NodeSampler) *Client {
-	return &Client{
-		handlerIDStr:  strconv.FormatUint(handlerID, 10),
-		handlerPrefix: ProtocolPrefix(handlerID),
-		sender:        n.sender,
-		router:        n.router,
-		nodeSampler:   nodeSampler,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AddHandler reserves an identifier for an application protocol
 func (n *Network) AddHandler(handlerID uint64, handler Handler) error {
-	return n.router.addHandler(handlerID, handler)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Peers contains metadata about the current set of connected peers
@@ -146,41 +107,16 @@ type Peers struct {
 	set  set.SampleableSet[ids.NodeID]
 }
 
-func (p *Peers) Connected(nodeID ids.NodeID) {
-	p.lock.Lock()
-	defer p.lock.Unlock()
+func (p *Peers) Connected(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
-	p.set.Add(nodeID)
-}
+func (p *Peers) Disconnected(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
-func (p *Peers) Disconnected(nodeID ids.NodeID) {
-	p.lock.Lock()
-	defer p.lock.Unlock()
+func (p *Peers) Has(nodeID ids.NodeID) bool { _ = "STUB: not implemented"; return false }
 
-	p.set.Remove(nodeID)
-}
-
-func (p *Peers) Has(nodeID ids.NodeID) bool {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.set.Contains(nodeID)
-}
-
-func (p *Peers) Len() int {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.set.Len()
-}
+func (p *Peers) Len() int { _ = "STUB: not implemented"; return 0 }
 
 // Sample returns a pseudo-random sample of up to limit Peers
-func (p *Peers) Sample(limit int) []ids.NodeID {
-	p.lock.RLock()
-	defer p.lock.RUnlock()
-
-	return p.set.Sample(limit)
-}
+func (p *Peers) Sample(limit int) []ids.NodeID { _ = "STUB: not implemented"; return nil }
 
 // PeerSampler implements NodeSampler
 type PeerSampler struct {
@@ -188,9 +124,8 @@ type PeerSampler struct {
 }
 
 func (p PeerSampler) Sample(_ context.Context, limit int) []ids.NodeID {
-	return p.Peers.Sample(limit)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func ProtocolPrefix(handlerID uint64) []byte {
-	return binary.AppendUvarint(nil, handlerID)
-}
+func ProtocolPrefix(handlerID uint64) []byte { _ = "STUB: not implemented"; return nil }

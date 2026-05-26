@@ -37,16 +37,18 @@ type EthereumAPI struct {
 }
 
 // NewEthereumAPI creates a new Ethereum protocol API for full nodes.
-func NewEthereumAPI(e *Ethereum) *EthereumAPI {
-	return &EthereumAPI{e}
-}
+func NewEthereumAPI(e *Ethereum) *EthereumAPI { _ = "STUB: not implemented"; return nil }
 
 // Etherbase is the address that mining rewards will be sent to.
 func (api *EthereumAPI) Etherbase() (common.Address, error) {
-	return api.e.Etherbase()
+	_ = "STUB: not implemented"
+	return *
+
+	// Coinbase is the address that mining rewards will be sent to (alias for Etherbase).
+	new(common.Address), nil
 }
 
-// Coinbase is the address that mining rewards will be sent to (alias for Etherbase).
 func (api *EthereumAPI) Coinbase() (common.Address, error) {
-	return api.Etherbase()
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil
 }

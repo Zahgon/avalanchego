@@ -4,19 +4,10 @@
 package app
 
 import (
-	"fmt"
-	"os"
-	"os/signal"
 	"sync"
-	"syscall"
-
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/node"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/perms"
-	"github.com/ava-labs/avalanchego/utils/ulimit"
 
 	nodeconfig "github.com/ava-labs/avalanchego/config/node"
 )
@@ -46,87 +37,33 @@ type App interface {
 }
 
 func New(config nodeconfig.Config) (App, error) {
+	_ = "STUB: not implemented"
 	// Set the data directory permissions to be read write.
-	if err := perms.ChmodR(config.DatabaseConfig.Path, true, perms.ReadWriteExecute); err != nil {
-		return nil, fmt.Errorf("failed to restrict the permissions of the database directory with: %w", err)
-	}
-	if err := perms.ChmodR(config.LoggingConfig.Directory, true, perms.ReadWriteExecute); err != nil {
-		return nil, fmt.Errorf("failed to restrict the permissions of the log directory with: %w", err)
-	}
-
-	logFactory := logging.NewFactory(config.LoggingConfig)
-	log, err := logFactory.Make("main")
-	if err != nil {
-		logFactory.Close()
-		return nil, fmt.Errorf("failed to initialize log: %w", err)
-	}
-
-	// update fd limit
-	fdLimit := config.FdLimit
-	if err := ulimit.Set(fdLimit, log); err != nil {
-		log.Fatal("failed to set fd-limit",
-			zap.Error(err),
-		)
-		logFactory.Close()
-		return nil, err
-	}
-
-	n, err := node.New(&config, logFactory, log)
-	if err != nil {
-		log.Fatal("failed to initialize node", zap.Error(err))
-		log.Stop()
-		logFactory.Close()
-		return nil, fmt.Errorf("failed to initialize node: %w", err)
-	}
-
-	return &app{
-		node:       n,
-		log:        log,
-		logFactory: logFactory,
-	}, nil
+	return *new(App), nil
 }
+
+// update fd limit
 
 func Run(app App) int {
+	_ = "STUB: not implemented"
 	// start running the application
-	app.Start()
-
-	// register terminationSignals to kill the application
-	terminationSignals := make(chan os.Signal, 1)
-	signal.Notify(terminationSignals, syscall.SIGINT, syscall.SIGTERM)
-
-	stackTraceSignal := make(chan os.Signal, 1)
-	signal.Notify(stackTraceSignal, syscall.SIGABRT)
-
-	// start up a new go routine to handle attempts to kill the application
-	go func() {
-		for range terminationSignals {
-			app.Stop()
-			return
-		}
-	}()
-
-	// start a goroutine to listen on SIGABRT signals,
-	// to print the stack trace to standard error.
-	go func() {
-		for range stackTraceSignal {
-			fmt.Fprint(os.Stderr, utils.GetStacktrace(true))
-		}
-	}()
-
-	// wait for the app to exit and get the exit code response
-	exitCode := app.ExitCode()
-
-	// shut down the termination signal go routine
-	signal.Stop(terminationSignals)
-	close(terminationSignals)
-
-	// shut down the stack trace go routine
-	signal.Stop(stackTraceSignal)
-	close(stackTraceSignal)
-
-	// return the exit code that the application reported
-	return exitCode
+	return 0
 }
+
+// register terminationSignals to kill the application
+
+// start up a new go routine to handle attempts to kill the application
+
+// start a goroutine to listen on SIGABRT signals,
+// to print the stack trace to standard error.
+
+// wait for the app to exit and get the exit code response
+
+// shut down the termination signal go routine
+
+// shut down the stack trace go routine
+
+// return the exit code that the application reported
 
 // app is a wrapper around a node that runs in this process
 type app struct {
@@ -139,40 +76,23 @@ type app struct {
 // Start the business logic of the node (as opposed to config reading, etc).
 // Does not block until the node is done.
 func (a *app) Start() {
+	_ = "STUB: not implemented"
 	// [p.ExitCode] will block until [p.exitWG.Done] is called
-	a.exitWG.Add(1)
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				fmt.Println("caught panic", r)
-			}
-			a.log.Stop()
-			a.logFactory.Close()
-			a.exitWG.Done()
-		}()
-		defer func() {
-			// If [p.node.Dispatch()] panics, then we should log the panic and
-			// then re-raise the panic. This is why the above defer is broken
-			// into two parts.
-			a.log.StopOnPanic()
-		}()
-
-		err := a.node.Dispatch()
-		a.log.Debug("dispatch returned",
-			zap.Error(err),
-		)
-	}()
+	return
 }
+
+// If [p.node.Dispatch()] panics, then we should log the panic and
+// then re-raise the panic. This is why the above defer is broken
+// into two parts.
 
 // Stop attempts to shutdown the currently running node. This function will
 // block until Shutdown returns.
 func (a *app) Stop() {
-	a.node.Shutdown(0)
+	_ = "STUB: not implemented"
+
+	// ExitCode returns the exit code that the node is reporting. This function
+	// blocks until the node has been shut down.
+	return
 }
 
-// ExitCode returns the exit code that the node is reporting. This function
-// blocks until the node has been shut down.
-func (a *app) ExitCode() int {
-	a.exitWG.Wait()
-	return a.node.ExitCode()
-}
+func (a *app) ExitCode() int { _ = "STUB: not implemented"; return 0 }

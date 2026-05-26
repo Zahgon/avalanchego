@@ -24,10 +24,8 @@ func WithOptions(
 	wallet Wallet,
 	options ...common.Option,
 ) Wallet {
-	return &withOptions{
-		wallet:  wallet,
-		options: options,
-	}
+	_ = "STUB: not implemented"
+	return *new(Wallet)
 }
 
 type withOptions struct {
@@ -36,24 +34,21 @@ type withOptions struct {
 }
 
 func (w *withOptions) Builder() builder.Builder {
-	return builder.WithOptions(
-		w.wallet.Builder(),
-		w.options...,
-	)
+	_ = "STUB: not implemented"
+	return *new(builder.Builder)
 }
 
 func (w *withOptions) Signer() walletsigner.Signer {
-	return w.wallet.Signer()
+	_ = "STUB: not implemented"
+	return *new(walletsigner.Signer)
 }
 
 func (w *withOptions) IssueBaseTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueBaseTx(
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueAddValidatorTx(
@@ -62,22 +57,16 @@ func (w *withOptions) IssueAddValidatorTx(
 	shares uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueAddValidatorTx(
-		vdr,
-		rewardsOwner,
-		shares,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueAddSubnetValidatorTx(
 	vdr *txs.SubnetValidator,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueAddSubnetValidatorTx(
-		vdr,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueRemoveSubnetValidatorTx(
@@ -85,11 +74,8 @@ func (w *withOptions) IssueRemoveSubnetValidatorTx(
 	subnetID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueRemoveSubnetValidatorTx(
-		nodeID,
-		subnetID,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueAddDelegatorTx(
@@ -97,11 +83,8 @@ func (w *withOptions) IssueAddDelegatorTx(
 	rewardsOwner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueAddDelegatorTx(
-		vdr,
-		rewardsOwner,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueCreateChainTx(
@@ -112,24 +95,16 @@ func (w *withOptions) IssueCreateChainTx(
 	chainName string,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueCreateChainTx(
-		subnetID,
-		genesis,
-		vmID,
-		fxIDs,
-		chainName,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueCreateSubnetTx(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueCreateSubnetTx(
-		owner,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueTransferSubnetOwnershipTx(
@@ -137,11 +112,8 @@ func (w *withOptions) IssueTransferSubnetOwnershipTx(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueTransferSubnetOwnershipTx(
-		subnetID,
-		owner,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueConvertSubnetToL1Tx(
@@ -151,13 +123,8 @@ func (w *withOptions) IssueConvertSubnetToL1Tx(
 	validators []*txs.ConvertSubnetToL1Validator,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueConvertSubnetToL1Tx(
-		subnetID,
-		chainID,
-		address,
-		validators,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueRegisterL1ValidatorTx(
@@ -166,22 +133,16 @@ func (w *withOptions) IssueRegisterL1ValidatorTx(
 	message []byte,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueRegisterL1ValidatorTx(
-		balance,
-		proofOfPossession,
-		message,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueSetL1ValidatorWeightTx(
 	message []byte,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueSetL1ValidatorWeightTx(
-		message,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueIncreaseL1ValidatorBalanceTx(
@@ -189,21 +150,16 @@ func (w *withOptions) IssueIncreaseL1ValidatorBalanceTx(
 	balance uint64,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueIncreaseL1ValidatorBalanceTx(
-		validationID,
-		balance,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueDisableL1ValidatorTx(
 	validationID ids.ID,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueDisableL1ValidatorTx(
-		validationID,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueImportTx(
@@ -211,11 +167,8 @@ func (w *withOptions) IssueImportTx(
 	to *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueImportTx(
-		sourceChainID,
-		to,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueExportTx(
@@ -223,11 +176,8 @@ func (w *withOptions) IssueExportTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueExportTx(
-		chainID,
-		outputs,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueTransformSubnetTx(
@@ -247,23 +197,8 @@ func (w *withOptions) IssueTransformSubnetTx(
 	uptimeRequirement uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueTransformSubnetTx(
-		subnetID,
-		assetID,
-		initialSupply,
-		maxSupply,
-		minConsumptionRate,
-		maxConsumptionRate,
-		minValidatorStake,
-		maxValidatorStake,
-		minStakeDuration,
-		maxStakeDuration,
-		minDelegationFee,
-		minDelegatorStake,
-		maxValidatorWeightFactor,
-		uptimeRequirement,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueAddPermissionlessValidatorTx(
@@ -275,15 +210,8 @@ func (w *withOptions) IssueAddPermissionlessValidatorTx(
 	shares uint32,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueAddPermissionlessValidatorTx(
-		vdr,
-		signer,
-		assetID,
-		validationRewardsOwner,
-		delegationRewardsOwner,
-		shares,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueAddPermissionlessDelegatorTx(
@@ -292,30 +220,22 @@ func (w *withOptions) IssueAddPermissionlessDelegatorTx(
 	rewardsOwner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueAddPermissionlessDelegatorTx(
-		vdr,
-		assetID,
-		rewardsOwner,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueUnsignedTx(
 	utx txs.UnsignedTx,
 	options ...common.Option,
 ) (*txs.Tx, error) {
-	return w.wallet.IssueUnsignedTx(
-		utx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (w *withOptions) IssueTx(
 	tx *txs.Tx,
 	options ...common.Option,
 ) error {
-	return w.wallet.IssueTx(
-		tx,
-		common.UnionOptions(w.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

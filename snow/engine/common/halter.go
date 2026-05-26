@@ -3,8 +3,6 @@
 
 package common
 
-import "sync/atomic"
-
 var _ Haltable = (*Halter)(nil)
 
 type Haltable interface {
@@ -16,10 +14,6 @@ type Halter struct {
 	halted uint32
 }
 
-func (h *Halter) Halt() {
-	atomic.StoreUint32(&h.halted, 1)
-}
+func (h *Halter) Halt() { _ = "STUB: not implemented"; return }
 
-func (h *Halter) Halted() bool {
-	return atomic.LoadUint32(&h.halted) == 1
-}
+func (h *Halter) Halted() bool { _ = "STUB: not implemented"; return false }

@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 )
 
@@ -56,41 +55,23 @@ type statelessVertex struct {
 	bytes []byte
 }
 
-func (v statelessVertex) ID() ids.ID {
-	return v.id
-}
+func (v statelessVertex) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (v statelessVertex) Bytes() []byte {
-	return v.bytes
-}
+func (v statelessVertex) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (v statelessVertex) Version() uint16 {
-	return v.innerStatelessVertex.Version
-}
+func (v statelessVertex) Version() uint16 { _ = "STUB: not implemented"; return 0 }
 
-func (v statelessVertex) ChainID() ids.ID {
-	return v.innerStatelessVertex.ChainID
-}
+func (v statelessVertex) ChainID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (v statelessVertex) StopVertex() bool {
-	return v.innerStatelessVertex.Version == CodecVersionWithStopVtx
-}
+func (v statelessVertex) StopVertex() bool { _ = "STUB: not implemented"; return false }
 
-func (v statelessVertex) Height() uint64 {
-	return v.innerStatelessVertex.Height
-}
+func (v statelessVertex) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (v statelessVertex) Epoch() uint32 {
-	return v.innerStatelessVertex.Epoch
-}
+func (v statelessVertex) Epoch() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (v statelessVertex) ParentIDs() []ids.ID {
-	return v.innerStatelessVertex.ParentIDs
-}
+func (v statelessVertex) ParentIDs() []ids.ID { _ = "STUB: not implemented"; return nil }
 
-func (v statelessVertex) Txs() [][]byte {
-	return v.innerStatelessVertex.Txs
-}
+func (v statelessVertex) Txs() [][]byte { _ = "STUB: not implemented"; return nil }
 
 type innerStatelessVertex struct {
 	Version   uint16   `json:"version"`
@@ -101,47 +82,8 @@ type innerStatelessVertex struct {
 	Txs       [][]byte `json:"txs"       serializeV0:"true"`
 }
 
-func (v innerStatelessVertex) Verify() error {
-	if v.Version == CodecVersionWithStopVtx {
-		return v.verifyStopVertex()
-	}
-	return v.verify()
-}
+func (v innerStatelessVertex) Verify() error { _ = "STUB: not implemented"; return nil }
 
-func (v innerStatelessVertex) verify() error {
-	switch {
-	case v.Version != CodecVersion:
-		return errBadVersion
-	case v.Epoch != 0:
-		return errBadEpoch
-	case len(v.ParentIDs) > maxNumParents:
-		return errTooManyParentIDs
-	case len(v.Txs) == 0:
-		return errNoOperations
-	case len(v.Txs) > maxTxsPerVtx:
-		return errTooManyTxs
-	case !utils.IsSortedAndUnique(v.ParentIDs):
-		return errInvalidParents
-	case !utils.IsSortedAndUniqueByHash(v.Txs):
-		return errInvalidTxs
-	default:
-		return nil
-	}
-}
+func (v innerStatelessVertex) verify() error { _ = "STUB: not implemented"; return nil }
 
-func (v innerStatelessVertex) verifyStopVertex() error {
-	switch {
-	case v.Version != CodecVersionWithStopVtx:
-		return errBadVersion
-	case v.Epoch != 0:
-		return errBadEpoch
-	case len(v.ParentIDs) > maxNumParents:
-		return errTooManyParentIDs
-	case len(v.Txs) != 0:
-		return errTooManyTxs
-	case !utils.IsSortedAndUnique(v.ParentIDs):
-		return errInvalidParents
-	default:
-		return nil
-	}
-}
+func (v innerStatelessVertex) verifyStopVertex() error { _ = "STUB: not implemented"; return nil }

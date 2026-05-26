@@ -11,7 +11,6 @@ import (
 	"github.com/ava-labs/avalanchego/snow/uptime"
 	"github.com/ava-labs/avalanchego/snow/validators"
 	"github.com/ava-labs/avalanchego/upgrade"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/platformvm/reward"
@@ -91,19 +90,10 @@ type Internal struct {
 // Create the blockchain described in [tx], but only if this node is a member of
 // the subnet that validates the chain
 func (c *Internal) CreateChain(chainID ids.ID, tx *txs.CreateChainTx) {
-	if c.SybilProtectionEnabled && // Sybil protection is enabled, so nodes might not validate all chains
-		constants.PrimaryNetworkID != tx.SubnetID && // All nodes must validate the primary network
-		!c.TrackedSubnets.Contains(tx.SubnetID) { // This node doesn't validate this blockchain
-		return
-	}
-
-	chainParams := chains.ChainParameters{
-		ID:          chainID,
-		SubnetID:    tx.SubnetID,
-		GenesisData: tx.GenesisData,
-		VMID:        tx.VMID,
-		FxIDs:       tx.FxIDs,
-	}
-
-	c.Chains.QueueChainCreation(chainParams)
+	_ = "STUB: not implemented"
+	return
 }
+
+// Sybil protection is enabled, so nodes might not validate all chains
+// All nodes must validate the primary network
+// This node doesn't validate this blockchain

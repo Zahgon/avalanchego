@@ -4,15 +4,10 @@
 package sync
 
 import (
-	"bytes"
-	"math"
-
 	"github.com/google/btree"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/heap"
-	"github.com/ava-labs/avalanchego/utils/maybe"
-	"github.com/ava-labs/avalanchego/utils/timer"
 )
 
 // A priority queue of syncWorkItems.
@@ -29,57 +24,28 @@ type workHeap struct {
 	closed      bool
 }
 
-func newWorkHeap() *workHeap {
-	return &workHeap{
-		innerHeap: heap.NewSet[*workItem](func(a, b *workItem) bool {
-			return a.priority > b.priority
-		}),
-		sortedItems: btree.NewG(
-			2,
-			func(a, b *workItem) bool {
-				aNothing := a.start.IsNothing()
-				bNothing := b.start.IsNothing()
-				if aNothing {
-					// [a] is Nothing, so if [b] is Nothing, they're equal.
-					// Otherwise, [b] is greater.
-					return !bNothing
-				}
-				if bNothing {
-					// [a] has a value and [b] doesn't so [a] is greater.
-					return false
-				}
-				// [a] and [b] both contain values. Compare the values.
-				return bytes.Compare(a.start.Value(), b.start.Value()) < 0
-			},
-		),
-	}
-}
+func newWorkHeap() *workHeap { _ = "STUB: not implemented"; return nil }
+
+// [a] is Nothing, so if [b] is Nothing, they're equal.
+// Otherwise, [b] is greater.
+
+// [a] has a value and [b] doesn't so [a] is greater.
+
+// [a] and [b] both contain values. Compare the values.
 
 // Marks the heap as closed.
 func (wh *workHeap) Close() {
-	wh.closed = true
+	_ = "STUB: not implemented"
+
+	// Adds a new [item] into the heap. Will not merge items, unlike MergeInsert.
+	return
 }
 
-// Adds a new [item] into the heap. Will not merge items, unlike MergeInsert.
-func (wh *workHeap) Insert(item *workItem) {
-	if wh.closed {
-		return
-	}
-
-	wh.innerHeap.Push(item)
-	wh.sortedItems.ReplaceOrInsert(item)
-}
+func (wh *workHeap) Insert(item *workItem) { _ = "STUB: not implemented"; return }
 
 // Pops and returns a work item from the heap.
 // Returns nil if no work is available or the heap is closed.
-func (wh *workHeap) GetWork() *workItem {
-	if wh.closed || wh.Len() == 0 {
-		return nil
-	}
-	item, _ := wh.innerHeap.Pop()
-	wh.sortedItems.Delete(item)
-	return item
-}
+func (wh *workHeap) GetWork() *workItem { _ = "STUB: not implemented"; return nil }
 
 // Insert the item into the heap, merging it with existing items
 // that share a boundary and root ID.
@@ -88,101 +54,43 @@ func (wh *workHeap) GetWork() *workItem {
 // into a single work item with range [0,20].
 // e.g. if the heap contains work items [0,10] and [20,30],
 // and we add [10,20], we will merge them into [0,30].
-func (wh *workHeap) MergeInsert(item *workItem) {
-	if wh.closed {
-		return
-	}
+func (wh *workHeap) MergeInsert(item *workItem) { _ = "STUB: not implemented"; return }
 
-	var mergedBefore, mergedAfter *workItem
-	searchItem := &workItem{
-		start: item.start,
-	}
+// Find the item with the greatest start range which is less than [item.start].
+// Note that the iterator function will run at most once, since it always returns false.
 
-	// Find the item with the greatest start range which is less than [item.start].
-	// Note that the iterator function will run at most once, since it always returns false.
-	wh.sortedItems.DescendLessOrEqual(
-		searchItem,
-		func(beforeItem *workItem) bool {
-			if item.localRootID == beforeItem.localRootID &&
-				maybe.Equal(item.start, beforeItem.end, bytes.Equal) {
-				// [beforeItem.start, beforeItem.end] and [item.start, item.end] are
-				// merged into [beforeItem.start, item.end]
-				beforeItem.end = item.end
-				beforeItem.priority = max(item.priority, beforeItem.priority)
-				wh.innerHeap.Fix(beforeItem)
-				mergedBefore = beforeItem
-			}
-			return false
-		})
+// [beforeItem.start, beforeItem.end] and [item.start, item.end] are
+// merged into [beforeItem.start, item.end]
 
-	// Find the item with the smallest start range which is greater than [item.start].
-	// Note that the iterator function will run at most once, since it always returns false.
-	wh.sortedItems.AscendGreaterOrEqual(
-		searchItem,
-		func(afterItem *workItem) bool {
-			if item.localRootID == afterItem.localRootID &&
-				maybe.Equal(item.end, afterItem.start, bytes.Equal) {
-				// [item.start, item.end] and [afterItem.start, afterItem.end] are merged into
-				// [item.start, afterItem.end].
-				afterItem.start = item.start
-				afterItem.priority = max(item.priority, afterItem.priority)
-				wh.innerHeap.Fix(afterItem)
-				mergedAfter = afterItem
-			}
-			return false
-		})
+// Find the item with the smallest start range which is greater than [item.start].
+// Note that the iterator function will run at most once, since it always returns false.
 
-	// if the new item should be merged with both the item before and the item after,
-	// we can combine the before item with the after item
-	if mergedBefore != nil && mergedAfter != nil {
-		// combine the two ranges
-		mergedBefore.end = mergedAfter.end
-		// remove the second range since it is now covered by the first
-		wh.remove(mergedAfter)
-		// update the priority
-		mergedBefore.priority = max(mergedBefore.priority, mergedAfter.priority)
-		wh.innerHeap.Fix(mergedBefore)
-	}
+// [item.start, item.end] and [afterItem.start, afterItem.end] are merged into
+// [item.start, afterItem.end].
 
-	// nothing was merged, so add new item to the heap
-	if mergedBefore == nil && mergedAfter == nil {
-		// We didn't merge [item] with an existing one; put it in the heap.
-		wh.Insert(item)
-	}
-}
+// if the new item should be merged with both the item before and the item after,
+// we can combine the before item with the after item
+
+// combine the two ranges
+
+// remove the second range since it is now covered by the first
+
+// update the priority
+
+// nothing was merged, so add new item to the heap
+
+// We didn't merge [item] with an existing one; put it in the heap.
 
 // Deletes [item] from the heap.
-func (wh *workHeap) remove(item *workItem) {
-	wh.innerHeap.Remove(item)
-	wh.sortedItems.Delete(item)
-}
+func (wh *workHeap) remove(item *workItem) { _ = "STUB: not implemented"; return }
 
-func (wh *workHeap) Len() int {
-	return wh.innerHeap.Len()
-}
+func (wh *workHeap) Len() int { _ = "STUB: not implemented"; return 0 }
 
 // KeyspacePercent returns the approximate percentage of work in the heap
 // for a given [ids.ID] root, relative to the entire keyspace.
 // Keys are truncated to 8 bytes when calculating the progress.
-func (wh *workHeap) KeyspacePercent(root ids.ID) float64 {
-	var progress uint64
-	wh.sortedItems.Ascend(func(item *workItem) bool {
-		if item.localRootID != root {
-			return true
-		}
+func (wh *workHeap) KeyspacePercent(root ids.ID) float64 { _ = "STUB: not implemented"; return 0 }
 
-		// Determine the start value (0x0 if no value)
-		start := timer.ProgressFromHash(item.start.Value())
+// Determine the start value (0x0 if no value)
 
-		// Determine the end value (max if no value)
-		end := timer.ProgressFromHash(item.end.Value())
-		if end == 0 {
-			end = math.MaxUint64
-		}
-
-		progress += end - start
-		return true
-	})
-
-	return (float64(progress) / float64(math.MaxUint64)) * 100
-}
+// Determine the end value (max if no value)

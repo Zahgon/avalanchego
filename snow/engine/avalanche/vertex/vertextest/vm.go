@@ -7,8 +7,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowstorm"
 	"github.com/ava-labs/avalanchego/snow/engine/avalanche/vertex"
@@ -30,28 +28,14 @@ type VM struct {
 	ParseTxF   func(context.Context, []byte) (snowstorm.Tx, error)
 }
 
-func (vm *VM) Default(cant bool) {
-	vm.VM.Default(cant)
-
-	vm.CantParse = cant
-}
+func (vm *VM) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (vm *VM) Linearize(ctx context.Context, stopVertexID ids.ID) error {
-	if vm.LinearizeF != nil {
-		return vm.LinearizeF(ctx, stopVertexID)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantLinearize, errLinearize)
-	}
-	return errLinearize
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *VM) ParseTx(ctx context.Context, b []byte) (snowstorm.Tx, error) {
-	if vm.ParseTxF != nil {
-		return vm.ParseTxF(ctx, b)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantParse, errParse)
-	}
-	return nil, errParse
+	_ = "STUB: not implemented"
+	return *new(snowstorm.Tx), nil
 }

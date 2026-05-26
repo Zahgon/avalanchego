@@ -45,19 +45,8 @@ var TrieStressTestBin = TrieStressTestMetaData.Bin
 
 // DeployTrieStressTest deploys a new Ethereum contract, binding an instance of TrieStressTest to it.
 func DeployTrieStressTest(auth *bind.TransactOpts, backend bind.ContractBackend) (common.Address, *types.Transaction, *TrieStressTest, error) {
-	parsed, err := TrieStressTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(TrieStressTestBin), backend)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &TrieStressTest{TrieStressTestCaller: TrieStressTestCaller{contract: contract}, TrieStressTestTransactor: TrieStressTestTransactor{contract: contract}, TrieStressTestFilterer: TrieStressTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // TrieStressTest is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type TrieStressTestTransactorRaw struct {
 
 // NewTrieStressTest creates a new instance of TrieStressTest, bound to a specific deployed contract.
 func NewTrieStressTest(address common.Address, backend bind.ContractBackend) (*TrieStressTest, error) {
-	contract, err := bindTrieStressTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &TrieStressTest{TrieStressTestCaller: TrieStressTestCaller{contract: contract}, TrieStressTestTransactor: TrieStressTestTransactor{contract: contract}, TrieStressTestFilterer: TrieStressTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewTrieStressTestCaller creates a new read-only instance of TrieStressTest, bound to a specific deployed contract.
 func NewTrieStressTestCaller(address common.Address, caller bind.ContractCaller) (*TrieStressTestCaller, error) {
-	contract, err := bindTrieStressTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &TrieStressTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewTrieStressTestTransactor creates a new write-only instance of TrieStressTest, bound to a specific deployed contract.
 func NewTrieStressTestTransactor(address common.Address, transactor bind.ContractTransactor) (*TrieStressTestTransactor, error) {
-	contract, err := bindTrieStressTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &TrieStressTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewTrieStressTestFilterer creates a new log filterer instance of TrieStressTest, bound to a specific deployed contract.
 func NewTrieStressTestFilterer(address common.Address, filterer bind.ContractFilterer) (*TrieStressTestFilterer, error) {
-	contract, err := bindTrieStressTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &TrieStressTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindTrieStressTest binds a generic wrapper to an already deployed contract.
 func bindTrieStressTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := TrieStressTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindTrieStressTest(address common.Address, caller bind.ContractCaller, tran
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_TrieStressTest *TrieStressTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _TrieStressTest.Contract.TrieStressTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_TrieStressTest *TrieStressTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.TrieStressTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_TrieStressTest *TrieStressTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.TrieStressTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,37 +165,43 @@ func (_TrieStressTest *TrieStressTestRaw) Transact(opts *bind.TransactOpts, meth
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_TrieStressTest *TrieStressTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _TrieStressTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_TrieStressTest *TrieStressTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_TrieStressTest *TrieStressTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WriteValues is a paid mutator transaction binding the contract method 0x514a19d6.
 //
 // Solidity: function writeValues(uint256 value) returns()
 func (_TrieStressTest *TrieStressTestTransactor) WriteValues(opts *bind.TransactOpts, value *big.Int) (*types.Transaction, error) {
-	return _TrieStressTest.contract.Transact(opts, "writeValues", value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WriteValues is a paid mutator transaction binding the contract method 0x514a19d6.
 //
 // Solidity: function writeValues(uint256 value) returns()
 func (_TrieStressTest *TrieStressTestSession) WriteValues(value *big.Int) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.WriteValues(&_TrieStressTest.TransactOpts, value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WriteValues is a paid mutator transaction binding the contract method 0x514a19d6.
 //
 // Solidity: function writeValues(uint256 value) returns()
 func (_TrieStressTest *TrieStressTestTransactorSession) WriteValues(value *big.Int) (*types.Transaction, error) {
-	return _TrieStressTest.Contract.WriteValues(&_TrieStressTest.TransactOpts, value)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

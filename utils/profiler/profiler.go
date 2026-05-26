@@ -6,11 +6,6 @@ package profiler
 import (
 	"errors"
 	"os"
-	"path/filepath"
-	"runtime"
-	"runtime/pprof"
-
-	"github.com/ava-labs/avalanchego/utils/perms"
 )
 
 const (
@@ -54,81 +49,22 @@ type profiler struct {
 	cpuProfileFile *os.File
 }
 
-func New(dir string) Profiler {
-	return newProfiler(dir)
-}
+func New(dir string) Profiler { _ = "STUB: not implemented"; return *new(Profiler) }
 
-func newProfiler(dir string) *profiler {
-	return &profiler{
-		dir:             dir,
-		cpuProfileName:  filepath.Join(dir, cpuProfileFile),
-		memProfileName:  filepath.Join(dir, memProfileFile),
-		lockProfileName: filepath.Join(dir, lockProfileFile),
-	}
-}
+func newProfiler(dir string) *profiler { _ = "STUB: not implemented"; return nil }
 
-func (p *profiler) StartCPUProfiler() error {
-	if p.cpuProfileFile != nil {
-		return errCPUProfilerRunning
-	}
+func (p *profiler) StartCPUProfiler() error { _ = "STUB: not implemented"; return nil }
 
-	if err := os.MkdirAll(p.dir, perms.ReadWriteExecute); err != nil {
-		return err
-	}
-	file, err := perms.Create(p.cpuProfileName, perms.ReadWrite)
-	if err != nil {
-		return err
-	}
-	if err := pprof.StartCPUProfile(file); err != nil {
-		_ = file.Close() // Return the original error
-		return err
-	}
-	runtime.SetMutexProfileFraction(1)
+// Return the original error
 
-	p.cpuProfileFile = file
-	return nil
-}
+func (p *profiler) StopCPUProfiler() error { _ = "STUB: not implemented"; return nil }
 
-func (p *profiler) StopCPUProfiler() error {
-	if p.cpuProfileFile == nil {
-		return errCPUProfilerNotRunning
-	}
+func (p *profiler) MemoryProfile() error { _ = "STUB: not implemented"; return nil }
 
-	pprof.StopCPUProfile()
-	err := p.cpuProfileFile.Close()
-	p.cpuProfileFile = nil
-	return err
-}
+// get up-to-date statistics
 
-func (p *profiler) MemoryProfile() error {
-	if err := os.MkdirAll(p.dir, perms.ReadWriteExecute); err != nil {
-		return err
-	}
-	file, err := perms.Create(p.memProfileName, perms.ReadWrite)
-	if err != nil {
-		return err
-	}
-	runtime.GC() // get up-to-date statistics
-	if err := pprof.WriteHeapProfile(file); err != nil {
-		_ = file.Close() // Return the original error
-		return err
-	}
-	return file.Close()
-}
+// Return the original error
 
-func (p *profiler) LockProfile() error {
-	if err := os.MkdirAll(p.dir, perms.ReadWriteExecute); err != nil {
-		return err
-	}
-	file, err := perms.Create(p.lockProfileName, perms.ReadWrite)
-	if err != nil {
-		return err
-	}
+func (p *profiler) LockProfile() error { _ = "STUB: not implemented"; return nil }
 
-	profile := pprof.Lookup("mutex")
-	if err := profile.WriteTo(file, 1); err != nil {
-		_ = file.Close() // Return the original error
-		return err
-	}
-	return file.Close()
-}
+// Return the original error

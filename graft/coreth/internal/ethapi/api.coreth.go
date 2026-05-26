@@ -5,11 +5,9 @@ package ethapi
 
 import (
 	"context"
-	"fmt"
 	"math/big"
 
 	"github.com/ava-labs/libevm/common/hexutil"
-	"github.com/ava-labs/libevm/common/math"
 )
 
 const (
@@ -44,50 +42,13 @@ type PriceOptions struct {
 // SuggestPriceOptions returns suggestions for what to display to a user for
 // current transaction fees.
 func (s *EthereumAPI) SuggestPriceOptions(ctx context.Context) (*PriceOptions, error) {
-	baseFee, err := s.b.EstimateBaseFee(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to estimate base fee: %w", err)
-	}
-	gasTip, err := s.b.SuggestGasTipCap(ctx)
-	if err != nil {
-		return nil, fmt.Errorf("failed to suggest gas tip cap: %w", err)
-	}
-
-	// If the chain isn't running with dynamic fees, return nil.
-	if baseFee == nil || gasTip == nil {
-		return nil, nil
-	}
-
-	cfg := s.b.PriceOptionsConfig()
-	gasTips := calculateFeeSpeeds(
-		bigMinGasTip,
-		gasTip,
-		new(big.Int).SetUint64(cfg.MaxTip),
-		new(big.Int).SetUint64(cfg.SlowFeePercentage),
-		new(big.Int).SetUint64(cfg.FastFeePercentage),
-	)
-
-	// Double the baseFee estimate without modifying the original variable.
-	baseFeeDouble := new(big.Int).Lsh(baseFee, 1)
-
-	slowGasFee := new(big.Int).Add(baseFeeDouble, gasTips.slow)
-	normalGasFee := new(big.Int).Add(baseFeeDouble, gasTips.normal)
-	fastGasFee := new(big.Int).Add(baseFeeDouble, gasTips.fast)
-	return &PriceOptions{
-		Slow: &Price{
-			GasTip: (*hexutil.Big)(gasTips.slow),
-			GasFee: (*hexutil.Big)(slowGasFee),
-		},
-		Normal: &Price{
-			GasTip: (*hexutil.Big)(gasTips.normal),
-			GasFee: (*hexutil.Big)(normalGasFee),
-		},
-		Fast: &Price{
-			GasTip: (*hexutil.Big)(gasTips.fast),
-			GasFee: (*hexutil.Big)(fastGasFee),
-		},
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// If the chain isn't running with dynamic fees, return nil.
+
+// Double the baseFee estimate without modifying the original variable.
 
 type feeSpeeds struct {
 	slow   *big.Int
@@ -108,22 +69,7 @@ func calculateFeeSpeeds(
 	slowFeePerc *big.Int,
 	fastFeePerc *big.Int,
 ) feeSpeeds {
+	_ = "STUB: not implemented"
 	// Cap the fee to keep slow and normal options reasonable during fee spikes.
-	cappedFee := math.BigMin(estimate, maxFee)
-
-	slowFee := new(big.Int).Set(cappedFee)
-	slowFee.Mul(slowFee, slowFeePerc)
-	slowFee.Div(slowFee, bigFeeDenominator)
-	slowFee = math.BigMax(slowFee, minFee)
-
-	normalFee := cappedFee
-
-	fastFee := new(big.Int).Set(estimate)
-	fastFee.Mul(fastFee, fastFeePerc)
-	fastFee.Div(fastFee, bigFeeDenominator)
-	return feeSpeeds{
-		slow:   slowFee,
-		normal: normalFee,
-		fast:   fastFee,
-	}
+	return *new(feeSpeeds)
 }

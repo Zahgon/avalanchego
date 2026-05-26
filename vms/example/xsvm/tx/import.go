@@ -13,6 +13,4 @@ type Import struct {
 	Message []byte `serialize:"true" json:"message"`
 }
 
-func (i *Import) Visit(v Visitor) error {
-	return v.Import(i)
-}
+func (i *Import) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

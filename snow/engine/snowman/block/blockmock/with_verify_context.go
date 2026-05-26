@@ -11,7 +11,6 @@ package blockmock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	block "github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 	gomock "go.uber.org/mock/gomock"
@@ -31,41 +30,37 @@ type WithVerifyContextMockRecorder struct {
 
 // NewWithVerifyContext creates a new mock instance.
 func NewWithVerifyContext(ctrl *gomock.Controller) *WithVerifyContext {
-	mock := &WithVerifyContext{ctrl: ctrl}
-	mock.recorder = &WithVerifyContextMockRecorder{mock}
-	return mock
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *WithVerifyContext) EXPECT() *WithVerifyContextMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// ShouldVerifyWithContext mocks base method.
+	return nil
 }
 
-// ShouldVerifyWithContext mocks base method.
 func (m *WithVerifyContext) ShouldVerifyWithContext(arg0 context.Context) (bool, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ShouldVerifyWithContext", arg0)
-	ret0, _ := ret[0].(bool)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // ShouldVerifyWithContext indicates an expected call of ShouldVerifyWithContext.
 func (mr *WithVerifyContextMockRecorder) ShouldVerifyWithContext(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ShouldVerifyWithContext", reflect.TypeOf((*WithVerifyContext)(nil).ShouldVerifyWithContext), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyWithContext mocks base method.
 func (m *WithVerifyContext) VerifyWithContext(arg0 context.Context, arg1 *block.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyWithContext", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyWithContext indicates an expected call of VerifyWithContext.
 func (mr *WithVerifyContextMockRecorder) VerifyWithContext(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyWithContext", reflect.TypeOf((*WithVerifyContext)(nil).VerifyWithContext), arg0, arg1)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -5,10 +5,8 @@ package sync
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/crypto"
 
 	"github.com/ava-labs/avalanchego/graft/evm/message"
 	"github.com/ava-labs/avalanchego/ids"
@@ -29,45 +27,18 @@ type Summary struct {
 }
 
 func NewSummary(blockHash common.Hash, blockNumber uint64, blockRoot common.Hash, atomicRoot common.Hash) (*Summary, error) {
+	_ = "STUB: not implemented"
 	// We intentionally do not use the acceptImpl here and leave it for the parser to set.
-	summary := Summary{
-		BlockSyncSummary: &message.BlockSyncSummary{
-			BlockNumber: blockNumber,
-			BlockHash:   blockHash,
-			BlockRoot:   blockRoot,
-		},
-		AtomicRoot: atomicRoot,
-	}
-	bytes, err := message.CorethCodec.Marshal(message.Version, &summary)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal syncable summary: %w", err)
-	}
-
-	summary.bytes = bytes
-	summaryID, err := ids.ToID(crypto.Keccak256(bytes))
-	if err != nil {
-		return nil, fmt.Errorf("failed to compute summary ID: %w", err)
-	}
-	summary.summaryID = summaryID
-
-	return &summary, nil
+	return nil, nil
 }
 
-func (a *Summary) Bytes() []byte {
-	return a.bytes
-}
+func (a *Summary) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (a *Summary) ID() ids.ID {
-	return a.summaryID
-}
+func (a *Summary) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (a *Summary) String() string {
-	return fmt.Sprintf("Summary(BlockHash=%s, BlockNumber=%d, BlockRoot=%s, AtomicRoot=%s)", a.BlockHash, a.BlockNumber, a.BlockRoot, a.AtomicRoot)
-}
+func (a *Summary) String() string { _ = "STUB: not implemented"; return "" }
 
 func (a *Summary) Accept(context.Context) (block.StateSyncMode, error) {
-	if a.acceptImpl == nil {
-		return block.StateSyncSkipped, fmt.Errorf("accept implementation not specified for summary: %s", a)
-	}
-	return a.acceptImpl(a)
+	_ = "STUB: not implemented"
+	return *new(block.StateSyncMode), nil
 }

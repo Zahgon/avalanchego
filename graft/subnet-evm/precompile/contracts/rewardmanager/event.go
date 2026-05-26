@@ -8,8 +8,8 @@
 package rewardmanager
 
 import (
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
+	"github.com/ava-labs/libevm/common"
 )
 
 const (
@@ -28,17 +28,20 @@ const (
 // PackFeeRecipientsAllowedEvent packs the event into the appropriate arguments for FeeRecipientsAllowed.
 // It returns topic hashes and the encoded non-indexed data.
 func PackFeeRecipientsAllowedEvent(sender common.Address) ([]common.Hash, []byte, error) {
-	return RewardManagerABI.PackEvent("FeeRecipientsAllowed", sender)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // PackRewardAddressChangedEvent packs the event into the appropriate arguments for RewardAddressChanged.
 // It returns topic hashes and the encoded non-indexed data.
 func PackRewardAddressChangedEvent(sender common.Address, oldRewardAddress common.Address, newRewardAddress common.Address) ([]common.Hash, []byte, error) {
-	return RewardManagerABI.PackEvent("RewardAddressChanged", sender, oldRewardAddress, newRewardAddress)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // PackRewardsDisabledEvent packs the event into the appropriate arguments for RewardsDisabled.
 // It returns topic hashes and the encoded non-indexed data.
 func PackRewardsDisabledEvent(sender common.Address) ([]common.Hash, []byte, error) {
-	return RewardManagerABI.PackEvent("RewardsDisabled", sender)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }

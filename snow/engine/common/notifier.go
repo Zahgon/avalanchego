@@ -8,8 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
 
@@ -45,89 +43,33 @@ func NewNotificationForwarder(
 	subscribe Subscription,
 	log logging.Logger,
 ) *NotificationForwarder {
-	nf := &NotificationForwarder{
-		Engine:    engine,
-		Subscribe: subscribe,
-		Log:       log,
-	}
-	nf.start()
-	return nf
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (nf *NotificationForwarder) start() {
-	nf.executing.Add(1)
-	nf.execCtx, nf.haltExecution = context.WithCancel(context.Background())
-	go nf.run()
-}
+func (nf *NotificationForwarder) start() { _ = "STUB: not implemented"; return }
 
-func (nf *NotificationForwarder) run() {
-	defer nf.executing.Done()
-	for nf.execCtx.Err() == nil {
-		nf.forwardNotification()
-	}
-}
+func (nf *NotificationForwarder) run() { _ = "STUB: not implemented"; return }
 
-func (nf *NotificationForwarder) forwardNotification() {
-	ctx := nf.setAndGetContext()
-	defer nf.cancelContext()
+func (nf *NotificationForwarder) forwardNotification() { _ = "STUB: not implemented"; return }
 
-	nf.Log.Debug("Subscribing to notifications")
+// Wait to retry
 
-	msg, err := nf.Subscribe(ctx)
-	if err != nil {
-		nf.Log.Debug("Failed subscribing to notifications", zap.Error(err))
-		// Wait to retry
-		select {
-		case <-time.After(errThrottleTime):
-		case <-ctx.Done():
-		}
-		return
-	}
+// Wait to retry
 
-	nf.Log.Debug("Received notification", zap.Stringer("msg", msg))
-
-	if err := nf.Engine.Notify(ctx, msg); err != nil {
-		nf.Log.Debug("Failed notifying engine", zap.Error(err))
-		// Wait to retry
-		select {
-		case <-time.After(errThrottleTime):
-		case <-ctx.Done():
-		}
-		return
-	}
-
-	// Wait for the context to be cancelled before proceeding to the next subscription,
-	// in order to subscribe after a block was accepted or a state sync was completed.
-	<-ctx.Done()
-}
+// Wait for the context to be cancelled before proceeding to the next subscription,
+// in order to subscribe after a block was accepted or a state sync was completed.
 
 // CheckForEvent cancels any outstanding WaitForEvent calls and schedules a new WaitForEvent call.
-func (nf *NotificationForwarder) CheckForEvent() {
-	nf.cancelContext()
-}
+func (nf *NotificationForwarder) CheckForEvent() { _ = "STUB: not implemented"; return }
 
-func (nf *NotificationForwarder) cancelContext() {
-	nf.lock.Lock()
-	defer nf.lock.Unlock()
-
-	if nf.abortContext != nil {
-		nf.abortContext()
-	}
-}
+func (nf *NotificationForwarder) cancelContext() { _ = "STUB: not implemented"; return }
 
 func (nf *NotificationForwarder) setAndGetContext() context.Context {
-	ctx, cancel := context.WithCancel(nf.execCtx)
-
-	nf.lock.Lock()
-	defer nf.lock.Unlock()
-	nf.abortContext = cancel
-	return ctx
+	_ = "STUB: not implemented"
+	return *new(context.Context)
 }
 
 // Close cancels any outstanding WaitForEvent calls and waits for them to return.
 // After Close returns, no future WaitForEvent calls will be made by the notification forwarder.
-func (nf *NotificationForwarder) Close() {
-	defer nf.executing.Wait()
-
-	nf.haltExecution()
-}
+func (nf *NotificationForwarder) Close() { _ = "STUB: not implemented"; return }

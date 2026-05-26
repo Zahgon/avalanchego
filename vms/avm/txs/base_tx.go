@@ -23,28 +23,12 @@ type BaseTx struct {
 	bytes []byte
 }
 
-func (t *BaseTx) InitCtx(ctx *snow.Context) {
-	for _, out := range t.Outs {
-		out.InitCtx(ctx)
-	}
-}
+func (t *BaseTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (t *BaseTx) SetBytes(bytes []byte) {
-	t.bytes = bytes
-}
+func (t *BaseTx) SetBytes(bytes []byte) { _ = "STUB: not implemented"; return }
 
-func (t *BaseTx) Bytes() []byte {
-	return t.bytes
-}
+func (t *BaseTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (t *BaseTx) InputIDs() set.Set[ids.ID] {
-	inputIDs := set.NewSet[ids.ID](len(t.Ins))
-	for _, in := range t.Ins {
-		inputIDs.Add(in.InputID())
-	}
-	return inputIDs
-}
+func (t *BaseTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
-func (t *BaseTx) Visit(v Visitor) error {
-	return v.BaseTx(t)
-}
+func (t *BaseTx) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

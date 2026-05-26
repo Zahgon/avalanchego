@@ -4,108 +4,60 @@
 package gastime
 
 import (
-	"fmt"
-	"math"
 	"time"
 
 	"github.com/holiman/uint256"
 
 	"github.com/ava-labs/avalanchego/vms/components/gas"
-	"github.com/ava-labs/avalanchego/vms/saevm/intmath"
 )
 
 // BeforeBlock is intended to be called before processing a block with the
 // provided time. The gastime is advanced to be no earlier than the block time.
-func (tm *Time) BeforeBlock(t time.Time) {
-	tm.FastForwardToTime(t)
-}
+func (tm *Time) BeforeBlock(t time.Time) { _ = "STUB: not implemented"; return }
 
 // FastForwardToTime is equivalent to [Time.FastForwardTo] except that it
 // accepts a [time.Time].
-func (tm *Time) FastForwardToTime(t time.Time) {
-	g, _, err := intmath.MulDivCeil(
-		gas.Gas(t.Nanosecond()), //#nosec G115 -- ns is in [0, time.Second)
-		tm.Rate(),
-		gas.Gas(time.Second),
-	)
-	if err != nil {
-		// [time.Time.Nanosecond] is documented as only returning values in the
-		// range [0, time.Second). So either Nanosecond returned an incorrect
-		// value, or [intmath.MulDivCeil] incorrectly returned an error.
-		// Regardless, this failure MUST be detected in tests, hence not just
-		// dropping the error.
-		panic(fmt.Sprintf("broken invariant: %v", err))
-	}
-	tm.FastForwardTo(uint64(t.Unix()), g) //#nosec G115 -- known non-negative.
-}
+func (tm *Time) FastForwardToTime(t time.Time) { _ = "STUB: not implemented"; return }
+
+//#nosec G115 -- ns is in [0, time.Second)
+
+// [time.Time.Nanosecond] is documented as only returning values in the
+// range [0, time.Second). So either Nanosecond returned an incorrect
+// value, or [intmath.MulDivCeil] incorrectly returned an error.
+// Regardless, this failure MUST be detected in tests, hence not just
+// dropping the error.
+
+//#nosec G115 -- known non-negative.
 
 // AfterBlock is intended to be called after processing a block, with the
 // target and gas configuration provided.
 func (tm *Time) AfterBlock(used gas.Gas, target gas.Gas, c GasPriceConfig) error {
-	if err := c.Validate(); err != nil {
-		return fmt.Errorf("%T.Validate() after block: %w", c, err)
-	}
-	target = clampTarget(target)
-
-	tm.Tick(used)
-
-	if c.StaticPricing {
-		tm.excess = 0
-	} else {
-		tm.excess = scaleExcess(
-			tm.excess,
-			target, c.TargetToExcessScaling,
-			tm.target, tm.config.TargetToExcessScaling,
-		)
-	}
-
-	tm.target = target
-	tm.Time.SetRate(rateOf(tm.target))
-	tm.config = c
-	tm.enforceMinExcess()
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // scaleExcess returns oldX * newT * newScale / (oldT * oldScale) rounded up and
 // capped to [math.MaxUint64].
 func scaleExcess(oldX, newT, newScale, oldT, oldScale gas.Gas) gas.Gas {
-	newK := mulAsUint256(newT, newScale)
-	oldK := mulAsUint256(oldT, oldScale)
-
-	// Overflow can't occur, the maximum possible intermediate value is:
-	// MaxUint64^3 + MaxUint64^2.
-	var x uint256.Int
-	x.SetUint64(uint64(oldX))
-	x.Mul(&x, &newK)
-	x.Add(&x, &oldK) // round up by adding oldK - 1
-	x.SubUint64(&x, 1)
-	x.Div(&x, &oldK)
-	if !x.IsUint64() {
-		return math.MaxUint64
-	}
-	return gas.Gas(x.Uint64())
+	_ = "STUB: not implemented"
+	return *new(gas.Gas)
 }
 
+// Overflow can't occur, the maximum possible intermediate value is:
+// MaxUint64^3 + MaxUint64^2.
+
+// round up by adding oldK - 1
+
 func mulAsUint256[T ~uint64](a, b T) uint256.Int {
-	var x, y uint256.Int
-	x.SetUint64(uint64(a))
-	y.SetUint64(uint64(b))
-	x.Mul(&x, &y)
-	return x
+	_ = "STUB: not implemented"
+	return *new(uint256.Int)
 }
 
 // enforceMinExcess bounds excess to be no less than excessForPrice(minPrice, k).
-func (tm *Time) enforceMinExcess() {
-	k := tm.excessScalingFactor()
-	// Avoid the binary search in [excessForPrice] when the current excess
-	// already yields a price that satisfies the minimum.
-	if calculatePrice(tm.excess, k) >= tm.config.MinPrice {
-		return
-	}
+func (tm *Time) enforceMinExcess() { _ = "STUB: not implemented"; return }
 
-	minExcess := excessForPrice(tm.config.MinPrice, k)
-	tm.excess = max(tm.excess, minExcess)
-}
+// Avoid the binary search in [excessForPrice] when the current excess
+// already yields a price that satisfies the minimum.
 
 // excessForPrice returns an integer approximation of ln(p) * k.
 //
@@ -113,30 +65,17 @@ func (tm *Time) enforceMinExcess() {
 // produce p. Otherwise, it returns the maximum excess to produce a number < p,
 // which may happen due to overflow or integer approximation.
 func excessForPrice(p gas.Price, k gas.Gas) gas.Gas {
-	if p <= 1 {
-		return 0
-	}
+	_ = "STUB: not implemented"
+	return *
+
 	// Binary search for the minimum x where calculatePrice(x, k) >= p.
 	//
 	// calculatePrice(0, k) == 1 and p > 1, so lo > 0.
-	lo, hi := gas.Gas(1), gas.Gas(math.MaxUint64)
-	for lo < hi {
-		mid := lo + (hi-lo)/2
-		if calculatePrice(mid, k) >= p {
-			hi = mid
-		} else {
-			lo = mid + 1
-		}
-	}
-	// If [calculatePrice] can't generate p due to integer approximation, honor
-	// the lower price expectation.
-	if calculatePrice(lo, k) > p {
-		return lo - 1
-	}
-	return lo
+	new(gas.Gas)
 }
 
+// If [calculatePrice] can't generate p due to integer approximation, honor
+// the lower price expectation.
+
 // calculatePrice returns an integer approximation of e^(x/k).
-func calculatePrice(x, k gas.Gas) gas.Price {
-	return gas.CalculatePrice(1, x, k)
-}
+func calculatePrice(x, k gas.Gas) gas.Price { _ = "STUB: not implemented"; return *new(gas.Price) }

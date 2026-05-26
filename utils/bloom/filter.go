@@ -4,11 +4,7 @@
 package bloom
 
 import (
-	"crypto/rand"
-	"encoding/binary"
 	"errors"
-	"fmt"
-	"math/bits"
 	"sync"
 )
 
@@ -41,117 +37,29 @@ type Filter struct {
 
 // New creates a new Filter with the specified number of hashes and bytes for
 // entries. The returned bloom filter is safe for concurrent usage.
-func New(numHashes, numEntries int) (*Filter, error) {
-	if numEntries < minEntries {
-		return nil, errTooFewEntries
-	}
-
-	hashSeeds, err := newHashSeeds(numHashes)
-	if err != nil {
-		return nil, err
-	}
-
-	return &Filter{
-		numBits:   uint64(numEntries * bitsPerByte),
-		hashSeeds: hashSeeds,
-		entries:   make([]byte, numEntries),
-		count:     0,
-	}, nil
-}
+func New(numHashes, numEntries int) (*Filter, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Add adds the provided hash to the bloom filter. It returns true if the hash
 // was not already present in the bloom filter.
-func (f *Filter) Add(hash uint64) bool {
-	f.lock.Lock()
-	defer f.lock.Unlock()
+func (f *Filter) Add(hash uint64) bool { _ = "STUB: not implemented"; return false }
 
-	var (
-		_                = 1 % f.numBits // hint to the compiler that numBits is not 0
-		accumulator byte = 1
-	)
-	for _, seed := range f.hashSeeds {
-		hash = bits.RotateLeft64(hash, hashRotation) ^ seed
-		index := hash % f.numBits
-		byteIndex := index / bitsPerByte
-		bitIndex := index % bitsPerByte
-		accumulator &= f.entries[byteIndex] >> bitIndex
-		f.entries[byteIndex] |= 1 << bitIndex
-	}
-	added := accumulator == 0
-	if added {
-		f.count++
-	}
-	return added
-}
+// hint to the compiler that numBits is not 0
 
 // Count returns the number of elements that have been added to the bloom
 // filter.
-func (f *Filter) Count() int {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
+func (f *Filter) Count() int { _ = "STUB: not implemented"; return 0 }
 
-	return f.count
-}
+func (f *Filter) Contains(hash uint64) bool { _ = "STUB: not implemented"; return false }
 
-func (f *Filter) Contains(hash uint64) bool {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
+func (f *Filter) Marshal() []byte { _ = "STUB: not implemented"; return nil }
 
-	return contains(f.hashSeeds, f.entries, hash)
-}
-
-func (f *Filter) Marshal() []byte {
-	f.lock.RLock()
-	defer f.lock.RUnlock()
-
-	return marshal(f.hashSeeds, f.entries)
-}
-
-func newHashSeeds(count int) ([]uint64, error) {
-	switch {
-	case count < minHashes:
-		return nil, fmt.Errorf("%w: %d < %d", errTooFewHashes, count, minHashes)
-	case count > maxHashes:
-		return nil, fmt.Errorf("%w: %d > %d", errTooManyHashes, count, maxHashes)
-	}
-
-	bytes := make([]byte, count*bytesPerUint64)
-	if _, err := rand.Reader.Read(bytes); err != nil {
-		return nil, err
-	}
-
-	seeds := make([]uint64, count)
-	for i := range seeds {
-		seeds[i] = binary.BigEndian.Uint64(bytes[i*bytesPerUint64:])
-	}
-	return seeds, nil
-}
+func newHashSeeds(count int) ([]uint64, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func contains(hashSeeds []uint64, entries []byte, hash uint64) bool {
-	var (
-		numBits          = bitsPerByte * uint64(len(entries))
-		_                = 1 % numBits // hint to the compiler that numBits is not 0
-		accumulator byte = 1
-	)
-	for seedIndex := 0; seedIndex < len(hashSeeds) && accumulator != 0; seedIndex++ {
-		hash = bits.RotateLeft64(hash, hashRotation) ^ hashSeeds[seedIndex]
-		index := hash % numBits
-		byteIndex := index / bitsPerByte
-		bitIndex := index % bitsPerByte
-		accumulator &= entries[byteIndex] >> bitIndex
-	}
-	return accumulator != 0
+	_ = "STUB: not implemented"
+	return false
 }
 
-func marshal(hashSeeds []uint64, entries []byte) []byte {
-	numHashes := len(hashSeeds)
-	entriesOffset := 1 + numHashes*bytesPerUint64
+// hint to the compiler that numBits is not 0
 
-	bytes := make([]byte, entriesOffset+len(entries))
-	bytes[0] = byte(numHashes)
-	for i, seed := range hashSeeds {
-		binary.BigEndian.PutUint64(bytes[1+i*bytesPerUint64:], seed)
-	}
-	copy(bytes[entriesOffset:], entries)
-	return bytes
-}
+func marshal(hashSeeds []uint64, entries []byte) []byte { _ = "STUB: not implemented"; return nil }

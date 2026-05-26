@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -45,19 +45,8 @@ var RewardManagerTestBin = RewardManagerTestMetaData.Bin
 
 // DeployRewardManagerTest deploys a new Ethereum contract, binding an instance of RewardManagerTest to it.
 func DeployRewardManagerTest(auth *bind.TransactOpts, backend bind.ContractBackend, rewardManagerPrecompile common.Address) (common.Address, *types.Transaction, *RewardManagerTest, error) {
-	parsed, err := RewardManagerTestMetaData.GetAbi()
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	if parsed == nil {
-		return common.Address{}, nil, nil, errors.New("GetABI returned nil")
-	}
-
-	address, tx, contract, err := bind.DeployContract(auth, *parsed, common.FromHex(RewardManagerTestBin), backend, rewardManagerPrecompile)
-	if err != nil {
-		return common.Address{}, nil, nil, err
-	}
-	return address, tx, &RewardManagerTest{RewardManagerTestCaller: RewardManagerTestCaller{contract: contract}, RewardManagerTestTransactor: RewardManagerTestTransactor{contract: contract}, RewardManagerTestFilterer: RewardManagerTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil, nil, nil
 }
 
 // RewardManagerTest is an auto generated Go binding around an Ethereum contract.
@@ -121,47 +110,32 @@ type RewardManagerTestTransactorRaw struct {
 
 // NewRewardManagerTest creates a new instance of RewardManagerTest, bound to a specific deployed contract.
 func NewRewardManagerTest(address common.Address, backend bind.ContractBackend) (*RewardManagerTest, error) {
-	contract, err := bindRewardManagerTest(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &RewardManagerTest{RewardManagerTestCaller: RewardManagerTestCaller{contract: contract}, RewardManagerTestTransactor: RewardManagerTestTransactor{contract: contract}, RewardManagerTestFilterer: RewardManagerTestFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewRewardManagerTestCaller creates a new read-only instance of RewardManagerTest, bound to a specific deployed contract.
 func NewRewardManagerTestCaller(address common.Address, caller bind.ContractCaller) (*RewardManagerTestCaller, error) {
-	contract, err := bindRewardManagerTest(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &RewardManagerTestCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewRewardManagerTestTransactor creates a new write-only instance of RewardManagerTest, bound to a specific deployed contract.
 func NewRewardManagerTestTransactor(address common.Address, transactor bind.ContractTransactor) (*RewardManagerTestTransactor, error) {
-	contract, err := bindRewardManagerTest(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &RewardManagerTestTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewRewardManagerTestFilterer creates a new log filterer instance of RewardManagerTest, bound to a specific deployed contract.
 func NewRewardManagerTestFilterer(address common.Address, filterer bind.ContractFilterer) (*RewardManagerTestFilterer, error) {
-	contract, err := bindRewardManagerTest(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &RewardManagerTestFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindRewardManagerTest binds a generic wrapper to an already deployed contract.
 func bindRewardManagerTest(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := RewardManagerTestMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -169,18 +143,21 @@ func bindRewardManagerTest(address common.Address, caller bind.ContractCaller, t
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_RewardManagerTest *RewardManagerTestRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _RewardManagerTest.Contract.RewardManagerTestCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_RewardManagerTest *RewardManagerTestRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.RewardManagerTestTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_RewardManagerTest *RewardManagerTestRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.RewardManagerTestTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -188,162 +165,165 @@ func (_RewardManagerTest *RewardManagerTestRaw) Transact(opts *bind.TransactOpts
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_RewardManagerTest *RewardManagerTestCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _RewardManagerTest.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_RewardManagerTest *RewardManagerTestTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_RewardManagerTest *RewardManagerTestTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AreFeeRecipientsAllowed is a free data retrieval call binding the contract method 0xf6542b2e.
 //
 // Solidity: function areFeeRecipientsAllowed() view returns(bool)
 func (_RewardManagerTest *RewardManagerTestCaller) AreFeeRecipientsAllowed(opts *bind.CallOpts) (bool, error) {
-	var out []interface{}
-	err := _RewardManagerTest.contract.Call(opts, &out, "areFeeRecipientsAllowed")
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // AreFeeRecipientsAllowed is a free data retrieval call binding the contract method 0xf6542b2e.
 //
 // Solidity: function areFeeRecipientsAllowed() view returns(bool)
 func (_RewardManagerTest *RewardManagerTestSession) AreFeeRecipientsAllowed() (bool, error) {
-	return _RewardManagerTest.Contract.AreFeeRecipientsAllowed(&_RewardManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // AreFeeRecipientsAllowed is a free data retrieval call binding the contract method 0xf6542b2e.
 //
 // Solidity: function areFeeRecipientsAllowed() view returns(bool)
 func (_RewardManagerTest *RewardManagerTestCallerSession) AreFeeRecipientsAllowed() (bool, error) {
-	return _RewardManagerTest.Contract.AreFeeRecipientsAllowed(&_RewardManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // CurrentRewardAddress is a free data retrieval call binding the contract method 0xe915608b.
 //
 // Solidity: function currentRewardAddress() view returns(address)
 func (_RewardManagerTest *RewardManagerTestCaller) CurrentRewardAddress(opts *bind.CallOpts) (common.Address, error) {
-	var out []interface{}
-	err := _RewardManagerTest.contract.Call(opts, &out, "currentRewardAddress")
-
-	if err != nil {
-		return *new(common.Address), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil
 }
 
 // CurrentRewardAddress is a free data retrieval call binding the contract method 0xe915608b.
 //
 // Solidity: function currentRewardAddress() view returns(address)
 func (_RewardManagerTest *RewardManagerTestSession) CurrentRewardAddress() (common.Address, error) {
-	return _RewardManagerTest.Contract.CurrentRewardAddress(&_RewardManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil
 }
 
 // CurrentRewardAddress is a free data retrieval call binding the contract method 0xe915608b.
 //
 // Solidity: function currentRewardAddress() view returns(address)
 func (_RewardManagerTest *RewardManagerTestCallerSession) CurrentRewardAddress() (common.Address, error) {
-	return _RewardManagerTest.Contract.CurrentRewardAddress(&_RewardManagerTest.CallOpts)
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil
 }
 
 // AllowFeeRecipients is a paid mutator transaction binding the contract method 0x0329099f.
 //
 // Solidity: function allowFeeRecipients() returns()
 func (_RewardManagerTest *RewardManagerTestTransactor) AllowFeeRecipients(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _RewardManagerTest.contract.Transact(opts, "allowFeeRecipients")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AllowFeeRecipients is a paid mutator transaction binding the contract method 0x0329099f.
 //
 // Solidity: function allowFeeRecipients() returns()
 func (_RewardManagerTest *RewardManagerTestSession) AllowFeeRecipients() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.AllowFeeRecipients(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AllowFeeRecipients is a paid mutator transaction binding the contract method 0x0329099f.
 //
 // Solidity: function allowFeeRecipients() returns()
 func (_RewardManagerTest *RewardManagerTestTransactorSession) AllowFeeRecipients() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.AllowFeeRecipients(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DisableRewards is a paid mutator transaction binding the contract method 0xbc178628.
 //
 // Solidity: function disableRewards() returns()
 func (_RewardManagerTest *RewardManagerTestTransactor) DisableRewards(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _RewardManagerTest.contract.Transact(opts, "disableRewards")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DisableRewards is a paid mutator transaction binding the contract method 0xbc178628.
 //
 // Solidity: function disableRewards() returns()
 func (_RewardManagerTest *RewardManagerTestSession) DisableRewards() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.DisableRewards(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // DisableRewards is a paid mutator transaction binding the contract method 0xbc178628.
 //
 // Solidity: function disableRewards() returns()
 func (_RewardManagerTest *RewardManagerTestTransactorSession) DisableRewards() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.DisableRewards(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetRewardAddress is a paid mutator transaction binding the contract method 0x5e00e679.
 //
 // Solidity: function setRewardAddress(address addr) returns()
 func (_RewardManagerTest *RewardManagerTestTransactor) SetRewardAddress(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _RewardManagerTest.contract.Transact(opts, "setRewardAddress", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetRewardAddress is a paid mutator transaction binding the contract method 0x5e00e679.
 //
 // Solidity: function setRewardAddress(address addr) returns()
 func (_RewardManagerTest *RewardManagerTestSession) SetRewardAddress(addr common.Address) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.SetRewardAddress(&_RewardManagerTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetRewardAddress is a paid mutator transaction binding the contract method 0x5e00e679.
 //
 // Solidity: function setRewardAddress(address addr) returns()
 func (_RewardManagerTest *RewardManagerTestTransactorSession) SetRewardAddress(addr common.Address) (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.SetRewardAddress(&_RewardManagerTest.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_RewardManagerTest *RewardManagerTestTransactor) Receive(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _RewardManagerTest.contract.RawTransact(opts, nil) // calldata is disallowed for receive function
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// calldata is disallowed for receive function
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_RewardManagerTest *RewardManagerTestSession) Receive() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.Receive(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Receive is a paid mutator transaction binding the contract receive function.
 //
 // Solidity: receive() payable returns()
 func (_RewardManagerTest *RewardManagerTestTransactorSession) Receive() (*types.Transaction, error) {
-	return _RewardManagerTest.Contract.Receive(&_RewardManagerTest.TransactOpts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

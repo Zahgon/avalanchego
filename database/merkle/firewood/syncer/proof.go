@@ -4,8 +4,6 @@
 package syncer
 
 import (
-	"errors"
-
 	"github.com/ava-labs/firewood-go-ethhash/ffi"
 
 	"github.com/ava-labs/avalanchego/database/merkle/sync"
@@ -20,17 +18,13 @@ var (
 type rangeProofMarshaler struct{}
 
 func (rangeProofMarshaler) Marshal(r *RangeProof) ([]byte, error) {
-	return r.rp.MarshalBinary()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (rangeProofMarshaler) Unmarshal(data []byte) (*RangeProof, error) {
-	proof := new(ffi.RangeProof)
-	if err := proof.UnmarshalBinary(data); err != nil {
-		return nil, err
-	}
-	return &RangeProof{
-		rp: proof,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type RangeProof struct {
@@ -43,9 +37,11 @@ type RangeProof struct {
 type changeProofMarshaler struct{}
 
 func (changeProofMarshaler) Marshal(struct{}) ([]byte, error) {
-	return nil, errors.New("not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (changeProofMarshaler) Unmarshal([]byte) (struct{}, error) {
-	return struct{}{}, errors.New("not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }

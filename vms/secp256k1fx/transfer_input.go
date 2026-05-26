@@ -16,21 +16,18 @@ type TransferInput struct {
 	Input `serialize:"true"`
 }
 
-func (*TransferInput) InitCtx(*snow.Context) {}
+func (*TransferInput) InitCtx(*snow.Context) {
+	_ = "STUB: not implemented"
 
-// Amount returns the quantity of the asset this input produces
+	// Amount returns the quantity of the asset this input produces
+	return
+}
+
 func (in *TransferInput) Amount() uint64 {
-	return in.Amt
+	_ = "STUB: not implemented"
+
+	// Verify this input is syntactically valid
+	return 0
 }
 
-// Verify this input is syntactically valid
-func (in *TransferInput) Verify() error {
-	switch {
-	case in == nil:
-		return ErrNilInput
-	case in.Amt == 0:
-		return ErrNoValueInput
-	default:
-		return in.Input.Verify()
-	}
-}
+func (in *TransferInput) Verify() error { _ = "STUB: not implemented"; return nil }

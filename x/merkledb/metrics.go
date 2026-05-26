@@ -4,12 +4,9 @@
 package merkledb
 
 import (
-	"errors"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
-
-	"github.com/ava-labs/avalanchego/utils/metric"
 )
 
 const (
@@ -96,80 +93,32 @@ type prometheusMetrics struct {
 }
 
 func newMetrics(prefix string, reg prometheus.Registerer) (metrics, error) {
+	_ = "STUB: not implemented"
 	// TODO: Should we instead return an error if reg is nil?
-	if reg == nil {
-		return &mockMetrics{}, nil
-	}
-
-	namespace := metric.AppendNamespace(prefix, "merkledb")
-	m := prometheusMetrics{
-		hashes: prometheus.NewCounter(prometheus.CounterOpts{
-			Namespace: namespace,
-			Name:      "hashes",
-			Help:      "cumulative number of nodes hashed",
-		}),
-		io: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Namespace: namespace,
-			Name:      "io",
-			Help:      "cumulative number of operations performed to the db",
-		}, ioLabels),
-		lookup: prometheus.NewCounterVec(prometheus.CounterOpts{
-			Namespace: namespace,
-			Name:      "lookup",
-			Help:      "cumulative number of in-memory lookups performed",
-		}, lookupLabels),
-	}
-	err := errors.Join(
-		reg.Register(m.hashes),
-		reg.Register(m.io),
-		reg.Register(m.lookup),
-	)
-	return &m, err
+	return *new(metrics), nil
 }
 
-func (m *prometheusMetrics) HashCalculated() {
-	m.hashes.Inc()
-}
+func (m *prometheusMetrics) HashCalculated() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) DatabaseNodeRead() {
-	m.io.With(ioReadLabels).Inc()
-}
+func (m *prometheusMetrics) DatabaseNodeRead() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) DatabaseNodeWrite() {
-	m.io.With(ioWriteLabels).Inc()
-}
+func (m *prometheusMetrics) DatabaseNodeWrite() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ValueNodeCacheHit() {
-	m.lookup.With(valueNodeCacheHitLabels).Inc()
-}
+func (m *prometheusMetrics) ValueNodeCacheHit() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ValueNodeCacheMiss() {
-	m.lookup.With(valueNodeCacheMissLabels).Inc()
-}
+func (m *prometheusMetrics) ValueNodeCacheMiss() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) IntermediateNodeCacheHit() {
-	m.lookup.With(intermediateNodeCacheHitLabels).Inc()
-}
+func (m *prometheusMetrics) IntermediateNodeCacheHit() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) IntermediateNodeCacheMiss() {
-	m.lookup.With(intermediateNodeCacheMissLabels).Inc()
-}
+func (m *prometheusMetrics) IntermediateNodeCacheMiss() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ViewChangesValueHit() {
-	m.lookup.With(viewChangesValueHitLabels).Inc()
-}
+func (m *prometheusMetrics) ViewChangesValueHit() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ViewChangesValueMiss() {
-	m.lookup.With(viewChangesValueMissLabels).Inc()
-}
+func (m *prometheusMetrics) ViewChangesValueMiss() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ViewChangesNodeHit() {
-	m.lookup.With(viewChangesNodeHitLabels).Inc()
-}
+func (m *prometheusMetrics) ViewChangesNodeHit() { _ = "STUB: not implemented"; return }
 
-func (m *prometheusMetrics) ViewChangesNodeMiss() {
-	m.lookup.With(viewChangesNodeMissLabels).Inc()
-}
+func (m *prometheusMetrics) ViewChangesNodeMiss() { _ = "STUB: not implemented"; return }
 
 type mockMetrics struct {
 	lock                      sync.Mutex
@@ -186,79 +135,24 @@ type mockMetrics struct {
 	viewChangesNodeMiss       int64
 }
 
-func (m *mockMetrics) HashCalculated() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+func (m *mockMetrics) HashCalculated() { _ = "STUB: not implemented"; return }
 
-	m.hashCount++
-}
+func (m *mockMetrics) DatabaseNodeRead() { _ = "STUB: not implemented"; return }
 
-func (m *mockMetrics) DatabaseNodeRead() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+func (m *mockMetrics) DatabaseNodeWrite() { _ = "STUB: not implemented"; return }
 
-	m.nodeReadCount++
-}
+func (m *mockMetrics) ValueNodeCacheHit() { _ = "STUB: not implemented"; return }
 
-func (m *mockMetrics) DatabaseNodeWrite() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+func (m *mockMetrics) ValueNodeCacheMiss() { _ = "STUB: not implemented"; return }
 
-	m.nodeWriteCount++
-}
+func (m *mockMetrics) IntermediateNodeCacheHit() { _ = "STUB: not implemented"; return }
 
-func (m *mockMetrics) ValueNodeCacheHit() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+func (m *mockMetrics) IntermediateNodeCacheMiss() { _ = "STUB: not implemented"; return }
 
-	m.valueNodeCacheHit++
-}
+func (m *mockMetrics) ViewChangesValueHit() { _ = "STUB: not implemented"; return }
 
-func (m *mockMetrics) ValueNodeCacheMiss() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+func (m *mockMetrics) ViewChangesValueMiss() { _ = "STUB: not implemented"; return }
 
-	m.valueNodeCacheMiss++
-}
+func (m *mockMetrics) ViewChangesNodeHit() { _ = "STUB: not implemented"; return }
 
-func (m *mockMetrics) IntermediateNodeCacheHit() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.intermediateNodeCacheHit++
-}
-
-func (m *mockMetrics) IntermediateNodeCacheMiss() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.intermediateNodeCacheMiss++
-}
-
-func (m *mockMetrics) ViewChangesValueHit() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.viewChangesValueHit++
-}
-
-func (m *mockMetrics) ViewChangesValueMiss() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.viewChangesValueMiss++
-}
-
-func (m *mockMetrics) ViewChangesNodeHit() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.viewChangesNodeHit++
-}
-
-func (m *mockMetrics) ViewChangesNodeMiss() {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.viewChangesNodeMiss++
-}
+func (m *mockMetrics) ViewChangesNodeMiss() { _ = "STUB: not implemented"; return }

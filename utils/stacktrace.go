@@ -3,10 +3,4 @@
 
 package utils
 
-import "runtime"
-
-func GetStacktrace(all bool) string {
-	buf := make([]byte, 1<<24)
-	n := runtime.Stack(buf, all)
-	return string(buf[:n])
-}
+func GetStacktrace(all bool) string { _ = "STUB: not implemented"; return "" }

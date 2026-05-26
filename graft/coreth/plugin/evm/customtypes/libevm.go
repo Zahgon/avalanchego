@@ -18,13 +18,7 @@ var extras ethtypes.ExtraPayloads[*HeaderExtra, *BlockBodyExtra, isMultiCoin]
 //
 // Without a call to Register, none of the functionality of this package will
 // work, and most will simply panic.
-func Register() {
-	extras = ethtypes.RegisterExtras[
-		HeaderExtra, *HeaderExtra,
-		BlockBodyExtra, *BlockBodyExtra,
-		isMultiCoin,
-	]()
-}
+func Register() { _ = "STUB: not implemented"; return }
 
 // WithTempRegisteredExtras runs `fn` with temporary registration otherwise
 // equivalent to a call to [RegisterExtras], but limited to the life of `fn`.
@@ -33,14 +27,6 @@ func Register() {
 // `evm.WithTempRegisteredLibEVMExtras()` instead as it calls this along with
 // all other temporary-registration functions.
 func WithTempRegisteredExtras(lock libevm.ExtrasLock, fn func() error) error {
-	old := extras
-	defer func() { extras = old }()
-
-	return ethtypes.WithTempRegisteredExtras[HeaderExtra, BlockBodyExtra, isMultiCoin](
-		lock,
-		func(e ethtypes.ExtraPayloads[*HeaderExtra, *BlockBodyExtra, isMultiCoin]) error {
-			extras = e
-			return fn()
-		},
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

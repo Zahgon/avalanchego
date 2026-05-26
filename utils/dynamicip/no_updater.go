@@ -7,12 +7,10 @@ import "github.com/ava-labs/avalanchego/utils/logging"
 
 var _ Updater = noUpdater{}
 
-func NewNoUpdater() Updater {
-	return noUpdater{}
-}
+func NewNoUpdater() Updater { _ = "STUB: not implemented"; return *new(Updater) }
 
 type noUpdater struct{}
 
-func (noUpdater) Dispatch(logging.Logger) {}
+func (noUpdater) Dispatch(logging.Logger) { _ = "STUB: not implemented"; return }
 
-func (noUpdater) Stop() {}
+func (noUpdater) Stop() { _ = "STUB: not implemented"; return }

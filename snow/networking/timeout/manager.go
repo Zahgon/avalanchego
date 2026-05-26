@@ -4,7 +4,6 @@
 package timeout
 
 import (
-	"fmt"
 	"sync"
 	"time"
 
@@ -23,24 +22,8 @@ func NewManager(
 	requestReg prometheus.Registerer,
 	responseReg prometheus.Registerer,
 ) (*Manager, error) {
-	tm, err := timer.NewAdaptiveTimeoutManager(
-		timeoutConfig,
-		requestReg,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("couldn't create timeout manager: %w", err)
-	}
-
-	m, err := newTimeoutMetrics(responseReg)
-	if err != nil {
-		return nil, fmt.Errorf("couldn't create timeout metrics: %w", err)
-	}
-
-	return &Manager{
-		tm:           tm,
-		benchlistMgr: benchlistMgr,
-		metrics:      m,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Manager manages timeouts for requests sent to peers.
@@ -54,30 +37,29 @@ type Manager struct {
 // Dispatch starts the manager. Must be called before any other method.
 // Should be called in a goroutine.
 func (m *Manager) Dispatch() {
-	m.tm.Dispatch()
+	_ = "STUB: not implemented"
+
+	// TimeoutDuration returns the current timeout duration.
+	return
 }
 
-// TimeoutDuration returns the current timeout duration.
 func (m *Manager) TimeoutDuration() time.Duration {
-	return m.tm.TimeoutDuration()
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 // IsBenched returns true if messages to [nodeID] regarding [chainID]
 // should not be sent over the network and should immediately fail.
 func (m *Manager) IsBenched(chainID ids.ID, nodeID ids.NodeID) bool {
-	return m.benchlistMgr.IsBenched(chainID, nodeID)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // RegisterChain registers the existence of the given chain.
 // Must be called before any method calls that use the
 // ID of the chain.
 func (m *Manager) RegisterChain(ctx *snow.ConsensusContext) error {
-	if err := m.metrics.RegisterChain(ctx); err != nil {
-		return fmt.Errorf("couldn't register timeout metrics for chain %s: %w", ctx.ChainID, err)
-	}
-	if err := m.benchlistMgr.RegisterChain(ctx); err != nil {
-		return fmt.Errorf("couldn't register chain %s with benchlist manager: %w", ctx.ChainID, err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -91,16 +73,12 @@ func (m *Manager) RegisterRequest(
 	requestID ids.RequestID,
 	timeoutHandler func(),
 ) {
-	newTimeoutHandler := func() {
-		if requestID.Op != byte(message.AppResponseOp) {
-			// If the request timed out and wasn't an AppRequest, tell the
-			// benchlist manager.
-			m.benchlistMgr.RegisterFailure(chainID, nodeID)
-		}
-		timeoutHandler()
-	}
-	m.tm.Put(requestID, measureLatency, newTimeoutHandler)
+	_ = "STUB: not implemented"
+	return
 }
+
+// If the request timed out and wasn't an AppRequest, tell the
+// benchlist manager.
 
 // RegisterResponse registers that [nodeID] sent us a response of type [op]
 // for the given chain. The response corresponds to the given
@@ -113,18 +91,13 @@ func (m *Manager) RegisterResponse(
 	op message.Op,
 	latency time.Duration,
 ) {
-	m.metrics.Observe(chainID, op, latency)
-	m.benchlistMgr.RegisterResponse(chainID, nodeID)
-	m.tm.Remove(requestID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // RemoveRequest marks that we no longer expect a response to this request.
 // Does not modify the timeout.
-func (m *Manager) RemoveRequest(requestID ids.RequestID) {
-	m.tm.Remove(requestID)
-}
+func (m *Manager) RemoveRequest(requestID ids.RequestID) { _ = "STUB: not implemented"; return }
 
 // Stop stops the manager.
-func (m *Manager) Stop() {
-	m.stopOnce.Do(m.tm.Stop)
-}
+func (m *Manager) Stop() { _ = "STUB: not implemented"; return }

@@ -3,8 +3,6 @@
 
 package common
 
-import "fmt"
-
 var (
 	_ error = (*AppError)(nil)
 
@@ -29,15 +27,6 @@ type AppError struct {
 	Message string
 }
 
-func (a *AppError) Error() string {
-	return fmt.Sprintf("%d: %s", a.Code, a.Message)
-}
+func (a *AppError) Error() string { _ = "STUB: not implemented"; return "" }
 
-func (a *AppError) Is(target error) bool {
-	appErr, ok := target.(*AppError)
-	if !ok {
-		return false
-	}
-
-	return a.Code == appErr.Code
-}
+func (a *AppError) Is(target error) bool { _ = "STUB: not implemented"; return false }

@@ -4,22 +4,9 @@
 package run
 
 import (
-	"context"
-
 	"github.com/spf13/cobra"
-
-	"github.com/ava-labs/avalanchego/vms/example/xsvm"
-	"github.com/ava-labs/avalanchego/vms/rpcchainvm"
 )
 
-func Command() *cobra.Command {
-	return &cobra.Command{
-		Use:   "xsvm",
-		Short: "Runs an XSVM plugin",
-		RunE:  runFunc,
-	}
-}
+func Command() *cobra.Command { _ = "STUB: not implemented"; return nil }
 
-func runFunc(*cobra.Command, []string) error {
-	return rpcchainvm.Serve(context.Background(), &xsvm.VM{})
-}
+func runFunc(*cobra.Command, []string) error { _ = "STUB: not implemented"; return nil }

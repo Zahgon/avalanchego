@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/rpc"
 
@@ -112,26 +111,11 @@ var ErrNonCanonicalBlock = fmt.Errorf("%w: canonical block required", ErrFutureB
 // maintain monotonicity of the labels, and no further guarantees are possible
 // after settlement.
 func ResolveRPCNumber(f Frontier, bn rpc.BlockNumber) (uint64, error) {
-	tip := f.LastAccepted().Height()
-
-	switch bn {
-	case rpc.PendingBlockNumber:
-		return tip, nil
-	case rpc.LatestBlockNumber:
-		return f.LastExecuted().Height(), nil
-	case rpc.SafeBlockNumber, rpc.FinalizedBlockNumber:
-		return f.LastSettled().Height(), nil
-	}
-
-	if bn < 0 {
-		return 0, fmt.Errorf("%s block unsupported", bn.String())
-	}
-	n := uint64(bn) //#nosec G115 -- Non-negative check performed above
-	if n > tip {
-		return 0, fmt.Errorf("%w: block %d", ErrFutureBlockNotResolved, n)
-	}
-	return n, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+//#nosec G115 -- Non-negative check performed above
 
 // Errors returned when resolving an invalid [rpc.BlockNumberOrHash].
 var (
@@ -148,44 +132,17 @@ var (
 // number if (a) it was specified by [rpc.BlockNumberOrHash.Number], or (b) the
 // [rpc.BlockNumberOrHash.RequireCanonical] field is `true`.
 func ResolveRPCNumberOrHash(c Chain, numOrHash rpc.BlockNumberOrHash) (uint64, common.Hash, error) {
-	rpcNum, isNum := numOrHash.Number()
-	hash, isHash := numOrHash.Hash()
-
-	switch {
-	case isNum && isHash:
-		return 0, common.Hash{}, ErrBothNumberAndHash
-
-	case isNum:
-		num, err := ResolveRPCNumber(c, rpcNum)
-		if err != nil {
-			return 0, common.Hash{}, err
-		}
-		// [ResolveRPCNumber] is documented as only returning canonical blocks,
-		// so we don't need to check for a zero hash.
-		return num, rawdb.ReadCanonicalHash(c.DB(), num), nil
-
-	case isHash:
-		if bl, ok := c.ConsensusCriticalBlock(hash); ok {
-			n := bl.NumberU64()
-			// TODO(JonathanOppenheimer): avoid the DB read to confirm if canonical
-			if numOrHash.RequireCanonical && hash != rawdb.ReadCanonicalHash(c.DB(), n) {
-				return 0, common.Hash{}, fmt.Errorf("%w: hash %#x", ErrNonCanonicalBlock, hash)
-			}
-			return n, hash, nil
-		}
-
-		numPtr := rawdb.ReadHeaderNumber(c.DB(), hash)
-		if numPtr == nil {
-			return 0, common.Hash{}, fmt.Errorf("%w: hash %#x", ErrNotFound, hash)
-		}
-		// We only write canonical blocks to the database so there's no need to
-		// perform a check.
-		return *numPtr, hash, nil
-
-	default:
-		return 0, common.Hash{}, ErrNeitherNumberNorHash
-	}
+	_ = "STUB: not implemented"
+	return 0, *new(common.Hash), nil
 }
+
+// [ResolveRPCNumber] is documented as only returning canonical blocks,
+// so we don't need to check for a zero hash.
+
+// TODO(JonathanOppenheimer): avoid the DB read to confirm if canonical
+
+// We only write canonical blocks to the database so there's no need to
+// perform a check.
 
 type (
 	// A DBReader returns any block-related artefact from the database. It is
@@ -201,20 +158,13 @@ type (
 
 // WithNilErr converts the [DBReader] into a [DBReaderWithErr] that always
 // returns a nil error.
-func (r DBReader[T]) WithNilErr() DBReaderWithErr[T] {
-	return func(db ethdb.Reader, h common.Hash, n uint64) (*T, error) {
-		return r(db, h, n), nil
-	}
-}
+func (r DBReader[T]) WithNilErr() DBReaderWithErr[T] { _ = "STUB: not implemented"; return nil }
 
 // FromNumber resolves the canonical [Block] for the given [rpc.BlockNumber]
 // and returns the result of calling `fromDB` with its number and hash.
 func FromNumber[T any](c Chain, n rpc.BlockNumber, fromDB DBReaderWithErr[T]) (*T, error) {
-	num, err := ResolveRPCNumber(c, n)
-	if err != nil {
-		return nil, err
-	}
-	return fromDB(c.DB(), rawdb.ReadCanonicalHash(c.DB(), num), num)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // FromHash returns `fromConsensus()` if a [Block] with the specified hash is
@@ -222,32 +172,18 @@ func FromNumber[T any](c Chain, n rpc.BlockNumber, fromDB DBReaderWithErr[T]) (*
 // `fromDB()` i.f.f. the block was previously accepted. If `fromDB()` is called
 // then the block is guaranteed to exist if read with [rawdb] functions.
 func FromHash[T any](c Chain, hash common.Hash, requireCanonical bool, fromConsensus Extractor[T], fromDB DBReaderWithErr[T]) (*T, error) {
-	if blk, ok := c.ConsensusCriticalBlock(hash); ok {
-		// TODO(JonathanOppenheimer): avoid the DB read to confirm if canonical
-		if requireCanonical && hash != rawdb.ReadCanonicalHash(c.DB(), blk.NumberU64()) {
-			return nil, fmt.Errorf("%w: hash %#x", ErrNonCanonicalBlock, hash)
-		}
-		return fromConsensus(blk), nil
-	}
-	num := rawdb.ReadHeaderNumber(c.DB(), hash)
-	if num == nil {
-		return nil, ErrNotFound
-	}
-	return fromDB(c.DB(), hash, *num)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// TODO(JonathanOppenheimer): avoid the DB read to confirm if canonical
 
 // FromNumberOrHash resolves the [Block] for the given [rpc.BlockNumberOrHash]
 // and returns the result of `fromConsensus` or `fromDB`, preferring the former.
 // See [ResolveRPCNumberOrHash] for canonicality guarantees.
 func FromNumberOrHash[T any](c Chain, blockNrOrHash rpc.BlockNumberOrHash, fromConsensus Extractor[T], fromDB DBReaderWithErr[T]) (*T, error) {
-	n, hash, err := ResolveRPCNumberOrHash(c, blockNrOrHash)
-	if err != nil {
-		return nil, err
-	}
-	if blk, ok := c.ConsensusCriticalBlock(hash); ok {
-		return fromConsensus(blk), nil
-	}
-	return fromDB(c.DB(), hash, n)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // FromNumberAndHash behaves like [FromNumberOrHash] except that it accepts both
@@ -259,18 +195,8 @@ func FromNumberOrHash[T any](c Chain, blockNrOrHash rpc.BlockNumberOrHash, fromC
 // provision of a hash resolves the ambiguity described in the comment on
 // [ErrFutureBlockNotResolved].
 func FromNumberAndHash[T any](c Chain, hash common.Hash, rpcNum rpc.BlockNumber, fromConsensus Extractor[T], fromDB DBReaderWithErr[T]) (*T, error) {
-	if hash == (common.Hash{}) {
-		return nil, errors.New("empty block hash")
-	}
-	if rpcNum < 0 {
-		return nil, errors.New("named blocks not supported")
-	}
-	n := uint64(rpcNum) //#nosec G115 -- Non-negative check performed above
-	if b, ok := c.ConsensusCriticalBlock(hash); ok {
-		if b.NumberU64() != n {
-			return nil, fmt.Errorf("%w: found block number %d for hash %#x, expected %d", ErrNotFound, b.NumberU64(), hash, n)
-		}
-		return fromConsensus(b), nil
-	}
-	return fromDB(c.DB(), hash, n)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+//#nosec G115 -- Non-negative check performed above

@@ -4,8 +4,6 @@
 package extras
 
 import (
-	"encoding/json"
-	"fmt"
 	"math/big"
 
 	"github.com/ava-labs/libevm/common"
@@ -72,15 +70,11 @@ var (
 	TestChainConfig = copyConfig(TestHeliconChainConfig)
 )
 
-func copyConfig(c *ChainConfig) *ChainConfig {
-	newConfig := *c
-	return &newConfig
-}
+func copyConfig(c *ChainConfig) *ChainConfig { _ = "STUB: not implemented"; return nil }
 
 func copyAndSet(c *ChainConfig, set func(*ChainConfig)) *ChainConfig {
-	newConfig := *c
-	set(&newConfig)
-	return &newConfig
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UpgradeConfig includes the following configs that may be specified in upgradeBytes:
@@ -114,91 +108,36 @@ type ChainConfig struct {
 }
 
 func (c *ChainConfig) CheckConfigCompatible(newConfig *ethparams.ChainConfig, headNumber *big.Int, headTimestamp uint64) *ethparams.ConfigCompatError {
-	if c == nil {
-		return nil
-	}
-	newcfg, ok := newConfig.Hooks().(*ChainConfig)
-	if !ok {
-		// Proper registration of the extras on the libevm side should prevent this from happening.
-		// Return an error to prevent the chain from starting, just in case.
-		return ethparams.NewTimestampCompatError(
-			fmt.Sprintf("ChainConfig.Hooks() is not of the expected type *extras.ChainConfig, got %T", newConfig.Hooks()),
-			utils.PointerTo[uint64](0),
-			nil,
-		)
-	}
-	return c.checkConfigCompatible(newcfg, headNumber, headTimestamp)
-}
-
-func (c *ChainConfig) checkConfigCompatible(newcfg *ChainConfig, _ *big.Int, headTimestamp uint64) *ethparams.ConfigCompatError {
-	if err := c.checkNetworkUpgradesCompatible(&newcfg.NetworkUpgrades, headTimestamp); err != nil {
-		return err
-	}
-	// Check that the precompiles on the new config are compatible with the existing precompile config.
-	if err := c.checkPrecompilesCompatible(newcfg.PrecompileUpgrades, headTimestamp); err != nil {
-		return err
-	}
-
-	// Check that the state upgrades on the new config are compatible with the existing state upgrade config.
-	if err := c.checkStateUpgradesCompatible(newcfg.StateUpgrades, headTimestamp); err != nil {
-		return err
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (c *ChainConfig) Description() string {
-	if c == nil {
-		return ""
-	}
-	var banner string
+// Proper registration of the extras on the libevm side should prevent this from happening.
+// Return an error to prevent the chain from starting, just in case.
 
-	banner += "Avalanche Upgrades (timestamp based):\n"
-	banner += c.NetworkUpgrades.Description()
-	banner += "\n"
-
-	upgradeConfigBytes, err := json.Marshal(c.UpgradeConfig)
-	if err != nil {
-		upgradeConfigBytes = []byte("cannot marshal UpgradeConfig")
-	}
-	banner += "Upgrade Config: " + string(upgradeConfigBytes)
-	banner += "\n"
-
-	feeBytes, err := json.Marshal(c.FeeConfig)
-	if err != nil {
-		feeBytes = []byte("cannot marshal FeeConfig")
-	}
-	banner += fmt.Sprintf("Fee Config: %s\n", string(feeBytes))
-
-	banner += fmt.Sprintf("Allow Fee Recipients: %v\n", c.AllowFeeRecipients)
-
-	return banner
+func (c *ChainConfig) checkConfigCompatible(newcfg *ChainConfig, _ *big.Int, headTimestamp uint64) *ethparams.ConfigCompatError {
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// Check that the precompiles on the new config are compatible with the existing precompile config.
+
+// Check that the state upgrades on the new config are compatible with the existing state upgrade config.
+
+func (c *ChainConfig) Description() string { _ = "STUB: not implemented"; return "" }
 
 // isForkTimestampIncompatible returns true if a fork scheduled at timestamp s1
 // cannot be rescheduled to timestamp s2 because head is already past the fork.
 func isForkTimestampIncompatible(s1, s2 *uint64, head uint64) bool {
-	return (isTimestampForked(s1, head) || isTimestampForked(s2, head)) && !configTimestampEqual(s1, s2)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // isTimestampForked returns whether a fork scheduled at timestamp s is active
 // at the given head timestamp.
-func isTimestampForked(s *uint64, head uint64) bool {
-	if s == nil {
-		return false
-	}
-	return *s <= head
-}
+func isTimestampForked(s *uint64, head uint64) bool { _ = "STUB: not implemented"; return false }
 
-func configTimestampEqual(x, y *uint64) bool {
-	if x == nil {
-		return y == nil
-	}
-	if y == nil {
-		return x == nil
-	}
-	return *x == *y
-}
+func configTimestampEqual(x, y *uint64) bool { _ = "STUB: not implemented"; return false }
 
 // UnmarshalJSON parses the JSON-encoded data and stores the result in the
 // object pointed to by c.
@@ -206,47 +145,25 @@ func configTimestampEqual(x, y *uint64) bool {
 // Precompiles was presented as an inline object in the JSON.
 // This custom unmarshaler ensures backwards compatibility with the old format.
 func (c *ChainConfig) UnmarshalJSON(data []byte) error {
+	_ = "STUB: not implemented"
 	// Alias ChainConfigExtra to avoid recursion
-	type _ChainConfigExtra ChainConfig
-	tmp := _ChainConfigExtra{}
-	if err := json.Unmarshal(data, &tmp); err != nil {
-		return err
-	}
-
-	// At this point we have populated all fields except PrecompileUpgrade
-	*c = ChainConfig(tmp)
-
-	// Unmarshal inlined PrecompileUpgrade
-	return json.Unmarshal(data, &c.GenesisPrecompiles)
+	return nil
 }
+
+// At this point we have populated all fields except PrecompileUpgrade
+
+// Unmarshal inlined PrecompileUpgrade
 
 // MarshalJSON returns the JSON encoding of c.
 // This is a custom marshaler to handle the Precompiles field.
 func (c *ChainConfig) MarshalJSON() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// Alias ChainConfigExtra to avoid recursion
-	type _ChainConfigExtra ChainConfig
-	tmp, err := json.Marshal(_ChainConfigExtra(*c))
-	if err != nil {
-		return nil, err
-	}
-
-	// To include PrecompileUpgrades, we unmarshal the json representing c
-	// then directly add the corresponding keys to the json.
-	raw := make(map[string]json.RawMessage)
-	if err := json.Unmarshal(tmp, &raw); err != nil {
-		return nil, err
-	}
-
-	for key, value := range c.GenesisPrecompiles {
-		conf, err := json.Marshal(value)
-		if err != nil {
-			return nil, err
-		}
-		raw[key] = conf
-	}
-
-	return json.Marshal(raw)
+	return nil, nil
 }
+
+// To include PrecompileUpgrades, we unmarshal the json representing c
+// then directly add the corresponding keys to the json.
 
 type fork struct {
 	name      string
@@ -255,103 +172,56 @@ type fork struct {
 	optional  bool     // if true, the fork may be nil and next fork is still allowed
 }
 
-func (c *ChainConfig) CheckConfigForkOrder() error {
-	if c == nil {
-		return nil
-	}
-	// Note: In Avalanche, upgrades must take place via block timestamps instead
-	// of block numbers since blocks are produced asynchronously. Therefore, we do
-	// not check block timestamp forks in the same way as block number forks since
-	// it would not be a meaningful comparison. Instead, we only check that the
-	// Avalanche upgrades are enabled in order.
-	// Note: we do not add the precompile configs here because they are optional
-	// and independent, i.e. the order in which they are enabled does not impact
-	// the correctness of the chain config.
-	return checkForks(c.forkOrder())
-}
+func (c *ChainConfig) CheckConfigForkOrder() error { _ = "STUB: not implemented"; return nil }
+
+// Note: In Avalanche, upgrades must take place via block timestamps instead
+// of block numbers since blocks are produced asynchronously. Therefore, we do
+// not check block timestamp forks in the same way as block number forks since
+// it would not be a meaningful comparison. Instead, we only check that the
+// Avalanche upgrades are enabled in order.
+// Note: we do not add the precompile configs here because they are optional
+// and independent, i.e. the order in which they are enabled does not impact
+// the correctness of the chain config.
 
 // checkForks checks that forks are enabled in order and returns an error if not.
 // `blockFork` is true if the fork is a block number fork, false if it is a timestamp fork
-func checkForks(forks []fork) error {
-	lastFork := fork{}
-	for _, cur := range forks {
-		if lastFork.name != "" {
-			switch {
-			// Non-optional forks must all be present in the chain config up to the last defined fork
-			case lastFork.block == nil && lastFork.timestamp == nil && (cur.block != nil || cur.timestamp != nil):
-				if cur.block != nil {
-					return fmt.Errorf("%w: %v not enabled, but %v enabled at block %v",
-						errUnsupportedForkOrdering, lastFork.name, cur.name, cur.block)
-				} else {
-					return fmt.Errorf("%w: %v not enabled, but %v enabled at timestamp %v",
-						errUnsupportedForkOrdering, lastFork.name, cur.name, cur.timestamp)
-				}
+func checkForks(forks []fork) error { _ = "STUB: not implemented"; return nil }
 
-			// Fork (whether defined by block or timestamp) must follow the fork definition sequence
-			case (lastFork.block != nil && cur.block != nil) || (lastFork.timestamp != nil && cur.timestamp != nil):
-				if lastFork.block != nil && lastFork.block.Cmp(cur.block) > 0 {
-					return fmt.Errorf("%w: %v enabled at block %v, but %v enabled at block %v",
-						errUnsupportedForkOrdering, lastFork.name, lastFork.block, cur.name, cur.block)
-				} else if lastFork.timestamp != nil && *lastFork.timestamp > *cur.timestamp {
-					return fmt.Errorf("%w: %v enabled at timestamp %v, but %v enabled at timestamp %v",
-						errUnsupportedForkOrdering, lastFork.name, lastFork.timestamp, cur.name, cur.timestamp)
-				}
+// Non-optional forks must all be present in the chain config up to the last defined fork
 
-				// Timestamp based forks can follow block based ones, but not the other way around
-				if lastFork.timestamp != nil && cur.block != nil {
-					return fmt.Errorf("%w: %v used timestamp ordering, but %v reverted to block ordering",
-						errUnsupportedForkOrdering, lastFork.name, cur.name)
-				}
-			}
-		}
-		// If it was optional and not set, then ignore it
-		if !cur.optional || (cur.block != nil || cur.timestamp != nil) {
-			lastFork = cur
-		}
-	}
-	return nil
-}
+// Fork (whether defined by block or timestamp) must follow the fork definition sequence
+
+// Timestamp based forks can follow block based ones, but not the other way around
+
+// If it was optional and not set, then ignore it
 
 // Verify verifies chain config.
-func (c *ChainConfig) Verify() error {
-	if err := c.FeeConfig.Verify(); err != nil {
-		return fmt.Errorf("invalid fee config: %w", err)
-	}
+func (c *ChainConfig) Verify() error { _ = "STUB: not implemented"; return nil }
 
-	// Verify the precompile upgrades are internally consistent given the existing chainConfig.
-	if err := c.verifyPrecompileUpgrades(); err != nil {
-		return fmt.Errorf("invalid precompile upgrades: %w", err)
-	}
-	// Verify the state upgrades are internally consistent given the existing chainConfig.
-	if err := c.verifyStateUpgrades(); err != nil {
-		return fmt.Errorf("invalid state upgrades: %w", err)
-	}
+// Verify the precompile upgrades are internally consistent given the existing chainConfig.
 
-	// Verify the network upgrades are internally consistent given the existing chainConfig.
-	if err := c.verifyNetworkUpgrades(c.SnowCtx.NetworkUpgrades); err != nil {
-		return fmt.Errorf("invalid network upgrades: %w", err)
-	}
+// Verify the state upgrades are internally consistent given the existing chainConfig.
 
-	return nil
-}
+// Verify the network upgrades are internally consistent given the existing chainConfig.
 
 // IsPrecompileEnabled returns whether precompile with `address` is enabled at `timestamp`.
 func (c *ChainConfig) IsPrecompileEnabled(address common.Address, timestamp uint64) bool {
-	config := c.GetActivePrecompileConfig(address, timestamp)
-	return config != nil && !config.IsDisabled()
+	_ = "STUB: not implemented"
+	return false
 }
 
 // GetFeeConfig returns the original FeeConfig contained in the genesis ChainConfig.
 // Implements precompile.ChainConfig interface.
 func (c *ChainConfig) GetFeeConfig() commontype.FeeConfig {
-	return c.FeeConfig
+	_ = "STUB: not implemented"
+	return *
+
+	// AllowedFeeRecipients returns the original AllowedFeeRecipients parameter contained in the genesis ChainConfig.
+	// Implements precompile.ChainConfig interface.
+	new(commontype.FeeConfig)
 }
 
-// AllowedFeeRecipients returns the original AllowedFeeRecipients parameter contained in the genesis ChainConfig.
-// Implements precompile.ChainConfig interface.
-func (c *ChainConfig) AllowedFeeRecipients() bool {
-	return c.AllowFeeRecipients
-}
+func (c *ChainConfig) AllowedFeeRecipients() bool { _ = "STUB: not implemented"; return false }
 
 // IsForkTransition returns true if `fork` activates during the transition from
 // `parent` to `current`.
@@ -361,10 +231,6 @@ func (c *ChainConfig) AllowedFeeRecipients() bool {
 // block number values, since this function works for both block number and
 // timestamp activated forks.
 func IsForkTransition(fork *uint64, parent *uint64, current uint64) bool {
-	var parentForked bool
-	if parent != nil {
-		parentForked = isTimestampForked(fork, *parent)
-	}
-	currentForked := isTimestampForked(fork, current)
-	return !parentForked && currentForked
+	_ = "STUB: not implemented"
+	return false
 }

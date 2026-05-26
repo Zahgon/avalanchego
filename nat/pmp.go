@@ -5,11 +5,8 @@ package nat
 
 import (
 	"errors"
-	"math"
 	"net/netip"
 	"time"
-
-	"github.com/jackpal/gateway"
 
 	natpmp "github.com/jackpal/go-nat-pmp"
 )
@@ -35,9 +32,7 @@ type pmpRouter struct {
 	client *natpmp.Client
 }
 
-func (*pmpRouter) SupportsNAT() bool {
-	return true
-}
+func (*pmpRouter) SupportsNAT() bool { _ = "STUB: not implemented"; return false }
 
 func (r *pmpRouter) MapPort(
 	newInternalPort uint16,
@@ -45,47 +40,22 @@ func (r *pmpRouter) MapPort(
 	_ string,
 	mappingDuration time.Duration,
 ) error {
-	internalPort := int(newInternalPort)
-	externalPort := int(newExternalPort)
-
-	// go-nat-pmp uses seconds to denote their lifetime
-	lifetime := mappingDuration.Seconds()
-	// Assumes the architecture is at least 32-bit
-	if lifetime < 0 || lifetime > math.MaxInt32 {
-		return errInvalidLifetime
-	}
-
-	_, err := r.client.AddPortMapping(pmpProtocol, internalPort, externalPort, int(lifetime))
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (r *pmpRouter) UnmapPort(internalPort uint16, _ uint16) error {
-	internalPortInt := int(internalPort)
+// go-nat-pmp uses seconds to denote their lifetime
 
-	_, err := r.client.AddPortMapping(pmpProtocol, internalPortInt, 0, 0)
-	return err
+// Assumes the architecture is at least 32-bit
+
+func (r *pmpRouter) UnmapPort(internalPort uint16, _ uint16) error {
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (r *pmpRouter) ExternalIP() (netip.Addr, error) {
-	response, err := r.client.GetExternalAddress()
-	if err != nil {
-		return netip.Addr{}, err
-	}
-	return netip.AddrFrom4(response.ExternalIPAddress), nil
+	_ = "STUB: not implemented"
+	return *new(netip.Addr), nil
 }
 
-func getPMPRouter() *pmpRouter {
-	gatewayIP, err := gateway.DiscoverGateway()
-	if err != nil {
-		return nil
-	}
-
-	pmp := &pmpRouter{
-		client: natpmp.NewClientWithTimeout(gatewayIP, pmpClientTimeout),
-	}
-	if _, err := pmp.ExternalIP(); err != nil {
-		return nil
-	}
-
-	return pmp
-}
+func getPMPRouter() *pmpRouter { _ = "STUB: not implemented"; return nil }

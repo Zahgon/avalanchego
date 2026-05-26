@@ -7,11 +7,10 @@
 package xsvm
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -28,42 +27,21 @@ type PingRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PingRequest) Reset() {
-	*x = PingRequest{}
-	mi := &file_xsvm_service_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PingRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PingRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PingRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PingRequest) ProtoMessage() {}
+func (*PingRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_xsvm_service_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
-func (*PingRequest) Descriptor() ([]byte, []int) {
-	return file_xsvm_service_proto_rawDescGZIP(), []int{0}
-}
+func (*PingRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PingRequest) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *PingRequest) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 type PingReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -72,42 +50,21 @@ type PingReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PingReply) Reset() {
-	*x = PingReply{}
-	mi := &file_xsvm_service_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *PingReply) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *PingReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *PingReply) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*PingReply) ProtoMessage() {}
+func (*PingReply) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *PingReply) ProtoReflect() protoreflect.Message {
-	mi := &file_xsvm_service_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use PingReply.ProtoReflect.Descriptor instead.
-func (*PingReply) Descriptor() ([]byte, []int) {
-	return file_xsvm_service_proto_rawDescGZIP(), []int{1}
-}
+func (*PingReply) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *PingReply) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *PingReply) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 type StreamPingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -116,42 +73,21 @@ type StreamPingRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StreamPingRequest) Reset() {
-	*x = StreamPingRequest{}
-	mi := &file_xsvm_service_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StreamPingRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StreamPingRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StreamPingRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StreamPingRequest) ProtoMessage() {}
+func (*StreamPingRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StreamPingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_xsvm_service_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StreamPingRequest.ProtoReflect.Descriptor instead.
-func (*StreamPingRequest) Descriptor() ([]byte, []int) {
-	return file_xsvm_service_proto_rawDescGZIP(), []int{2}
-}
+func (*StreamPingRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *StreamPingRequest) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *StreamPingRequest) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 type StreamPingReply struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -160,42 +96,21 @@ type StreamPingReply struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *StreamPingReply) Reset() {
-	*x = StreamPingReply{}
-	mi := &file_xsvm_service_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *StreamPingReply) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *StreamPingReply) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *StreamPingReply) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*StreamPingReply) ProtoMessage() {}
+func (*StreamPingReply) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *StreamPingReply) ProtoReflect() protoreflect.Message {
-	mi := &file_xsvm_service_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use StreamPingReply.ProtoReflect.Descriptor instead.
-func (*StreamPingReply) Descriptor() ([]byte, []int) {
-	return file_xsvm_service_proto_rawDescGZIP(), []int{3}
-}
+func (*StreamPingReply) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *StreamPingReply) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
+func (x *StreamPingReply) GetMessage() string { _ = "STUB: not implemented"; return "" }
 
 var File_xsvm_service_proto protoreflect.FileDescriptor
 
@@ -220,12 +135,7 @@ var (
 	file_xsvm_service_proto_rawDescData []byte
 )
 
-func file_xsvm_service_proto_rawDescGZIP() []byte {
-	file_xsvm_service_proto_rawDescOnce.Do(func() {
-		file_xsvm_service_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_xsvm_service_proto_rawDesc), len(file_xsvm_service_proto_rawDesc)))
-	})
-	return file_xsvm_service_proto_rawDescData
-}
+func file_xsvm_service_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_xsvm_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_xsvm_service_proto_goTypes = []any{
@@ -246,26 +156,5 @@ var file_xsvm_service_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_xsvm_service_proto_init() }
-func file_xsvm_service_proto_init() {
-	if File_xsvm_service_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_xsvm_service_proto_rawDesc), len(file_xsvm_service_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   4,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_xsvm_service_proto_goTypes,
-		DependencyIndexes: file_xsvm_service_proto_depIdxs,
-		MessageInfos:      file_xsvm_service_proto_msgTypes,
-	}.Build()
-	File_xsvm_service_proto = out.File
-	file_xsvm_service_proto_goTypes = nil
-	file_xsvm_service_proto_depIdxs = nil
-}
+func init()                         { file_xsvm_service_proto_init() }
+func file_xsvm_service_proto_init() { _ = "STUB: not implemented"; return }

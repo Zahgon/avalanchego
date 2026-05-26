@@ -3,8 +3,6 @@
 
 package linked
 
-import "github.com/ava-labs/avalanchego/utils"
-
 type keyValue[K, V any] struct {
 	key   K
 	value V
@@ -19,99 +17,39 @@ type Hashmap[K comparable, V any] struct {
 	freeList  []*ListElement[keyValue[K, V]]
 }
 
-func NewHashmap[K comparable, V any]() *Hashmap[K, V] {
-	return NewHashmapWithSize[K, V](0)
-}
+func NewHashmap[K comparable, V any]() *Hashmap[K, V] { _ = "STUB: not implemented"; return nil }
 
 func NewHashmapWithSize[K comparable, V any](initialSize int) *Hashmap[K, V] {
-	lh := &Hashmap[K, V]{
-		entryMap:  make(map[K]*ListElement[keyValue[K, V]], initialSize),
-		entryList: NewList[keyValue[K, V]](),
-		freeList:  make([]*ListElement[keyValue[K, V]], initialSize),
-	}
-	for i := range lh.freeList {
-		lh.freeList[i] = &ListElement[keyValue[K, V]]{}
-	}
-	return lh
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (lh *Hashmap[K, V]) Put(key K, value V) {
-	if e, ok := lh.entryMap[key]; ok {
-		lh.entryList.MoveToBack(e)
-		e.Value = keyValue[K, V]{
-			key:   key,
-			value: value,
-		}
-		return
-	}
+func (lh *Hashmap[K, V]) Put(key K, value V) { _ = "STUB: not implemented"; return }
 
-	var e *ListElement[keyValue[K, V]]
-	if numFree := len(lh.freeList); numFree > 0 {
-		numFree--
-		e = lh.freeList[numFree]
-		lh.freeList = lh.freeList[:numFree]
-	} else {
-		e = &ListElement[keyValue[K, V]]{}
-	}
+func (lh *Hashmap[K, V]) Get(key K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }
 
-	e.Value = keyValue[K, V]{
-		key:   key,
-		value: value,
-	}
-	lh.entryMap[key] = e
-	lh.entryList.PushBack(e)
-}
+func (lh *Hashmap[K, V]) Delete(key K) bool { _ = "STUB: not implemented"; return false }
 
-func (lh *Hashmap[K, V]) Get(key K) (V, bool) {
-	if e, ok := lh.entryMap[key]; ok {
-		return e.Value.value, true
-	}
-	return utils.Zero[V](), false
-}
-
-func (lh *Hashmap[K, V]) Delete(key K) bool {
-	e, ok := lh.entryMap[key]
-	if ok {
-		lh.remove(e)
-	}
-	return ok
-}
-
-func (lh *Hashmap[K, V]) Clear() {
-	for _, e := range lh.entryMap {
-		lh.remove(e)
-	}
-}
+func (lh *Hashmap[K, V]) Clear() { _ = "STUB: not implemented"; return }
 
 // remove assumes that [e] is currently in the Hashmap.
-func (lh *Hashmap[K, V]) remove(e *ListElement[keyValue[K, V]]) {
-	delete(lh.entryMap, e.Value.key)
-	lh.entryList.Remove(e)
-	e.Value = keyValue[K, V]{} // Free the key value pair
-	lh.freeList = append(lh.freeList, e)
-}
+func (lh *Hashmap[K, V]) remove(e *ListElement[keyValue[K, V]]) { _ = "STUB: not implemented"; return }
 
-func (lh *Hashmap[K, V]) Len() int {
-	return len(lh.entryMap)
-}
+// Free the key value pair
+
+func (lh *Hashmap[K, V]) Len() int { _ = "STUB: not implemented"; return 0 }
 
 func (lh *Hashmap[K, V]) Oldest() (K, V, bool) {
-	if e := lh.entryList.Front(); e != nil {
-		return e.Value.key, e.Value.value, true
-	}
-	return utils.Zero[K](), utils.Zero[V](), false
+	_ = "STUB: not implemented"
+	return *new(K), *new(V), false
 }
 
 func (lh *Hashmap[K, V]) Newest() (K, V, bool) {
-	if e := lh.entryList.Back(); e != nil {
-		return e.Value.key, e.Value.value, true
-	}
-	return utils.Zero[K](), utils.Zero[V](), false
+	_ = "STUB: not implemented"
+	return *new(K), *new(V), false
 }
 
-func (lh *Hashmap[K, V]) NewIterator() *Iterator[K, V] {
-	return &Iterator[K, V]{lh: lh}
-}
+func (lh *Hashmap[K, V]) NewIterator() *Iterator[K, V] { _ = "STUB: not implemented"; return nil }
 
 // Iterates over the keys and values in a LinkedHashmap from oldest to newest.
 // Assumes the underlying LinkedHashmap is not modified while the iterator is in
@@ -125,42 +63,19 @@ type Iterator[K comparable, V any] struct {
 }
 
 func (it *Iterator[K, V]) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator has been exhausted, there is no next value.
-	if it.exhausted {
-		it.key = utils.Zero[K]()
-		it.value = utils.Zero[V]()
-		it.next = nil
-		return false
-	}
-
-	// If the iterator was not yet initialized, do it now.
-	if !it.initialized {
-		it.initialized = true
-		oldest := it.lh.entryList.Front()
-		if oldest == nil {
-			it.exhausted = true
-			it.key = utils.Zero[K]()
-			it.value = utils.Zero[V]()
-			it.next = nil
-			return false
-		}
-		it.next = oldest
-	}
-
-	// It's important to ensure that [it.next] is not nil
-	// by not deleting elements that have not yet been iterated
-	// over from [it.lh]
-	it.key = it.next.Value.key
-	it.value = it.next.Value.value
-	it.next = it.next.Next() // Next time, return next element
-	it.exhausted = it.next == nil
-	return true
+	return false
 }
 
-func (it *Iterator[K, V]) Key() K {
-	return it.key
-}
+// If the iterator was not yet initialized, do it now.
 
-func (it *Iterator[K, V]) Value() V {
-	return it.value
-}
+// It's important to ensure that [it.next] is not nil
+// by not deleting elements that have not yet been iterated
+// over from [it.lh]
+
+// Next time, return next element
+
+func (it *Iterator[K, V]) Key() K { _ = "STUB: not implemented"; return *new(K) }
+
+func (it *Iterator[K, V]) Value() V { _ = "STUB: not implemented"; return *new(V) }

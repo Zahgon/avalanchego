@@ -9,22 +9,9 @@ import (
 	"context"
 	"os/exec"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
 
-func NewCmd(path string, args ...string) *exec.Cmd {
-	return exec.Command(path, args...)
-}
+func NewCmd(path string, args ...string) *exec.Cmd { _ = "STUB: not implemented"; return nil }
 
-func stop(_ context.Context, log logging.Logger, cmd *exec.Cmd) {
-	err := cmd.Process.Kill()
-	if err == nil {
-		log.Debug("subprocess was killed")
-	} else {
-		log.Error("subprocess was killed",
-			zap.Error(err),
-		)
-	}
-}
+func stop(_ context.Context, log logging.Logger, cmd *exec.Cmd) { _ = "STUB: not implemented"; return }

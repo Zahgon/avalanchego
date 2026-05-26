@@ -7,18 +7,8 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"math/big"
-	"time"
 
-	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/crypto"
-	"github.com/ava-labs/libevm/log"
-
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/ethclient"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/plugin/evm/upgrade/legacy"
-
-	ethparams "github.com/ava-labs/libevm/params"
 )
 
 // expectedBlockHeight is the block height that activates the proposerVM fork.
@@ -35,40 +25,10 @@ func IssueTxsToActivateProposerVMFork(
 	ctx context.Context, chainID *big.Int, fundedKey *ecdsa.PrivateKey,
 	client ethclient.Client,
 ) error {
-	addr := crypto.PubkeyToAddress(fundedKey.PublicKey)
-	nonce, err := client.NonceAt(ctx, addr, nil)
-	if err != nil {
-		return err
-	}
-
-	gasPrice := big.NewInt(legacy.BaseFee)
-	txSigner := types.LatestSignerForChainID(chainID)
-
-	// Send exactly 2 transactions, waiting for each to be included in a block
-	for i := 0; i < expectedBlockHeight; i++ {
-		tx := types.NewTransaction(
-			nonce, addr, common.Big1, ethparams.TxGas, gasPrice, nil)
-		triggerTx, err := types.SignTx(tx, txSigner, fundedKey)
-		if err != nil {
-			return err
-		}
-		if err := client.SendTransaction(ctx, triggerTx); err != nil {
-			return err
-		}
-
-		// Wait for this transaction to be included in a block
-		receiptCtx, cancel := context.WithTimeout(ctx, 60*time.Second)
-		if _, err := bind.WaitMined(receiptCtx, client, triggerTx); err != nil {
-			cancel()
-			return err
-		}
-		cancel()
-		nonce++
-	}
-
-	log.Info(
-		"Built sufficient blocks to activate proposerVM fork",
-		"blockHeight", expectedBlockHeight,
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Send exactly 2 transactions, waiting for each to be included in a block
+
+// Wait for this transaction to be included in a block

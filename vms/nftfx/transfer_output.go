@@ -4,7 +4,6 @@
 package nftfx
 
 import (
-	"encoding/json"
 	"errors"
 
 	"github.com/ava-labs/avalanchego/utils/units"
@@ -36,23 +35,8 @@ type TransferOutput struct {
 // into a JSON readable format
 // If OutputOwners cannot be serialized then this will return error
 func (out *TransferOutput) MarshalJSON() ([]byte, error) {
-	result, err := out.OutputOwners.Fields()
-	if err != nil {
-		return nil, err
-	}
-
-	result["groupID"] = out.GroupID
-	result["payload"] = out.Payload
-	return json.Marshal(result)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (out *TransferOutput) Verify() error {
-	switch {
-	case out == nil:
-		return errNilTransferOutput
-	case len(out.Payload) > MaxPayloadSize:
-		return errPayloadTooLarge
-	default:
-		return out.OutputOwners.Verify()
-	}
-}
+func (out *TransferOutput) Verify() error { _ = "STUB: not implemented"; return nil }

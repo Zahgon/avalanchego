@@ -4,20 +4,14 @@
 package txs
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p/gossip"
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/utils/crypto/secp256k1"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/avm/fxs"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/nftfx"
-	"github.com/ava-labs/avalanchego/vms/propertyfx"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var _ gossip.Gossipable = (*Tx)(nil)
@@ -51,143 +45,48 @@ type Tx struct {
 	bytes []byte
 }
 
-func (t *Tx) Initialize(c codec.Manager) error {
-	signedBytes, err := c.Marshal(CodecVersion, t)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
+func (t *Tx) Initialize(c codec.Manager) error { _ = "STUB: not implemented"; return nil }
 
-	unsignedBytesLen, err := c.Size(CodecVersion, &t.Unsigned)
-	if err != nil {
-		return fmt.Errorf("couldn't calculate UnsignedTx marshal length: %w", err)
-	}
-
-	unsignedBytes := signedBytes[:unsignedBytesLen]
-	t.SetBytes(unsignedBytes, signedBytes)
-	return nil
-}
-
-func (t *Tx) SetBytes(unsignedBytes, signedBytes []byte) {
-	t.TxID = hashing.ComputeHash256Array(signedBytes)
-	t.bytes = signedBytes
-	t.Unsigned.SetBytes(unsignedBytes)
-}
+func (t *Tx) SetBytes(unsignedBytes, signedBytes []byte) { _ = "STUB: not implemented"; return }
 
 // ID returns the unique ID of this tx
 func (t *Tx) ID() ids.ID {
-	return t.TxID
+	_ = "STUB: not implemented"
+
+	// GossipID returns the unique ID that this tx should use for mempool gossip
+	return *new(ids.ID)
 }
 
-// GossipID returns the unique ID that this tx should use for mempool gossip
 func (t *Tx) GossipID() ids.ID {
-	return t.TxID
+	_ = "STUB: not implemented"
+
+	// Bytes returns the binary representation of this tx
+	return *new(ids.ID)
 }
 
-// Bytes returns the binary representation of this tx
-func (t *Tx) Bytes() []byte {
-	return t.bytes
-}
+func (t *Tx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (t *Tx) Size() int {
-	return len(t.bytes)
-}
+func (t *Tx) Size() int { _ = "STUB: not implemented"; return 0 }
 
 // UTXOs returns the UTXOs transaction is producing.
-func (t *Tx) UTXOs() []*avax.UTXO {
-	u := utxoGetter{tx: t}
-	// The visit error is explicitly dropped here because no error is ever
-	// returned from the utxoGetter.
-	_ = t.Unsigned.Visit(&u)
-	return u.utxos
-}
+func (t *Tx) UTXOs() []*avax.UTXO { _ = "STUB: not implemented"; return nil }
 
-func (t *Tx) InputIDs() set.Set[ids.ID] {
-	return t.Unsigned.InputIDs()
-}
+// The visit error is explicitly dropped here because no error is ever
+// returned from the utxoGetter.
+
+func (t *Tx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
 func (t *Tx) SignSECP256K1Fx(c codec.Manager, signers [][]*secp256k1.PrivateKey) error {
-	unsignedBytes, err := c.Marshal(CodecVersion, &t.Unsigned)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-
-	hash := hashing.ComputeHash256(unsignedBytes)
-	for _, keys := range signers {
-		cred := &secp256k1fx.Credential{
-			Sigs: make([][secp256k1.SignatureLen]byte, len(keys)),
-		}
-		for i, key := range keys {
-			sig, err := key.SignHash(hash)
-			if err != nil {
-				return fmt.Errorf("problem creating transaction: %w", err)
-			}
-			copy(cred.Sigs[i][:], sig)
-		}
-		t.Creds = append(t.Creds, &fxs.FxCredential{Credential: cred})
-	}
-
-	signedBytes, err := c.Marshal(CodecVersion, t)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-	t.SetBytes(unsignedBytes, signedBytes)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (t *Tx) SignPropertyFx(c codec.Manager, signers [][]*secp256k1.PrivateKey) error {
-	unsignedBytes, err := c.Marshal(CodecVersion, &t.Unsigned)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-
-	hash := hashing.ComputeHash256(unsignedBytes)
-	for _, keys := range signers {
-		cred := &propertyfx.Credential{Credential: secp256k1fx.Credential{
-			Sigs: make([][secp256k1.SignatureLen]byte, len(keys)),
-		}}
-		for i, key := range keys {
-			sig, err := key.SignHash(hash)
-			if err != nil {
-				return fmt.Errorf("problem creating transaction: %w", err)
-			}
-			copy(cred.Sigs[i][:], sig)
-		}
-		t.Creds = append(t.Creds, &fxs.FxCredential{Credential: cred})
-	}
-
-	signedBytes, err := c.Marshal(CodecVersion, t)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-	t.SetBytes(unsignedBytes, signedBytes)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (t *Tx) SignNFTFx(c codec.Manager, signers [][]*secp256k1.PrivateKey) error {
-	unsignedBytes, err := c.Marshal(CodecVersion, &t.Unsigned)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-
-	hash := hashing.ComputeHash256(unsignedBytes)
-	for _, keys := range signers {
-		cred := &nftfx.Credential{Credential: secp256k1fx.Credential{
-			Sigs: make([][secp256k1.SignatureLen]byte, len(keys)),
-		}}
-		for i, key := range keys {
-			sig, err := key.SignHash(hash)
-			if err != nil {
-				return fmt.Errorf("problem creating transaction: %w", err)
-			}
-			copy(cred.Sigs[i][:], sig)
-		}
-		t.Creds = append(t.Creds, &fxs.FxCredential{Credential: cred})
-	}
-
-	signedBytes, err := c.Marshal(CodecVersion, t)
-	if err != nil {
-		return fmt.Errorf("problem creating transaction: %w", err)
-	}
-	t.SetBytes(unsignedBytes, signedBytes)
+	_ = "STUB: not implemented"
 	return nil
 }

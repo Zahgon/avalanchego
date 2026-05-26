@@ -4,8 +4,6 @@
 package messages
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/ids"
 )
 
@@ -20,32 +18,18 @@ type ValidatorUptime struct {
 
 // NewValidatorUptime creates a new *ValidatorUptime and initializes it.
 func NewValidatorUptime(validationID ids.ID, totalUptime uint64) (*ValidatorUptime, error) {
-	bhp := &ValidatorUptime{
-		ValidationID: validationID,
-		TotalUptime:  totalUptime,
-	}
-	return bhp, initialize(bhp)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ParseValidatorUptime converts a slice of bytes into an initialized ValidatorUptime.
 func ParseValidatorUptime(b []byte) (*ValidatorUptime, error) {
-	payloadIntf, err := Parse(b)
-	if err != nil {
-		return nil, err
-	}
-	payload, ok := payloadIntf.(*ValidatorUptime)
-	if !ok {
-		return nil, fmt.Errorf("%w: %T", errWrongType, payloadIntf)
-	}
-	return payload, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Bytes returns the binary representation of this payload. It assumes that the
 // payload is initialized from either NewValidatorUptime or Parse.
-func (b *ValidatorUptime) Bytes() []byte {
-	return b.bytes
-}
+func (b *ValidatorUptime) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *ValidatorUptime) initialize(bytes []byte) {
-	b.bytes = bytes
-}
+func (b *ValidatorUptime) initialize(bytes []byte) { _ = "STUB: not implemented"; return }

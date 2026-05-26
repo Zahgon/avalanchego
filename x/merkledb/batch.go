@@ -14,10 +14,6 @@ type batch struct {
 }
 
 // Assumes [b.db.lock] isn't held.
-func (b *batch) Write() error {
-	return b.db.commitBatch(b.Ops)
-}
+func (b *batch) Write() error { _ = "STUB: not implemented"; return nil }
 
-func (b *batch) Inner() database.Batch {
-	return b
-}
+func (b *batch) Inner() database.Batch { _ = "STUB: not implemented"; return *new(database.Batch) }

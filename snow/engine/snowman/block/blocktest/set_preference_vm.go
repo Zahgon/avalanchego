@@ -8,8 +8,6 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
 )
@@ -27,16 +25,9 @@ type SetPreferenceVM struct {
 	SetPreferenceWithContextF    func(context.Context, ids.ID, *block.Context) error
 }
 
-func (vm *SetPreferenceVM) Default(cant bool) {
-	vm.CantSetPreferenceWithContext = cant
-}
+func (vm *SetPreferenceVM) Default(cant bool) { _ = "STUB: not implemented"; return }
 
 func (vm *SetPreferenceVM) SetPreferenceWithContext(ctx context.Context, id ids.ID, blockCtx *block.Context) error {
-	if vm.SetPreferenceWithContextF != nil {
-		return vm.SetPreferenceWithContextF(ctx, id, blockCtx)
-	}
-	if vm.T != nil {
-		require.False(vm.T, vm.CantSetPreferenceWithContext, errSetPreferenceWithContext)
-	}
-	return errSetPreferenceWithContext
+	_ = "STUB: not implemented"
+	return nil
 }

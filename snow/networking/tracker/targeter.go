@@ -4,11 +4,8 @@
 package tracker
 
 import (
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/validators"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/logging"
 )
 
@@ -39,14 +36,8 @@ func NewTargeter(
 	vdrs validators.Manager,
 	tracker Tracker,
 ) Targeter {
-	return &targeter{
-		log:                logger,
-		vdrs:               vdrs,
-		tracker:            tracker,
-		vdrAlloc:           config.VdrAlloc,
-		maxNonVdrUsage:     config.MaxNonVdrUsage,
-		maxNonVdrNodeUsage: config.MaxNonVdrNodeUsage,
-	}
+	_ = "STUB: not implemented"
+	return *new(Targeter)
 }
 
 type targeter struct {
@@ -59,25 +50,9 @@ type targeter struct {
 }
 
 func (t *targeter) TargetUsage(nodeID ids.NodeID) float64 {
+	_ = "STUB: not implemented"
 	// This node's at-large allocation is min([remaining at large], [max at large for a given peer])
-	usage := t.tracker.TotalUsage()
-	baseAlloc := max(0, t.maxNonVdrUsage-usage)
-	baseAlloc = min(baseAlloc, t.maxNonVdrNodeUsage)
-
-	// This node gets a stake-weighted portion of the validator allocation.
-	weight := t.vdrs.GetWeight(constants.PrimaryNetworkID, nodeID)
-	if weight == 0 {
-		return baseAlloc
-	}
-
-	totalWeight, err := t.vdrs.TotalWeight(constants.PrimaryNetworkID)
-	if err != nil {
-		t.log.Error("couldn't get total weight of primary network",
-			zap.Error(err),
-		)
-		return baseAlloc
-	}
-
-	vdrAlloc := t.vdrAlloc * float64(weight) / float64(totalWeight)
-	return vdrAlloc + baseAlloc
+	return 0
 }
+
+// This node gets a stake-weighted portion of the validator allocation.

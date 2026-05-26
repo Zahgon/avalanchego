@@ -28,8 +28,6 @@
 package simulated
 
 import (
-	"math/big"
-
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/eth/ethconfig"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/node"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params"
@@ -39,32 +37,27 @@ import (
 // WithBlockGasLimit configures the simulated backend to target a specific gas limit
 // when producing blocks.
 func WithBlockGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.Genesis.GasLimit = gaslimit
-		params.GetExtra(ethConf.Genesis.Config).FeeConfig.GasLimit = new(big.Int).SetUint64(gaslimit)
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithCallGasLimit configures the simulated backend to cap eth_calls to a specific
 // gas limit when running client operations.
 func WithCallGasLimit(gaslimit uint64) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.RPCGasCap = gaslimit
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithChainConfig configures the simulated backend to use a specific chain configuration.
 func WithChainConfig(chainConfig *params.ChainConfig) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.Genesis.Config = chainConfig
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WithEtherbase configures the simulated backend to use a specific etherbase/coinbase address
 // for block production. This is the address that receives block rewards and transaction fees
 // when allowFeeRecipients is enabled.
 func WithEtherbase(etherbase common.Address) func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-	return func(nodeConf *node.Config, ethConf *ethconfig.Config) {
-		ethConf.Miner.Etherbase = etherbase
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

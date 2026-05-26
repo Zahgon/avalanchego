@@ -5,7 +5,6 @@ package compression
 
 import (
 	"errors"
-	"strings"
 )
 
 var errUnknownCompressionType = errors.New("unknown compression type")
@@ -17,38 +16,8 @@ const (
 	TypeZstd
 )
 
-func (t Type) String() string {
-	switch t {
-	case TypeNone:
-		return "none"
-	case TypeZstd:
-		return "zstd"
-	default:
-		return "unknown"
-	}
-}
+func (t Type) String() string { _ = "STUB: not implemented"; return "" }
 
-func TypeFromString(s string) (Type, error) {
-	switch s {
-	case TypeNone.String():
-		return TypeNone, nil
-	case TypeZstd.String():
-		return TypeZstd, nil
-	default:
-		return TypeNone, errUnknownCompressionType
-	}
-}
+func TypeFromString(s string) (Type, error) { _ = "STUB: not implemented"; return *new(Type), nil }
 
-func (t Type) MarshalJSON() ([]byte, error) {
-	var b strings.Builder
-	if _, err := b.WriteString(`"`); err != nil {
-		return nil, err
-	}
-	if _, err := b.WriteString(t.String()); err != nil {
-		return nil, err
-	}
-	if _, err := b.WriteString(`"`); err != nil {
-		return nil, err
-	}
-	return []byte(b.String()), nil
-}
+func (t Type) MarshalJSON() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }

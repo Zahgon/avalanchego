@@ -4,8 +4,6 @@
 package message
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 )
 
@@ -47,28 +45,8 @@ const (
 
 // NewLeafsRequest builds a leafs request using the requested wire format.
 func NewLeafsRequest(leafReqType LeafsRequestType, root, account common.Hash, start, end []byte, limit uint16, nodeType NodeType) (LeafsRequest, error) {
-	switch leafReqType {
-	case SubnetEVMLeafsRequestType:
-		return SubnetEVMLeafsRequest{
-			Root:     root,
-			Account:  account,
-			Start:    start,
-			End:      end,
-			Limit:    limit,
-			NodeType: nodeType,
-		}, nil
-	case CorethLeafsRequestType:
-		return CorethLeafsRequest{
-			Root:     root,
-			Account:  account,
-			Start:    start,
-			End:      end,
-			Limit:    limit,
-			NodeType: nodeType,
-		}, nil
-	default:
-		return nil, fmt.Errorf("unsupported leafs request type: %q", leafReqType)
-	}
+	_ = "STUB: not implemented"
+	return *new(LeafsRequest), nil
 }
 
 // LeafsResponse is a response to a LeafsRequest

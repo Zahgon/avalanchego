@@ -6,18 +6,12 @@ package tmpnet
 import (
 	"context"
 
-	"go.uber.org/zap"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
 	_ "embed"
 
-	"github.com/ava-labs/avalanchego/tests/fixture/stacktrace"
 	"github.com/ava-labs/avalanchego/utils/logging"
-
-	corev1 "k8s.io/api/core/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 //go:embed yaml/promtail-daemonset.yaml
@@ -46,60 +40,11 @@ func deployKubeCollectors(
 	startMetricsCollector bool,
 	startLogsCollector bool,
 ) error {
-	if !startMetricsCollector && !startLogsCollector {
-		// Nothing to do
-		return nil
-	}
-
-	clientConfig, err := GetClientConfig(log, configPath, configContext)
-	if err != nil {
-		return stacktrace.Errorf("failed to get client config: %w", err)
-	}
-	clientset, err := kubernetes.NewForConfig(clientConfig)
-	if err != nil {
-		return stacktrace.Errorf("failed to create clientset: %w", err)
-	}
-	dynamicClient, err := dynamic.NewForConfig(clientConfig)
-	if err != nil {
-		return stacktrace.Errorf("failed to create dynamic client: %w", err)
-	}
-
-	namespace := &corev1.Namespace{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: monitoringNamespace,
-		},
-	}
-	_, err = clientset.CoreV1().Namespaces().Create(ctx, namespace, metav1.CreateOptions{})
-	if err != nil && !apierrors.IsAlreadyExists(err) {
-		return stacktrace.Errorf("failed to create namespace %s: %w", monitoringNamespace, err)
-	}
-
-	collectorConfigs := []kubeCollectorConfig{
-		{
-			name:         promtailCmd,
-			target:       "logs",
-			secretPrefix: "loki",
-			manifest:     promtailManifest,
-		},
-		{
-			name:         prometheusCmd,
-			target:       "metrics",
-			secretPrefix: prometheusCmd,
-			manifest:     prometheusManifest,
-		},
-	}
-	for _, collectorConfig := range collectorConfigs {
-		log.Info("deploying kube collector",
-			zap.String("cmd", collectorConfig.name),
-			zap.String("target", collectorConfig.target),
-		)
-		if err := deployKubeCollector(ctx, log, clientset, dynamicClient, collectorConfig); err != nil {
-			return stacktrace.Wrap(err)
-		}
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Nothing to do
 
 // deployKubeCollector deploys a named collector to a Kubernetes cluster via the provided manifest bytes.
 func deployKubeCollector(
@@ -109,19 +54,8 @@ func deployKubeCollector(
 	dynamicClient dynamic.Interface,
 	kubeConfig kubeCollectorConfig,
 ) error {
+	_ = "STUB: not implemented"
 	// Source the collector url and auth creds from the environment
-	config, err := getCollectorConfigForPush(kubeConfig.name)
-	if err != nil {
-		return stacktrace.Errorf("failed to get collector config for %s: %w", kubeConfig.name, err)
-	}
-
-	if err := createCollectorConfigSecret(ctx, log, clientset, kubeConfig.secretPrefix, config); err != nil {
-		return stacktrace.Errorf("failed to create collector config secret for %s: %w", kubeConfig.name, err)
-	}
-
-	if err := applyManifest(ctx, log, dynamicClient, kubeConfig.manifest, monitoringNamespace); err != nil {
-		return stacktrace.Errorf("failed to apply manifest for %s: %w", kubeConfig.name, err)
-	}
 	return nil
 }
 
@@ -133,33 +67,6 @@ func createCollectorConfigSecret(
 	namePrefix string,
 	config collectorConfig,
 ) error {
-	secretName := namePrefix + "-config"
-	secret := &corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: secretName,
-		},
-		StringData: map[string]string{
-			"url":      config.url,
-			"username": config.username,
-			"password": config.password,
-		},
-	}
-	_, err := clientset.CoreV1().Secrets(monitoringNamespace).Create(ctx, secret, metav1.CreateOptions{})
-	if err != nil {
-		if apierrors.IsAlreadyExists(err) {
-			log.Info("secret already exists",
-				zap.String("namespace", monitoringNamespace),
-				zap.String("name", secretName),
-			)
-			return nil
-		}
-		return stacktrace.Errorf("failed to create secret %s/%s: %w", monitoringNamespace, secretName, err)
-	}
-
-	log.Info("created secret",
-		zap.String("namespace", monitoringNamespace),
-		zap.String("name", secretName),
-	)
-
+	_ = "STUB: not implemented"
 	return nil
 }

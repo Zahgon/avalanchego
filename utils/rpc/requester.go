@@ -5,7 +5,6 @@ package rpc
 
 import (
 	"context"
-	"net/url"
 )
 
 var _ EndpointRequester = (*avalancheEndpointRequester)(nil)
@@ -19,9 +18,8 @@ type avalancheEndpointRequester struct {
 }
 
 func NewEndpointRequester(uri string) EndpointRequester {
-	return &avalancheEndpointRequester{
-		uri: uri,
-	}
+	_ = "STUB: not implemented"
+	return *new(EndpointRequester)
 }
 
 func (e *avalancheEndpointRequester) SendRequest(
@@ -31,17 +29,6 @@ func (e *avalancheEndpointRequester) SendRequest(
 	reply interface{},
 	options ...Option,
 ) error {
-	uri, err := url.Parse(e.uri)
-	if err != nil {
-		return err
-	}
-
-	return SendJSONRequest(
-		ctx,
-		uri,
-		method,
-		params,
-		reply,
-		options...,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

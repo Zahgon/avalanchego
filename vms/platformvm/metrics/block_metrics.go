@@ -23,98 +23,51 @@ type blockMetrics struct {
 }
 
 func newBlockMetrics(registerer prometheus.Registerer) (*blockMetrics, error) {
-	txMetrics, err := newTxMetrics(registerer)
-	if err != nil {
-		return nil, err
-	}
-
-	m := &blockMetrics{
-		txMetrics: txMetrics,
-		numBlocks: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Name: "blks_accepted",
-				Help: "number of blocks accepted",
-			},
-			blkLabels,
-		),
-	}
-	return m, registerer.Register(m.numBlocks)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *blockMetrics) BanffAbortBlock(*block.BanffAbortBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "abort",
-	}).Inc()
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) BanffCommitBlock(*block.BanffCommitBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "commit",
-	}).Inc()
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) BanffProposalBlock(b *block.BanffProposalBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "proposal",
-	}).Inc()
-	for _, tx := range b.Transactions {
-		if err := tx.Unsigned.Visit(m.txMetrics); err != nil {
-			return err
-		}
-	}
-	return b.Tx.Unsigned.Visit(m.txMetrics)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *blockMetrics) BanffStandardBlock(b *block.BanffStandardBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "standard",
-	}).Inc()
-	for _, tx := range b.Transactions {
-		if err := tx.Unsigned.Visit(m.txMetrics); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) ApricotAbortBlock(*block.ApricotAbortBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "abort",
-	}).Inc()
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) ApricotCommitBlock(*block.ApricotCommitBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "commit",
-	}).Inc()
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) ApricotProposalBlock(b *block.ApricotProposalBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "proposal",
-	}).Inc()
-	return b.Tx.Unsigned.Visit(m.txMetrics)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *blockMetrics) ApricotStandardBlock(b *block.ApricotStandardBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "standard",
-	}).Inc()
-	for _, tx := range b.Transactions {
-		if err := tx.Unsigned.Visit(m.txMetrics); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (m *blockMetrics) ApricotAtomicBlock(b *block.ApricotAtomicBlock) error {
-	m.numBlocks.With(prometheus.Labels{
-		blkLabel: "atomic",
-	}).Inc()
-	return b.Tx.Unsigned.Visit(m.txMetrics)
+	_ = "STUB: not implemented"
+	return nil
 }

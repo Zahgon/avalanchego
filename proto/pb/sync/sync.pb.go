@@ -7,11 +7,10 @@
 package sync
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -32,60 +31,28 @@ type ProofRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ProofRequest) Reset() {
-	*x = ProofRequest{}
-	mi := &file_sync_sync_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ProofRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ProofRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ProofRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ProofRequest) ProtoMessage() {}
+func (*ProofRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ProofRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ProofRequest.ProtoReflect.Descriptor instead.
-func (*ProofRequest) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{0}
-}
+func (*ProofRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 func (x *ProofRequest) GetRequest() isProofRequest_Request {
-	if x != nil {
-		return x.Request
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(isProofRequest_Request)
 }
 
-func (x *ProofRequest) GetChangeProof() *ChangeProofRequest {
-	if x != nil {
-		if x, ok := x.Request.(*ProofRequest_ChangeProof); ok {
-			return x.ChangeProof
-		}
-	}
-	return nil
-}
+func (x *ProofRequest) GetChangeProof() *ChangeProofRequest { _ = "STUB: not implemented"; return nil }
 
-func (x *ProofRequest) GetRangeProof() *RangeProofRequest {
-	if x != nil {
-		if x, ok := x.Request.(*ProofRequest_RangeProof); ok {
-			return x.RangeProof
-		}
-	}
-	return nil
-}
+func (x *ProofRequest) GetRangeProof() *RangeProofRequest { _ = "STUB: not implemented"; return nil }
 
 type isProofRequest_Request interface {
 	isProofRequest_Request()
@@ -99,9 +66,9 @@ type ProofRequest_RangeProof struct {
 	RangeProof *RangeProofRequest `protobuf:"bytes,2,opt,name=range_proof,json=rangeProof,proto3,oneof"`
 }
 
-func (*ProofRequest_ChangeProof) isProofRequest_Request() {}
+func (*ProofRequest_ChangeProof) isProofRequest_Request() { _ = "STUB: not implemented"; return }
 
-func (*ProofRequest_RangeProof) isProofRequest_Request() {}
+func (*ProofRequest_RangeProof) isProofRequest_Request() { _ = "STUB: not implemented"; return }
 
 type ChangeProofRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -115,77 +82,31 @@ type ChangeProofRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChangeProofRequest) Reset() {
-	*x = ChangeProofRequest{}
-	mi := &file_sync_sync_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ChangeProofRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ChangeProofRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ChangeProofRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ChangeProofRequest) ProtoMessage() {}
+func (*ChangeProofRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ChangeProofRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ChangeProofRequest.ProtoReflect.Descriptor instead.
-func (*ChangeProofRequest) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{1}
-}
+func (*ChangeProofRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ChangeProofRequest) GetStartRootHash() []byte {
-	if x != nil {
-		return x.StartRootHash
-	}
-	return nil
-}
+func (x *ChangeProofRequest) GetStartRootHash() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProofRequest) GetEndRootHash() []byte {
-	if x != nil {
-		return x.EndRootHash
-	}
-	return nil
-}
+func (x *ChangeProofRequest) GetEndRootHash() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProofRequest) GetStartKey() *MaybeBytes {
-	if x != nil {
-		return x.StartKey
-	}
-	return nil
-}
+func (x *ChangeProofRequest) GetStartKey() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProofRequest) GetEndKey() *MaybeBytes {
-	if x != nil {
-		return x.EndKey
-	}
-	return nil
-}
+func (x *ChangeProofRequest) GetEndKey() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProofRequest) GetKeyLimit() uint32 {
-	if x != nil {
-		return x.KeyLimit
-	}
-	return 0
-}
+func (x *ChangeProofRequest) GetKeyLimit() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *ChangeProofRequest) GetBytesLimit() uint32 {
-	if x != nil {
-		return x.BytesLimit
-	}
-	return 0
-}
+func (x *ChangeProofRequest) GetBytesLimit() uint32 { _ = "STUB: not implemented"; return 0 }
 
 type RangeProofRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -198,70 +119,29 @@ type RangeProofRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RangeProofRequest) Reset() {
-	*x = RangeProofRequest{}
-	mi := &file_sync_sync_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *RangeProofRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *RangeProofRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *RangeProofRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*RangeProofRequest) ProtoMessage() {}
+func (*RangeProofRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *RangeProofRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use RangeProofRequest.ProtoReflect.Descriptor instead.
-func (*RangeProofRequest) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{2}
-}
+func (*RangeProofRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *RangeProofRequest) GetRootHash() []byte {
-	if x != nil {
-		return x.RootHash
-	}
-	return nil
-}
+func (x *RangeProofRequest) GetRootHash() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *RangeProofRequest) GetStartKey() *MaybeBytes {
-	if x != nil {
-		return x.StartKey
-	}
-	return nil
-}
+func (x *RangeProofRequest) GetStartKey() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func (x *RangeProofRequest) GetEndKey() *MaybeBytes {
-	if x != nil {
-		return x.EndKey
-	}
-	return nil
-}
+func (x *RangeProofRequest) GetEndKey() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func (x *RangeProofRequest) GetKeyLimit() uint32 {
-	if x != nil {
-		return x.KeyLimit
-	}
-	return 0
-}
+func (x *RangeProofRequest) GetKeyLimit() uint32 { _ = "STUB: not implemented"; return 0 }
 
-func (x *RangeProofRequest) GetBytesLimit() uint32 {
-	if x != nil {
-		return x.BytesLimit
-	}
-	return 0
-}
+func (x *RangeProofRequest) GetBytesLimit() uint32 { _ = "STUB: not implemented"; return 0 }
 
 type ProofResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -274,60 +154,28 @@ type ProofResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ProofResponse) Reset() {
-	*x = ProofResponse{}
-	mi := &file_sync_sync_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ProofResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ProofResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ProofResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ProofResponse) ProtoMessage() {}
+func (*ProofResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ProofResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ProofResponse.ProtoReflect.Descriptor instead.
-func (*ProofResponse) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{3}
-}
+func (*ProofResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
 func (x *ProofResponse) GetResponse() isProofResponse_Response {
-	if x != nil {
-		return x.Response
-	}
-	return nil
+	_ = "STUB: not implemented"
+	return *new(isProofResponse_Response)
 }
 
-func (x *ProofResponse) GetChangeProof() []byte {
-	if x != nil {
-		if x, ok := x.Response.(*ProofResponse_ChangeProof); ok {
-			return x.ChangeProof
-		}
-	}
-	return nil
-}
+func (x *ProofResponse) GetChangeProof() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *ProofResponse) GetRangeProof() []byte {
-	if x != nil {
-		if x, ok := x.Response.(*ProofResponse_RangeProof); ok {
-			return x.RangeProof
-		}
-	}
-	return nil
-}
+func (x *ProofResponse) GetRangeProof() []byte { _ = "STUB: not implemented"; return nil }
 
 type isProofResponse_Response interface {
 	isProofResponse_Response()
@@ -341,9 +189,9 @@ type ProofResponse_RangeProof struct {
 	RangeProof []byte `protobuf:"bytes,2,opt,name=range_proof,json=rangeProof,proto3,oneof"`
 }
 
-func (*ProofResponse_ChangeProof) isProofResponse_Response() {}
+func (*ProofResponse_ChangeProof) isProofResponse_Response() { _ = "STUB: not implemented"; return }
 
-func (*ProofResponse_RangeProof) isProofResponse_Response() {}
+func (*ProofResponse_RangeProof) isProofResponse_Response() { _ = "STUB: not implemented"; return }
 
 type ChangeProof struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -354,56 +202,25 @@ type ChangeProof struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ChangeProof) Reset() {
-	*x = ChangeProof{}
-	mi := &file_sync_sync_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ChangeProof) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ChangeProof) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ChangeProof) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ChangeProof) ProtoMessage() {}
+func (*ChangeProof) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ChangeProof) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ChangeProof.ProtoReflect.Descriptor instead.
-func (*ChangeProof) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{4}
-}
+func (*ChangeProof) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ChangeProof) GetStartProof() []*ProofNode {
-	if x != nil {
-		return x.StartProof
-	}
-	return nil
-}
+func (x *ChangeProof) GetStartProof() []*ProofNode { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProof) GetEndProof() []*ProofNode {
-	if x != nil {
-		return x.EndProof
-	}
-	return nil
-}
+func (x *ChangeProof) GetEndProof() []*ProofNode { _ = "STUB: not implemented"; return nil }
 
-func (x *ChangeProof) GetKeyChanges() []*KeyChange {
-	if x != nil {
-		return x.KeyChanges
-	}
-	return nil
-}
+func (x *ChangeProof) GetKeyChanges() []*KeyChange { _ = "STUB: not implemented"; return nil }
 
 type RangeProof struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -414,56 +231,25 @@ type RangeProof struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RangeProof) Reset() {
-	*x = RangeProof{}
-	mi := &file_sync_sync_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *RangeProof) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *RangeProof) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *RangeProof) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*RangeProof) ProtoMessage() {}
+func (*RangeProof) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *RangeProof) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use RangeProof.ProtoReflect.Descriptor instead.
-func (*RangeProof) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{5}
-}
+func (*RangeProof) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *RangeProof) GetStartProof() []*ProofNode {
-	if x != nil {
-		return x.StartProof
-	}
-	return nil
-}
+func (x *RangeProof) GetStartProof() []*ProofNode { _ = "STUB: not implemented"; return nil }
 
-func (x *RangeProof) GetEndProof() []*ProofNode {
-	if x != nil {
-		return x.EndProof
-	}
-	return nil
-}
+func (x *RangeProof) GetEndProof() []*ProofNode { _ = "STUB: not implemented"; return nil }
 
-func (x *RangeProof) GetKeyValues() []*KeyValue {
-	if x != nil {
-		return x.KeyValues
-	}
-	return nil
-}
+func (x *RangeProof) GetKeyValues() []*KeyValue { _ = "STUB: not implemented"; return nil }
 
 type ProofNode struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -474,56 +260,25 @@ type ProofNode struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ProofNode) Reset() {
-	*x = ProofNode{}
-	mi := &file_sync_sync_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *ProofNode) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *ProofNode) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *ProofNode) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*ProofNode) ProtoMessage() {}
+func (*ProofNode) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *ProofNode) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use ProofNode.ProtoReflect.Descriptor instead.
-func (*ProofNode) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{6}
-}
+func (*ProofNode) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *ProofNode) GetKey() *Key {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *ProofNode) GetKey() *Key { _ = "STUB: not implemented"; return nil }
 
-func (x *ProofNode) GetValueOrHash() *MaybeBytes {
-	if x != nil {
-		return x.ValueOrHash
-	}
-	return nil
-}
+func (x *ProofNode) GetValueOrHash() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
-func (x *ProofNode) GetChildren() map[uint32][]byte {
-	if x != nil {
-		return x.Children
-	}
-	return nil
-}
+func (x *ProofNode) GetChildren() map[uint32][]byte { _ = "STUB: not implemented"; return nil }
 
 type KeyChange struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -533,49 +288,23 @@ type KeyChange struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KeyChange) Reset() {
-	*x = KeyChange{}
-	mi := &file_sync_sync_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *KeyChange) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *KeyChange) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *KeyChange) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*KeyChange) ProtoMessage() {}
+func (*KeyChange) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *KeyChange) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use KeyChange.ProtoReflect.Descriptor instead.
-func (*KeyChange) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{7}
-}
+func (*KeyChange) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *KeyChange) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *KeyChange) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *KeyChange) GetValue() *MaybeBytes {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *KeyChange) GetValue() *MaybeBytes { _ = "STUB: not implemented"; return nil }
 
 type Key struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -585,49 +314,23 @@ type Key struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Key) Reset() {
-	*x = Key{}
-	mi := &file_sync_sync_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Key) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Key) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Key) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Key) ProtoMessage() {}
+func (*Key) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Key) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Key.ProtoReflect.Descriptor instead.
-func (*Key) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{8}
-}
+func (*Key) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Key) GetLength() uint64 {
-	if x != nil {
-		return x.Length
-	}
-	return 0
-}
+func (x *Key) GetLength() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (x *Key) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *Key) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 // If the message is present, the value is considered to be "something".
 type MaybeBytes struct {
@@ -637,42 +340,21 @@ type MaybeBytes struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *MaybeBytes) Reset() {
-	*x = MaybeBytes{}
-	mi := &file_sync_sync_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *MaybeBytes) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *MaybeBytes) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *MaybeBytes) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*MaybeBytes) ProtoMessage() {}
+func (*MaybeBytes) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *MaybeBytes) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use MaybeBytes.ProtoReflect.Descriptor instead.
-func (*MaybeBytes) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{9}
-}
+func (*MaybeBytes) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *MaybeBytes) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *MaybeBytes) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 type KeyValue struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -682,49 +364,23 @@ type KeyValue struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *KeyValue) Reset() {
-	*x = KeyValue{}
-	mi := &file_sync_sync_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *KeyValue) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *KeyValue) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *KeyValue) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*KeyValue) ProtoMessage() {}
+func (*KeyValue) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *KeyValue) ProtoReflect() protoreflect.Message {
-	mi := &file_sync_sync_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use KeyValue.ProtoReflect.Descriptor instead.
-func (*KeyValue) Descriptor() ([]byte, []int) {
-	return file_sync_sync_proto_rawDescGZIP(), []int{10}
-}
+func (*KeyValue) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *KeyValue) GetKey() []byte {
-	if x != nil {
-		return x.Key
-	}
-	return nil
-}
+func (x *KeyValue) GetKey() []byte { _ = "STUB: not implemented"; return nil }
 
-func (x *KeyValue) GetValue() []byte {
-	if x != nil {
-		return x.Value
-	}
-	return nil
-}
+func (x *KeyValue) GetValue() []byte { _ = "STUB: not implemented"; return nil }
 
 var File_sync_sync_proto protoreflect.FileDescriptor
 
@@ -795,12 +451,7 @@ var (
 	file_sync_sync_proto_rawDescData []byte
 )
 
-func file_sync_sync_proto_rawDescGZIP() []byte {
-	file_sync_sync_proto_rawDescOnce.Do(func() {
-		file_sync_sync_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_sync_sync_proto_rawDesc), len(file_sync_sync_proto_rawDesc)))
-	})
-	return file_sync_sync_proto_rawDescData
-}
+func file_sync_sync_proto_rawDescGZIP() []byte { _ = "STUB: not implemented"; return nil }
 
 var file_sync_sync_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_sync_sync_proto_goTypes = []any{
@@ -841,34 +492,5 @@ var file_sync_sync_proto_depIdxs = []int32{
 	0,  // [0:16] is the sub-list for field type_name
 }
 
-func init() { file_sync_sync_proto_init() }
-func file_sync_sync_proto_init() {
-	if File_sync_sync_proto != nil {
-		return
-	}
-	file_sync_sync_proto_msgTypes[0].OneofWrappers = []any{
-		(*ProofRequest_ChangeProof)(nil),
-		(*ProofRequest_RangeProof)(nil),
-	}
-	file_sync_sync_proto_msgTypes[3].OneofWrappers = []any{
-		(*ProofResponse_ChangeProof)(nil),
-		(*ProofResponse_RangeProof)(nil),
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_sync_sync_proto_rawDesc), len(file_sync_sync_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   12,
-			NumExtensions: 0,
-			NumServices:   0,
-		},
-		GoTypes:           file_sync_sync_proto_goTypes,
-		DependencyIndexes: file_sync_sync_proto_depIdxs,
-		MessageInfos:      file_sync_sync_proto_msgTypes,
-	}.Build()
-	File_sync_sync_proto = out.File
-	file_sync_sync_proto_goTypes = nil
-	file_sync_sync_proto_depIdxs = nil
-}
+func init()                      { file_sync_sync_proto_init() }
+func file_sync_sync_proto_init() { _ = "STUB: not implemented"; return }

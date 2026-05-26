@@ -12,50 +12,16 @@ type Reader struct {
 	height uint64
 }
 
-func (r *Reader) Has(key []byte) (bool, error) {
-	_, err := r.Get(key)
-	if err == database.ErrNotFound {
-		return false, nil
-	}
-	return true, err
-}
+func (r *Reader) Has(key []byte) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-func (r *Reader) Get(key []byte) ([]byte, error) {
-	value, _, exists, err := r.GetEntry(key)
-	if err != nil {
-		return nil, err
-	}
-	if exists {
-		return value, nil
-	}
-	return value, database.ErrNotFound
-}
+func (r *Reader) Get(key []byte) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // GetEntry retrieves the value of the provided key, the height it was last
 // modified at, and a boolean to indicate if the last modification was an
 // insertion. If the key has never been modified, ErrNotFound will be returned.
 func (r *Reader) GetEntry(key []byte) ([]byte, uint64, bool, error) {
-	it := r.db.db.NewIteratorWithStartAndPrefix(newDBKeyFromUser(key, r.height))
-	defer it.Release()
-
-	next := it.Next()
-	if err := it.Error(); err != nil {
-		return nil, 0, false, err
-	}
-
-	// There is no available key with the requested prefix
-	if !next {
-		return nil, 0, false, database.ErrNotFound
-	}
-
-	_, height, err := parseDBKeyFromUser(it.Key())
-	if err != nil {
-		return nil, 0, false, err
-	}
-
-	value, exists := parseDBValue(it.Value())
-	if !exists {
-		return nil, height, false, nil
-	}
-	return value, height, true, nil
+	_ = "STUB: not implemented"
+	return nil, 0, false, nil
 }
+
+// There is no available key with the requested prefix

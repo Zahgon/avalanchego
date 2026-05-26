@@ -29,12 +29,9 @@ package rpc
 
 import (
 	"context"
-	"io"
 	"sync"
 	"sync/atomic"
 	"time"
-
-	"github.com/ava-labs/libevm/log"
 )
 
 const MetadataApi = "rpc"
@@ -71,20 +68,10 @@ type Server struct {
 // If [maximumDuration] > 0, the deadline of incoming requests is
 // [maximumDuration] in the future. Otherwise, no deadline is assigned to
 // incoming requests.
-func NewServer(maximumDuration time.Duration) *Server {
-	server := &Server{
-		idgen:           randomIDGenerator(),
-		codecs:          make(map[ServerCodec]struct{}),
-		maximumDuration: maximumDuration,
-		httpBodyLimit:   defaultBodyLimit,
-	}
-	server.run.Store(true)
-	// Register the default service providing meta information about the RPC service such
-	// as the services and methods it offers.
-	rpcService := &RPCService{server}
-	server.RegisterName(MetadataApi, rpcService)
-	return server
-}
+func NewServer(maximumDuration time.Duration) *Server { _ = "STUB: not implemented"; return nil }
+
+// Register the default service providing meta information about the RPC service such
+// as the services and methods it offers.
 
 // SetBatchLimits sets limits applied to batch requests. There are two limits: 'itemLimit'
 // is the maximum number of items in a batch. 'maxResponseSize' is the maximum number of
@@ -92,24 +79,20 @@ func NewServer(maximumDuration time.Duration) *Server {
 //
 // This method should be called before processing any requests via ServeCodec, ServeHTTP,
 // ServeListener etc.
-func (s *Server) SetBatchLimits(itemLimit, maxResponseSize int) {
-	s.batchItemLimit = itemLimit
-	s.batchResponseLimit = maxResponseSize
-}
+func (s *Server) SetBatchLimits(itemLimit, maxResponseSize int) { _ = "STUB: not implemented"; return }
 
 // SetHTTPBodyLimit sets the size limit for HTTP requests.
 //
 // This method should be called before processing any requests via ServeHTTP.
-func (s *Server) SetHTTPBodyLimit(limit int) {
-	s.httpBodyLimit = limit
-}
+func (s *Server) SetHTTPBodyLimit(limit int) { _ = "STUB: not implemented"; return }
 
 // RegisterName creates a service for the given receiver type under the given name. When no
 // methods on the given receiver match the criteria to be either a RPC method or a
 // subscription an error is returned. Otherwise a new service is created and added to the
 // service collection this server provides to clients.
 func (s *Server) RegisterName(name string, receiver interface{}) error {
-	return s.services.registerName(name, receiver)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ServeCodec reads incoming requests from codec, calls the appropriate callback and writes
@@ -118,84 +101,29 @@ func (s *Server) RegisterName(name string, receiver interface{}) error {
 //
 // Note that codec options are no longer supported.
 func (s *Server) ServeCodec(codec ServerCodec, options CodecOption, apiMaxDuration, refillRate, maxStored time.Duration) {
-	defer codec.close()
-
-	if !s.trackCodec(codec) {
-		return
-	}
-	defer s.untrackCodec(codec)
-
-	cfg := &clientConfig{
-		idgen:              s.idgen,
-		batchItemLimit:     s.batchItemLimit,
-		batchResponseLimit: s.batchResponseLimit,
-	}
-	c := initClient(codec, &s.services, cfg, apiMaxDuration, refillRate, maxStored)
-	<-codec.closed()
-	c.Close()
+	_ = "STUB: not implemented"
+	return
 }
 
-func (s *Server) trackCodec(codec ServerCodec) bool {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
+func (s *Server) trackCodec(codec ServerCodec) bool { _ = "STUB: not implemented"; return false }
 
-	if !s.run.Load() {
-		return false // Don't serve if server is stopped.
-	}
-	s.codecs[codec] = struct{}{}
-	return true
-}
+// Don't serve if server is stopped.
 
-func (s *Server) untrackCodec(codec ServerCodec) {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	delete(s.codecs, codec)
-}
+func (s *Server) untrackCodec(codec ServerCodec) { _ = "STUB: not implemented"; return }
 
 // serveSingleRequest reads and processes a single RPC request from the given codec. This
 // is used to serve HTTP connections. Subscriptions and reverse calls are not allowed in
 // this mode.
 func (s *Server) serveSingleRequest(ctx context.Context, codec ServerCodec) {
+	_ = "STUB: not implemented"
 	// Don't serve if server is stopped.
-	if !s.run.Load() {
-		return
-	}
-
-	h := newHandler(ctx, codec, s.idgen, &s.services, s.batchItemLimit, s.batchResponseLimit)
-	h.deadlineContext = s.maximumDuration
-	h.allowSubscribe = false
-	defer h.close(io.EOF, nil)
-
-	reqs, batch, err := codec.readBatch()
-	if err != nil {
-		if err != io.EOF {
-			resp := errorMessage(&invalidMessageError{"parse error"})
-			codec.writeJSON(ctx, resp, true)
-		}
-		return
-	}
-	if batch {
-		h.handleBatch(reqs)
-	} else {
-		h.handleMsg(reqs[0])
-	}
+	return
 }
 
 // Stop stops reading new requests, waits for stopPendingRequestTimeout to allow pending
 // requests to finish, then closes all codecs which will cancel pending requests and
 // subscriptions.
-func (s *Server) Stop() {
-	s.mutex.Lock()
-	defer s.mutex.Unlock()
-
-	if s.run.CompareAndSwap(true, false) {
-		log.Debug("RPC server shutting down")
-		for codec := range s.codecs {
-			codec.close()
-		}
-	}
-}
+func (s *Server) Stop() { _ = "STUB: not implemented"; return }
 
 // RPCService gives meta information about the server.
 // e.g. gives information about the loaded modules.
@@ -204,16 +132,7 @@ type RPCService struct {
 }
 
 // Modules returns the list of RPC services with their version number
-func (s *RPCService) Modules() map[string]string {
-	s.server.services.mu.Lock()
-	defer s.server.services.mu.Unlock()
-
-	modules := make(map[string]string)
-	for name := range s.server.services.services {
-		modules[name] = "1.0"
-	}
-	return modules
-}
+func (s *RPCService) Modules() map[string]string { _ = "STUB: not implemented"; return nil }
 
 // PeerInfo contains information about the remote end of the network connection.
 //
@@ -246,6 +165,6 @@ type peerInfoContextKey struct{}
 //
 // The zero value is returned if no connection info is present in ctx.
 func PeerInfoFromContext(ctx context.Context) PeerInfo {
-	info, _ := ctx.Value(peerInfoContextKey{}).(PeerInfo)
-	return info
+	_ = "STUB: not implemented"
+	return *new(PeerInfo)
 }

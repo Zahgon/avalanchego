@@ -3,25 +3,15 @@
 
 package resource
 
-import "math"
-
 // NoUsage implements Usage() by always returning 0.
 var NoUsage User = noUsage{}
 
 type noUsage struct{}
 
-func (noUsage) AvailableDiskPercentage() uint64 {
-	return 100
-}
+func (noUsage) AvailableDiskPercentage() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (noUsage) CPUUsage() float64 {
-	return 0
-}
+func (noUsage) CPUUsage() float64 { _ = "STUB: not implemented"; return 0 }
 
-func (noUsage) DiskUsage() (float64, float64) {
-	return 0, 0
-}
+func (noUsage) DiskUsage() (float64, float64) { _ = "STUB: not implemented"; return 0, 0 }
 
-func (noUsage) AvailableDiskBytes() uint64 {
-	return math.MaxUint64
-}
+func (noUsage) AvailableDiskBytes() uint64 { _ = "STUB: not implemented"; return 0 }

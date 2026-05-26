@@ -6,24 +6,14 @@ package admin
 import (
 	"errors"
 	"net/http"
-	"path"
 	"sync"
-
-	"github.com/gorilla/rpc/v2"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/api"
 	"github.com/ava-labs/avalanchego/api/server"
 	"github.com/ava-labs/avalanchego/chains"
 	"github.com/ava-labs/avalanchego/database"
-	"github.com/ava-labs/avalanchego/database/rpcdb"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/formatting"
-	"github.com/ava-labs/avalanchego/utils/json"
 	"github.com/ava-labs/avalanchego/utils/logging"
-	"github.com/ava-labs/avalanchego/utils/perms"
 	"github.com/ava-labs/avalanchego/utils/profiler"
 	"github.com/ava-labs/avalanchego/vms"
 	"github.com/ava-labs/avalanchego/vms/registry"
@@ -65,69 +55,32 @@ type Admin struct {
 // NewService returns a new admin API service.
 // All of the fields in [config] must be set.
 func NewService(config Config) (http.Handler, error) {
-	server := rpc.NewServer()
-	codec := json.NewCodec()
-	server.RegisterCodec(codec, "application/json")
-	server.RegisterCodec(codec, "application/json;charset=UTF-8")
-	return server, server.RegisterService(
-		&Admin{
-			Config:   config,
-			profiler: profiler.New(config.ProfileDir),
-		},
-		"admin",
-	)
+	_ = "STUB: not implemented"
+	return *new(http.Handler), nil
 }
 
 // StartCPUProfiler starts a cpu profile writing to the specified file
 func (a *Admin) StartCPUProfiler(_ *http.Request, _ *struct{}, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "startCPUProfiler"),
-	)
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return a.profiler.StartCPUProfiler()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StopCPUProfiler stops the cpu profile
 func (a *Admin) StopCPUProfiler(_ *http.Request, _ *struct{}, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "stopCPUProfiler"),
-	)
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return a.profiler.StopCPUProfiler()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MemoryProfile runs a memory profile writing to the specified file
 func (a *Admin) MemoryProfile(_ *http.Request, _ *struct{}, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "memoryProfile"),
-	)
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return a.profiler.MemoryProfile()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LockProfile runs a mutex profile writing to the specified file
 func (a *Admin) LockProfile(_ *http.Request, _ *struct{}, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "lockProfile"),
-	)
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return a.profiler.LockProfile()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AliasArgs are the arguments for calling Alias
@@ -138,18 +91,8 @@ type AliasArgs struct {
 
 // Alias attempts to alias an HTTP endpoint to a new name
 func (a *Admin) Alias(_ *http.Request, args *AliasArgs, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "alias"),
-		logging.UserString("endpoint", args.Endpoint),
-		logging.UserString("alias", args.Alias),
-	)
-
-	if len(args.Alias) > maxAliasLength {
-		return errAliasTooLong
-	}
-
-	return a.HTTPServer.AddAliasesWithReadLock(args.Endpoint, args.Alias)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AliasChainArgs are the arguments for calling AliasChain
@@ -160,31 +103,8 @@ type AliasChainArgs struct {
 
 // AliasChain attempts to alias a chain to a new name
 func (a *Admin) AliasChain(_ *http.Request, args *AliasChainArgs, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "aliasChain"),
-		logging.UserString("chain", args.Chain),
-		logging.UserString("alias", args.Alias),
-	)
-
-	if len(args.Alias) > maxAliasLength {
-		return errAliasTooLong
-	}
-	chainID, err := a.ChainManager.Lookup(args.Chain)
-	if err != nil {
-		return err
-	}
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	if err := a.ChainManager.Alias(chainID, args.Alias); err != nil {
-		return err
-	}
-
-	endpoint := path.Join(constants.ChainAliasPrefix, chainID.String())
-	alias := path.Join(constants.ChainAliasPrefix, args.Alias)
-	return a.HTTPServer.AddAliasesWithReadLock(endpoint, alias)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetChainAliasesArgs are the arguments for calling GetChainAliases
@@ -199,34 +119,14 @@ type GetChainAliasesReply struct {
 
 // GetChainAliases returns the aliases of the chain
 func (a *Admin) GetChainAliases(_ *http.Request, args *GetChainAliasesArgs, reply *GetChainAliasesReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "getChainAliases"),
-		logging.UserString("chain", args.Chain),
-	)
-
-	id, err := ids.FromString(args.Chain)
-	if err != nil {
-		return err
-	}
-
-	reply.Aliases, err = a.ChainManager.Aliases(id)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Stacktrace returns the current global stacktrace
 func (a *Admin) Stacktrace(_ *http.Request, _ *struct{}, _ *api.EmptyReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "stacktrace"),
-	)
-
-	stacktrace := []byte(utils.GetStacktrace(true))
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	return perms.WriteFile(stacktraceFile, stacktrace, perms.ReadWrite)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type SetLoggerLevelArgs struct {
@@ -254,38 +154,8 @@ type LoggerLevelReply struct {
 // If args.DisplayLevel == nil, doesn't set the display level of these loggers.
 // If args.DisplayLevel != nil, must be a valid string representation of a log level.
 func (a *Admin) SetLoggerLevel(_ *http.Request, args *SetLoggerLevelArgs, reply *LoggerLevelReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "setLoggerLevel"),
-		logging.UserString("loggerName", args.LoggerName),
-		zap.Stringer("logLevel", args.LogLevel),
-		zap.Stringer("displayLevel", args.DisplayLevel),
-	)
-
-	if args.LogLevel == nil && args.DisplayLevel == nil {
-		return errNoLogLevel
-	}
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	loggerNames := a.getLoggerNames(args.LoggerName)
-	for _, name := range loggerNames {
-		if args.LogLevel != nil {
-			if err := a.LogFactory.SetLogLevel(name, *args.LogLevel); err != nil {
-				return err
-			}
-		}
-		if args.DisplayLevel != nil {
-			if err := a.LogFactory.SetDisplayLevel(name, *args.DisplayLevel); err != nil {
-				return err
-			}
-		}
-	}
-
-	var err error
-	reply.LoggerLevels, err = a.getLogLevels(loggerNames)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type GetLoggerLevelArgs struct {
@@ -294,29 +164,13 @@ type GetLoggerLevelArgs struct {
 
 // GetLoggerLevel returns the log level and display level of all loggers.
 func (a *Admin) GetLoggerLevel(_ *http.Request, args *GetLoggerLevelArgs, reply *LoggerLevelReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "getLoggerLevel"),
-		logging.UserString("loggerName", args.LoggerName),
-	)
-
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	loggerNames := a.getLoggerNames(args.LoggerName)
-
-	var err error
-	reply.LoggerLevels, err = a.getLogLevels(loggerNames)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetConfig returns the config that the node was started with.
 func (a *Admin) GetConfig(_ *http.Request, _ *struct{}, reply *interface{}) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "getConfig"),
-	)
-	*reply = a.NodeConfig
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -330,56 +184,19 @@ type LoadVMsReply struct {
 
 // LoadVMs loads any new VMs available to the node and returns the added VMs.
 func (a *Admin) LoadVMs(r *http.Request, _ *struct{}, reply *LoadVMsReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "loadVMs"),
-	)
-
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	ctx := r.Context()
-	loadedVMs, failedVMs, err := a.VMRegistry.Reload(ctx)
-	if err != nil {
-		return err
-	}
-
-	// extract the inner error messages
-	failedVMsParsed := make(map[ids.ID]string)
-	for vmID, err := range failedVMs {
-		failedVMsParsed[vmID] = err.Error()
-	}
-
-	reply.FailedVMs = failedVMsParsed
-	reply.NewVMs, err = ids.GetRelevantAliases(a.VMManager, loadedVMs)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (a *Admin) getLoggerNames(loggerName string) []string {
-	if len(loggerName) == 0 {
-		// Empty name means all loggers
-		return a.LogFactory.GetLoggerNames()
-	}
-	return []string{loggerName}
-}
+// extract the inner error messages
+
+func (a *Admin) getLoggerNames(loggerName string) []string { _ = "STUB: not implemented"; return nil }
+
+// Empty name means all loggers
 
 func (a *Admin) getLogLevels(loggerNames []string) (map[string]LogAndDisplayLevels, error) {
-	loggerLevels := make(map[string]LogAndDisplayLevels)
-	for _, name := range loggerNames {
-		logLevel, err := a.LogFactory.GetLogLevel(name)
-		if err != nil {
-			return nil, err
-		}
-		displayLevel, err := a.LogFactory.GetDisplayLevel(name)
-		if err != nil {
-			return nil, err
-		}
-		loggerLevels[name] = LogAndDisplayLevels{
-			LogLevel:     logLevel,
-			DisplayLevel: displayLevel,
-		}
-	}
-	return loggerLevels, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type DBGetArgs struct {
@@ -393,23 +210,6 @@ type DBGetReply struct {
 
 //nolint:staticcheck // renaming this method to DBGet would change the API method from "dbGet" to "dBGet"
 func (a *Admin) DbGet(_ *http.Request, args *DBGetArgs, reply *DBGetReply) error {
-	a.Log.Debug("API called",
-		zap.String("service", "admin"),
-		zap.String("method", "dbGet"),
-		logging.UserString("key", args.Key),
-	)
-
-	key, err := formatting.Decode(formatting.HexNC, args.Key)
-	if err != nil {
-		return err
-	}
-
-	value, err := a.DB.Get(key)
-	if err != nil {
-		reply.ErrorCode = rpcdb.ErrorToErrEnum[err]
-		return rpcdb.ErrorToRPCError(err)
-	}
-
-	reply.Value, err = formatting.Encode(formatting.HexNC, value)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }

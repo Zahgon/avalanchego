@@ -37,13 +37,7 @@ const DefaultTargetToExcessScaling = 87
 const DefaultMinPrice gas.Price = 1
 
 // DefaultGasPriceConfig returns the default [GasPriceConfig] values.
-func DefaultGasPriceConfig() GasPriceConfig {
-	return GasPriceConfig{
-		TargetToExcessScaling: DefaultTargetToExcessScaling,
-		MinPrice:              DefaultMinPrice,
-		StaticPricing:         false,
-	}
-}
+func DefaultGasPriceConfig() GasPriceConfig { _ = "STUB: not implemented"; return *new(GasPriceConfig) }
 
 var (
 	errTargetToExcessScalingZero = errors.New("targetToExcessScaling must be non-zero")
@@ -51,15 +45,8 @@ var (
 )
 
 // Validate checks that the GasPriceConfig fields are valid.
-func (c *GasPriceConfig) Validate() error {
-	if c.TargetToExcessScaling == 0 {
-		return errTargetToExcessScalingZero
-	}
-	// TODO (ceyonur): Decide whether we want to allow zero min price exclusive for static pricing,
-	// to support fee-less networks.
-	// https://github.com/ava-labs/strevm/issues/266
-	if c.MinPrice == 0 {
-		return errMinPriceZero
-	}
-	return nil
-}
+func (c *GasPriceConfig) Validate() error { _ = "STUB: not implemented"; return nil }
+
+// TODO (ceyonur): Decide whether we want to allow zero min price exclusive for static pricing,
+// to support fee-less networks.
+// https://github.com/ava-labs/strevm/issues/266

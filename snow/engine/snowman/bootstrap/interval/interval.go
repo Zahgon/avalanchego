@@ -3,33 +3,23 @@
 
 package interval
 
-import "math"
-
 type Interval struct {
 	LowerBound uint64
 	UpperBound uint64
 }
 
-func (i *Interval) Less(other *Interval) bool {
-	return i.UpperBound < other.UpperBound
-}
+func (i *Interval) Less(other *Interval) bool { _ = "STUB: not implemented"; return false }
 
-func (i *Interval) Contains(height uint64) bool {
-	return i != nil &&
-		i.LowerBound <= height &&
-		height <= i.UpperBound
-}
+func (i *Interval) Contains(height uint64) bool { _ = "STUB: not implemented"; return false }
 
 // AdjacentToLowerBound returns true if height is 1 less than lowerBound.
 func (i *Interval) AdjacentToLowerBound(height uint64) bool {
-	return i != nil &&
-		height < math.MaxUint64 &&
-		height+1 == i.LowerBound
+	_ = "STUB: not implemented"
+	return false
 }
 
 // AdjacentToUpperBound returns true if height is 1 greater than upperBound.
 func (i *Interval) AdjacentToUpperBound(height uint64) bool {
-	return i != nil &&
-		i.UpperBound < math.MaxUint64 &&
-		i.UpperBound+1 == height
+	_ = "STUB: not implemented"
+	return false
 }

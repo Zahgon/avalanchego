@@ -8,16 +8,12 @@ package blocks
 
 import (
 	"errors"
-	"fmt"
-	"math/big"
-	"runtime"
 	"sync/atomic"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/params"
-	"go.uber.org/zap"
 
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
@@ -67,9 +63,7 @@ var inMemoryBlockCount atomic.Int64
 
 // InMemoryBlockCount returns the number of blocks created with [New] that are
 // yet to have their GC finalizers run.
-func InMemoryBlockCount() int64 {
-	return inMemoryBlockCount.Load()
-}
+func InMemoryBlockCount() int64 { _ = "STUB: not implemented"; return 0 }
 
 // New constructs a new Block.
 //
@@ -79,45 +73,16 @@ func InMemoryBlockCount() int64 {
 // of the Block. In practice, this SHOULD only be done when parsing an encoded
 // Block.
 func New(eth *types.Block, parent, lastSettled *Block, log logging.Logger) (*Block, error) {
-	b := &Block{
-		b:        eth,
-		executed: make(chan struct{}),
-		settled:  make(chan struct{}),
-	}
-
-	inMemoryBlockCount.Add(1)
-	runtime.AddCleanup(b, func(struct{}) {
-		inMemoryBlockCount.Add(-1)
-	}, struct{}{})
-
-	if err := b.SetAncestors(parent, lastSettled); err != nil {
-		return nil, err
-	}
-	b.log = log.With(
-		zap.Uint64("block_height", b.Height()),
-		zap.Stringer("block_hash", b.Hash()),
-	)
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // RestoreSettledBlock constructs a new block with [New] and restores it to an
 // settled state before returning it. By definition of being settled, the
 // returned block also includes post-execution artefacts.
 func RestoreSettledBlock(eth *types.Block, log logging.Logger, db ethdb.Database, xdb saetypes.ExecutionResults, config *params.ChainConfig) (*Block, error) {
-	b, err := New(eth, nil, nil, log)
-	if err != nil {
-		return nil, err
-	}
-	if err := b.RestoreExecutionArtefacts(db, xdb, config); err != nil {
-		return nil, fmt.Errorf("restoring to executed state: %v", err)
-	}
-	if err := b.markSettled(nil); err != nil {
-		return nil, fmt.Errorf("restoring to settled state: %v", err)
-	}
-	if err := b.CheckInvariants(Settled); err != nil {
-		return nil, err
-	}
-	return b, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 var (
@@ -128,18 +93,7 @@ var (
 
 // SetAncestors sets the block's ancestry while enforcing invariants.
 func (b *Block) SetAncestors(parent, lastSettled *Block) error {
-	if parent != nil {
-		if got, want := parent.Hash(), b.ParentHash(); got != want {
-			return fmt.Errorf("%w: constructing Block with parent hash %v; expecting %v", errParentHashMismatch, got, want)
-		}
-		if got, want := parent.Number(), new(big.Int).Sub(b.Number(), big.NewInt(1)); got.Cmp(want) != 0 {
-			return fmt.Errorf("%w: constructing Block with parent height %v and own height %v", errBlockHeightNotIncrementing, parent.Number(), b.Number())
-		}
-	}
-	b.ancestry.Store(&ancestry{
-		parent:      parent,
-		lastSettled: lastSettled,
-	})
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -150,22 +104,18 @@ func (b *Block) SetAncestors(parent, lastSettled *Block) error {
 // Although the individual ancestral blocks are shallow copied, calling
 // [Block.MarkSettled] on either the source or destination will NOT clear the
 // pointers of the other.
-func (b *Block) CopyAncestorsFrom(c *Block) error {
-	if from, to := c.Hash(), b.Hash(); from != to {
-		return fmt.Errorf("%w: copying internals from block %#x to %#x", errHashMismatch, from, to)
-	}
-	a := c.ancestry.Load()
-	return b.SetAncestors(a.parent, a.lastSettled)
-}
+func (b *Block) CopyAncestorsFrom(c *Block) error { _ = "STUB: not implemented"; return nil }
 
 // Signer returns the transaction signer for the block.
 func (b *Block) Signer(c *params.ChainConfig) types.Signer {
-	return Signer(b.EthBlock(), c)
+	_ = "STUB: not implemented"
+	return *new(types.Signer)
 }
 
 // Signer returns the transaction signer for the block.
 func Signer(b *types.Block, c *params.ChainConfig) types.Signer {
-	return types.MakeSigner(c, b.Number(), b.Time())
+	_ = "STUB: not implemented"
+	return *new(types.Signer)
 }
 
 // A Source returns a [Block] that matches both a hash and number, and a
@@ -175,23 +125,13 @@ type Source func(hash common.Hash, number uint64) (*Block, bool)
 // AsEthBlockSource returns a [saetypes.BlockSource] backed by the original
 // [Source].
 func (s Source) AsEthBlockSource() saetypes.BlockSource {
-	return func(h common.Hash, n uint64) (*types.Block, bool) {
-		b, ok := s(h, n)
-		if !ok {
-			return nil, false
-		}
-		return b.EthBlock(), true
-	}
+	_ = "STUB: not implemented"
+	return *new(saetypes.BlockSource)
 }
 
 // AsHeaderSource returns a [saetypes.HeaderSource] backed by the original
 // [Source].
 func (s Source) AsHeaderSource() saetypes.HeaderSource {
-	return func(h common.Hash, n uint64) (*types.Header, bool) {
-		b, ok := s(h, n)
-		if !ok {
-			return nil, false
-		}
-		return b.Header(), true
-	}
+	_ = "STUB: not implemented"
+	return *new(saetypes.HeaderSource)
 }

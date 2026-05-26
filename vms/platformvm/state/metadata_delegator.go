@@ -16,29 +16,18 @@ type delegatorMetadata struct {
 }
 
 func parseDelegatorMetadata(bytes []byte, metadata *delegatorMetadata) error {
-	var err error
-	switch len(bytes) {
-	case database.Uint64Size:
-		// only potential reward was stored
-		metadata.PotentialReward, err = database.ParseUInt64(bytes)
-	default:
-		_, err = MetadataCodec.Unmarshal(bytes, metadata)
-	}
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
+// only potential reward was stored
+
 func writeDelegatorMetadata(db database.KeyValueWriter, metadata *delegatorMetadata, codecVersion uint16) error {
+	_ = "STUB: not implemented"
 	// The "0" codec is skipped for [delegatorMetadata]. This is to ensure the
 	// [validatorMetadata] codec version is the same as the [delegatorMetadata]
 	// codec version.
 	//
 	// TODO: Cleanup post-Durango activation.
-	if codecVersion == 0 {
-		return database.PutUInt64(db, metadata.txID[:], metadata.PotentialReward)
-	}
-	metadataBytes, err := MetadataCodec.Marshal(codecVersion, metadata)
-	if err != nil {
-		return err
-	}
-	return db.Put(metadata.txID[:], metadataBytes)
+	return nil
 }

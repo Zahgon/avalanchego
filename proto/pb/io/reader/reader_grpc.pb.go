@@ -8,9 +8,8 @@ package reader
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -36,17 +35,13 @@ type readerClient struct {
 }
 
 func NewReaderClient(cc grpc.ClientConnInterface) ReaderClient {
-	return &readerClient{cc}
+	_ = "STUB: not implemented"
+	return *new(ReaderClient)
 }
 
 func (c *readerClient) Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReadResponse)
-	err := c.cc.Invoke(ctx, Reader_Read_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReaderServer is the server API for Reader service.
@@ -67,45 +62,39 @@ type ReaderServer interface {
 type UnimplementedReaderServer struct{}
 
 func (UnimplementedReaderServer) Read(context.Context, *ReadRequest) (*ReadResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Read not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedReaderServer) mustEmbedUnimplementedReaderServer() {}
-func (UnimplementedReaderServer) testEmbeddedByValue()                {}
 
-// UnsafeReaderServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ReaderServer will
-// result in compilation errors.
+func (UnimplementedReaderServer) mustEmbedUnimplementedReaderServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedReaderServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeReaderServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to ReaderServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeReaderServer interface {
 	mustEmbedUnimplementedReaderServer()
 }
 
 func RegisterReaderServer(s grpc.ServiceRegistrar, srv ReaderServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedReaderServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&Reader_ServiceDesc, srv)
+	return
 }
 
 func _Reader_Read_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ReaderServer).Read(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Reader_Read_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReaderServer).Read(ctx, req.(*ReadRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Reader_ServiceDesc is the grpc.ServiceDesc for Reader service.

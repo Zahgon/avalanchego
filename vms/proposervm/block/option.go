@@ -5,7 +5,6 @@ package block
 
 import (
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 )
 
 type option struct {
@@ -16,28 +15,14 @@ type option struct {
 	bytes []byte
 }
 
-func (b *option) ID() ids.ID {
-	return b.id
-}
+func (b *option) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *option) ParentID() ids.ID {
-	return b.PrntID
-}
+func (b *option) ParentID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *option) Block() []byte {
-	return b.InnerBytes
-}
+func (b *option) Block() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *option) Bytes() []byte {
-	return b.bytes
-}
+func (b *option) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *option) initialize(bytes []byte) error {
-	b.id = hashing.ComputeHash256Array(bytes)
-	b.bytes = bytes
-	return nil
-}
+func (b *option) initialize(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (*option) verify(ids.ID) error {
-	return nil
-}
+func (*option) verify(ids.ID) error { _ = "STUB: not implemented"; return nil }

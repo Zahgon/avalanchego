@@ -8,13 +8,13 @@ var _ Compressor = (*noCompressor)(nil)
 type noCompressor struct{}
 
 func (*noCompressor) Compress(msg []byte) ([]byte, error) {
-	return msg, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (*noCompressor) Decompress(msg []byte) ([]byte, error) {
-	return msg, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func NewNoCompressor() Compressor {
-	return &noCompressor{}
-}
+func NewNoCompressor() Compressor { _ = "STUB: not implemented"; return *new(Compressor) }

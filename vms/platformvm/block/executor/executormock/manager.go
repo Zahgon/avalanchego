@@ -10,8 +10,6 @@
 package executormock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	snowman "github.com/ava-labs/avalanchego/snow/consensus/snowman"
 	block "github.com/ava-labs/avalanchego/snow/engine/snowman/block"
@@ -35,140 +33,101 @@ type ManagerMockRecorder struct {
 }
 
 // NewManager creates a new mock instance.
-func NewManager(ctrl *gomock.Controller) *Manager {
-	mock := &Manager{ctrl: ctrl}
-	mock.recorder = &ManagerMockRecorder{mock}
-	return mock
-}
+func NewManager(ctrl *gomock.Controller) *Manager { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Manager) EXPECT() *ManagerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetBlock mocks base method.
+	return nil
 }
 
-// GetBlock mocks base method.
 func (m *Manager) GetBlock(blkID ids.ID) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlock", blkID)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // GetBlock indicates an expected call of GetBlock.
 func (mr *ManagerMockRecorder) GetBlock(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*Manager)(nil).GetBlock), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetState mocks base method.
 func (m *Manager) GetState(blkID ids.ID) (state.Chain, bool) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetState", blkID)
-	ret0, _ := ret[0].(state.Chain)
-	ret1, _ := ret[1].(bool)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(state.Chain), false
 }
 
 // GetState indicates an expected call of GetState.
 func (mr *ManagerMockRecorder) GetState(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetState", reflect.TypeOf((*Manager)(nil).GetState), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetStatelessBlock mocks base method.
 func (m *Manager) GetStatelessBlock(blkID ids.ID) (block0.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetStatelessBlock", blkID)
-	ret0, _ := ret[0].(block0.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(block0.Block), nil
 }
 
 // GetStatelessBlock indicates an expected call of GetStatelessBlock.
 func (mr *ManagerMockRecorder) GetStatelessBlock(blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStatelessBlock", reflect.TypeOf((*Manager)(nil).GetStatelessBlock), blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LastAccepted mocks base method.
-func (m *Manager) LastAccepted() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LastAccepted")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Manager) LastAccepted() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // LastAccepted indicates an expected call of LastAccepted.
-func (mr *ManagerMockRecorder) LastAccepted() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LastAccepted", reflect.TypeOf((*Manager)(nil).LastAccepted))
-}
+func (mr *ManagerMockRecorder) LastAccepted() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // NewBlock mocks base method.
 func (m *Manager) NewBlock(arg0 block0.Block) snowman.Block {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewBlock", arg0)
-	ret0, _ := ret[0].(snowman.Block)
-	return ret0
+	_ = "STUB: not implemented"
+	return *new(snowman.Block)
 }
 
 // NewBlock indicates an expected call of NewBlock.
 func (mr *ManagerMockRecorder) NewBlock(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewBlock", reflect.TypeOf((*Manager)(nil).NewBlock), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Preferred mocks base method.
-func (m *Manager) Preferred() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Preferred")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Manager) Preferred() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // Preferred indicates an expected call of Preferred.
-func (mr *ManagerMockRecorder) Preferred() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Preferred", reflect.TypeOf((*Manager)(nil).Preferred))
-}
+func (mr *ManagerMockRecorder) Preferred() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // SetPreference mocks base method.
 func (m *Manager) SetPreference(blkID ids.ID, blockCtx *block.Context) {
-	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "SetPreference", blkID, blockCtx)
+	_ = "STUB: not implemented"
+	return
 }
 
 // SetPreference indicates an expected call of SetPreference.
 func (mr *ManagerMockRecorder) SetPreference(blkID, blockCtx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetPreference", reflect.TypeOf((*Manager)(nil).SetPreference), blkID, blockCtx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyTx mocks base method.
-func (m *Manager) VerifyTx(tx *txs.Tx) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyTx", tx)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Manager) VerifyTx(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 // VerifyTx indicates an expected call of VerifyTx.
-func (mr *ManagerMockRecorder) VerifyTx(tx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyTx", reflect.TypeOf((*Manager)(nil).VerifyTx), tx)
-}
+func (mr *ManagerMockRecorder) VerifyTx(tx any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // VerifyUniqueInputs mocks base method.
 func (m *Manager) VerifyUniqueInputs(blkID ids.ID, inputs set.Set[ids.ID]) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "VerifyUniqueInputs", blkID, inputs)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // VerifyUniqueInputs indicates an expected call of VerifyUniqueInputs.
 func (mr *ManagerMockRecorder) VerifyUniqueInputs(blkID, inputs any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "VerifyUniqueInputs", reflect.TypeOf((*Manager)(nil).VerifyUniqueInputs), blkID, inputs)
+	_ = "STUB: not implemented"
+	return nil
 }

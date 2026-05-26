@@ -4,15 +4,11 @@
 package sync
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
 	"time"
 
-	"google.golang.org/protobuf/proto"
-
-	"github.com/ava-labs/avalanchego/database/merkle/sync/protoutils"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
@@ -50,11 +46,8 @@ var (
 )
 
 func NewProofHandler[R any, C any](db DB[R, C], rangeProofMarshaler Marshaler[R], changeProofMarshaler Marshaler[C]) *ProofHandler[R, C] {
-	return &ProofHandler[R, C]{
-		db:                   db,
-		rangeProofMarshaler:  rangeProofMarshaler,
-		changeProofMarshaler: changeProofMarshaler,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type ProofHandler[R any, C any] struct {
@@ -63,206 +56,56 @@ type ProofHandler[R any, C any] struct {
 	changeProofMarshaler Marshaler[C]
 }
 
-func (*ProofHandler[_, _]) AppGossip(context.Context, ids.NodeID, []byte) {}
+func (*ProofHandler[_, _]) AppGossip(context.Context, ids.NodeID, []byte) {
+	_ = "STUB: not implemented"
+	return
+}
 
 func (h *ProofHandler[R, C]) AppRequest(ctx context.Context, _ ids.NodeID, _ time.Time, requestBytes []byte) ([]byte, *common.AppError) {
-	req := &pb.ProofRequest{}
-	if err := proto.Unmarshal(requestBytes, req); err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to unmarshal request: %s", err),
-		}
-	}
-
-	var (
-		resp []byte
-		err  error
-	)
-	switch r := req.Request.(type) {
-	case *pb.ProofRequest_RangeProof:
-		resp, err = h.handleRangeProofRequest(ctx, r.RangeProof)
-	case *pb.ProofRequest_ChangeProof:
-		resp, err = h.handleChangeProofRequest(ctx, r.ChangeProof)
-	default:
-		err = fmt.Errorf("unknown request type: %T", r)
-	}
-	if err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to handle request: %s", err),
-		}
-	}
-	return resp, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (h *ProofHandler[R, C]) handleRangeProofRequest(ctx context.Context, req *pb.RangeProofRequest) ([]byte, error) {
-	if err := validateRangeProofRequest(req); err != nil {
-		return nil, err
-	}
-
-	// override limits if they exceed caps
-	var (
-		keyLimit   = min(int(req.KeyLimit), MaxKeyValuesLimit)
-		bytesLimit = min(req.BytesLimit, maxByteSizeLimit)
-		startKey   = protoutils.ProtoToMaybe(req.StartKey)
-		endKey     = protoutils.ProtoToMaybe(req.EndKey)
-	)
-
-	root, err := ids.ToID(req.RootHash)
-	if err != nil {
-		return nil, err
-	}
-
-	for keyLimit > 0 {
-		rangeProof, err := h.db.GetRangeProofAtRoot(
-			ctx,
-			root,
-			startKey,
-			endKey,
-			keyLimit,
-		)
-		if err != nil {
-			if errors.Is(err, ErrInsufficientHistory) {
-				return nil, nil // drop request
-			}
-			return nil, err
-		}
-
-		innerBytes, err := h.rangeProofMarshaler.Marshal(rangeProof)
-		if err != nil {
-			return nil, err
-		}
-
-		proofBytes, err := proto.Marshal(&pb.ProofResponse{
-			Response: &pb.ProofResponse_RangeProof{
-				RangeProof: innerBytes,
-			},
-		})
-		if err != nil {
-			return nil, err
-		}
-
-		if len(proofBytes) < int(bytesLimit) {
-			return proofBytes, nil
-		}
-		// The proof was too large. Try to shrink it.
-		keyLimit /= 2
-	}
-
-	return nil, errMinProofSizeIsTooLarge
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// override limits if they exceed caps
+
+// drop request
+
+// The proof was too large. Try to shrink it.
 
 func (h *ProofHandler[R, C]) handleChangeProofRequest(ctx context.Context, req *pb.ChangeProofRequest) ([]byte, error) {
-	if err := validateChangeProofRequest(req); err != nil {
-		return nil, err
-	}
-
-	// override limits if they exceed caps
-	var (
-		keyLimit   = min(req.KeyLimit, MaxKeyValuesLimit)
-		bytesLimit = min(int(req.BytesLimit), maxByteSizeLimit)
-		start      = protoutils.ProtoToMaybe(req.StartKey)
-		end        = protoutils.ProtoToMaybe(req.EndKey)
-	)
-
-	startRoot, err := ids.ToID(req.StartRootHash)
-	if err != nil {
-		return nil, err
-	}
-
-	endRoot, err := ids.ToID(req.EndRootHash)
-	if err != nil {
-		return nil, err
-	}
-
-	for keyLimit > 0 {
-		changeProof, err := h.db.GetChangeProof(ctx, startRoot, endRoot, start, end, int(keyLimit))
-		if err != nil {
-			if !errors.Is(err, ErrInsufficientHistory) {
-				// We should only fail to get a change proof if we have insufficient history.
-				// Other errors are unexpected.
-				// TODO define custom errors
-				return nil, err
-			}
-			if errors.Is(err, ErrNoEndRoot) {
-				// g.db doesn't have endRoot in its history.
-				// We can't generate a change or range proof.
-				return nil, err
-			}
-
-			// g.db doesn't have sufficient history to generate change proof.
-			// Generate a range proof for the end root ID instead.
-			return h.handleRangeProofRequest(
-				ctx,
-				&pb.RangeProofRequest{
-					RootHash:   req.EndRootHash,
-					StartKey:   req.StartKey,
-					EndKey:     req.EndKey,
-					KeyLimit:   req.KeyLimit,
-					BytesLimit: req.BytesLimit,
-				},
-			)
-		}
-
-		// We generated a change proof. See if it's small enough.
-		changeProofBytes, err := h.changeProofMarshaler.Marshal(changeProof)
-		if err != nil {
-			return nil, err
-		}
-		responseBytes, err := proto.Marshal(&pb.ProofResponse{
-			Response: &pb.ProofResponse_ChangeProof{
-				ChangeProof: changeProofBytes,
-			},
-		})
-		if err != nil {
-			return nil, err
-		}
-
-		if len(responseBytes) < bytesLimit {
-			return responseBytes, nil
-		}
-
-		// The proof was too large. Try to shrink it.
-		keyLimit /= 2
-	}
-
-	return nil, errMinProofSizeIsTooLarge
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// override limits if they exceed caps
+
+// We should only fail to get a change proof if we have insufficient history.
+// Other errors are unexpected.
+// TODO define custom errors
+
+// g.db doesn't have endRoot in its history.
+// We can't generate a change or range proof.
+
+// g.db doesn't have sufficient history to generate change proof.
+// Generate a range proof for the end root ID instead.
+
+// We generated a change proof. See if it's small enough.
+
+// The proof was too large. Try to shrink it.
 
 // Returns nil iff [req] is well-formed.
 func validateChangeProofRequest(req *pb.ChangeProofRequest) error {
-	switch {
-	case req.BytesLimit == 0:
-		return errInvalidBytesLimit
-	case req.KeyLimit == 0:
-		return errInvalidKeyLimit
-	case len(req.StartRootHash) != hashing.HashLen:
-		return errInvalidStartRootHash
-	case len(req.EndRootHash) != hashing.HashLen:
-		return errInvalidEndRootHash
-	case bytes.Equal(req.EndRootHash, ids.Empty[:]):
-		return errEmptyProof
-	case req.StartKey != nil && req.EndKey != nil && bytes.Compare(req.StartKey.Value, req.EndKey.Value) > 0:
-		return errInvalidBounds
-	default:
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Returns nil iff [req] is well-formed.
 func validateRangeProofRequest(req *pb.RangeProofRequest) error {
-	switch {
-	case req.BytesLimit == 0:
-		return errInvalidBytesLimit
-	case req.KeyLimit == 0:
-		return errInvalidKeyLimit
-	case len(req.RootHash) != ids.IDLen:
-		return errInvalidRootHash
-	case bytes.Equal(req.RootHash, ids.Empty[:]):
-		return errEmptyProof
-	case req.StartKey != nil && req.EndKey != nil && bytes.Compare(req.StartKey.Value, req.EndKey.Value) > 0:
-		return errInvalidBounds
-	default:
-		return nil
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

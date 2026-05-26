@@ -6,8 +6,6 @@ package client
 import "github.com/ava-labs/libevm/common"
 
 func ParseEthAddress(addrStr string) (common.Address, error) {
-	if !common.IsHexAddress(addrStr) {
-		return common.Address{}, errInvalidAddr
-	}
-	return common.HexToAddress(addrStr), nil
+	_ = "STUB: not implemented"
+	return *new(common.Address), nil
 }

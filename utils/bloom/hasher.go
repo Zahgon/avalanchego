@@ -3,29 +3,17 @@
 
 package bloom
 
-import (
-	"crypto/sha256"
-	"encoding/binary"
-)
+func Add(f *Filter, key, salt []byte) bool { _ = "STUB: not implemented"; return false }
 
-func Add(f *Filter, key, salt []byte) bool {
-	return f.Add(Hash(key, salt))
-}
-
-func Contains(c Checker, key, salt []byte) bool {
-	return c.Contains(Hash(key, salt))
-}
+func Contains(c Checker, key, salt []byte) bool { _ = "STUB: not implemented"; return false }
 
 type Checker interface {
 	Contains(hash uint64) bool
 }
 
 func Hash(key, salt []byte) uint64 {
-	hash := sha256.New()
-	// sha256.Write never returns errors
-	_, _ = hash.Write(key)
-	_, _ = hash.Write(salt)
+	_ = "STUB: not implemented"
 
-	output := make([]byte, 0, sha256.Size)
-	return binary.BigEndian.Uint64(hash.Sum(output))
+	// sha256.Write never returns errors
+	return 0
 }

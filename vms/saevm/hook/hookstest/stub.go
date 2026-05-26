@@ -7,7 +7,6 @@ package hookstest
 import (
 	"context"
 	"iter"
-	"math/big"
 	"time"
 
 	"github.com/ava-labs/libevm/common"
@@ -24,7 +23,6 @@ import (
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 	"github.com/ava-labs/avalanchego/vms/saevm/gastime"
 	"github.com/ava-labs/avalanchego/vms/saevm/hook"
-	"github.com/ava-labs/avalanchego/vms/saevm/saetest"
 
 	saetypes "github.com/ava-labs/avalanchego/vms/saevm/types"
 )
@@ -47,98 +45,57 @@ type HookOption = options.Option[Stub]
 
 // WithGasPriceConfig overrides the default gas config.
 func WithGasPriceConfig(cfg gastime.GasPriceConfig) HookOption {
-	return options.Func[Stub](func(s *Stub) {
-		s.GasPriceConfig = cfg
-	})
+	_ = "STUB: not implemented"
+	return *new(HookOption)
 }
 
 // WithNow overrides the default time source.
-func WithNow(now func() time.Time) HookOption {
-	return options.Func[Stub](func(s *Stub) {
-		s.Now = now
-	})
-}
+func WithNow(now func() time.Time) HookOption { _ = "STUB: not implemented"; return *new(HookOption) }
 
 // WithInvalidOpIDs overrides the default invalid end-of-block opIDs.
 func WithInvalidOpIDs(invalidOps set.Set[ids.ID]) HookOption {
-	return options.Func[Stub](func(s *Stub) {
-		s.InvalidOpIDs = invalidOps
-	})
+	_ = "STUB: not implemented"
+	return *new(HookOption)
 }
 
 // WithOps overrides the default end-of-block ops.
-func WithOps(ops []Op) HookOption {
-	return options.Func[Stub](func(s *Stub) {
-		s.Ops = ops
-	})
-}
+func WithOps(ops []Op) HookOption { _ = "STUB: not implemented"; return *new(HookOption) }
 
 // WithExecutionResultsDBFn overrides the default ExecutionResultsDB function.
 func WithExecutionResultsDBFn(fn func(string) (saetypes.ExecutionResults, error)) HookOption {
-	return options.Func[Stub](func(s *Stub) {
-		s.ExecutionResultsDBFn = fn
-	})
+	_ = "STUB: not implemented"
+	return *new(HookOption)
 }
 
 // NewStub returns a stub with defaults applied.
 // It uses [gastime.DefaultGasPriceConfig] unless overridden by [WithGasPriceConfig].
-func NewStub(target gas.Gas, opts ...HookOption) *Stub {
-	return options.ApplyTo(&Stub{
-		Target:         target,
-		GasPriceConfig: gastime.DefaultGasPriceConfig(),
-	}, opts...)
-}
+func NewStub(target gas.Gas, opts ...HookOption) *Stub { _ = "STUB: not implemented"; return nil }
 
 // ExecutionResultsDB propagates arguments to and from
 // [Stub.ExecutionResultsDBFn] if non-nil, otherwise it returns a fresh
 // [saetest.NewHeightIndexDB] on every call.
 func (s *Stub) ExecutionResultsDB(dataDir string) (saetypes.ExecutionResults, error) {
-	if fn := s.ExecutionResultsDBFn; fn != nil {
-		return fn(dataDir)
-	}
-	return saetypes.ExecutionResults{
-		HeightIndex: saetest.NewHeightIndexDB(),
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(saetypes.ExecutionResults), nil
 }
 
 // BuildHeader constructs a header that builds on top of the parent header. The
 // `Extra` field SHOULD NOT be modified as it encodes the sub-second block time
 // and end-of-block ops.
 func (s *Stub) BuildHeader(parent *types.Header) (*types.Header, error) {
-	var now time.Time
-	if s.Now != nil {
-		now = s.Now()
-	} else {
-		now = time.Now()
-	}
-
-	e := extra{
-		subSec: time.Duration(now.Nanosecond()),
-	}
-	hdr := &types.Header{
-		ParentHash: parent.Hash(),
-		Number:     new(big.Int).Add(parent.Number, common.Big1),
-		Time:       uint64(now.Unix()), //#nosec G115 -- Known non-negative
-		Extra:      e.MarshalCanoto(),
-	}
-	return hdr, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+//#nosec G115 -- Known non-negative
 
 // PotentialEndOfBlockOps ignores its arguments and returns [Stub.Ops] as a
 // sequence.
 //
 //nolint:revive // General-purpose types lose the meaning of args if unused ones are removed
 func (s *Stub) PotentialEndOfBlockOps(ctx context.Context, header *types.Header, lastSettledBlock common.Hash, source saetypes.BlockSource) iter.Seq[Op] {
-	return func(yield func(Op) bool) {
-		for _, op := range s.Ops {
-			if s.InvalidOpIDs.Contains(op.ID) {
-				continue
-			}
-			if !yield(op) {
-				return
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BuildBlock calls [BuildBlock] with its arguments.
@@ -150,7 +107,8 @@ func (*Stub) BuildBlock(
 	ops []Op,
 	settledHeight uint64,
 ) (*types.Block, error) {
-	return BuildBlock(header, blockCtx, txs, receipts, ops, settledHeight)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // BuildBlock encodes ops into [types.Header.Extra] and calls [types.NewBlock]
@@ -163,94 +121,75 @@ func BuildBlock(
 	ops []Op,
 	settledHeight uint64,
 ) (*types.Block, error) {
-	var e extra
+	_ = "STUB: not implemented"
+
 	// If the header originally had fractional seconds set, we keep them in the
 	// built block.
-	if err := e.UnmarshalCanoto(header.Extra); err != nil {
-		return nil, err
-	}
-
-	e.ops = ops
-	e.settledHeight = settledHeight
-	header.Extra = e.MarshalCanoto()
-	return types.NewBlock(header, txs, nil, receipts, saetest.TrieHasher()), nil
+	return nil, nil
 }
 
 // BlockRebuilderFrom returns a block builder that uses the provided block as a
 // source of time.
 func (s *Stub) BlockRebuilderFrom(b *types.Block) (hook.BlockBuilder[Op], error) {
-	var e extra
-	if err := e.UnmarshalCanoto(b.Extra()); err != nil {
-		return nil, err
-	}
-
-	return NewStub(s.Target, WithInvalidOpIDs(s.InvalidOpIDs), WithOps(e.ops), WithNow(func() time.Time {
-		return time.Unix(
-			int64(b.Time()), //#nosec G115 -- Won't overflow for a few millennia
-			int64(e.subSec),
-		)
-	})), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+//#nosec G115 -- Won't overflow for a few millennia
 
 // GasConfigAfter ignores its argument and always returns [Stub.Target] and [Stub.GasPriceConfig].
 func (s *Stub) GasConfigAfter(*types.Header) (gas.Gas, gastime.GasPriceConfig) {
-	return s.Target, s.GasPriceConfig
+	_ = "STUB: not implemented"
+	return *new(gas.Gas), *new(gastime.GasPriceConfig)
 }
 
 // BlockTime returns exact block time from [Stub.BuildHeader] by combining the
 // stored seconds in [types.Header.Time] and the sub-second component from
 // [types.Header.Extra].
 func (*Stub) BlockTime(hdr *types.Header) time.Time {
-	subSec := getHeaderExtra(hdr).subSec             //nolint:staticcheck // subSec intentionally communicates that the value is < time.Second
-	return time.Unix(int64(hdr.Time), int64(subSec)) //#nosec G115 -- Won't overflow for a few millennia
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
+
+//nolint:staticcheck // subSec intentionally communicates that the value is < time.Second
+//#nosec G115 -- Won't overflow for a few millennia
 
 // SettledHeight returns the height encoded in the Header by [Stub.BuildBlock]
 // or [BuildBlock].
-func (*Stub) SettledHeight(hdr *types.Header) uint64 {
-	return getHeaderExtra(hdr).settledHeight
-}
+func (*Stub) SettledHeight(hdr *types.Header) uint64 { _ = "STUB: not implemented"; return 0 }
 
 // EndOfBlockOps return the ops included in the block by [BuildBlock].
 func (*Stub) EndOfBlockOps(b *types.Block) ([]hook.Op, error) {
-	eOps := getHeaderExtra(b.Header()).ops
-	hookOps := make([]hook.Op, len(eOps))
-	for i, op := range eOps {
-		hookOps[i] = op.AsOp()
-	}
-	return hookOps, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func getHeaderExtra(hdr *types.Header) extra {
-	var e extra
-	if err := e.UnmarshalCanoto(hdr.Extra); err != nil {
-		// This is left as a panic to avoid polluting various functions with
-		// error returns when no error is possible in production.
-		panic(err)
-	}
-	return e
-}
+func getHeaderExtra(hdr *types.Header) extra { _ = "STUB: not implemented"; return *new(extra) }
+
+// This is left as a panic to avoid polluting various functions with
+// error returns when no error is possible in production.
 
 // CanExecuteTransaction proxies to [Stub.CanExecuteTransactionFn] if non-nil,
 // otherwise it allows all transactions.
 func (s *Stub) CanExecuteTransaction(from common.Address, to *common.Address, sr libevm.StateReader) error {
-	if fn := s.CanExecuteTransactionFn; fn != nil {
-		return fn(from, to, sr)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // BeforeExecutingBlock is a no-op that always returns nil.
 func (*Stub) BeforeExecutingBlock(params.Rules, *state.StateDB, *types.Block) error {
+	_ = "STUB: not implemented"
+
+	// AfterExecutingBlock is a no-op that always returns nil.
 	return nil
 }
 
-// AfterExecutingBlock is a no-op that always returns nil.
 func (*Stub) AfterExecutingBlock(*state.StateDB, *types.Block, types.Receipts) error {
+	_ = "STUB: not implemented"
+
+	//go:generate go run github.com/StephenButtolph/canoto/canoto $GOFILE
 	return nil
 }
-
-//go:generate go run github.com/StephenButtolph/canoto/canoto $GOFILE
 
 //nolint:revive // struct-tag: canoto allows unexported fields
 type extra struct {
@@ -273,26 +212,7 @@ type Op struct {
 }
 
 // AsOp converts the op into a representation that SAE can use directly.
-func (o Op) AsOp() hook.Op {
-	hookOp := hook.Op{
-		ID:        o.ID,
-		Gas:       o.Gas,
-		GasFeeCap: o.GasFeeCap,
-		Burn:      make(map[common.Address]hook.AccountDebit, len(o.Burn)),
-		Mint:      make(map[common.Address]uint256.Int, len(o.Mint)),
-	}
-	for _, b := range o.Burn {
-		hookOp.Burn[b.Address] = hook.AccountDebit{
-			Nonce:      b.Nonce,
-			Amount:     b.Amount,
-			MinBalance: b.MinBalance,
-		}
-	}
-	for _, m := range o.Mint {
-		hookOp.Mint[m.Address] = m.Amount
-	}
-	return hookOp
-}
+func (o Op) AsOp() hook.Op { _ = "STUB: not implemented"; return *new(hook.Op) }
 
 // AccountDebit is a serializable representation of an entry in [hook.Op.Burn].
 type AccountDebit struct {

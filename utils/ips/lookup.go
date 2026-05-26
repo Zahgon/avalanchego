@@ -5,7 +5,6 @@ package ips
 
 import (
 	"errors"
-	"net"
 	"net/netip"
 )
 
@@ -17,21 +16,6 @@ var errNoIPsFound = errors.New("no IPs found")
 //
 // Note: IPv4 is preferred because `net.Listen` prefers IPv4.
 func Lookup(hostname string) (netip.Addr, error) {
-	ips, err := net.LookupIP(hostname)
-	if err != nil {
-		return netip.Addr{}, err
-	}
-	if len(ips) == 0 {
-		return netip.Addr{}, errNoIPsFound
-	}
-
-	for _, ip := range ips {
-		ipv4 := ip.To4()
-		if ipv4 != nil {
-			addr, _ := AddrFromSlice(ipv4)
-			return addr, nil
-		}
-	}
-	addr, _ := AddrFromSlice(ips[0])
-	return addr, nil
+	_ = "STUB: not implemented"
+	return *new(netip.Addr), nil
 }

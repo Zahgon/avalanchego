@@ -19,19 +19,6 @@ type subnetIDNodeID struct {
 	nodeID   ids.NodeID
 }
 
-func (s *subnetIDNodeID) Marshal() []byte {
-	data := make([]byte, subnetIDNodeIDEntryLength)
-	copy(data, s.subnetID[:])
-	copy(data[ids.IDLen:], s.nodeID[:])
-	return data
-}
+func (s *subnetIDNodeID) Marshal() []byte { _ = "STUB: not implemented"; return nil }
 
-func (s *subnetIDNodeID) Unmarshal(data []byte) error {
-	if len(data) != subnetIDNodeIDEntryLength {
-		return errUnexpectedSubnetIDNodeIDLength
-	}
-
-	copy(s.subnetID[:], data)
-	copy(s.nodeID[:], data[ids.IDLen:])
-	return nil
-}
+func (s *subnetIDNodeID) Unmarshal(data []byte) error { _ = "STUB: not implemented"; return nil }

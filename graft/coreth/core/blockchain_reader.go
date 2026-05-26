@@ -42,160 +42,102 @@ import (
 
 // CurrentHeader retrieves the current head header of the canonical chain. The
 // header is retrieved from the HeaderChain's internal cache.
-func (bc *BlockChain) CurrentHeader() *types.Header {
-	return bc.hc.CurrentHeader()
-}
+func (bc *BlockChain) CurrentHeader() *types.Header { _ = "STUB: not implemented"; return nil }
 
 // CurrentBlock retrieves the current head block of the canonical chain. The
 // block is retrieved from the blockchain's internal cache.
-func (bc *BlockChain) CurrentBlock() *types.Header {
-	return bc.currentBlock.Load()
-}
+func (bc *BlockChain) CurrentBlock() *types.Header { _ = "STUB: not implemented"; return nil }
 
 // HasHeader checks if a block header is present in the database or not, caching
 // it if present.
 func (bc *BlockChain) HasHeader(hash common.Hash, number uint64) bool {
-	return bc.hc.HasHeader(hash, number)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // GetHeader retrieves a block header from the database by hash and number,
 // caching it if found.
 func (bc *BlockChain) GetHeader(hash common.Hash, number uint64) *types.Header {
-	return bc.hc.GetHeader(hash, number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetHeaderByHash retrieves a block header from the database by hash, caching it if
 // found.
 func (bc *BlockChain) GetHeaderByHash(hash common.Hash) *types.Header {
-	return bc.hc.GetHeaderByHash(hash)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetHeaderByNumber retrieves a block header from the database by number,
 // caching it (associated with its hash) if found.
 func (bc *BlockChain) GetHeaderByNumber(number uint64) *types.Header {
-	return bc.hc.GetHeaderByNumber(number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBody retrieves a block body (transactions and uncles) from the database by
 // hash, caching it if found.
 func (bc *BlockChain) GetBody(hash common.Hash) *types.Body {
+	_ = "STUB: not implemented"
 	// Short circuit if the body's already in the cache, retrieve otherwise
-	if cached, ok := bc.bodyCache.Get(hash); ok {
-		return cached
-	}
-	number := bc.hc.GetBlockNumber(hash)
-	if number == nil {
-		return nil
-	}
-	body := rawdb.ReadBody(bc.db, hash, *number)
-	if body == nil {
-		return nil
-	}
-	// Cache the found body for next time and return
-	bc.bodyCache.Add(hash, body)
-	return body
+	return nil
 }
+
+// Cache the found body for next time and return
 
 // HasBlock checks if a block is fully present in the database or not.
 func (bc *BlockChain) HasBlock(hash common.Hash, number uint64) bool {
-	if bc.blockCache.Contains(hash) {
-		return true
-	}
-	if !bc.HasHeader(hash, number) {
-		return false
-	}
-	return rawdb.HasBody(bc.db, hash, number)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // HasFastBlock checks if a fast block is fully present in the database or not.
 func (bc *BlockChain) HasFastBlock(hash common.Hash, number uint64) bool {
-	if !bc.HasBlock(hash, number) {
-		return false
-	}
-	if bc.receiptsCache.Contains(hash) {
-		return true
-	}
-	return rawdb.HasReceipts(bc.db, hash, number)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // GetBlock retrieves a block from the database by hash and number,
 // caching it if found.
 func (bc *BlockChain) GetBlock(hash common.Hash, number uint64) *types.Block {
+	_ = "STUB: not implemented"
 	// Short circuit if the block's already in the cache, retrieve otherwise
-	if block, ok := bc.blockCache.Get(hash); ok {
-		return block
-	}
-	block := rawdb.ReadBlock(bc.db, hash, number)
-	if block == nil {
-		return nil
-	}
-	// Cache the found block for next time and return
-	bc.blockCache.Add(block.Hash(), block)
-	return block
+	return nil
 }
+
+// Cache the found block for next time and return
 
 // GetBlockByHash retrieves a block from the database by hash, caching it if found.
 func (bc *BlockChain) GetBlockByHash(hash common.Hash) *types.Block {
-	number := bc.hc.GetBlockNumber(hash)
-	if number == nil {
-		return nil
-	}
-	return bc.GetBlock(hash, *number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlockByNumber retrieves a block from the database by number, caching it
 // (associated with its hash) if found.
 func (bc *BlockChain) GetBlockByNumber(number uint64) *types.Block {
-	hash := rawdb.ReadCanonicalHash(bc.db, number)
-	if hash == (common.Hash{}) {
-		return nil
-	}
-	return bc.GetBlock(hash, number)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlocksFromHash returns the block corresponding to hash and up to n-1 ancestors.
 // [deprecated by eth/62]
 func (bc *BlockChain) GetBlocksFromHash(hash common.Hash, n int) (blocks []*types.Block) {
-	number := bc.hc.GetBlockNumber(hash)
-	if number == nil {
-		return nil
-	}
-	for i := 0; i < n; i++ {
-		block := bc.GetBlock(hash, *number)
-		if block == nil {
-			break
-		}
-		blocks = append(blocks, block)
-		hash = block.ParentHash()
-		*number--
-	}
-	return
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetReceiptsByHash retrieves the receipts for all transactions in a given block.
 func (bc *BlockChain) GetReceiptsByHash(hash common.Hash) types.Receipts {
-	if receipts, ok := bc.receiptsCache.Get(hash); ok {
-		return receipts
-	}
-	number := rawdb.ReadHeaderNumber(bc.db, hash)
-	if number == nil {
-		return nil
-	}
-	header := bc.GetHeader(hash, *number)
-	if header == nil {
-		return nil
-	}
-	receipts := rawdb.ReadReceipts(bc.db, hash, *number, header.Time, bc.chainConfig)
-	if receipts == nil {
-		return nil
-	}
-	bc.receiptsCache.Add(hash, receipts)
-	return receipts
+	_ = "STUB: not implemented"
+	return *new(types.Receipts)
 }
 
 // GetCanonicalHash returns the canonical hash for a given block number
 func (bc *BlockChain) GetCanonicalHash(number uint64) common.Hash {
-	return bc.hc.GetCanonicalHash(number)
+	_ = "STUB: not implemented"
+	return *new(common.Hash)
 }
 
 // GetTransactionLookup retrieves the lookup along with the transaction
@@ -209,162 +151,157 @@ func (bc *BlockChain) GetCanonicalHash(number uint64) common.Hash {
 // transaction indexing is already finished. The transaction is not existent
 // from the node's perspective.
 func (bc *BlockChain) GetTransactionLookup(hash common.Hash) (*rawdb.LegacyTxLookupEntry, *types.Transaction, error) {
+	_ = "STUB: not implemented"
 	// Short circuit if the txlookup already in the cache, retrieve otherwise
-	if item, exist := bc.txLookupCache.Get(hash); exist {
-		return item.lookup, item.transaction, nil
-	}
-	tx, blockHash, blockNumber, txIndex := rawdb.ReadTransaction(bc.db, hash)
-	if tx == nil {
-		// The transaction is already indexed, the transaction is either
-		// not existent or not in the range of index, returning null.
-		return nil, nil, nil
-	}
-	lookup := &rawdb.LegacyTxLookupEntry{
-		BlockHash:  blockHash,
-		BlockIndex: blockNumber,
-		Index:      txIndex,
-	}
-	bc.txLookupCache.Add(hash, txLookup{
-		lookup:      lookup,
-		transaction: tx,
-	})
-	return lookup, tx, nil
+	return nil, nil, nil
 }
 
+// The transaction is already indexed, the transaction is either
+// not existent or not in the range of index, returning null.
+
 // HasState checks if state trie is fully present in the database or not.
-func (bc *BlockChain) HasState(hash common.Hash) bool {
-	_, err := bc.stateCache.OpenTrie(hash)
-	return err == nil
-}
+func (bc *BlockChain) HasState(hash common.Hash) bool { _ = "STUB: not implemented"; return false }
 
 // HasBlockAndState checks if a block and associated state trie is fully present
 // in the database or not, caching it if present.
 func (bc *BlockChain) HasBlockAndState(hash common.Hash, number uint64) bool {
+	_ = "STUB: not implemented"
 	// Check first that the block itself is known
-	block := bc.GetBlock(hash, number)
-	if block == nil {
-		return false
-	}
-	return bc.HasState(block.Root())
+	return false
 }
 
 // State returns a new mutable state based on the current HEAD block.
-func (bc *BlockChain) State() (*state.StateDB, error) {
-	return bc.StateAt(bc.CurrentBlock().Root)
-}
+func (bc *BlockChain) State() (*state.StateDB, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // StateAt returns a new mutable state based on a particular point in time.
 func (bc *BlockChain) StateAt(root common.Hash) (*state.StateDB, error) {
-	return state.New(root, bc.stateCache, bc.snaps)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Config retrieves the chain's fork configuration.
-func (bc *BlockChain) Config() *params.ChainConfig { return bc.chainConfig }
+func (bc *BlockChain) Config() *params.ChainConfig { _ = "STUB: not implemented"; return nil }
 
 // Engine retrieves the blockchain's consensus engine.
-func (bc *BlockChain) Engine() consensus.Engine { return bc.engine }
+func (bc *BlockChain) Engine() consensus.Engine {
+	_ = "STUB: not implemented"
 
-// Snapshots returns the blockchain snapshot tree.
+	// Snapshots returns the blockchain snapshot tree.
+	return *new(consensus.Engine)
+}
+
 func (bc *BlockChain) Snapshots() *snapshot.Tree {
-	return bc.snaps
+	_ = "STUB: not implemented"
+
+	// Validator returns the current validator.
+	return nil
 }
 
-// Validator returns the current validator.
 func (bc *BlockChain) Validator() Validator {
-	return bc.validator
+	_ = "STUB: not implemented"
+	return *
+
+	// Processor returns the current processor.
+	new(Validator)
 }
 
-// Processor returns the current processor.
 func (bc *BlockChain) Processor() Processor {
-	return bc.processor
+	_ = "STUB: not implemented"
+	return *
+
+	// StateCache returns the caching database underpinning the blockchain instance.
+	new(Processor)
 }
 
-// StateCache returns the caching database underpinning the blockchain instance.
 func (bc *BlockChain) StateCache() state.Database {
-	return bc.stateCache
+	_ = "STUB: not implemented"
+	return *
+
+	// GasLimit returns the gas limit of the current HEAD block.
+	new(state.Database)
 }
 
-// GasLimit returns the gas limit of the current HEAD block.
-func (bc *BlockChain) GasLimit() uint64 {
-	return bc.CurrentBlock().GasLimit
-}
+func (bc *BlockChain) GasLimit() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Genesis retrieves the chain's genesis block.
-func (bc *BlockChain) Genesis() *types.Block {
-	return bc.genesisBlock
-}
+func (bc *BlockChain) Genesis() *types.Block { _ = "STUB: not implemented"; return nil }
 
 // GetVMConfig returns the block chain VM config.
-func (bc *BlockChain) GetVMConfig() *vm.Config {
-	return &bc.vmConfig
-}
+func (bc *BlockChain) GetVMConfig() *vm.Config { _ = "STUB: not implemented"; return nil }
 
 // TrieDB retrieves the low level trie database used for data storage.
 func (bc *BlockChain) TrieDB() *triedb.Database {
-	return bc.triedb
+	_ = "STUB: not implemented"
+
+	// HeaderChain returns the underlying header chain.
+	return nil
 }
 
-// HeaderChain returns the underlying header chain.
 func (bc *BlockChain) HeaderChain() *HeaderChain {
-	return bc.hc
+	_ = "STUB: not implemented"
+
+	// SubscribeRemovedLogsEvent registers a subscription of RemovedLogsEvent.
+	return nil
 }
 
-// SubscribeRemovedLogsEvent registers a subscription of RemovedLogsEvent.
 func (bc *BlockChain) SubscribeRemovedLogsEvent(ch chan<- RemovedLogsEvent) event.Subscription {
-	return bc.scope.Track(bc.rmLogsFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeChainEvent registers a subscription of ChainEvent.
 func (bc *BlockChain) SubscribeChainEvent(ch chan<- ChainEvent) event.Subscription {
-	return bc.scope.Track(bc.chainFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeChainHeadEvent registers a subscription of ChainHeadEvent.
 func (bc *BlockChain) SubscribeChainHeadEvent(ch chan<- ChainHeadEvent) event.Subscription {
-	return bc.scope.Track(bc.chainHeadFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeChainSideEvent registers a subscription of ChainSideEvent.
 func (bc *BlockChain) SubscribeChainSideEvent(ch chan<- ChainSideEvent) event.Subscription {
-	return bc.scope.Track(bc.chainSideFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeLogsEvent registers a subscription of []*types.Log.
 func (bc *BlockChain) SubscribeLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	return bc.scope.Track(bc.logsFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeBlockProcessingEvent registers a subscription of bool where true means
 // block processing has started while false means it has stopped.
 func (bc *BlockChain) SubscribeBlockProcessingEvent(ch chan<- bool) event.Subscription {
-	return bc.scope.Track(bc.blockProcFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeChainAcceptedEvent registers a subscription of ChainEvent.
 func (bc *BlockChain) SubscribeChainAcceptedEvent(ch chan<- ChainEvent) event.Subscription {
-	return bc.scope.Track(bc.chainAcceptedFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeAcceptedLogsEvent registers a subscription of accepted []*types.Log.
 func (bc *BlockChain) SubscribeAcceptedLogsEvent(ch chan<- []*types.Log) event.Subscription {
-	return bc.scope.Track(bc.logsAcceptedFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // SubscribeAcceptedTransactionEvent registers a subscription of accepted transactions
 func (bc *BlockChain) SubscribeAcceptedTransactionEvent(ch chan<- NewTxsEvent) event.Subscription {
-	return bc.scope.Track(bc.txAcceptedFeed.Subscribe(ch))
+	_ = "STUB: not implemented"
+	return *new(event.Subscription)
 }
 
 // GetLogs fetches all logs from a given block.
 func (bc *BlockChain) GetLogs(hash common.Hash, number uint64) [][]*types.Log {
-	logs, ok := bc.acceptedLogsCache.Get(hash) // this cache is thread-safe
-	if ok {
-		return logs
-	}
-	block := bc.GetBlockByHash(hash)
-	if block == nil {
-		return nil
-	}
-	logs = bc.collectUnflattenedLogs(block, false)
-	return logs
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// this cache is thread-safe

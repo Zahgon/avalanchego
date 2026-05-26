@@ -6,8 +6,6 @@ package builder
 import (
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/vms/components/gas"
 )
 
@@ -21,13 +19,6 @@ type Context struct {
 }
 
 func NewSnowContext(networkID uint32, avaxAssetID ids.ID) (*snow.Context, error) {
-	lookup := ids.NewAliaser()
-	return &snow.Context{
-		NetworkID:   networkID,
-		SubnetID:    constants.PrimaryNetworkID,
-		ChainID:     constants.PlatformChainID,
-		AVAXAssetID: avaxAssetID,
-		Log:         logging.NoLog{},
-		BCLookup:    lookup,
-	}, lookup.Alias(constants.PlatformChainID, Alias)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -15,27 +15,20 @@ type Clock struct {
 }
 
 // Set the time on the clock
-func (c *Clock) Set(time time.Time) { c.faked = true; c.time = time }
+func (c *Clock) Set(time time.Time) { _ = "STUB: not implemented"; return }
 
 // Sync this clock with global time
-func (c *Clock) Sync() { c.faked = false }
+func (c *Clock) Sync() {
+	_ = "STUB: not implemented"
 
-// Time returns the time on this clock
-func (c *Clock) Time() time.Time {
-	if c.faked {
-		return c.time
-	}
-	return time.Now()
+	// Time returns the time on this clock
+	return
 }
+
+func (c *Clock) Time() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // Time returns the unix time on this clock
-func (c *Clock) UnixTime() time.Time {
-	resTime := c.Time()
-	return resTime.Truncate(time.Second)
-}
+func (c *Clock) UnixTime() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // Unix returns the unix timestamp on this clock.
-func (c *Clock) Unix() uint64 {
-	unix := max(c.Time().Unix(), 0)
-	return uint64(unix)
-}
+func (c *Clock) Unix() uint64 { _ = "STUB: not implemented"; return 0 }

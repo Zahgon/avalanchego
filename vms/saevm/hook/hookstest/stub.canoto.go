@@ -41,49 +41,21 @@ type canotoData_extra struct {
 }
 
 // CanotoSpec returns the specification of this canoto message.
-func (*extra) CanotoSpec(types ...reflect.Type) *canoto.Spec {
-	types = append(types, reflect.TypeFor[extra]())
-	var zero extra
-	s := &canoto.Spec{
-		Name: "extra",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber: canoto__extra__subSec,
-				Name:        "subSec",
-				OneOf:       "",
-				TypeInt:     canoto.SizeOf(zero.subSec),
-			},
-			canoto.FieldTypeFromField(
-				/*type inference:*/ (canoto.MakeEntryNilPointer(zero.ops)),
-				/*FieldNumber:   */ canoto__extra__ops,
-				/*Name:          */ "ops",
-				/*FixedLength:   */ 0,
-				/*Repeated:      */ true,
-				/*OneOf:         */ "",
-				/*Pointer:       */ false,
-				/*types:         */ types,
-			),
-			{
-				FieldNumber: canoto__extra__settledHeight,
-				Name:        "settledHeight",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.settledHeight),
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
-}
+func (*extra) CanotoSpec(types ...reflect.Type) *canoto.Spec { _ = "STUB: not implemented"; return nil }
+
+/*type inference:*/
+/*FieldNumber:   */
+/*Name:          */
+/*FixedLength:   */
+/*Repeated:      */
+/*OneOf:         */
+/*Pointer:       */
+/*types:         */
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *extra) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *extra) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -92,103 +64,17 @@ func (c *extra) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *extra) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = extra{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__extra__subSec:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadInt(&r, &c.subSec); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.subSec) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__extra__ops:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the first entry manually because the tag is already
-			// stripped.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Count the number of additional entries after the first entry.
-			countMinus1, err := canoto.CountBytes(r.B, canoto__extra__ops__tag)
-			if err != nil {
-				return err
-			}
-
-			c.ops = canoto.MakeSlice(c.ops, countMinus1+1)
-			field := c.ops
-			additionalField := field[1:]
-			if len(msgBytes) != 0 {
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&field[0]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-
-			// Read the rest of the entries, stripping the tag each time.
-			for i := range additionalField {
-				r.B = r.B[len(canoto__extra__ops__tag):]
-				r.Unsafe = true
-				if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-					return err
-				}
-				r.Unsafe = originalUnsafe
-				if len(msgBytes) == 0 {
-					continue
-				}
-
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&additionalField[i]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-		case canoto__extra__settledHeight:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.settledHeight); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.settledHeight) {
-				return canoto.ErrZeroValue
-			}
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
+
+// Read the first entry manually because the tag is already
+// stripped.
+
+// Count the number of additional entries after the first entry.
+
+// Read the rest of the entries, stripping the tag each time.
 
 // ValidCanoto validates that the struct can be correctly marshaled into the
 // Canoto format.
@@ -197,40 +83,13 @@ func (c *extra) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 1. All OneOfs are specified at most once.
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
-func (c *extra) ValidCanoto() bool {
-	{
-		field := c.ops
-		for i := range field {
-			if !(&field[i]).ValidCanoto() {
-				return false
-			}
-		}
-	}
-	return true
-}
+func (c *extra) ValidCanoto() bool { _ = "STUB: not implemented"; return false }
 
 // CalculateCanotoCache populates size and OneOf caches based on the current
 // values in the struct.
 //
 // It is not safe to copy this struct concurrently.
-func (c *extra) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.subSec) {
-		size += uint64(len(canoto__extra__subSec__tag)) + canoto.SizeInt(c.subSec)
-	}
-	{
-		field := c.ops
-		for i := range field {
-			(&field[i]).CalculateCanotoCache()
-			fieldSize := (&field[i]).CachedCanotoSize()
-			size += uint64(len(canoto__extra__ops__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		}
-	}
-	if !canoto.IsZero(c.settledHeight) {
-		size += uint64(len(canoto__extra__settledHeight__tag)) + canoto.SizeUint(c.settledHeight)
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *extra) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -239,23 +98,14 @@ func (c *extra) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *extra) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *extra) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *extra) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *extra) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -267,23 +117,8 @@ func (c *extra) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *extra) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.subSec) {
-		canoto.Append(&w, canoto__extra__subSec__tag)
-		canoto.AppendInt(&w, c.subSec)
-	}
-	{
-		field := c.ops
-		for i := range field {
-			canoto.Append(&w, canoto__extra__ops__tag)
-			canoto.AppendUint(&w, (&field[i]).CachedCanotoSize())
-			w = (&field[i]).MarshalCanotoInto(w)
-		}
-	}
-	if !canoto.IsZero(c.settledHeight) {
-		canoto.Append(&w, canoto__extra__settledHeight__tag)
-		canoto.AppendUint(&w, c.settledHeight)
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }
 
 const (
@@ -306,67 +141,30 @@ type canotoData_Op struct {
 }
 
 // CanotoSpec returns the specification of this canoto message.
-func (*Op) CanotoSpec(types ...reflect.Type) *canoto.Spec {
-	types = append(types, reflect.TypeFor[Op]())
-	var zero Op
-	s := &canoto.Spec{
-		Name: "Op",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber:    canoto__Op__ID,
-				Name:           "ID",
-				OneOf:          "",
-				TypeFixedBytes: uint64(len(zero.ID)),
-			},
-			{
-				FieldNumber: canoto__Op__Gas,
-				Name:        "Gas",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.Gas),
-			},
-			{
-				FieldNumber: canoto__Op__GasFeeCap,
-				Name:        "GasFeeCap",
-				FixedLength: uint64(len(zero.GasFeeCap)),
-				Repeated:    true,
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(canoto.MakeEntry(zero.GasFeeCap[:])),
-			},
-			canoto.FieldTypeFromField(
-				/*type inference:*/ (canoto.MakeEntryNilPointer(zero.Burn)),
-				/*FieldNumber:   */ canoto__Op__Burn,
-				/*Name:          */ "Burn",
-				/*FixedLength:   */ 0,
-				/*Repeated:      */ true,
-				/*OneOf:         */ "",
-				/*Pointer:       */ false,
-				/*types:         */ types,
-			),
-			canoto.FieldTypeFromField(
-				/*type inference:*/ (canoto.MakeEntryNilPointer(zero.Mint)),
-				/*FieldNumber:   */ canoto__Op__Mint,
-				/*Name:          */ "Mint",
-				/*FixedLength:   */ 0,
-				/*Repeated:      */ true,
-				/*OneOf:         */ "",
-				/*Pointer:       */ false,
-				/*types:         */ types,
-			),
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
-}
+func (*Op) CanotoSpec(types ...reflect.Type) *canoto.Spec { _ = "STUB: not implemented"; return nil }
+
+/*type inference:*/
+/*FieldNumber:   */
+/*Name:          */
+/*FixedLength:   */
+/*Repeated:      */
+/*OneOf:         */
+/*Pointer:       */
+/*types:         */
+
+/*type inference:*/
+/*FieldNumber:   */
+/*Name:          */
+/*FixedLength:   */
+/*Repeated:      */
+/*OneOf:         */
+/*Pointer:       */
+/*types:         */
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *Op) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *Op) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -375,199 +173,28 @@ func (c *Op) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *Op) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = Op{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__Op__ID:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			const (
-				expectedLength       = len(c.ID)
-				expectedLengthUint64 = uint64(expectedLength)
-			)
-			var length uint64
-			if err := canoto.ReadUint(&r, &length); err != nil {
-				return err
-			}
-			if length != expectedLengthUint64 {
-				return canoto.ErrInvalidLength
-			}
-			if expectedLength > len(r.B) {
-				return io.ErrUnexpectedEOF
-			}
-
-			copy((&c.ID)[:], r.B)
-			if canoto.IsZero(c.ID) {
-				return canoto.ErrZeroValue
-			}
-			r.B = r.B[expectedLength:]
-		case canoto__Op__Gas:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.Gas); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.Gas) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__Op__GasFeeCap:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the packed field bytes.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Read each value from the packed field bytes into the array.
-			remainingBytes := r.B
-			r.B = msgBytes
-			for i := range &c.GasFeeCap {
-				if err := canoto.ReadUint(&r, &(&c.GasFeeCap)[i]); err != nil {
-					return err
-				}
-			}
-			if canoto.HasNext(&r) {
-				return canoto.ErrInvalidLength
-			}
-			if canoto.IsZero(c.GasFeeCap) {
-				return canoto.ErrZeroValue
-			}
-			r.B = remainingBytes
-			atomic.StoreUint64(&c.canotoData.GasFeeCapSize, uint64(len(msgBytes)))
-		case canoto__Op__Burn:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the first entry manually because the tag is already
-			// stripped.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Count the number of additional entries after the first entry.
-			countMinus1, err := canoto.CountBytes(r.B, canoto__Op__Burn__tag)
-			if err != nil {
-				return err
-			}
-
-			c.Burn = canoto.MakeSlice(c.Burn, countMinus1+1)
-			field := c.Burn
-			additionalField := field[1:]
-			if len(msgBytes) != 0 {
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&field[0]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-
-			// Read the rest of the entries, stripping the tag each time.
-			for i := range additionalField {
-				r.B = r.B[len(canoto__Op__Burn__tag):]
-				r.Unsafe = true
-				if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-					return err
-				}
-				r.Unsafe = originalUnsafe
-				if len(msgBytes) == 0 {
-					continue
-				}
-
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&additionalField[i]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-		case canoto__Op__Mint:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the first entry manually because the tag is already
-			// stripped.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Count the number of additional entries after the first entry.
-			countMinus1, err := canoto.CountBytes(r.B, canoto__Op__Mint__tag)
-			if err != nil {
-				return err
-			}
-
-			c.Mint = canoto.MakeSlice(c.Mint, countMinus1+1)
-			field := c.Mint
-			additionalField := field[1:]
-			if len(msgBytes) != 0 {
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&field[0]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-
-			// Read the rest of the entries, stripping the tag each time.
-			for i := range additionalField {
-				r.B = r.B[len(canoto__Op__Mint__tag):]
-				r.Unsafe = true
-				if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-					return err
-				}
-				r.Unsafe = originalUnsafe
-				if len(msgBytes) == 0 {
-					continue
-				}
-
-				remainingBytes := r.B
-				r.B = msgBytes
-				if err := (&additionalField[i]).UnmarshalCanotoFrom(r); err != nil {
-					return err
-				}
-				r.B = remainingBytes
-			}
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
+
+// Read the packed field bytes.
+
+// Read each value from the packed field bytes into the array.
+
+// Read the first entry manually because the tag is already
+// stripped.
+
+// Count the number of additional entries after the first entry.
+
+// Read the rest of the entries, stripping the tag each time.
+
+// Read the first entry manually because the tag is already
+// stripped.
+
+// Count the number of additional entries after the first entry.
+
+// Read the rest of the entries, stripping the tag each time.
 
 // ValidCanoto validates that the struct can be correctly marshaled into the
 // Canoto format.
@@ -576,64 +203,13 @@ func (c *Op) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 1. All OneOfs are specified at most once.
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
-func (c *Op) ValidCanoto() bool {
-	{
-		field := c.Burn
-		for i := range field {
-			if !(&field[i]).ValidCanoto() {
-				return false
-			}
-		}
-	}
-	{
-		field := c.Mint
-		for i := range field {
-			if !(&field[i]).ValidCanoto() {
-				return false
-			}
-		}
-	}
-	return true
-}
+func (c *Op) ValidCanoto() bool { _ = "STUB: not implemented"; return false }
 
 // CalculateCanotoCache populates size and OneOf caches based on the current
 // values in the struct.
 //
 // It is not safe to copy this struct concurrently.
-func (c *Op) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.ID) {
-		size += uint64(len(canoto__Op__ID__tag)) + canoto.SizeBytes((&c.ID)[:])
-	}
-	if !canoto.IsZero(c.Gas) {
-		size += uint64(len(canoto__Op__Gas__tag)) + canoto.SizeUint(c.Gas)
-	}
-	if !canoto.IsZero(c.GasFeeCap) {
-		var fieldSize uint64
-		for _, v := range &c.GasFeeCap {
-			fieldSize += canoto.SizeUint(v)
-		}
-		size += uint64(len(canoto__Op__GasFeeCap__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		atomic.StoreUint64(&c.canotoData.GasFeeCapSize, fieldSize)
-	}
-	{
-		field := c.Burn
-		for i := range field {
-			(&field[i]).CalculateCanotoCache()
-			fieldSize := (&field[i]).CachedCanotoSize()
-			size += uint64(len(canoto__Op__Burn__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		}
-	}
-	{
-		field := c.Mint
-		for i := range field {
-			(&field[i]).CalculateCanotoCache()
-			fieldSize := (&field[i]).CachedCanotoSize()
-			size += uint64(len(canoto__Op__Mint__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		}
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *Op) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -642,23 +218,14 @@ func (c *Op) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *Op) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *Op) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *Op) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *Op) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -670,38 +237,8 @@ func (c *Op) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *Op) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.ID) {
-		canoto.Append(&w, canoto__Op__ID__tag)
-		canoto.AppendBytes(&w, (&c.ID)[:])
-	}
-	if !canoto.IsZero(c.Gas) {
-		canoto.Append(&w, canoto__Op__Gas__tag)
-		canoto.AppendUint(&w, c.Gas)
-	}
-	if !canoto.IsZero(c.GasFeeCap) {
-		canoto.Append(&w, canoto__Op__GasFeeCap__tag)
-		canoto.AppendUint(&w, atomic.LoadUint64(&c.canotoData.GasFeeCapSize))
-		for _, v := range &c.GasFeeCap {
-			canoto.AppendUint(&w, v)
-		}
-	}
-	{
-		field := c.Burn
-		for i := range field {
-			canoto.Append(&w, canoto__Op__Burn__tag)
-			canoto.AppendUint(&w, (&field[i]).CachedCanotoSize())
-			w = (&field[i]).MarshalCanotoInto(w)
-		}
-	}
-	{
-		field := c.Mint
-		for i := range field {
-			canoto.Append(&w, canoto__Op__Mint__tag)
-			canoto.AppendUint(&w, (&field[i]).CachedCanotoSize())
-			w = (&field[i]).MarshalCanotoInto(w)
-		}
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }
 
 const (
@@ -724,53 +261,14 @@ type canotoData_AccountDebit struct {
 
 // CanotoSpec returns the specification of this canoto message.
 func (*AccountDebit) CanotoSpec(...reflect.Type) *canoto.Spec {
-	var zero AccountDebit
-	s := &canoto.Spec{
-		Name: "AccountDebit",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber:    canoto__AccountDebit__Address,
-				Name:           "Address",
-				OneOf:          "",
-				TypeFixedBytes: uint64(len(zero.Address)),
-			},
-			{
-				FieldNumber: canoto__AccountDebit__Nonce,
-				Name:        "Nonce",
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(zero.Nonce),
-			},
-			{
-				FieldNumber: canoto__AccountDebit__Amount,
-				Name:        "Amount",
-				FixedLength: uint64(len(zero.Amount)),
-				Repeated:    true,
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(canoto.MakeEntry(zero.Amount[:])),
-			},
-			{
-				FieldNumber: canoto__AccountDebit__MinBalance,
-				Name:        "MinBalance",
-				FixedLength: uint64(len(zero.MinBalance)),
-				Repeated:    true,
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(canoto.MakeEntry(zero.MinBalance[:])),
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *AccountDebit) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *AccountDebit) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -779,125 +277,18 @@ func (c *AccountDebit) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *AccountDebit) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = AccountDebit{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__AccountDebit__Address:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			const (
-				expectedLength       = len(c.Address)
-				expectedLengthUint64 = uint64(expectedLength)
-			)
-			var length uint64
-			if err := canoto.ReadUint(&r, &length); err != nil {
-				return err
-			}
-			if length != expectedLengthUint64 {
-				return canoto.ErrInvalidLength
-			}
-			if expectedLength > len(r.B) {
-				return io.ErrUnexpectedEOF
-			}
-
-			copy((&c.Address)[:], r.B)
-			if canoto.IsZero(c.Address) {
-				return canoto.ErrZeroValue
-			}
-			r.B = r.B[expectedLength:]
-		case canoto__AccountDebit__Nonce:
-			if wireType != canoto.Varint {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			if err := canoto.ReadUint(&r, &c.Nonce); err != nil {
-				return err
-			}
-			if canoto.IsZero(c.Nonce) {
-				return canoto.ErrZeroValue
-			}
-		case canoto__AccountDebit__Amount:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the packed field bytes.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Read each value from the packed field bytes into the array.
-			remainingBytes := r.B
-			r.B = msgBytes
-			for i := range &c.Amount {
-				if err := canoto.ReadUint(&r, &(&c.Amount)[i]); err != nil {
-					return err
-				}
-			}
-			if canoto.HasNext(&r) {
-				return canoto.ErrInvalidLength
-			}
-			if canoto.IsZero(c.Amount) {
-				return canoto.ErrZeroValue
-			}
-			r.B = remainingBytes
-			atomic.StoreUint64(&c.canotoData.AmountSize, uint64(len(msgBytes)))
-		case canoto__AccountDebit__MinBalance:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the packed field bytes.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Read each value from the packed field bytes into the array.
-			remainingBytes := r.B
-			r.B = msgBytes
-			for i := range &c.MinBalance {
-				if err := canoto.ReadUint(&r, &(&c.MinBalance)[i]); err != nil {
-					return err
-				}
-			}
-			if canoto.HasNext(&r) {
-				return canoto.ErrInvalidLength
-			}
-			if canoto.IsZero(c.MinBalance) {
-				return canoto.ErrZeroValue
-			}
-			r.B = remainingBytes
-			atomic.StoreUint64(&c.canotoData.MinBalanceSize, uint64(len(msgBytes)))
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
+
+// Read the packed field bytes.
+
+// Read each value from the packed field bytes into the array.
+
+// Read the packed field bytes.
+
+// Read each value from the packed field bytes into the array.
 
 // ValidCanoto validates that the struct can be correctly marshaled into the
 // Canoto format.
@@ -907,39 +298,16 @@ func (c *AccountDebit) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
 func (c *AccountDebit) ValidCanoto() bool {
-	return true
+	_ = "STUB: not implemented"
+
+	// CalculateCanotoCache populates size and OneOf caches based on the current
+	// values in the struct.
+	//
+	// It is not safe to copy this struct concurrently.
+	return false
 }
 
-// CalculateCanotoCache populates size and OneOf caches based on the current
-// values in the struct.
-//
-// It is not safe to copy this struct concurrently.
-func (c *AccountDebit) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.Address) {
-		size += uint64(len(canoto__AccountDebit__Address__tag)) + canoto.SizeBytes((&c.Address)[:])
-	}
-	if !canoto.IsZero(c.Nonce) {
-		size += uint64(len(canoto__AccountDebit__Nonce__tag)) + canoto.SizeUint(c.Nonce)
-	}
-	if !canoto.IsZero(c.Amount) {
-		var fieldSize uint64
-		for _, v := range &c.Amount {
-			fieldSize += canoto.SizeUint(v)
-		}
-		size += uint64(len(canoto__AccountDebit__Amount__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		atomic.StoreUint64(&c.canotoData.AmountSize, fieldSize)
-	}
-	if !canoto.IsZero(c.MinBalance) {
-		var fieldSize uint64
-		for _, v := range &c.MinBalance {
-			fieldSize += canoto.SizeUint(v)
-		}
-		size += uint64(len(canoto__AccountDebit__MinBalance__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		atomic.StoreUint64(&c.canotoData.MinBalanceSize, fieldSize)
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *AccountDebit) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -948,23 +316,14 @@ func (c *AccountDebit) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *AccountDebit) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *AccountDebit) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *AccountDebit) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *AccountDebit) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -976,29 +335,8 @@ func (c *AccountDebit) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *AccountDebit) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.Address) {
-		canoto.Append(&w, canoto__AccountDebit__Address__tag)
-		canoto.AppendBytes(&w, (&c.Address)[:])
-	}
-	if !canoto.IsZero(c.Nonce) {
-		canoto.Append(&w, canoto__AccountDebit__Nonce__tag)
-		canoto.AppendUint(&w, c.Nonce)
-	}
-	if !canoto.IsZero(c.Amount) {
-		canoto.Append(&w, canoto__AccountDebit__Amount__tag)
-		canoto.AppendUint(&w, atomic.LoadUint64(&c.canotoData.AmountSize))
-		for _, v := range &c.Amount {
-			canoto.AppendUint(&w, v)
-		}
-	}
-	if !canoto.IsZero(c.MinBalance) {
-		canoto.Append(&w, canoto__AccountDebit__MinBalance__tag)
-		canoto.AppendUint(&w, atomic.LoadUint64(&c.canotoData.MinBalanceSize))
-		for _, v := range &c.MinBalance {
-			canoto.AppendUint(&w, v)
-		}
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }
 
 const (
@@ -1016,39 +354,14 @@ type canotoData_AccountCredit struct {
 
 // CanotoSpec returns the specification of this canoto message.
 func (*AccountCredit) CanotoSpec(...reflect.Type) *canoto.Spec {
-	var zero AccountCredit
-	s := &canoto.Spec{
-		Name: "AccountCredit",
-		Fields: []canoto.FieldType{
-			{
-				FieldNumber:    canoto__AccountCredit__Address,
-				Name:           "Address",
-				OneOf:          "",
-				TypeFixedBytes: uint64(len(zero.Address)),
-			},
-			{
-				FieldNumber: canoto__AccountCredit__Amount,
-				Name:        "Amount",
-				FixedLength: uint64(len(zero.Amount)),
-				Repeated:    true,
-				OneOf:       "",
-				TypeUint:    canoto.SizeOf(canoto.MakeEntry(zero.Amount[:])),
-			},
-		},
-	}
-	s.CalculateCanotoCache()
-	return s
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // UnmarshalCanoto unmarshals a Canoto-encoded byte slice into the struct.
 //
 // During parsing, the canoto cache is saved.
-func (c *AccountCredit) UnmarshalCanoto(bytes []byte) error {
-	r := canoto.Reader{
-		B: bytes,
-	}
-	return c.UnmarshalCanotoFrom(r)
-}
+func (c *AccountCredit) UnmarshalCanoto(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
 // UnmarshalCanotoFrom populates the struct from a [canoto.Reader]. Most users
 // should just use UnmarshalCanoto.
@@ -1057,84 +370,14 @@ func (c *AccountCredit) UnmarshalCanoto(bytes []byte) error {
 //
 // This function enables configuration of reader options.
 func (c *AccountCredit) UnmarshalCanotoFrom(r canoto.Reader) error {
+	_ = "STUB: not implemented"
 	// Zero the struct before unmarshaling.
-	*c = AccountCredit{}
-	atomic.StoreUint64(&c.canotoData.size, uint64(len(r.B)))
-
-	var minField uint32
-	for canoto.HasNext(&r) {
-		field, wireType, err := canoto.ReadTag(&r)
-		if err != nil {
-			return err
-		}
-		if field < minField {
-			return canoto.ErrInvalidFieldOrder
-		}
-
-		switch field {
-		case canoto__AccountCredit__Address:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			const (
-				expectedLength       = len(c.Address)
-				expectedLengthUint64 = uint64(expectedLength)
-			)
-			var length uint64
-			if err := canoto.ReadUint(&r, &length); err != nil {
-				return err
-			}
-			if length != expectedLengthUint64 {
-				return canoto.ErrInvalidLength
-			}
-			if expectedLength > len(r.B) {
-				return io.ErrUnexpectedEOF
-			}
-
-			copy((&c.Address)[:], r.B)
-			if canoto.IsZero(c.Address) {
-				return canoto.ErrZeroValue
-			}
-			r.B = r.B[expectedLength:]
-		case canoto__AccountCredit__Amount:
-			if wireType != canoto.Len {
-				return canoto.ErrUnexpectedWireType
-			}
-
-			// Read the packed field bytes.
-			originalUnsafe := r.Unsafe
-			r.Unsafe = true
-			var msgBytes []byte
-			if err := canoto.ReadBytes(&r, &msgBytes); err != nil {
-				return err
-			}
-			r.Unsafe = originalUnsafe
-
-			// Read each value from the packed field bytes into the array.
-			remainingBytes := r.B
-			r.B = msgBytes
-			for i := range &c.Amount {
-				if err := canoto.ReadUint(&r, &(&c.Amount)[i]); err != nil {
-					return err
-				}
-			}
-			if canoto.HasNext(&r) {
-				return canoto.ErrInvalidLength
-			}
-			if canoto.IsZero(c.Amount) {
-				return canoto.ErrZeroValue
-			}
-			r.B = remainingBytes
-			atomic.StoreUint64(&c.canotoData.AmountSize, uint64(len(msgBytes)))
-		default:
-			return canoto.ErrUnknownField
-		}
-
-		minField = field + 1
-	}
 	return nil
 }
+
+// Read the packed field bytes.
+
+// Read each value from the packed field bytes into the array.
 
 // ValidCanoto validates that the struct can be correctly marshaled into the
 // Canoto format.
@@ -1144,28 +387,16 @@ func (c *AccountCredit) UnmarshalCanotoFrom(r canoto.Reader) error {
 // 2. All strings are valid utf-8.
 // 3. All custom fields are ValidCanoto.
 func (c *AccountCredit) ValidCanoto() bool {
-	return true
+	_ = "STUB: not implemented"
+
+	// CalculateCanotoCache populates size and OneOf caches based on the current
+	// values in the struct.
+	//
+	// It is not safe to copy this struct concurrently.
+	return false
 }
 
-// CalculateCanotoCache populates size and OneOf caches based on the current
-// values in the struct.
-//
-// It is not safe to copy this struct concurrently.
-func (c *AccountCredit) CalculateCanotoCache() {
-	var size uint64
-	if !canoto.IsZero(c.Address) {
-		size += uint64(len(canoto__AccountCredit__Address__tag)) + canoto.SizeBytes((&c.Address)[:])
-	}
-	if !canoto.IsZero(c.Amount) {
-		var fieldSize uint64
-		for _, v := range &c.Amount {
-			fieldSize += canoto.SizeUint(v)
-		}
-		size += uint64(len(canoto__AccountCredit__Amount__tag)) + canoto.SizeUint(fieldSize) + fieldSize
-		atomic.StoreUint64(&c.canotoData.AmountSize, fieldSize)
-	}
-	atomic.StoreUint64(&c.canotoData.size, size)
-}
+func (c *AccountCredit) CalculateCanotoCache() { _ = "STUB: not implemented"; return }
 
 // CachedCanotoSize returns the previously calculated size of the Canoto
 // representation from CalculateCanotoCache.
@@ -1174,23 +405,14 @@ func (c *AccountCredit) CalculateCanotoCache() {
 //
 // If the struct has been modified since the last call to CalculateCanotoCache,
 // the returned size may be incorrect.
-func (c *AccountCredit) CachedCanotoSize() uint64 {
-	return atomic.LoadUint64(&c.canotoData.size)
-}
+func (c *AccountCredit) CachedCanotoSize() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // MarshalCanoto returns the Canoto representation of this struct.
 //
 // It is assumed that this struct is ValidCanoto.
 //
 // It is not safe to copy this struct concurrently.
-func (c *AccountCredit) MarshalCanoto() []byte {
-	c.CalculateCanotoCache()
-	w := canoto.Writer{
-		B: make([]byte, 0, c.CachedCanotoSize()),
-	}
-	w = c.MarshalCanotoInto(w)
-	return w.B
-}
+func (c *AccountCredit) MarshalCanoto() []byte { _ = "STUB: not implemented"; return nil }
 
 // MarshalCanotoInto writes the struct into a [canoto.Writer] and returns the
 // resulting [canoto.Writer]. Most users should just use MarshalCanoto.
@@ -1202,16 +424,6 @@ func (c *AccountCredit) MarshalCanoto() []byte {
 //
 // It is not safe to copy this struct concurrently.
 func (c *AccountCredit) MarshalCanotoInto(w canoto.Writer) canoto.Writer {
-	if !canoto.IsZero(c.Address) {
-		canoto.Append(&w, canoto__AccountCredit__Address__tag)
-		canoto.AppendBytes(&w, (&c.Address)[:])
-	}
-	if !canoto.IsZero(c.Amount) {
-		canoto.Append(&w, canoto__AccountCredit__Amount__tag)
-		canoto.AppendUint(&w, atomic.LoadUint64(&c.canotoData.AmountSize))
-		for _, v := range &c.Amount {
-			canoto.AppendUint(&w, v)
-		}
-	}
-	return w
+	_ = "STUB: not implemented"
+	return *new(canoto.Writer)
 }

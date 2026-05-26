@@ -6,16 +6,13 @@ package rpc
 import (
 	"context"
 	"io"
-	"math"
 
 	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/bloombits"
-	"github.com/ava-labs/libevm/core/rawdb"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/eth"
 	"github.com/ava-labs/libevm/eth/filters"
 	"github.com/ava-labs/libevm/ethdb"
-	"github.com/ava-labs/libevm/params"
 )
 
 // chainIndexer implements the subset of [ethapi.Backend] required to back a
@@ -26,9 +23,7 @@ type chainIndexer struct {
 
 var _ core.ChainIndexerChain = chainIndexer{}
 
-func (c chainIndexer) CurrentHeader() *types.Header {
-	return c.LastExecuted().Header()
-}
+func (c chainIndexer) CurrentHeader() *types.Header { _ = "STUB: not implemented"; return nil }
 
 // A bloomOverrider constructs Bloom filters from persisted receipts instead of
 // relying on the [types.Header] field.
@@ -42,11 +37,8 @@ var _ filters.BloomOverrider = bloomOverrider{}
 // executing the respective block, whereas the [types.Header] carries those
 // settled by the block.
 func (b bloomOverrider) OverrideHeaderBloom(header *types.Header) types.Bloom {
-	return types.CreateBloom(rawdb.ReadRawReceipts(
-		b.chain.DB(),
-		header.Hash(),
-		header.Number.Uint64(),
-	))
+	_ = "STUB: not implemented"
+	return *new(types.Bloom)
 }
 
 // bloomIndexer provides the [bloomIndexer.BloomStatus] and
@@ -62,41 +54,23 @@ type bloomIndexer struct {
 //
 // The consumer must call [bloomIndexer.Close] to release allocated resources.
 func newBloomIndexer(db ethdb.Database, chain core.ChainIndexerChain, override filters.BloomOverrider, size uint64) *bloomIndexer {
-	if size == 0 || size > math.MaxInt32 {
-		size = params.BloomBitsBlocks
-	}
-
-	backend := &bloomBackend{
-		BloomIndexer:   core.NewBloomIndexerBackend(db, size),
-		BloomOverrider: override,
-	}
-	table := rawdb.NewTable(db, string(rawdb.BloomBitsIndexPrefix))
-	b := &bloomIndexer{
-		indexer:  core.NewChainIndexer(db, table, backend, size, 0, core.BloomThrottling, "bloombits"),
-		size:     size,
-		handlers: eth.StartBloomHandlers(db, size),
-	}
-	b.indexer.Start(chain)
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (b *bloomIndexer) BloomStatus() (size uint64, sections uint64) {
-	sections, _, _ = b.indexer.Sections()
-	return b.size, sections
+	_ = "STUB: not implemented"
+	return 0, 0
 }
 
 func (b *bloomIndexer) ServiceFilter(ctx context.Context, session *bloombits.MatcherSession) {
-	for range eth.BloomFilterThreads {
-		go session.Multiplex(eth.BloomRetrievalBatch, eth.BloomRetrievalWait, b.handlers.Requests)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 var _ io.Closer = (*bloomIndexer)(nil)
 
-func (b *bloomIndexer) Close() error {
-	b.handlers.Close()
-	return b.indexer.Close()
-}
+func (b *bloomIndexer) Close() error { _ = "STUB: not implemented"; return nil }
 
 var _ core.ChainIndexerBackend = (*bloomBackend)(nil)
 
@@ -108,5 +82,6 @@ type bloomBackend struct {
 }
 
 func (b *bloomBackend) Process(ctx context.Context, hdr *types.Header) error {
-	return b.ProcessWithBloomOverride(hdr, b.OverrideHeaderBloom(hdr))
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -13,8 +13,6 @@ type BurnOperation struct {
 	secp256k1fx.Input `serialize:"true"`
 }
 
-func (*BurnOperation) InitCtx(*snow.Context) {}
+func (*BurnOperation) InitCtx(*snow.Context) { _ = "STUB: not implemented"; return }
 
-func (*BurnOperation) Outs() []verify.State {
-	return nil
-}
+func (*BurnOperation) Outs() []verify.State { _ = "STUB: not implemented"; return nil }

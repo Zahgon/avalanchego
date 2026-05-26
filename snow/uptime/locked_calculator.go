@@ -32,56 +32,26 @@ type lockedCalculator struct {
 }
 
 func NewLockedCalculator() LockedCalculator {
-	return &lockedCalculator{}
+	_ = "STUB: not implemented"
+	return *new(LockedCalculator)
 }
 
 func (c *lockedCalculator) CalculateUptime(nodeID ids.NodeID) (time.Duration, time.Time, error) {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-
-	if c.isBootstrapped == nil || !c.isBootstrapped.Get() {
-		return 0, time.Time{}, errStillBootstrapping
-	}
-
-	c.calculatorLock.Lock()
-	defer c.calculatorLock.Unlock()
-
-	return c.c.CalculateUptime(nodeID)
+	_ = "STUB: not implemented"
+	return *new(time.Duration), *new(time.Time), nil
 }
 
 func (c *lockedCalculator) CalculateUptimePercent(nodeID ids.NodeID) (float64, error) {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-
-	if c.isBootstrapped == nil || !c.isBootstrapped.Get() {
-		return 0, errStillBootstrapping
-	}
-
-	c.calculatorLock.Lock()
-	defer c.calculatorLock.Unlock()
-
-	return c.c.CalculateUptimePercent(nodeID)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (c *lockedCalculator) CalculateUptimePercentFrom(nodeID ids.NodeID, startTime time.Time) (float64, error) {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-
-	if c.isBootstrapped == nil || !c.isBootstrapped.Get() {
-		return 0, errStillBootstrapping
-	}
-
-	c.calculatorLock.Lock()
-	defer c.calculatorLock.Unlock()
-
-	return c.c.CalculateUptimePercentFrom(nodeID, startTime)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (c *lockedCalculator) SetCalculator(isBootstrapped *utils.Atomic[bool], lock sync.Locker, newC Calculator) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	c.isBootstrapped = isBootstrapped
-	c.calculatorLock = lock
-	c.c = newC
+	_ = "STUB: not implemented"
+	return
 }

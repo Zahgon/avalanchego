@@ -7,10 +7,7 @@ import (
 	"context"
 	"time"
 
-	"go.uber.org/zap"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/message"
 	"github.com/ava-labs/avalanchego/proto/pb/p2p"
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -36,26 +33,17 @@ type noOpStateSummaryFrontierHandler struct {
 }
 
 func NewNoOpStateSummaryFrontierHandler(log logging.Logger) StateSummaryFrontierHandler {
-	return &noOpStateSummaryFrontierHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(StateSummaryFrontierHandler)
 }
 
 func (nop *noOpStateSummaryFrontierHandler) StateSummaryFrontier(_ context.Context, nodeID ids.NodeID, requestID uint32, _ []byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.StateSummaryFrontierOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpStateSummaryFrontierHandler) GetStateSummaryFrontierFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetStateSummaryFrontierFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -64,26 +52,17 @@ type noOpAcceptedStateSummaryHandler struct {
 }
 
 func NewNoOpAcceptedStateSummaryHandler(log logging.Logger) AcceptedStateSummaryHandler {
-	return &noOpAcceptedStateSummaryHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(AcceptedStateSummaryHandler)
 }
 
 func (nop *noOpAcceptedStateSummaryHandler) AcceptedStateSummary(_ context.Context, nodeID ids.NodeID, requestID uint32, _ set.Set[ids.ID]) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AcceptedStateSummaryOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAcceptedStateSummaryHandler) GetAcceptedStateSummaryFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedStateSummaryFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -92,27 +71,17 @@ type noOpAcceptedFrontierHandler struct {
 }
 
 func NewNoOpAcceptedFrontierHandler(log logging.Logger) AcceptedFrontierHandler {
-	return &noOpAcceptedFrontierHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(AcceptedFrontierHandler)
 }
 
 func (nop *noOpAcceptedFrontierHandler) AcceptedFrontier(_ context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AcceptedFrontierOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Stringer("containerID", containerID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAcceptedFrontierHandler) GetAcceptedFrontierFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedFrontierFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -121,26 +90,17 @@ type noOpAcceptedHandler struct {
 }
 
 func NewNoOpAcceptedHandler(log logging.Logger) AcceptedHandler {
-	return &noOpAcceptedHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(AcceptedHandler)
 }
 
 func (nop *noOpAcceptedHandler) Accepted(_ context.Context, nodeID ids.NodeID, requestID uint32, _ set.Set[ids.ID]) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AcceptedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAcceptedHandler) GetAcceptedFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -149,26 +109,17 @@ type noOpAncestorsHandler struct {
 }
 
 func NewNoOpAncestorsHandler(log logging.Logger) AncestorsHandler {
-	return &noOpAncestorsHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(AncestorsHandler)
 }
 
 func (nop *noOpAncestorsHandler) Ancestors(_ context.Context, nodeID ids.NodeID, requestID uint32, _ [][]byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AncestorsOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAncestorsHandler) GetAncestorsFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAncestorsFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -177,26 +128,17 @@ type noOpPutHandler struct {
 }
 
 func NewNoOpPutHandler(log logging.Logger) PutHandler {
-	return &noOpPutHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(PutHandler)
 }
 
 func (nop *noOpPutHandler) Put(_ context.Context, nodeID ids.NodeID, requestID uint32, _ []byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.PutOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpPutHandler) GetFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -205,29 +147,17 @@ type noOpQueryHandler struct {
 }
 
 func NewNoOpQueryHandler(log logging.Logger) QueryHandler {
-	return &noOpQueryHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(QueryHandler)
 }
 
 func (nop *noOpQueryHandler) PullQuery(_ context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID, requestedHeight uint64) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.PullQueryOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Stringer("containerID", containerID),
-		zap.Uint64("requestedHeight", requestedHeight),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpQueryHandler) PushQuery(_ context.Context, nodeID ids.NodeID, requestID uint32, _ []byte, requestedHeight uint64) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.PushQueryOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Uint64("requestedHeight", requestedHeight),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -236,30 +166,17 @@ type noOpChitsHandler struct {
 }
 
 func NewNoOpChitsHandler(log logging.Logger) ChitsHandler {
-	return &noOpChitsHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(ChitsHandler)
 }
 
 func (nop *noOpChitsHandler) Chits(_ context.Context, nodeID ids.NodeID, requestID uint32, preferredID, preferredIDAtHeight, acceptedID ids.ID, acceptedHeight uint64) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.ChitsOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Stringer("preferredID", preferredID),
-		zap.Stringer("preferredIDAtHeight", preferredIDAtHeight),
-		zap.Stringer("acceptedID", acceptedID),
-		zap.Uint64("acceptedHeight", acceptedHeight),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpChitsHandler) QueryFailed(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.QueryFailedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -268,46 +185,27 @@ type noOpAppHandler struct {
 }
 
 func NewNoOpAppHandler(log logging.Logger) AppHandler {
-	return &noOpAppHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(AppHandler)
 }
 
 func (nop *noOpAppHandler) AppRequest(_ context.Context, nodeID ids.NodeID, requestID uint32, _ time.Time, _ []byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AppRequestOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAppHandler) AppRequestFailed(_ context.Context, nodeID ids.NodeID, requestID uint32, appErr *AppError) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AppErrorOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Error(appErr),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAppHandler) AppResponse(_ context.Context, nodeID ids.NodeID, requestID uint32, _ []byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AppResponseOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAppHandler) AppGossip(_ context.Context, nodeID ids.NodeID, _ []byte) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.AppGossipOp),
-		zap.Stringer("nodeID", nodeID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -316,7 +214,8 @@ type noOpInternalHandler struct {
 }
 
 func NewNoOpInternalHandler(log logging.Logger) InternalHandler {
-	return &noOpInternalHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(InternalHandler)
 }
 
 func (nop *noOpInternalHandler) Connected(
@@ -324,46 +223,27 @@ func (nop *noOpInternalHandler) Connected(
 	nodeID ids.NodeID,
 	nodeVersion *version.Application,
 ) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.ConnectedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Stringer("version", nodeVersion),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpInternalHandler) Disconnected(_ context.Context, nodeID ids.NodeID) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.DisconnectedOp),
-		zap.Stringer("nodeID", nodeID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpInternalHandler) Gossip(context.Context) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GossipRequestOp),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpInternalHandler) Shutdown(context.Context) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.String("messageOp", "shutdown"),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpInternalHandler) Notify(_ context.Context, msg Message) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.NotifyOp),
-		zap.Stringer("message", msg),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -372,15 +252,12 @@ type noOpSimplexHandler struct {
 }
 
 func NewNoOpSimplexHandler(log logging.Logger) SimplexHandler {
-	return &noOpSimplexHandler{log: log}
+	_ = "STUB: not implemented"
+	return *new(SimplexHandler)
 }
 
 func (nop *noOpSimplexHandler) Simplex(_ context.Context, nodeID ids.NodeID, _ *p2p.Simplex) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.SimplexOp),
-		zap.Stringer("nodeID", nodeID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -391,67 +268,36 @@ type noOpAllGetsServer struct {
 }
 
 func NewNoOpAllGetsServer(log logging.Logger) AllGetsServer {
-	return &noOpAllGetsServer{log: log}
+	_ = "STUB: not implemented"
+	return *new(AllGetsServer)
 }
 
 func (nop *noOpAllGetsServer) GetStateSummaryFrontier(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetStateSummaryFrontierOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAllGetsServer) GetAcceptedStateSummary(_ context.Context, nodeID ids.NodeID, requestID uint32, _ set.Set[uint64]) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedStateSummaryOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAllGetsServer) GetAcceptedFrontier(_ context.Context, nodeID ids.NodeID, requestID uint32) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedFrontierOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAllGetsServer) GetAccepted(_ context.Context, nodeID ids.NodeID, requestID uint32, _ set.Set[ids.ID]) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAcceptedOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAllGetsServer) GetAncestors(_ context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetAncestorsOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Stringer("containerID", containerID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (nop *noOpAllGetsServer) Get(_ context.Context, nodeID ids.NodeID, requestID uint32, containerID ids.ID) error {
-	nop.log.Debug("dropping request",
-		zap.String("reason", "unhandled by this gear"),
-		zap.Stringer("messageOp", message.GetOp),
-		zap.Stringer("nodeID", nodeID),
-		zap.Uint32("requestID", requestID),
-		zap.Stringer("containerID", containerID),
-	)
+	_ = "STUB: not implemented"
 	return nil
 }

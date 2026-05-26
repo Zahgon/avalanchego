@@ -4,9 +4,6 @@
 package txstest
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
@@ -18,7 +15,6 @@ import (
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 	"github.com/ava-labs/avalanchego/wallet/chain/x/builder"
 	"github.com/ava-labs/avalanchego/wallet/chain/x/signer"
-	"github.com/ava-labs/avalanchego/wallet/subnet/primary/common"
 )
 
 type Builder struct {
@@ -33,11 +29,8 @@ func New(
 	feeAssetID ids.ID,
 	state state.State,
 ) *Builder {
-	utxos := newUTXOs(ctx, state, ctx.SharedMemory, codec)
-	return &Builder{
-		utxos: utxos,
-		ctx:   newContext(ctx, cfg, feeAssetID),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (b *Builder) CreateAssetTx(
@@ -47,23 +40,8 @@ func (b *Builder) CreateAssetTx(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	utx, err := xBuilder.NewCreateAssetTx(
-		name,
-		symbol,
-		denomination,
-		initialStates,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed building base tx: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) BaseTx(
@@ -72,21 +50,8 @@ func (b *Builder) BaseTx(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	utx, err := xBuilder.NewBaseTx(
-		outs,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-		common.WithMemo(memo),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed building base tx: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) MintNFT(
@@ -96,22 +61,8 @@ func (b *Builder) MintNFT(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	utx, err := xBuilder.NewOperationTxMintNFT(
-		assetID,
-		payload,
-		owners,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed minting NFTs: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) MintFTs(
@@ -119,20 +70,8 @@ func (b *Builder) MintFTs(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	utx, err := xBuilder.NewOperationTxMintFT(
-		outputs,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed minting FTs: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) Operation(
@@ -140,20 +79,8 @@ func (b *Builder) Operation(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	utx, err := xBuilder.NewOperationTx(
-		ops,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed building operation tx: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) ImportTx(
@@ -161,23 +88,8 @@ func (b *Builder) ImportTx(
 	to ids.ShortID,
 	kc *secp256k1fx.Keychain,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	outOwner := &secp256k1fx.OutputOwners{
-		Locktime:  0,
-		Threshold: 1,
-		Addrs:     []ids.ShortID{to},
-	}
-
-	utx, err := xBuilder.NewImportTx(
-		sourceChain,
-		outOwner,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed building import tx: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) ExportTx(
@@ -188,44 +100,11 @@ func (b *Builder) ExportTx(
 	kc *secp256k1fx.Keychain,
 	changeAddr ids.ShortID,
 ) (*txs.Tx, error) {
-	xBuilder, xSigner := b.builders(kc)
-
-	outputs := []*avax.TransferableOutput{{
-		Asset: avax.Asset{ID: exportedAssetID},
-		Out: &secp256k1fx.TransferOutput{
-			Amt: exportedAmt,
-			OutputOwners: secp256k1fx.OutputOwners{
-				Locktime:  0,
-				Threshold: 1,
-				Addrs:     []ids.ShortID{to},
-			},
-		},
-	}}
-
-	utx, err := xBuilder.NewExportTx(
-		destinationChain,
-		outputs,
-		common.WithChangeOwner(&secp256k1fx.OutputOwners{
-			Threshold: 1,
-			Addrs:     []ids.ShortID{changeAddr},
-		}),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed building export tx: %w", err)
-	}
-
-	return signer.SignUnsigned(context.Background(), xSigner, utx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *Builder) builders(kc *secp256k1fx.Keychain) (builder.Builder, signer.Signer) {
-	var (
-		addrs = kc.Addresses()
-		wa    = &walletUTXOsAdapter{
-			utxos: b.utxos,
-			addrs: addrs,
-		}
-		builder = builder.New(addrs, b.ctx, wa)
-		signer  = signer.New(kc, wa)
-	)
-	return builder, signer
+	_ = "STUB: not implemented"
+	return *new(builder.Builder), *new(signer.Signer)
 }

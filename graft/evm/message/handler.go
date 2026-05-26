@@ -33,13 +33,16 @@ type ResponseHandler interface {
 type NoopRequestHandler struct{}
 
 func (NoopRequestHandler) HandleLeafsRequest(context.Context, ids.NodeID, uint32, LeafsRequest) ([]byte, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func (NoopRequestHandler) HandleBlockRequest(context.Context, ids.NodeID, uint32, BlockRequest) ([]byte, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }
 
 func (NoopRequestHandler) HandleCodeRequest(context.Context, ids.NodeID, uint32, CodeRequest) ([]byte, error) {
+	_ = "STUB: not implemented"
 	return nil, nil
 }

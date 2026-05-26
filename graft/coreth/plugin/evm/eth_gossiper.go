@@ -7,23 +7,18 @@ package evm
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"sync/atomic"
 
 	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/log"
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/graft/coreth/core"
 	"github.com/ava-labs/avalanchego/graft/coreth/core/txpool"
 	"github.com/ava-labs/avalanchego/graft/coreth/eth"
-	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/config"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p/gossip"
 	"github.com/ava-labs/avalanchego/utils/bloom"
-
-	ethcommon "github.com/ava-labs/libevm/common"
 )
 
 const pendingTxsBuffer = 10
@@ -37,22 +32,8 @@ var (
 )
 
 func NewGossipEthTxPool(mempool *txpool.TxPool, registerer prometheus.Registerer) (*GossipEthTxPool, error) {
-	bloom, err := gossip.NewBloomFilter(
-		registerer,
-		"eth_tx_bloom_filter",
-		config.TxGossipBloomMinTargetElements,
-		config.TxGossipBloomTargetFalsePositiveRate,
-		config.TxGossipBloomResetFalsePositiveRate,
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize bloom filter: %w", err)
-	}
-
-	return &GossipEthTxPool{
-		mempool:    mempool,
-		pendingTxs: make(chan core.NewTxsEvent, pendingTxsBuffer),
-		bloom:      bloom,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type GossipEthTxPool struct {
@@ -68,99 +49,42 @@ type GossipEthTxPool struct {
 }
 
 // IsSubscribed returns whether or not the gossip subscription is active.
-func (g *GossipEthTxPool) IsSubscribed() bool {
-	return g.subscribed.Load()
-}
+func (g *GossipEthTxPool) IsSubscribed() bool { _ = "STUB: not implemented"; return false }
 
-func (g *GossipEthTxPool) Subscribe(ctx context.Context) {
-	sub := g.mempool.SubscribeTransactions(g.pendingTxs, false)
-	if sub == nil {
-		log.Warn("failed to subscribe to new txs event")
-		return
-	}
-	g.subscribed.CompareAndSwap(false, true)
-	defer func() {
-		sub.Unsubscribe()
-		g.subscribed.CompareAndSwap(true, false)
-	}()
-
-	for {
-		select {
-		case <-ctx.Done():
-			log.Debug("shutting down subscription")
-			return
-		case pendingTxs := <-g.pendingTxs:
-			g.lock.Lock()
-			optimalElements := (g.mempool.PendingSize(txpool.PendingFilter{}) + len(pendingTxs.Txs)) * config.TxGossipBloomChurnMultiplier
-			for _, pendingTx := range pendingTxs.Txs {
-				tx := &GossipEthTx{Tx: pendingTx}
-				g.bloom.Add(tx)
-				reset, err := gossip.ResetBloomFilterIfNeeded(g.bloom, optimalElements)
-				if err != nil {
-					log.Error("failed to reset bloom filter", "err", err)
-					continue
-				}
-
-				if reset {
-					log.Debug("resetting bloom filter", "reason", "reached max filled ratio")
-
-					g.mempool.IteratePending(func(tx *types.Transaction) bool {
-						g.bloom.Add(&GossipEthTx{Tx: tx})
-						return true
-					})
-				}
-			}
-			g.lock.Unlock()
-		}
-	}
-}
+func (g *GossipEthTxPool) Subscribe(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // Add enqueues the transaction to the mempool. Subscribe should be called
 // to receive an event if tx is actually added to the mempool or not.
-func (g *GossipEthTxPool) Add(tx *GossipEthTx) error {
-	return g.mempool.Add([]*types.Transaction{tx.Tx}, false, false)[0]
-}
+func (g *GossipEthTxPool) Add(tx *GossipEthTx) error { _ = "STUB: not implemented"; return nil }
 
 // Has should just return whether or not the [txID] is still in the mempool,
 // not whether it is in the mempool AND pending.
-func (g *GossipEthTxPool) Has(txID ids.ID) bool {
-	return g.mempool.Has(ethcommon.Hash(txID))
-}
+func (g *GossipEthTxPool) Has(txID ids.ID) bool { _ = "STUB: not implemented"; return false }
 
-func (g *GossipEthTxPool) Iterate(f func(tx *GossipEthTx) bool) {
-	g.mempool.IteratePending(func(tx *types.Transaction) bool {
-		return f(&GossipEthTx{Tx: tx})
-	})
-}
+func (g *GossipEthTxPool) Iterate(f func(tx *GossipEthTx) bool) { _ = "STUB: not implemented"; return }
 
 func (g *GossipEthTxPool) BloomFilter() (*bloom.Filter, ids.ID) {
-	g.lock.RLock()
-	defer g.lock.RUnlock()
-
-	return g.bloom.BloomFilter()
+	_ = "STUB: not implemented"
+	return nil, *new(ids.ID)
 }
 
 type GossipEthTxMarshaller struct{}
 
 func (GossipEthTxMarshaller) MarshalGossip(tx *GossipEthTx) ([]byte, error) {
-	return tx.Tx.MarshalBinary()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (GossipEthTxMarshaller) UnmarshalGossip(bytes []byte) (*GossipEthTx, error) {
-	tx := &GossipEthTx{
-		Tx: &types.Transaction{},
-	}
-
-	return tx, tx.Tx.UnmarshalBinary(bytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type GossipEthTx struct {
 	Tx *types.Transaction
 }
 
-func (tx *GossipEthTx) GossipID() ids.ID {
-	return ids.ID(tx.Tx.Hash())
-}
+func (tx *GossipEthTx) GossipID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // EthPushGossiper is used by the ETH backend to push transactions issued over
 // the RPC and added to the mempool to peers.
@@ -169,11 +93,8 @@ type EthPushGossiper struct {
 }
 
 func (e *EthPushGossiper) Add(tx *types.Transaction) {
+	_ = "STUB: not implemented"
 	// eth.Backend is initialized before the [ethTxPushGossiper] is created, so
 	// we just ignore any gossip requests until it is set.
-	ethTxPushGossiper := e.vm.ethTxPushGossiper.Get()
-	if ethTxPushGossiper == nil {
-		return
-	}
-	ethTxPushGossiper.Add(&GossipEthTx{tx})
+	return
 }

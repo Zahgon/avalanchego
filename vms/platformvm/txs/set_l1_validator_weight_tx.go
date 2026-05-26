@@ -19,22 +19,13 @@ type SetL1ValidatorWeightTx struct {
 }
 
 func (tx *SetL1ValidatorWeightTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified:
-		// already passed syntactic verification
-		return nil
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// already passed syntactic verification
+
 func (tx *SetL1ValidatorWeightTx) Visit(visitor Visitor) error {
-	return visitor.SetL1ValidatorWeightTx(tx)
+	_ = "STUB: not implemented"
+	return nil
 }

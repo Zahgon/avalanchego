@@ -4,8 +4,6 @@
 package gwarp
 
 import (
-	"context"
-
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 
 	pb "github.com/ava-labs/avalanchego/proto/pb/warp"
@@ -17,18 +15,9 @@ type Client struct {
 	client pb.SignerClient
 }
 
-func NewClient(client pb.SignerClient) *Client {
-	return &Client{client: client}
-}
+func NewClient(client pb.SignerClient) *Client { _ = "STUB: not implemented"; return nil }
 
 func (c *Client) Sign(unsignedMsg *warp.UnsignedMessage) ([]byte, error) {
-	resp, err := c.client.Sign(context.Background(), &pb.SignRequest{
-		NetworkId:     unsignedMsg.NetworkID,
-		SourceChainId: unsignedMsg.SourceChainID[:],
-		Payload:       unsignedMsg.Payload,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return resp.Signature, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

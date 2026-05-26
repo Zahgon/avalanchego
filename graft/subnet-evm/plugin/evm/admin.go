@@ -4,10 +4,7 @@
 package evm
 
 import (
-	"fmt"
 	"net/http"
-
-	"github.com/ava-labs/libevm/log"
 
 	"github.com/ava-labs/avalanchego/api"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/plugin/evm/client"
@@ -20,66 +17,38 @@ type Admin struct {
 	profiler profiler.Profiler
 }
 
-func NewAdminService(vm *VM, performanceDir string) *Admin {
-	return &Admin{
-		vm:       vm,
-		profiler: profiler.New(performanceDir),
-	}
-}
+func NewAdminService(vm *VM, performanceDir string) *Admin { _ = "STUB: not implemented"; return nil }
 
 // StartCPUProfiler starts a cpu profile writing to the specified file
 func (p *Admin) StartCPUProfiler(*http.Request, *struct{}, *api.EmptyReply) error {
-	log.Info("Admin: StartCPUProfiler called")
-
-	p.vm.vmLock.Lock()
-	defer p.vm.vmLock.Unlock()
-
-	return p.profiler.StartCPUProfiler()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // StopCPUProfiler stops the cpu profile
 func (p *Admin) StopCPUProfiler(*http.Request, *struct{}, *api.EmptyReply) error {
-	log.Info("Admin: StopCPUProfiler called")
-
-	p.vm.vmLock.Lock()
-	defer p.vm.vmLock.Unlock()
-
-	return p.profiler.StopCPUProfiler()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // MemoryProfile runs a memory profile writing to the specified file
 func (p *Admin) MemoryProfile(*http.Request, *struct{}, *api.EmptyReply) error {
-	log.Info("Admin: MemoryProfile called")
-
-	p.vm.vmLock.Lock()
-	defer p.vm.vmLock.Unlock()
-
-	return p.profiler.MemoryProfile()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LockProfile runs a mutex profile writing to the specified file
 func (p *Admin) LockProfile(*http.Request, *struct{}, *api.EmptyReply) error {
-	log.Info("Admin: LockProfile called")
-
-	p.vm.vmLock.Lock()
-	defer p.vm.vmLock.Unlock()
-
-	return p.profiler.LockProfile()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (p *Admin) SetLogLevel(_ *http.Request, args *client.SetLogLevelArgs, _ *api.EmptyReply) error {
-	log.Info("EVM: SetLogLevel called", "logLevel", args.Level)
-
-	p.vm.vmLock.Lock()
-	defer p.vm.vmLock.Unlock()
-
-	if err := p.vm.logger.SetLogLevel(args.Level); err != nil {
-		return fmt.Errorf("failed to parse log level: %w ", err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (p *Admin) GetVMConfig(_ *http.Request, _ *struct{}, reply *client.ConfigReply) error {
-	reply.Config = &p.vm.config
+	_ = "STUB: not implemented"
 	return nil
 }

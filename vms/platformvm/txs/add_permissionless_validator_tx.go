@@ -5,19 +5,13 @@ package txs
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/fx"
-	"github.com/ava-labs/avalanchego/vms/platformvm/reward"
 	"github.com/ava-labs/avalanchego/vms/platformvm/signer"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var (
@@ -62,128 +56,65 @@ type AddPermissionlessValidatorTx struct {
 // [AddPermissionlessValidatorTx]. Also sets the [ctx] to the given [vm.ctx] so
 // that the addresses can be json marshalled into human readable format
 func (tx *AddPermissionlessValidatorTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	for _, out := range tx.StakeOuts {
-		out.FxID = secp256k1fx.ID
-		out.InitCtx(ctx)
-	}
-	tx.ValidatorRewardsOwner.InitCtx(ctx)
-	tx.DelegatorRewardsOwner.InitCtx(ctx)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (tx *AddPermissionlessValidatorTx) SubnetID() ids.ID {
-	return tx.Subnet
+	_ = "STUB: not implemented"
+	return *new(ids.ID)
 }
 
 func (tx *AddPermissionlessValidatorTx) NodeID() ids.NodeID {
-	return tx.Validator.NodeID
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID)
 }
 
 func (tx *AddPermissionlessValidatorTx) PublicKey() (*bls.PublicKey, bool, error) {
-	if err := tx.Signer.Verify(); err != nil {
-		return nil, false, err
-	}
-	key := tx.Signer.Key()
-	return key, key != nil, nil
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
 
 func (tx *AddPermissionlessValidatorTx) PendingPriority() Priority {
-	if tx.Subnet == constants.PrimaryNetworkID {
-		return PrimaryNetworkValidatorPendingPriority
-	}
-	return SubnetPermissionlessValidatorPendingPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 func (tx *AddPermissionlessValidatorTx) CurrentPriority() Priority {
-	if tx.Subnet == constants.PrimaryNetworkID {
-		return PrimaryNetworkValidatorCurrentPriority
-	}
-	return SubnetPermissionlessValidatorCurrentPriority
+	_ = "STUB: not implemented"
+	return *new(Priority)
 }
 
 func (tx *AddPermissionlessValidatorTx) Stake() []*avax.TransferableOutput {
-	return tx.StakeOuts
-}
-
-func (tx *AddPermissionlessValidatorTx) ValidationRewardsOwner() fx.Owner {
-	return tx.ValidatorRewardsOwner
-}
-
-func (tx *AddPermissionlessValidatorTx) DelegationRewardsOwner() fx.Owner {
-	return tx.DelegatorRewardsOwner
-}
-
-func (tx *AddPermissionlessValidatorTx) Shares() uint32 {
-	return tx.DelegationShares
-}
-
-// SyntacticVerify returns nil iff [tx] is valid
-func (tx *AddPermissionlessValidatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	case tx.Validator.NodeID == ids.EmptyNodeID:
-		return errEmptyNodeID
-	case len(tx.StakeOuts) == 0: // Ensure there is provided stake
-		return errNoStake
-	case tx.DelegationShares > reward.PercentDenominator:
-		return errTooManyShares
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return fmt.Errorf("failed to verify BaseTx: %w", err)
-	}
-	if err := verify.All(&tx.Validator, tx.Signer, tx.ValidatorRewardsOwner, tx.DelegatorRewardsOwner); err != nil {
-		return fmt.Errorf("failed to verify validator, signer, or rewards owners: %w", err)
-	}
-
-	hasKey := tx.Signer.Key() != nil
-	isPrimaryNetwork := tx.Subnet == constants.PrimaryNetworkID
-	if hasKey != isPrimaryNetwork {
-		return fmt.Errorf(
-			"%w: hasKey=%v != isPrimaryNetwork=%v",
-			errInvalidSigner,
-			hasKey,
-			isPrimaryNetwork,
-		)
-	}
-
-	for _, out := range tx.StakeOuts {
-		if err := out.Verify(); err != nil {
-			return fmt.Errorf("failed to verify output: %w", err)
-		}
-	}
-
-	firstStakeOutput := tx.StakeOuts[0]
-	stakedAssetID := firstStakeOutput.AssetID()
-	totalStakeWeight := firstStakeOutput.Output().Amount()
-	for _, out := range tx.StakeOuts[1:] {
-		newWeight, err := math.Add(totalStakeWeight, out.Output().Amount())
-		if err != nil {
-			return err
-		}
-		totalStakeWeight = newWeight
-
-		assetID := out.AssetID()
-		if assetID != stakedAssetID {
-			return fmt.Errorf("%w: %q and %q", errMultipleStakedAssets, stakedAssetID, assetID)
-		}
-	}
-
-	switch {
-	case !avax.IsSortedTransferableOutputs(tx.StakeOuts, Codec):
-		return errOutputsNotSorted
-	case totalStakeWeight != tx.Wght:
-		return fmt.Errorf("%w: weight %d != stake %d", errValidatorWeightMismatch, tx.Wght, totalStakeWeight)
-	}
-
-	// cache that this is valid
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
+func (tx *AddPermissionlessValidatorTx) ValidationRewardsOwner() fx.Owner {
+	_ = "STUB: not implemented"
+	return *new(fx.Owner)
+}
+
+func (tx *AddPermissionlessValidatorTx) DelegationRewardsOwner() fx.Owner {
+	_ = "STUB: not implemented"
+	return *new(fx.Owner)
+}
+
+func (tx *AddPermissionlessValidatorTx) Shares() uint32 { _ = "STUB: not implemented"; return 0 }
+
+// SyntacticVerify returns nil iff [tx] is valid
+func (tx *AddPermissionlessValidatorTx) SyntacticVerify(ctx *snow.Context) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+// already passed syntactic verification
+
+// Ensure there is provided stake
+
+// cache that this is valid
+
 func (tx *AddPermissionlessValidatorTx) Visit(visitor Visitor) error {
-	return visitor.AddPermissionlessValidatorTx(tx)
+	_ = "STUB: not implemented"
+	return nil
 }

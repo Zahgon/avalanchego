@@ -4,9 +4,7 @@
 package state
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
 
 	"github.com/google/btree"
 
@@ -17,9 +15,7 @@ import (
 	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
 	"github.com/ava-labs/avalanchego/utils/iterator"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/utils/maybe"
-	"github.com/ava-labs/avalanchego/vms/platformvm/block"
 )
 
 var (
@@ -124,105 +120,43 @@ type L1Validator struct {
 	EndAccumulatedFee uint64 `serialize:"true"`
 }
 
-func (v L1Validator) Less(o L1Validator) bool {
-	return v.Compare(o) == -1
-}
+func (v L1Validator) Less(o L1Validator) bool { _ = "STUB: not implemented"; return false }
 
 // Compare determines a canonical ordering of L1 validators based on their
 // EndAccumulatedFees and ValidationIDs. Lower EndAccumulatedFees result in an
 // earlier ordering.
-func (v L1Validator) Compare(o L1Validator) int {
-	switch {
-	case v.EndAccumulatedFee < o.EndAccumulatedFee:
-		return -1
-	case o.EndAccumulatedFee < v.EndAccumulatedFee:
-		return 1
-	default:
-		return v.ValidationID.Compare(o.ValidationID)
-	}
-}
+func (v L1Validator) Compare(o L1Validator) int { _ = "STUB: not implemented"; return 0 }
 
 // immutableFieldsAreUnmodified returns true if two versions of the same
 // validator are valid. Either because the validationID has changed or because
 // no unexpected fields have been modified.
 func (v L1Validator) immutableFieldsAreUnmodified(o L1Validator) bool {
-	if v.ValidationID != o.ValidationID {
-		return true
-	}
-	return v.SubnetID == o.SubnetID &&
-		v.NodeID == o.NodeID &&
-		bytes.Equal(v.PublicKey, o.PublicKey) &&
-		bytes.Equal(v.RemainingBalanceOwner, o.RemainingBalanceOwner) &&
-		bytes.Equal(v.DeactivationOwner, o.DeactivationOwner) &&
-		v.StartTime == o.StartTime
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (v L1Validator) isDeleted() bool {
-	return v.Weight == 0
-}
+func (v L1Validator) isDeleted() bool { _ = "STUB: not implemented"; return false }
 
-func (v L1Validator) IsActive() bool {
-	return v.Weight != 0 && v.EndAccumulatedFee != 0
-}
+func (v L1Validator) IsActive() bool { _ = "STUB: not implemented"; return false }
 
-func (v L1Validator) effectiveValidationID() ids.ID {
-	if v.IsActive() {
-		return v.ValidationID
-	}
-	return ids.Empty
-}
+func (v L1Validator) effectiveValidationID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 func (v L1Validator) effectiveNodeID() ids.NodeID {
-	if v.IsActive() {
-		return v.NodeID
-	}
-	return ids.EmptyNodeID
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID)
 }
 
-func (v L1Validator) effectivePublicKey() *bls.PublicKey {
-	if v.IsActive() {
-		return bls.PublicKeyFromValidUncompressedBytes(v.PublicKey)
-	}
-	return nil
-}
+func (v L1Validator) effectivePublicKey() *bls.PublicKey { _ = "STUB: not implemented"; return nil }
 
-func (v L1Validator) effectivePublicKeyBytes() []byte {
-	if v.IsActive() {
-		return v.PublicKey
-	}
-	return nil
-}
+func (v L1Validator) effectivePublicKeyBytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func getL1Validator(
 	cache cache.Cacher[ids.ID, maybe.Maybe[L1Validator]],
 	db database.KeyValueReader,
 	validationID ids.ID,
 ) (L1Validator, error) {
-	if maybeL1Validator, ok := cache.Get(validationID); ok {
-		if maybeL1Validator.IsNothing() {
-			return L1Validator{}, database.ErrNotFound
-		}
-		return maybeL1Validator.Value(), nil
-	}
-
-	bytes, err := db.Get(validationID[:])
-	if err == database.ErrNotFound {
-		cache.Put(validationID, maybe.Nothing[L1Validator]())
-		return L1Validator{}, database.ErrNotFound
-	}
-	if err != nil {
-		return L1Validator{}, err
-	}
-
-	l1Validator := L1Validator{
-		ValidationID: validationID,
-	}
-	if _, err := block.GenesisCodec.Unmarshal(bytes, &l1Validator); err != nil {
-		return L1Validator{}, fmt.Errorf("failed to unmarshal L1 validator: %w", err)
-	}
-
-	cache.Put(validationID, maybe.Some(l1Validator))
-	return l1Validator, nil
+	_ = "STUB: not implemented"
+	return *new(L1Validator), nil
 }
 
 func putL1Validator(
@@ -230,15 +164,7 @@ func putL1Validator(
 	cache cache.Cacher[ids.ID, maybe.Maybe[L1Validator]],
 	l1Validator L1Validator,
 ) error {
-	bytes, err := block.GenesisCodec.Marshal(block.CodecVersion, l1Validator)
-	if err != nil {
-		return fmt.Errorf("failed to marshal L1 validator: %w", err)
-	}
-	if err := db.Put(l1Validator.ValidationID[:], bytes); err != nil {
-		return err
-	}
-
-	cache.Put(l1Validator.ValidationID, maybe.Some(l1Validator))
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -247,11 +173,7 @@ func deleteL1Validator(
 	cache cache.Cacher[ids.ID, maybe.Maybe[L1Validator]],
 	validationID ids.ID,
 ) error {
-	if err := db.Delete(validationID[:]); err != nil {
-		return err
-	}
-
-	cache.Put(validationID, maybe.Nothing[L1Validator]())
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -263,175 +185,60 @@ type l1ValidatorsDiff struct {
 	active              *btree.BTreeG[L1Validator]
 }
 
-func newL1ValidatorsDiff() *l1ValidatorsDiff {
-	return &l1ValidatorsDiff{
-		modifiedTotalWeight: make(map[ids.ID]uint64),
-		modified:            make(map[ids.ID]L1Validator),
-		modifiedHasNodeIDs:  make(map[subnetIDNodeID]bool),
-		active:              btree.NewG(defaultTreeDegree, L1Validator.Less),
-	}
-}
+func newL1ValidatorsDiff() *l1ValidatorsDiff { _ = "STUB: not implemented"; return nil }
 
 // getActiveL1ValidatorsIterator takes in the parent iterator, removes all
 // modified validators, and then adds all modified active validators.
 func (d *l1ValidatorsDiff) getActiveL1ValidatorsIterator(parentIterator iterator.Iterator[L1Validator]) iterator.Iterator[L1Validator] {
-	return iterator.Merge(
-		L1Validator.Less,
-		iterator.Filter(parentIterator, func(l1Validator L1Validator) bool {
-			_, ok := d.modified[l1Validator.ValidationID]
-			return ok
-		}),
-		iterator.FromTree(d.active),
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (d *l1ValidatorsDiff) hasL1Validator(subnetID ids.ID, nodeID ids.NodeID) (bool, bool) {
-	subnetIDNodeID := subnetIDNodeID{
-		subnetID: subnetID,
-		nodeID:   nodeID,
-	}
-	has, modified := d.modifiedHasNodeIDs[subnetIDNodeID]
-	return has, modified
+	_ = "STUB: not implemented"
+	return false, false
 }
 
 func (d *l1ValidatorsDiff) putL1Validator(state Chain, l1Validator L1Validator) error {
-	var (
-		prevWeight uint64
-		prevActive bool
-		newActive  = l1Validator.IsActive()
-	)
-	switch priorL1Validator, err := state.GetL1Validator(l1Validator.ValidationID); err {
-	case nil:
-		if !priorL1Validator.immutableFieldsAreUnmodified(l1Validator) {
-			return ErrMutatedL1Validator
-		}
-
-		prevWeight = priorL1Validator.Weight
-		prevActive = priorL1Validator.IsActive()
-	case database.ErrNotFound:
-		// Verify that there is not a legacy subnet validator with the same
-		// subnetID+nodeID as this L1 validator.
-		_, err := state.GetCurrentValidator(l1Validator.SubnetID, l1Validator.NodeID)
-		if err == nil {
-			return ErrConflictingL1Validator
-		}
-		if err != database.ErrNotFound {
-			return err
-		}
-
-		has, err := state.HasL1Validator(l1Validator.SubnetID, l1Validator.NodeID)
-		if err != nil {
-			return err
-		}
-		if has {
-			return ErrDuplicateL1Validator
-		}
-	default:
-		return err
-	}
-
-	if prevWeight != l1Validator.Weight {
-		weight, err := state.WeightOfL1Validators(l1Validator.SubnetID)
-		if err != nil {
-			return err
-		}
-
-		weight, err = math.Sub(weight, prevWeight)
-		if err != nil {
-			return err
-		}
-		weight, err = math.Add(weight, l1Validator.Weight)
-		if err != nil {
-			return err
-		}
-
-		d.modifiedTotalWeight[l1Validator.SubnetID] = weight
-	}
-
-	switch {
-	case prevActive && !newActive:
-		d.netAddedActive--
-	case !prevActive && newActive:
-		d.netAddedActive++
-	}
-
-	if prevL1Validator, ok := d.modified[l1Validator.ValidationID]; ok {
-		d.active.Delete(prevL1Validator)
-	}
-	d.modified[l1Validator.ValidationID] = l1Validator
-
-	subnetIDNodeID := subnetIDNodeID{
-		subnetID: l1Validator.SubnetID,
-		nodeID:   l1Validator.NodeID,
-	}
-	d.modifiedHasNodeIDs[subnetIDNodeID] = !l1Validator.isDeleted()
-	if l1Validator.IsActive() {
-		d.active.ReplaceOrInsert(l1Validator)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
+
+// Verify that there is not a legacy subnet validator with the same
+// subnetID+nodeID as this L1 validator.
 
 type activeL1Validators struct {
 	lookup map[ids.ID]L1Validator
 	tree   *btree.BTreeG[L1Validator]
 }
 
-func newActiveL1Validators() *activeL1Validators {
-	return &activeL1Validators{
-		lookup: make(map[ids.ID]L1Validator),
-		tree:   btree.NewG(defaultTreeDegree, L1Validator.Less),
-	}
-}
+func newActiveL1Validators() *activeL1Validators { _ = "STUB: not implemented"; return nil }
 
 func (a *activeL1Validators) get(validationID ids.ID) (L1Validator, bool) {
-	l1Validator, ok := a.lookup[validationID]
-	return l1Validator, ok
+	_ = "STUB: not implemented"
+	return *new(L1Validator), false
 }
 
-func (a *activeL1Validators) put(l1Validator L1Validator) {
-	a.lookup[l1Validator.ValidationID] = l1Validator
-	a.tree.ReplaceOrInsert(l1Validator)
-}
+func (a *activeL1Validators) put(l1Validator L1Validator) { _ = "STUB: not implemented"; return }
 
 func (a *activeL1Validators) delete(validationID ids.ID) bool {
-	l1Validator, ok := a.lookup[validationID]
-	if !ok {
-		return false
-	}
-
-	delete(a.lookup, validationID)
-	a.tree.Delete(l1Validator)
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (a *activeL1Validators) len() int {
-	return len(a.lookup)
-}
+func (a *activeL1Validators) len() int { _ = "STUB: not implemented"; return 0 }
 
 func (a *activeL1Validators) newIterator() iterator.Iterator[L1Validator] {
-	return iterator.FromTree(a.tree)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (a *activeL1Validators) addStakersToValidatorManager(vdrs validators.Manager) error {
-	for validationID, l1Validator := range a.lookup {
-		pk := bls.PublicKeyFromValidUncompressedBytes(l1Validator.PublicKey)
-		if err := vdrs.AddStaker(l1Validator.SubnetID, l1Validator.NodeID, pk, validationID, l1Validator.Weight); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func addL1ValidatorToValidatorManager(vdrs validators.Manager, l1Validator L1Validator) error {
-	nodeID := l1Validator.effectiveNodeID()
-	if vdrs.GetWeight(l1Validator.SubnetID, nodeID) != 0 {
-		return vdrs.AddWeight(l1Validator.SubnetID, nodeID, l1Validator.Weight)
-	}
-	return vdrs.AddStaker(
-		l1Validator.SubnetID,
-		nodeID,
-		l1Validator.effectivePublicKey(),
-		l1Validator.effectiveValidationID(),
-		l1Validator.Weight,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }

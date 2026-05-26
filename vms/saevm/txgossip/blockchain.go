@@ -36,10 +36,8 @@ type BlockChain interface {
 // root as the event contains a [types.Header] carrying the (ignored)
 // last-settled state root.
 func NewBlockChain(exec *saexec.Executor, blocks saetypes.BlockSource) BlockChain {
-	return &blockchain{
-		Executor: exec,
-		blocks:   blocks,
-	}
+	_ = "STUB: not implemented"
+	return *new(BlockChain)
 }
 
 type blockchain struct {
@@ -47,22 +45,16 @@ type blockchain struct {
 	blocks           saetypes.BlockSource
 }
 
-func (bc *blockchain) Config() *params.ChainConfig {
-	return bc.ChainConfig()
-}
+func (bc *blockchain) Config() *params.ChainConfig { _ = "STUB: not implemented"; return nil }
 
-func (bc *blockchain) CurrentBlock() *types.Header {
-	return bc.LastExecuted().Header()
-}
+func (bc *blockchain) CurrentBlock() *types.Header { _ = "STUB: not implemented"; return nil }
 
 func (bc *blockchain) GetBlock(hash common.Hash, number uint64) *types.Block {
-	b, ok := bc.blocks(hash, number)
-	if !ok {
-		return nil
-	}
-	return b
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (bc *blockchain) StateAt(common.Hash) (*state.StateDB, error) {
-	return bc.StateDB(bc.LastExecuted().PostExecutionStateRoot())
+	_ = "STUB: not implemented"
+	return nil, nil
 }

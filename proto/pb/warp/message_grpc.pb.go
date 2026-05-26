@@ -8,9 +8,8 @@ package warp
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -34,17 +33,13 @@ type signerClient struct {
 }
 
 func NewSignerClient(cc grpc.ClientConnInterface) SignerClient {
-	return &signerClient{cc}
+	_ = "STUB: not implemented"
+	return *new(SignerClient)
 }
 
 func (c *signerClient) Sign(ctx context.Context, in *SignRequest, opts ...grpc.CallOption) (*SignResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SignResponse)
-	err := c.cc.Invoke(ctx, Signer_Sign_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SignerServer is the server API for Signer service.
@@ -63,45 +58,39 @@ type SignerServer interface {
 type UnimplementedSignerServer struct{}
 
 func (UnimplementedSignerServer) Sign(context.Context, *SignRequest) (*SignResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Sign not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedSignerServer) mustEmbedUnimplementedSignerServer() {}
-func (UnimplementedSignerServer) testEmbeddedByValue()                {}
 
-// UnsafeSignerServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SignerServer will
-// result in compilation errors.
+func (UnimplementedSignerServer) mustEmbedUnimplementedSignerServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedSignerServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeSignerServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to SignerServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeSignerServer interface {
 	mustEmbedUnimplementedSignerServer()
 }
 
 func RegisterSignerServer(s grpc.ServiceRegistrar, srv SignerServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedSignerServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&Signer_ServiceDesc, srv)
+	return
 }
 
 func _Signer_Sign_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SignRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SignerServer).Sign(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Signer_Sign_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SignerServer).Sign(ctx, req.(*SignRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Signer_ServiceDesc is the grpc.ServiceDesc for Signer service.

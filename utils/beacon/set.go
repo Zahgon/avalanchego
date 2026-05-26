@@ -6,7 +6,6 @@ package beacon
 import (
 	"errors"
 	"net/netip"
-	"strings"
 
 	"github.com/ava-labs/avalanchego/ids"
 )
@@ -39,94 +38,16 @@ type set struct {
 	beacons []Beacon
 }
 
-func NewSet() Set {
-	return &set{
-		ids: make(map[ids.NodeID]int),
-		ips: make(map[netip.AddrPort]int),
-	}
-}
+func NewSet() Set { _ = "STUB: not implemented"; return *new(Set) }
 
-func (s *set) Add(b Beacon) error {
-	id := b.ID()
-	_, duplicateID := s.ids[id]
-	if duplicateID {
-		return errDuplicateID
-	}
+func (s *set) Add(b Beacon) error { _ = "STUB: not implemented"; return nil }
 
-	ip := b.IP()
-	_, duplicateIP := s.ips[ip]
-	if duplicateIP {
-		return errDuplicateIP
-	}
+func (s *set) RemoveByID(idToRemove ids.NodeID) error { _ = "STUB: not implemented"; return nil }
 
-	s.ids[id] = len(s.beacons)
-	s.ips[ip] = len(s.beacons)
-	s.beacons = append(s.beacons, b)
-	return nil
-}
+func (s *set) RemoveByIP(ip netip.AddrPort) error { _ = "STUB: not implemented"; return nil }
 
-func (s *set) RemoveByID(idToRemove ids.NodeID) error {
-	indexToRemove, exists := s.ids[idToRemove]
-	if !exists {
-		return errUnknownID
-	}
-	toRemove := s.beacons[indexToRemove]
-	ipToRemove := toRemove.IP()
+func (s *set) Len() int { _ = "STUB: not implemented"; return 0 }
 
-	indexToMove := len(s.beacons) - 1
-	toMove := s.beacons[indexToMove]
-	idToMove := toMove.ID()
-	ipToMove := toMove.IP()
+func (s *set) IDsArg() string { _ = "STUB: not implemented"; return "" }
 
-	s.ids[idToMove] = indexToRemove
-	s.ips[ipToMove] = indexToRemove
-	s.beacons[indexToRemove] = toMove
-
-	delete(s.ids, idToRemove)
-	delete(s.ips, ipToRemove)
-	s.beacons[indexToMove] = nil
-	s.beacons = s.beacons[:indexToMove]
-	return nil
-}
-
-func (s *set) RemoveByIP(ip netip.AddrPort) error {
-	indexToRemove, exists := s.ips[ip]
-	if !exists {
-		return errUnknownIP
-	}
-	toRemove := s.beacons[indexToRemove]
-	idToRemove := toRemove.ID()
-	return s.RemoveByID(idToRemove)
-}
-
-func (s *set) Len() int {
-	return len(s.beacons)
-}
-
-func (s *set) IDsArg() string {
-	sb := strings.Builder{}
-	if len(s.beacons) == 0 {
-		return ""
-	}
-	b := s.beacons[0]
-	_, _ = sb.WriteString(b.ID().String())
-	for _, b := range s.beacons[1:] {
-		_, _ = sb.WriteString(",")
-		_, _ = sb.WriteString(b.ID().String())
-	}
-	return sb.String()
-}
-
-func (s *set) IPsArg() string {
-	sb := strings.Builder{}
-	if len(s.beacons) == 0 {
-		return ""
-	}
-	b := s.beacons[0]
-	_, _ = sb.WriteString(b.IP().String())
-	for _, b := range s.beacons[1:] {
-		_, _ = sb.WriteString(",")
-		_, _ = sb.WriteString(b.IP().String())
-	}
-	return sb.String()
-}
+func (s *set) IPsArg() string { _ = "STUB: not implemented"; return "" }

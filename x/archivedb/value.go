@@ -3,15 +3,6 @@
 
 package archivedb
 
-func newDBValue(value []byte) []byte {
-	dbValue := make([]byte, len(value)+1)
-	copy(dbValue[1:], value)
-	return dbValue
-}
+func newDBValue(value []byte) []byte { _ = "STUB: not implemented"; return nil }
 
-func parseDBValue(dbValue []byte) ([]byte, bool) {
-	if len(dbValue) == 0 {
-		return nil, false
-	}
-	return dbValue[1:], true
-}
+func parseDBValue(dbValue []byte) ([]byte, bool) { _ = "STUB: not implemented"; return nil, false }

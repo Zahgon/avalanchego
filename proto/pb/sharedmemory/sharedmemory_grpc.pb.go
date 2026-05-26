@@ -8,9 +8,8 @@ package sharedmemory
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -38,37 +37,23 @@ type sharedMemoryClient struct {
 }
 
 func NewSharedMemoryClient(cc grpc.ClientConnInterface) SharedMemoryClient {
-	return &sharedMemoryClient{cc}
+	_ = "STUB: not implemented"
+	return *new(SharedMemoryClient)
 }
 
 func (c *sharedMemoryClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetResponse)
-	err := c.cc.Invoke(ctx, SharedMemory_Get_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *sharedMemoryClient) Indexed(ctx context.Context, in *IndexedRequest, opts ...grpc.CallOption) (*IndexedResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(IndexedResponse)
-	err := c.cc.Invoke(ctx, SharedMemory_Indexed_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *sharedMemoryClient) Apply(ctx context.Context, in *ApplyRequest, opts ...grpc.CallOption) (*ApplyResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ApplyResponse)
-	err := c.cc.Invoke(ctx, SharedMemory_Apply_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SharedMemoryServer is the server API for SharedMemory service.
@@ -89,87 +74,59 @@ type SharedMemoryServer interface {
 type UnimplementedSharedMemoryServer struct{}
 
 func (UnimplementedSharedMemoryServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedSharedMemoryServer) Indexed(context.Context, *IndexedRequest) (*IndexedResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Indexed not implemented")
-}
-func (UnimplementedSharedMemoryServer) Apply(context.Context, *ApplyRequest) (*ApplyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Apply not implemented")
-}
-func (UnimplementedSharedMemoryServer) mustEmbedUnimplementedSharedMemoryServer() {}
-func (UnimplementedSharedMemoryServer) testEmbeddedByValue()                      {}
 
-// UnsafeSharedMemoryServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to SharedMemoryServer will
-// result in compilation errors.
+func (UnimplementedSharedMemoryServer) Indexed(context.Context, *IndexedRequest) (*IndexedResponse, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedSharedMemoryServer) Apply(context.Context, *ApplyRequest) (*ApplyResponse, error) {
+	_ = "STUB: not implemented"
+	return nil, nil
+}
+
+func (UnimplementedSharedMemoryServer) mustEmbedUnimplementedSharedMemoryServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedSharedMemoryServer) testEmbeddedByValue() {
+	_ = "STUB: not implemented"
+
+	// UnsafeSharedMemoryServer may be embedded to opt out of forward compatibility for this service.
+	// Use of this interface is not recommended, as added methods to SharedMemoryServer will
+	// result in compilation errors.
+	return
+}
+
 type UnsafeSharedMemoryServer interface {
 	mustEmbedUnimplementedSharedMemoryServer()
 }
 
 func RegisterSharedMemoryServer(s grpc.ServiceRegistrar, srv SharedMemoryServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedSharedMemoryServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&SharedMemory_ServiceDesc, srv)
+	return
 }
 
 func _SharedMemory_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SharedMemoryServer).Get(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SharedMemory_Get_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedMemoryServer).Get(ctx, req.(*GetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _SharedMemory_Indexed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IndexedRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SharedMemoryServer).Indexed(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SharedMemory_Indexed_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedMemoryServer).Indexed(ctx, req.(*IndexedRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _SharedMemory_Apply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ApplyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(SharedMemoryServer).Apply(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: SharedMemory_Apply_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SharedMemoryServer).Apply(ctx, req.(*ApplyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SharedMemory_ServiceDesc is the grpc.ServiceDesc for SharedMemory service.

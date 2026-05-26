@@ -5,13 +5,10 @@ package block
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/staking"
-	"github.com/ava-labs/avalanchego/utils/hashing"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var (
@@ -77,27 +74,11 @@ func (m *statelessBlockMetadata) initialize(
 	sig []byte,
 	bytes []byte,
 ) error {
-	m.bytes = bytes
+	_ = "STUB: not implemented"
 
 	// The serialized form of the block is the unsignedBytes followed by the
 	// signature, which is prefixed by a uint32. So, we need to strip off the
 	// signature as well as it's length prefix to get the unsigned bytes.
-	lenUnsignedBytes := len(bytes) - wrappers.IntLen - len(sig)
-	unsignedBytes := bytes[:lenUnsignedBytes]
-	m.id = hashing.ComputeHash256Array(unsignedBytes)
-
-	m.timestamp = time.Unix(b.Timestamp, 0)
-	if len(b.Certificate) == 0 {
-		return nil
-	}
-
-	var err error
-	m.cert, err = staking.ParseCertificate(b.Certificate)
-	if err != nil {
-		return fmt.Errorf("%w: %w", errInvalidCertificate, err)
-	}
-
-	m.proposer = ids.NodeIDFromCert(m.cert)
 	return nil
 }
 
@@ -106,41 +87,23 @@ func (m *statelessBlockMetadata) verify(
 	sig []byte,
 	chainID ids.ID,
 ) error {
-	if len(b.Certificate) == 0 {
-		if len(sig) > 0 {
-			return errUnexpectedSignature
-		}
-		return nil
-	}
-
-	header, err := BuildHeader(chainID, b.ParentID, m.id)
-	if err != nil {
-		return err
-	}
-
-	headerBytes := header.Bytes()
-	return staking.CheckSignature(
-		m.cert,
-		headerBytes,
-		sig,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (m *statelessBlockMetadata) ID() ids.ID {
-	return m.id
-}
+func (m *statelessBlockMetadata) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 func (m *statelessBlockMetadata) Timestamp() time.Time {
-	return m.timestamp
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
 func (m *statelessBlockMetadata) Proposer() ids.NodeID {
-	return m.proposer
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID)
 }
 
-func (m *statelessBlockMetadata) Bytes() []byte {
-	return m.bytes
-}
+func (m *statelessBlockMetadata) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 type statelessBlock struct {
 	statelessBlockMetadata
@@ -156,53 +119,29 @@ type statelessGraniteBlock struct {
 	Signature             []byte                        `serialize:"true" json:"signature"`
 }
 
-func (b *statelessBlock) ParentID() ids.ID {
-	return b.StatelessBlock.ParentID
-}
+func (b *statelessBlock) ParentID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *statelessBlock) Block() []byte {
-	return b.StatelessBlock.Block
-}
+func (b *statelessBlock) Block() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *statelessBlock) initialize(bytes []byte) error {
-	return b.statelessBlockMetadata.initialize(&b.StatelessBlock, b.Signature, bytes)
-}
+func (b *statelessBlock) initialize(bytes []byte) error { _ = "STUB: not implemented"; return nil }
 
-func (b *statelessBlock) verify(chainID ids.ID) error {
-	return b.statelessBlockMetadata.verify(&b.StatelessBlock, b.Signature, chainID)
-}
+func (b *statelessBlock) verify(chainID ids.ID) error { _ = "STUB: not implemented"; return nil }
 
-func (b *statelessBlock) PChainHeight() uint64 {
-	return b.StatelessBlock.PChainHeight
-}
+func (b *statelessBlock) PChainHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (*statelessBlock) PChainEpoch() Epoch {
-	return Epoch{}
-}
+func (*statelessBlock) PChainEpoch() Epoch { _ = "STUB: not implemented"; return *new(Epoch) }
 
-func (b *statelessGraniteBlock) ParentID() ids.ID {
-	return b.StatelessGraniteBlock.StatelessBlock.ParentID
-}
+func (b *statelessGraniteBlock) ParentID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (b *statelessGraniteBlock) Block() []byte {
-	return b.StatelessGraniteBlock.StatelessBlock.Block
-}
+func (b *statelessGraniteBlock) Block() []byte { _ = "STUB: not implemented"; return nil }
 
-func (b *statelessGraniteBlock) PChainHeight() uint64 {
-	return b.StatelessGraniteBlock.StatelessBlock.PChainHeight
-}
+func (b *statelessGraniteBlock) PChainHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (b *statelessGraniteBlock) PChainEpoch() Epoch {
-	return b.StatelessGraniteBlock.Epoch
-}
+func (b *statelessGraniteBlock) PChainEpoch() Epoch { _ = "STUB: not implemented"; return *new(Epoch) }
 
 func (b *statelessGraniteBlock) initialize(bytes []byte) error {
-	return b.statelessBlockMetadata.initialize(&b.StatelessGraniteBlock.StatelessBlock, b.Signature, bytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (b *statelessGraniteBlock) verify(chainID ids.ID) error {
-	if b.StatelessGraniteBlock.Epoch == (Epoch{}) {
-		return errZeroEpoch
-	}
-	return b.statelessBlockMetadata.verify(&b.StatelessGraniteBlock.StatelessBlock, b.Signature, chainID)
-}
+func (b *statelessGraniteBlock) verify(chainID ids.ID) error { _ = "STUB: not implemented"; return nil }

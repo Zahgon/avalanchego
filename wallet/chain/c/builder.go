@@ -10,8 +10,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/graft/coreth/plugin/evm/atomic"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
 	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
@@ -115,68 +113,25 @@ func NewBuilder(
 	context *Context,
 	backend BuilderBackend,
 ) Builder {
-	return &builder{
-		avaxAddrs: avaxAddrs,
-		ethAddrs:  ethAddrs,
-		context:   context,
-		backend:   backend,
-	}
+	_ = "STUB: not implemented"
+	return *new(Builder)
 }
 
-func (b *builder) Context() *Context {
-	return b.context
-}
+func (b *builder) Context() *Context { _ = "STUB: not implemented"; return nil }
 
 func (b *builder) GetBalance(
 	options ...common.Option,
 ) (*big.Int, error) {
-	var (
-		ops          = common.NewOptions(options)
-		ctx          = ops.Context()
-		addrs        = ops.EthAddresses(b.ethAddrs)
-		totalBalance = new(big.Int)
-	)
-	for addr := range addrs {
-		balance, err := b.backend.Balance(ctx, addr)
-		if err != nil {
-			return nil, err
-		}
-		totalBalance.Add(totalBalance, balance)
-	}
-
-	return totalBalance, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builder) GetImportableBalance(
 	chainID ids.ID,
 	options ...common.Option,
 ) (uint64, error) {
-	ops := common.NewOptions(options)
-	utxos, err := b.backend.UTXOs(ops.Context(), chainID)
-	if err != nil {
-		return 0, err
-	}
-
-	var (
-		addrs           = ops.Addresses(b.avaxAddrs)
-		minIssuanceTime = ops.MinIssuanceTime()
-		avaxAssetID     = b.context.AVAXAssetID
-		balance         uint64
-	)
-	for _, utxo := range utxos {
-		amount, _, ok := getSpendableAmount(utxo, addrs, minIssuanceTime, avaxAssetID)
-		if !ok {
-			continue
-		}
-
-		newBalance, err := math.Add(balance, amount)
-		if err != nil {
-			return 0, err
-		}
-		balance = newBalance
-	}
-
-	return balance, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (b *builder) NewImportTx(
@@ -185,81 +140,13 @@ func (b *builder) NewImportTx(
 	baseFee *big.Int,
 	options ...common.Option,
 ) (*atomic.UnsignedImportTx, error) {
-	ops := common.NewOptions(options)
-	utxos, err := b.backend.UTXOs(ops.Context(), chainID)
-	if err != nil {
-		return nil, err
-	}
-
-	var (
-		addrs           = ops.Addresses(b.avaxAddrs)
-		minIssuanceTime = ops.MinIssuanceTime()
-		avaxAssetID     = b.context.AVAXAssetID
-
-		importedInputs = make([]*avax.TransferableInput, 0, len(utxos))
-		importedAmount uint64
-	)
-	for _, utxo := range utxos {
-		amount, inputSigIndices, ok := getSpendableAmount(utxo, addrs, minIssuanceTime, avaxAssetID)
-		if !ok {
-			continue
-		}
-
-		importedInputs = append(importedInputs, &avax.TransferableInput{
-			UTXOID: utxo.UTXOID,
-			Asset:  utxo.Asset,
-			FxID:   secp256k1fx.ID,
-			In: &secp256k1fx.TransferInput{
-				Amt: amount,
-				Input: secp256k1fx.Input{
-					SigIndices: inputSigIndices,
-				},
-			},
-		})
-
-		newImportedAmount, err := math.Add(importedAmount, amount)
-		if err != nil {
-			return nil, err
-		}
-		importedAmount = newImportedAmount
-	}
-
-	utils.Sort(importedInputs)
-	tx := &atomic.UnsignedImportTx{
-		NetworkID:      b.context.NetworkID,
-		BlockchainID:   b.context.BlockchainID,
-		SourceChain:    chainID,
-		ImportedInputs: importedInputs,
-	}
-
-	// We must initialize the bytes of the tx to calculate the initial cost
-	wrappedTx := &atomic.Tx{UnsignedAtomicTx: tx}
-	if err := wrappedTx.Sign(atomic.Codec, nil); err != nil {
-		return nil, err
-	}
-
-	gasUsedWithoutOutput, err := tx.GasUsed(true /*=IsApricotPhase5*/)
-	if err != nil {
-		return nil, err
-	}
-	gasUsedWithOutput := gasUsedWithoutOutput + atomic.EVMOutputGas
-
-	txFee, err := atomic.CalculateDynamicFee(gasUsedWithOutput, baseFee)
-	if err != nil {
-		return nil, err
-	}
-
-	if importedAmount <= txFee {
-		return nil, errInsufficientFunds
-	}
-
-	tx.Outs = []atomic.EVMOutput{{
-		Address: to,
-		Amount:  importedAmount - txFee,
-		AssetID: avaxAssetID,
-	}}
-	return tx, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// We must initialize the bytes of the tx to calculate the initial cost
+
+/*=IsApricotPhase5*/
 
 func (b *builder) NewExportTx(
 	chainID ids.ID,
@@ -267,134 +154,23 @@ func (b *builder) NewExportTx(
 	baseFee *big.Int,
 	options ...common.Option,
 ) (*atomic.UnsignedExportTx, error) {
-	var (
-		avaxAssetID     = b.context.AVAXAssetID
-		exportedOutputs = make([]*avax.TransferableOutput, len(outputs))
-		exportedAmount  uint64
-	)
-	for i, output := range outputs {
-		exportedOutputs[i] = &avax.TransferableOutput{
-			Asset: avax.Asset{ID: avaxAssetID},
-			FxID:  secp256k1fx.ID,
-			Out:   output,
-		}
-
-		newExportedAmount, err := math.Add(exportedAmount, output.Amt)
-		if err != nil {
-			return nil, err
-		}
-		exportedAmount = newExportedAmount
-	}
-
-	avax.SortTransferableOutputs(exportedOutputs, atomic.Codec)
-	tx := &atomic.UnsignedExportTx{
-		NetworkID:        b.context.NetworkID,
-		BlockchainID:     b.context.BlockchainID,
-		DestinationChain: chainID,
-		ExportedOutputs:  exportedOutputs,
-	}
-
-	// We must initialize the bytes of the tx to calculate the initial cost
-	wrappedTx := &atomic.Tx{UnsignedAtomicTx: tx}
-	if err := wrappedTx.Sign(atomic.Codec, nil); err != nil {
-		return nil, err
-	}
-
-	cost, err := tx.GasUsed(true /*=IsApricotPhase5*/)
-	if err != nil {
-		return nil, err
-	}
-
-	initialFee, err := atomic.CalculateDynamicFee(cost, baseFee)
-	if err != nil {
-		return nil, err
-	}
-
-	amountToConsume, err := math.Add(exportedAmount, initialFee)
-	if err != nil {
-		return nil, err
-	}
-
-	var (
-		ops    = common.NewOptions(options)
-		ctx    = ops.Context()
-		addrs  = ops.EthAddresses(b.ethAddrs)
-		inputs = make([]atomic.EVMInput, 0, addrs.Len())
-	)
-	for addr := range addrs {
-		if amountToConsume == 0 {
-			break
-		}
-
-		prevFee, err := atomic.CalculateDynamicFee(cost, baseFee)
-		if err != nil {
-			return nil, err
-		}
-
-		newCost := cost + atomic.EVMInputGas
-		newFee, err := atomic.CalculateDynamicFee(newCost, baseFee)
-		if err != nil {
-			return nil, err
-		}
-
-		additionalFee := newFee - prevFee
-
-		balance, err := b.backend.Balance(ctx, addr)
-		if err != nil {
-			return nil, err
-		}
-
-		// Since the asset is AVAX, we divide by the avaxConversionRate to
-		// convert back to the correct denomination of AVAX that can be
-		// exported.
-		avaxBalance := new(big.Int).Div(balance, avaxConversionRate).Uint64()
-
-		// If the balance for [addr] is insufficient to cover the additional
-		// cost of adding an input to the transaction, skip adding the input
-		// altogether.
-		if avaxBalance <= additionalFee {
-			continue
-		}
-
-		// Update the cost for the next iteration
-		cost = newCost
-
-		amountToConsume, err = math.Add(amountToConsume, additionalFee)
-		if err != nil {
-			return nil, err
-		}
-
-		nonce, err := b.backend.Nonce(ctx, addr)
-		if err != nil {
-			return nil, err
-		}
-
-		inputAmount := min(amountToConsume, avaxBalance)
-		inputs = append(inputs, atomic.EVMInput{
-			Address: addr,
-			Amount:  inputAmount,
-			AssetID: avaxAssetID,
-			Nonce:   nonce,
-		})
-		amountToConsume -= inputAmount
-	}
-
-	if amountToConsume > 0 {
-		return nil, errInsufficientFunds
-	}
-
-	utils.Sort(inputs)
-	tx.Ins = inputs
-
-	snowCtx, err := newSnowContext(b.context)
-	if err != nil {
-		return nil, err
-	}
-	for _, out := range tx.ExportedOutputs {
-		out.InitCtx(snowCtx)
-	}
-	return tx, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// We must initialize the bytes of the tx to calculate the initial cost
+
+/*=IsApricotPhase5*/
+
+// Since the asset is AVAX, we divide by the avaxConversionRate to
+// convert back to the correct denomination of AVAX that can be
+// exported.
+
+// If the balance for [addr] is insufficient to cover the additional
+// cost of adding an input to the transaction, skip adding the input
+// altogether.
+
+// Update the cost for the next iteration
 
 func getSpendableAmount(
 	utxo *avax.UTXO,
@@ -402,17 +178,10 @@ func getSpendableAmount(
 	minIssuanceTime uint64,
 	avaxAssetID ids.ID,
 ) (uint64, []uint32, bool) {
-	if utxo.Asset.ID != avaxAssetID {
-		// Only AVAX can be imported
-		return 0, nil, false
-	}
+	_ = "STUB: not implemented"
+	return 0, nil, false
 
-	out, ok := utxo.Out.(*secp256k1fx.TransferOutput)
-	if !ok {
-		// Can't import an unknown transfer output type
-		return 0, nil, false
-	}
-
-	inputSigIndices, ok := common.MatchOwners(&out.OutputOwners, addrs, minIssuanceTime)
-	return out.Amt, inputSigIndices, ok
+	// Only AVAX can be imported
 }
+
+// Can't import an unknown transfer output type

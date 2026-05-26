@@ -7,10 +7,7 @@ package precompileconfig
 
 import (
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/common/math"
-	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/libevm"
-	"github.com/ava-labs/libevm/params"
 
 	"github.com/ava-labs/avalanchego/snow"
 	"github.com/ava-labs/avalanchego/snow/engine/snowman/block"
@@ -53,32 +50,11 @@ func AccessListGasWithPredicates(
 	predicaters map[common.Address]Predicater,
 	accessList libevm.AccessList,
 ) (uint64, error) {
-	var gas uint64
-	for _, accessTuple := range accessList {
-		address := accessTuple.Address
-		predicaterContract, ok := predicaters[address]
-		if !ok {
-			// Previous access list gas calculation does not use safemath because an overflow would not be possible with
-			// the size of access lists that could be included in a block and standard access list gas costs.
-			// Therefore, we only check for overflow when adding to [totalGas], which could include the sum of values
-			// returned by a predicate.
-			accessTupleGas := params.TxAccessListAddressGas + uint64(len(accessTuple.StorageKeys))*params.TxAccessListStorageKeyGas
-			totalGas, overflow := math.SafeAdd(gas, accessTupleGas)
-			if overflow {
-				return 0, core.ErrGasUintOverflow
-			}
-			gas = totalGas
-		} else {
-			predicateGas, err := predicaterContract.PredicateGas(predicate.Predicate(accessTuple.StorageKeys), rules)
-			if err != nil {
-				return 0, err
-			}
-			totalGas, overflow := math.SafeAdd(gas, predicateGas)
-			if overflow {
-				return 0, core.ErrGasUintOverflow
-			}
-			gas = totalGas
-		}
-	}
-	return gas, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// Previous access list gas calculation does not use safemath because an overflow would not be possible with
+// the size of access lists that could be included in a block and standard access list gas costs.
+// Therefore, we only check for overflow when adding to [totalGas], which could include the sum of values
+// returned by a predicate.

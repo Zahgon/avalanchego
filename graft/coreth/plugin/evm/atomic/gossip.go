@@ -10,9 +10,11 @@ var _ gossip.Marshaller[*Tx] = (*TxMarshaller)(nil)
 type TxMarshaller struct{}
 
 func (*TxMarshaller) MarshalGossip(tx *Tx) ([]byte, error) {
-	return tx.SignedBytes(), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (*TxMarshaller) UnmarshalGossip(bytes []byte) (*Tx, error) {
-	return ExtractAtomicTx(bytes, Codec)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

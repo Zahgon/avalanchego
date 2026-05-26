@@ -8,7 +8,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/fx"
 )
@@ -33,33 +32,16 @@ type TransferSubnetOwnershipTx struct {
 // InitCtx sets the FxID fields in the inputs and outputs of this
 // [TransferSubnetOwnershipTx]. Also sets the [ctx] to the given [vm.ctx] so
 // that the addresses can be json marshalled into human readable format
-func (tx *TransferSubnetOwnershipTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	tx.Owner.InitCtx(ctx)
-}
+func (tx *TransferSubnetOwnershipTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
 func (tx *TransferSubnetOwnershipTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified:
-		// already passed syntactic verification
-		return nil
-	case tx.Subnet == constants.PrimaryNetworkID:
-		return ErrTransferPermissionlessSubnet
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := verify.All(tx.SubnetAuth, tx.Owner); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// already passed syntactic verification
+
 func (tx *TransferSubnetOwnershipTx) Visit(visitor Visitor) error {
-	return visitor.TransferSubnetOwnershipTx(tx)
+	_ = "STUB: not implemented"
+	return nil
 }

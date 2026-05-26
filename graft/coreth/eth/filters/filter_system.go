@@ -31,7 +31,6 @@ package filters
 
 import (
 	"context"
-	"fmt"
 	"sync"
 	"time"
 
@@ -44,7 +43,6 @@ import (
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 	"github.com/ava-labs/libevm/event"
-	"github.com/ava-labs/libevm/log"
 )
 
 // Config represents the configuration of the filter system.
@@ -52,12 +50,7 @@ type Config struct {
 	Timeout time.Duration // how long filters stay active (default: 5min)
 }
 
-func (cfg Config) withDefaults() Config {
-	if cfg.Timeout == 0 {
-		cfg.Timeout = 5 * time.Minute
-	}
-	return cfg
-}
+func (cfg Config) withDefaults() Config { _ = "STUB: not implemented"; return *new(Config) }
 
 type Backend interface {
 	ChainDb() ethdb.Database
@@ -99,24 +92,15 @@ type FilterSystem struct {
 
 // NewFilterSystem creates a filter system.
 func NewFilterSystem(backend Backend, config Config) *FilterSystem {
-	config = config.withDefaults()
-	return &FilterSystem{
-		backend: backend,
-		cfg:     &config,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // getLogs loads block logs from the backend. The backend is responsible for
 // performing any log caching.
 func (sys *FilterSystem) getLogs(ctx context.Context, blockHash common.Hash, number uint64) ([][]*types.Log, error) {
-	logs, err := sys.backend.GetLogs(ctx, blockHash, number)
-	if err != nil {
-		return nil, err
-	}
-	if logs == nil {
-		return nil, fmt.Errorf("failed to get logs for block #%d (0x%s)", number, blockHash.TerminalString())
-	}
-	return logs, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Type determines the kind of filter and is used to put the filter in to
@@ -206,40 +190,11 @@ type EventSystem struct {
 //
 // The returned manager has a loop that needs to be stopped with the Stop function
 // or by stopping the given mux.
-func NewEventSystem(sys *FilterSystem) *EventSystem {
-	m := &EventSystem{
-		sys:             sys,
-		backend:         sys.backend,
-		install:         make(chan *subscription),
-		uninstall:       make(chan *subscription),
-		txsCh:           make(chan core.NewTxsEvent, txChanSize),
-		logsCh:          make(chan []*types.Log, logsChanSize),
-		logsAcceptedCh:  make(chan []*types.Log, logsChanSize),
-		rmLogsCh:        make(chan core.RemovedLogsEvent, rmLogsChanSize),
-		pendingLogsCh:   make(chan []*types.Log, logsChanSize),
-		chainCh:         make(chan core.ChainEvent, chainEvChanSize),
-		chainAcceptedCh: make(chan core.ChainEvent, chainEvChanSize),
-		txsAcceptedCh:   make(chan core.NewTxsEvent, txChanSize),
-	}
+func NewEventSystem(sys *FilterSystem) *EventSystem { _ = "STUB: not implemented"; return nil }
 
-	// Subscribe events
-	m.txsSub = m.backend.SubscribeNewTxsEvent(m.txsCh)
-	m.logsSub = m.backend.SubscribeLogsEvent(m.logsCh)
-	m.logsAcceptedSub = m.backend.SubscribeAcceptedLogsEvent(m.logsAcceptedCh)
-	m.rmLogsSub = m.backend.SubscribeRemovedLogsEvent(m.rmLogsCh)
-	m.chainSub = m.backend.SubscribeChainEvent(m.chainCh)
-	m.chainAcceptedSub = m.backend.SubscribeChainAcceptedEvent(m.chainAcceptedCh)
-	m.pendingLogsSub = m.backend.SubscribePendingLogsEvent(m.pendingLogsCh)
-	m.txsAcceptedSub = m.backend.SubscribeAcceptedTransactionEvent(m.txsAcceptedCh)
+// Subscribe events
 
-	// Make sure none of the subscriptions are empty
-	if m.txsSub == nil || m.logsSub == nil || m.logsAcceptedSub == nil || m.rmLogsSub == nil || m.chainSub == nil || m.chainAcceptedSub == nil || m.pendingLogsSub == nil || m.txsAcceptedSub == nil {
-		log.Crit("Subscribe for event system failed")
-	}
-
-	go m.eventLoop()
-	return m
-}
+// Make sure none of the subscriptions are empty
 
 // Subscription is created when the client registers itself for a particular event.
 type Subscription struct {
@@ -251,376 +206,154 @@ type Subscription struct {
 
 // Err returns a channel that is closed when unsubscribed.
 func (sub *Subscription) Err() <-chan error {
-	return sub.f.err
+	_ = "STUB: not implemented"
+
+	// Unsubscribe uninstalls the subscription from the event broadcast loop.
+	return nil
 }
 
-// Unsubscribe uninstalls the subscription from the event broadcast loop.
-func (sub *Subscription) Unsubscribe() {
-	sub.unsubOnce.Do(func() {
-	uninstallLoop:
-		for {
-			// write uninstall request and consume logs/hashes. This prevents
-			// the eventLoop broadcast method to deadlock when writing to the
-			// filter event channel while the subscription loop is waiting for
-			// this method to return (and thus not reading these events).
-			select {
-			case sub.es.uninstall <- sub.f:
-				break uninstallLoop
-			case <-sub.f.logs:
-			case <-sub.f.txs:
-			case <-sub.f.headers:
-			}
-		}
+func (sub *Subscription) Unsubscribe() { _ = "STUB: not implemented"; return }
 
-		// wait for filter to be uninstalled in work loop before returning
-		// this ensures that the manager won't use the event channel which
-		// will probably be closed by the client asap after this method returns.
-		<-sub.Err()
-	})
-}
+// write uninstall request and consume logs/hashes. This prevents
+// the eventLoop broadcast method to deadlock when writing to the
+// filter event channel while the subscription loop is waiting for
+// this method to return (and thus not reading these events).
+
+// wait for filter to be uninstalled in work loop before returning
+// this ensures that the manager won't use the event channel which
+// will probably be closed by the client asap after this method returns.
 
 // subscribe installs the subscription in the event broadcast loop.
 func (es *EventSystem) subscribe(sub *subscription) *Subscription {
-	es.install <- sub
-	<-sub.installed
-	return &Subscription{ID: sub.id, f: sub, es: es}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SubscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel. Default value for the from and to
 // block is "latest". If the fromBlock > toBlock an error is returned.
 func (es *EventSystem) SubscribeLogs(crit ethereum.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
-	if len(crit.Topics) > maxTopics {
-		return nil, errExceedMaxTopics
-	}
-	if len(crit.Addresses) > maxAddresses {
-		return nil, errExceedMaxAddresses
-	}
-	var from, to rpc.BlockNumber
-	if crit.FromBlock == nil {
-		from = rpc.LatestBlockNumber
-	} else {
-		from = rpc.BlockNumber(crit.FromBlock.Int64())
-	}
-	if crit.ToBlock == nil {
-		to = rpc.LatestBlockNumber
-	} else {
-		to = rpc.BlockNumber(crit.ToBlock.Int64())
-	}
-
-	// only interested in pending logs
-	if from == rpc.PendingBlockNumber && to == rpc.PendingBlockNumber {
-		return es.subscribePendingLogs(crit, logs), nil
-	}
-	// only interested in new mined logs
-	if from == rpc.LatestBlockNumber && to == rpc.LatestBlockNumber {
-		return es.subscribeLogs(crit, logs), nil
-	}
-	// only interested in mined logs within a specific block range
-	if from >= 0 && to >= 0 && to >= from {
-		return es.subscribeLogs(crit, logs), nil
-	}
-	// interested in mined logs from a specific block number, new logs and pending logs
-	if from >= rpc.LatestBlockNumber && to == rpc.PendingBlockNumber {
-		return es.subscribeMinedPendingLogs(crit, logs), nil
-	}
-	// interested in logs from a specific block number to new mined blocks
-	if from >= 0 && to == rpc.LatestBlockNumber {
-		return es.subscribeLogs(crit, logs), nil
-	}
-	return nil, errInvalidBlockRange
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// only interested in pending logs
+
+// only interested in new mined logs
+
+// only interested in mined logs within a specific block range
+
+// interested in mined logs from a specific block number, new logs and pending logs
+
+// interested in logs from a specific block number to new mined blocks
 
 func (es *EventSystem) SubscribeAcceptedLogs(crit ethereum.FilterQuery, logs chan []*types.Log) (*Subscription, error) {
-	var from, to rpc.BlockNumber
-	if crit.FromBlock == nil {
-		from = rpc.LatestBlockNumber
-	} else {
-		from = rpc.BlockNumber(crit.FromBlock.Int64())
-	}
-	if crit.ToBlock == nil {
-		to = rpc.LatestBlockNumber
-	} else {
-		to = rpc.BlockNumber(crit.ToBlock.Int64())
-	}
-
-	// subscribeAcceptedLogs if filter is valid (from SubscribeLogs)
-	if from == rpc.PendingBlockNumber && to == rpc.PendingBlockNumber ||
-		from == rpc.LatestBlockNumber && to == rpc.LatestBlockNumber ||
-		from >= 0 && to >= 0 && to >= from ||
-		from >= rpc.LatestBlockNumber && to == rpc.PendingBlockNumber ||
-		from >= 0 && to == rpc.LatestBlockNumber {
-		return es.subscribeAcceptedLogs(crit, logs), nil
-	}
-
-	return nil, fmt.Errorf("invalid from and to block combination: from > to")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
+// subscribeAcceptedLogs if filter is valid (from SubscribeLogs)
+
 func (es *EventSystem) subscribeAcceptedLogs(crit ethereum.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       AcceptedLogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // subscribeMinedPendingLogs creates a subscription that returned mined and
 // pending logs that match the given criteria.
 func (es *EventSystem) subscribeMinedPendingLogs(crit ethereum.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       MinedAndPendingLogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // subscribeLogs creates a subscription that will write all logs matching the
 // given criteria to the given logs channel.
 func (es *EventSystem) subscribeLogs(crit ethereum.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       LogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // subscribePendingLogs creates a subscription that writes contract event logs for
 // transactions that enter the transaction pool.
 func (es *EventSystem) subscribePendingLogs(crit ethereum.FilterQuery, logs chan []*types.Log) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       PendingLogsSubscription,
-		logsCrit:  crit,
-		created:   time.Now(),
-		logs:      logs,
-		txs:       make(chan []*types.Transaction),
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SubscribeNewHeads creates a subscription that writes the header of a block that is
 // imported in the chain.
 func (es *EventSystem) SubscribeNewHeads(headers chan *types.Header) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       BlocksSubscription,
-		created:   time.Now(),
-		logs:      make(chan []*types.Log),
-		txs:       make(chan []*types.Transaction),
-		headers:   headers,
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SubscribeAcceptedHeads creates a subscription that writes the header of an accepted block that is
 // imported in the chain.
 func (es *EventSystem) SubscribeAcceptedHeads(headers chan *types.Header) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       AcceptedBlocksSubscription,
-		created:   time.Now(),
-		logs:      make(chan []*types.Log),
-		txs:       make(chan []*types.Transaction),
-		headers:   headers,
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SubscribePendingTxs creates a subscription that writes transactions for
 // transactions that enter the transaction pool.
 func (es *EventSystem) SubscribePendingTxs(txs chan []*types.Transaction) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       PendingTransactionsSubscription,
-		created:   time.Now(),
-		logs:      make(chan []*types.Log),
-		txs:       txs,
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SubscribeAcceptedTxs creates a subscription that writes transactions for
 // transactions have been accepted.
 func (es *EventSystem) SubscribeAcceptedTxs(txs chan []*types.Transaction) *Subscription {
-	sub := &subscription{
-		id:        rpc.NewID(),
-		typ:       AcceptedTransactionsSubscription,
-		created:   time.Now(),
-		logs:      make(chan []*types.Log),
-		txs:       txs,
-		headers:   make(chan *types.Header),
-		installed: make(chan struct{}),
-		err:       make(chan error),
-	}
-	return es.subscribe(sub)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type filterIndex map[Type]map[rpc.ID]*subscription
 
 func (es *EventSystem) handleLogs(filters filterIndex, ev []*types.Log) {
-	if len(ev) == 0 {
-		return
-	}
-	for _, f := range filters[LogsSubscription] {
-		matchedLogs := filterLogs(ev, f.logsCrit.FromBlock, f.logsCrit.ToBlock, f.logsCrit.Addresses, f.logsCrit.Topics)
-		if len(matchedLogs) > 0 {
-			f.logs <- matchedLogs
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handleAcceptedLogs(filters filterIndex, ev []*types.Log) {
-	if len(ev) == 0 {
-		return
-	}
-	for _, f := range filters[AcceptedLogsSubscription] {
-		matchedLogs := filterLogs(ev, f.logsCrit.FromBlock, f.logsCrit.ToBlock, f.logsCrit.Addresses, f.logsCrit.Topics)
-		if len(matchedLogs) > 0 {
-			f.logs <- matchedLogs
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handlePendingLogs(filters filterIndex, ev []*types.Log) {
-	if len(ev) == 0 {
-		return
-	}
-	for _, f := range filters[PendingLogsSubscription] {
-		matchedLogs := filterLogs(ev, nil, f.logsCrit.ToBlock, f.logsCrit.Addresses, f.logsCrit.Topics)
-		if len(matchedLogs) > 0 {
-			f.logs <- matchedLogs
-		}
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handleTxsEvent(filters filterIndex, ev core.NewTxsEvent) {
-	for _, f := range filters[PendingTransactionsSubscription] {
-		f.txs <- ev.Txs
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handleTxsAcceptedEvent(filters filterIndex, ev core.NewTxsEvent) {
-	for _, f := range filters[AcceptedTransactionsSubscription] {
-		f.txs <- ev.Txs
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handleChainEvent(filters filterIndex, ev core.ChainEvent) {
-	for _, f := range filters[BlocksSubscription] {
-		f.headers <- ev.Block.Header()
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (es *EventSystem) handleChainAcceptedEvent(filters filterIndex, ev core.ChainEvent) {
-	for _, f := range filters[AcceptedBlocksSubscription] {
-		f.headers <- ev.Block.Header()
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // eventLoop (un)installs filters and processes mux events.
 func (es *EventSystem) eventLoop() {
+	_ = "STUB: not implemented"
 	// Ensure all subscriptions get cleaned up
-	defer func() {
-		es.txsSub.Unsubscribe()
-		es.logsSub.Unsubscribe()
-		es.logsAcceptedSub.Unsubscribe()
-		es.rmLogsSub.Unsubscribe()
-		es.pendingLogsSub.Unsubscribe()
-		es.chainSub.Unsubscribe()
-		es.chainAcceptedSub.Unsubscribe()
-		es.txsAcceptedSub.Unsubscribe()
-	}()
-
-	index := make(filterIndex)
-	for i := UnknownSubscription; i < LastIndexSubscription; i++ {
-		index[i] = make(map[rpc.ID]*subscription)
-	}
-
-	for {
-		select {
-		case ev := <-es.txsCh:
-			es.handleTxsEvent(index, ev)
-		case ev := <-es.logsCh:
-			es.handleLogs(index, ev)
-		case ev := <-es.logsAcceptedCh:
-			es.handleAcceptedLogs(index, ev)
-		case ev := <-es.rmLogsCh:
-			es.handleLogs(index, ev.Logs)
-		case ev := <-es.pendingLogsCh:
-			es.handlePendingLogs(index, ev)
-		case ev := <-es.chainCh:
-			es.handleChainEvent(index, ev)
-		case ev := <-es.chainAcceptedCh:
-			es.handleChainAcceptedEvent(index, ev)
-		case ev := <-es.txsAcceptedCh:
-			es.handleTxsAcceptedEvent(index, ev)
-
-		case f := <-es.install:
-			if f.typ == MinedAndPendingLogsSubscription {
-				// the type are logs and pending logs subscriptions
-				index[LogsSubscription][f.id] = f
-				index[PendingLogsSubscription][f.id] = f
-			} else {
-				index[f.typ][f.id] = f
-			}
-			close(f.installed)
-
-		case f := <-es.uninstall:
-			if f.typ == MinedAndPendingLogsSubscription {
-				// the type are logs and pending logs subscriptions
-				delete(index[LogsSubscription], f.id)
-				delete(index[PendingLogsSubscription], f.id)
-			} else {
-				delete(index[f.typ], f.id)
-			}
-			close(f.err)
-
-		// System stopped
-		case <-es.txsSub.Err():
-			return
-		case <-es.logsSub.Err():
-			return
-		case <-es.logsAcceptedSub.Err():
-			return
-		case <-es.rmLogsSub.Err():
-			return
-		case <-es.chainSub.Err():
-			return
-		case <-es.chainAcceptedSub.Err():
-			return
-		case <-es.txsAcceptedSub.Err():
-			return
-		}
-	}
+	return
 }
+
+// the type are logs and pending logs subscriptions
+
+// the type are logs and pending logs subscriptions
+
+// System stopped

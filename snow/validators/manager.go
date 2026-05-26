@@ -6,13 +6,9 @@ package validators
 import (
 	"errors"
 	"fmt"
-	"strings"
 	"sync"
 
-	"golang.org/x/exp/maps"
-
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
@@ -110,11 +106,7 @@ type Manager interface {
 }
 
 // NewManager returns a new, empty manager
-func NewManager() Manager {
-	return &manager{
-		subnetToVdrs: make(map[ids.ID]*vdrSet),
-	}
-}
+func NewManager() Manager { _ = "STUB: not implemented"; return *new(Manager) }
 
 type manager struct {
 	lock sync.RWMutex
@@ -126,216 +118,75 @@ type manager struct {
 }
 
 func (m *manager) AddStaker(subnetID ids.ID, nodeID ids.NodeID, pk *bls.PublicKey, txID ids.ID, weight uint64) error {
-	if weight == 0 {
-		return ErrZeroWeight
-	}
-
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	set, exists := m.subnetToVdrs[subnetID]
-	if !exists {
-		set = newSet(subnetID, m.callbackListeners)
-		m.subnetToVdrs[subnetID] = set
-	}
-
-	return set.Add(nodeID, pk, txID, weight)
-}
-
-func (m *manager) AddWeight(subnetID ids.ID, nodeID ids.NodeID, weight uint64) error {
-	if weight == 0 {
-		return ErrZeroWeight
-	}
-
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	set, exists := m.subnetToVdrs[subnetID]
-	if !exists {
-		return errMissingValidator
-	}
-
-	return set.AddWeight(nodeID, weight)
-}
-
-func (m *manager) GetWeight(subnetID ids.ID, nodeID ids.NodeID) uint64 {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return 0
-	}
-
-	return set.GetWeight(nodeID)
-}
-
-func (m *manager) GetValidator(subnetID ids.ID, nodeID ids.NodeID) (*Validator, bool) {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return nil, false
-	}
-
-	return set.Get(nodeID)
-}
-
-func (m *manager) SubsetWeight(subnetID ids.ID, validatorIDs set.Set[ids.NodeID]) (uint64, error) {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return 0, nil
-	}
-
-	return set.SubsetWeight(validatorIDs)
-}
-
-func (m *manager) RemoveWeight(subnetID ids.ID, nodeID ids.NodeID, weight uint64) error {
-	if weight == 0 {
-		return ErrZeroWeight
-	}
-
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	set, exists := m.subnetToVdrs[subnetID]
-	if !exists {
-		return errMissingValidator
-	}
-
-	if err := set.RemoveWeight(nodeID, weight); err != nil {
-		return err
-	}
-	// If this was the last validator in the subnet and no callback listeners
-	// are registered, remove the subnet
-	if set.Len() == 0 && !set.HasCallbackRegistered() {
-		delete(m.subnetToVdrs, subnetID)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (m *manager) NumSubnets() int {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	return len(m.subnetToVdrs)
+func (m *manager) AddWeight(subnetID ids.ID, nodeID ids.NodeID, weight uint64) error {
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (m *manager) NumValidators(subnetID ids.ID) int {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return 0
-	}
-
-	return set.Len()
+func (m *manager) GetWeight(subnetID ids.ID, nodeID ids.NodeID) uint64 {
+	_ = "STUB: not implemented"
+	return 0
 }
+
+func (m *manager) GetValidator(subnetID ids.ID, nodeID ids.NodeID) (*Validator, bool) {
+	_ = "STUB: not implemented"
+	return nil, false
+}
+
+func (m *manager) SubsetWeight(subnetID ids.ID, validatorIDs set.Set[ids.NodeID]) (uint64, error) {
+	_ = "STUB: not implemented"
+	return 0, nil
+}
+
+func (m *manager) RemoveWeight(subnetID ids.ID, nodeID ids.NodeID, weight uint64) error {
+	_ = "STUB: not implemented"
+	return nil
+}
+
+// If this was the last validator in the subnet and no callback listeners
+// are registered, remove the subnet
+
+func (m *manager) NumSubnets() int { _ = "STUB: not implemented"; return 0 }
+
+func (m *manager) NumValidators(subnetID ids.ID) int { _ = "STUB: not implemented"; return 0 }
 
 func (m *manager) TotalWeight(subnetID ids.ID) (uint64, error) {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return 0, nil
-	}
-
-	return set.TotalWeight()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (m *manager) Sample(subnetID ids.ID, size int) ([]ids.NodeID, error) {
-	if size == 0 {
-		return nil, nil
-	}
-
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return nil, ErrMissingValidators
-	}
-
-	return set.Sample(size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *manager) GetAllMaps() map[ids.ID]map[ids.NodeID]*GetValidatorOutput {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	set := make(map[ids.ID]map[ids.NodeID]*GetValidatorOutput, len(m.subnetToVdrs))
-	for subnetID, vdrs := range m.subnetToVdrs {
-		set[subnetID] = vdrs.Map()
-	}
-	return set
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *manager) GetMap(subnetID ids.ID) map[ids.NodeID]*GetValidatorOutput {
-	m.lock.RLock()
-	set, exists := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exists {
-		return make(map[ids.NodeID]*GetValidatorOutput)
-	}
-
-	return set.Map()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (m *manager) RegisterCallbackListener(listener ManagerCallbackListener) {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	m.callbackListeners = append(m.callbackListeners, listener)
-	for _, set := range m.subnetToVdrs {
-		set.RegisterManagerCallbackListener(listener)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (m *manager) RegisterSetCallbackListener(subnetID ids.ID, listener SetCallbackListener) {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	set, exists := m.subnetToVdrs[subnetID]
-	if !exists {
-		set = newSet(subnetID, m.callbackListeners)
-		m.subnetToVdrs[subnetID] = set
-	}
-
-	set.RegisterCallbackListener(listener)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (m *manager) String() string {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	subnets := maps.Keys(m.subnetToVdrs)
-	utils.Sort(subnets)
-
-	sb := strings.Builder{}
-
-	sb.WriteString(fmt.Sprintf("Validator Manager: (Size = %d)",
-		len(subnets),
-	))
-	for _, subnetID := range subnets {
-		vdrs := m.subnetToVdrs[subnetID]
-		sb.WriteString(fmt.Sprintf(
-			"\n    Subnet[%s]: %s",
-			subnetID,
-			vdrs.PrefixedString("    "),
-		))
-	}
-
-	return sb.String()
-}
+func (m *manager) String() string { _ = "STUB: not implemented"; return "" }
 
 func (m *manager) GetValidatorIDs(subnetID ids.ID) []ids.NodeID {
-	m.lock.RLock()
-	vdrs, exist := m.subnetToVdrs[subnetID]
-	m.lock.RUnlock()
-	if !exist {
-		return nil
-	}
-
-	return vdrs.GetValidatorIDs()
+	_ = "STUB: not implemented"
+	return nil
 }

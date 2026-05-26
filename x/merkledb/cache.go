@@ -8,7 +8,6 @@ import (
 	"sync"
 
 	"github.com/ava-labs/avalanchego/utils/linked"
-	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
 
 var errEmptyCacheTooLarge = errors.New("cache is empty yet still too large")
@@ -31,38 +30,19 @@ func newOnEvictCache[K comparable, V any](
 	size func(K, V) int,
 	onEviction func(K, V) error,
 ) onEvictCache[K, V] {
-	return onEvictCache[K, V]{
-		maxSize:    maxSize,
-		fifo:       linked.NewHashmap[K, V](),
-		size:       size,
-		onEviction: onEviction,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Get an element from this cache.
-func (c *onEvictCache[K, V]) Get(key K) (V, bool) {
-	c.lock.RLock()
-	defer c.lock.RUnlock()
-
-	return c.fifo.Get(key)
-}
+func (c *onEvictCache[K, V]) Get(key K) (V, bool) { _ = "STUB: not implemented"; return *new(V), false }
 
 // Put an element into this cache. If this causes an element
 // to be evicted, calls [c.onEviction] on the evicted element
 // and returns the error from [c.onEviction]. Otherwise, returns nil.
-func (c *onEvictCache[K, V]) Put(key K, value V) error {
-	c.lock.Lock()
-	defer c.lock.Unlock()
+func (c *onEvictCache[K, V]) Put(key K, value V) error { _ = "STUB: not implemented"; return nil }
 
-	if oldValue, replaced := c.fifo.Get(key); replaced {
-		c.currentSize -= c.size(key, oldValue)
-	}
-
-	c.currentSize += c.size(key, value)
-	c.fifo.Put(key, value) // Mark as MRU
-
-	return c.resize(c.maxSize)
-}
+// Mark as MRU
 
 // Flush removes all elements from the cache.
 //
@@ -70,23 +50,14 @@ func (c *onEvictCache[K, V]) Put(key K, value V) error {
 //
 // If [c.onEviction] errors, it will still be called for any subsequent elements
 // and the cache will still be emptied.
-func (c *onEvictCache[K, V]) Flush() error {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	return c.resize(0)
-}
+func (c *onEvictCache[K, V]) Flush() error { _ = "STUB: not implemented"; return nil }
 
 // removeOldest returns and removes the oldest element from this cache.
 //
 // Assumes [c.lock] is held.
 func (c *onEvictCache[K, V]) removeOldest() (K, V, bool) {
-	k, v, exists := c.fifo.Oldest()
-	if exists {
-		c.currentSize -= c.size(k, v)
-		c.fifo.Delete(k)
-	}
-	return k, v, exists
+	_ = "STUB: not implemented"
+	return *new(K), *new(V), false
 }
 
 // resize removes the oldest elements from the cache until the cache is not
@@ -94,17 +65,11 @@ func (c *onEvictCache[K, V]) removeOldest() (K, V, bool) {
 //
 // Assumes [c.lock] is held.
 func (c *onEvictCache[K, V]) resize(target int) error {
+	_ = "STUB: not implemented"
 	// Note that we can't use [c.fifo]'s iterator because [c.onEviction]
 	// modifies [c.fifo], which violates the iterator's invariant.
-	var errs wrappers.Errs
-	for c.currentSize > target {
-		k, v, exists := c.removeOldest()
-		if !exists {
-			// This should really never happen unless the size of an entry
-			// changed or the target size is negative.
-			return errEmptyCacheTooLarge
-		}
-		errs.Add(c.onEviction(k, v))
-	}
-	return errs.Err
+	return nil
 }
+
+// This should really never happen unless the size of an entry
+// changed or the target size is negative.

@@ -10,8 +10,6 @@
 package signermock
 
 import (
-	reflect "reflect"
-
 	bls "github.com/ava-labs/avalanchego/utils/crypto/bls"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,41 +27,23 @@ type SignerMockRecorder struct {
 }
 
 // NewSigner creates a new mock instance.
-func NewSigner(ctrl *gomock.Controller) *Signer {
-	mock := &Signer{ctrl: ctrl}
-	mock.recorder = &SignerMockRecorder{mock}
-	return mock
-}
+func NewSigner(ctrl *gomock.Controller) *Signer { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Signer) EXPECT() *SignerMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Key mocks base method.
+	return nil
 }
 
-// Key mocks base method.
-func (m *Signer) Key() *bls.PublicKey {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Key")
-	ret0, _ := ret[0].(*bls.PublicKey)
-	return ret0
-}
+func (m *Signer) Key() *bls.PublicKey { _ = "STUB: not implemented"; return nil }
 
 // Key indicates an expected call of Key.
-func (mr *SignerMockRecorder) Key() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Key", reflect.TypeOf((*Signer)(nil).Key))
-}
+func (mr *SignerMockRecorder) Key() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Verify mocks base method.
-func (m *Signer) Verify() error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify")
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Signer) Verify() error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
-func (mr *SignerMockRecorder) Verify() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*Signer)(nil).Verify))
-}
+func (mr *SignerMockRecorder) Verify() *gomock.Call { _ = "STUB: not implemented"; return nil }

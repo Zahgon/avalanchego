@@ -18,5 +18,6 @@ type Factory struct {
 
 // New returns a new instance of the Platform Chain
 func (f *Factory) New(logging.Logger) (interface{}, error) {
-	return &VM{Internal: f.Internal}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

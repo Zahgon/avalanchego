@@ -4,18 +4,12 @@
 package utils
 
 import (
-	"crypto/rand"
-	"math/bits"
 	"sync"
 )
 
 // RandomBytes returns a slice of n random bytes
 // Intended for use in testing
-func RandomBytes(n int) []byte {
-	b := make([]byte, n)
-	_, _ = rand.Read(b)
-	return b
-}
+func RandomBytes(n int) []byte { _ = "STUB: not implemented"; return nil }
 
 // Constant taken from the "math" package
 const intSize = 32 << (^uint(0) >> 63) // 32 or 64
@@ -45,39 +39,26 @@ const intSize = 32 << (^uint(0) >> 63) // 32 or 64
 // that a length 19 slice can be used for.
 type BytesPool [intSize]sync.Pool
 
-func NewBytesPool() *BytesPool {
-	var p BytesPool
-	for i := range p {
-		// uint is used here to avoid overflowing int during the shift
-		size := uint(1)<<i - 1
-		p[i] = sync.Pool{
-			New: func() interface{} {
-				// Sync pool needs to return pointer-like values to avoid memory
-				// allocations.
-				b := make([]byte, size)
-				return &b
-			},
-		}
-	}
-	return &p
-}
+func NewBytesPool() *BytesPool { _ = "STUB: not implemented"; return nil }
+
+// uint is used here to avoid overflowing int during the shift
+
+// Sync pool needs to return pointer-like values to avoid memory
+// allocations.
 
 // Get returns a non-nil pointer to a slice with the requested length.
 //
 // It is not guaranteed for the returned bytes to have been zeroed.
-func (p *BytesPool) Get(length int) *[]byte {
-	index := bits.Len(uint(length)) // Round up
-	bytes := p[index].Get().(*[]byte)
-	*bytes = (*bytes)[:length] // Set the length to be the expected value
-	return bytes
-}
+func (p *BytesPool) Get(length int) *[]byte { _ = "STUB: not implemented"; return nil }
+
+// Round up
+
+// Set the length to be the expected value
 
 // Put takes ownership of a non-nil pointer to a slice of bytes.
 //
 // Note: this function takes ownership of the underlying array. So, the length
 // of the provided slice is ignored and only its capacity is used.
-func (p *BytesPool) Put(bytes *[]byte) {
-	size := cap(*bytes)
-	index := bits.Len(uint(size)+1) - 1 // Round down
-	p[index].Put(bytes)
-}
+func (p *BytesPool) Put(bytes *[]byte) { _ = "STUB: not implemented"; return }
+
+// Round down

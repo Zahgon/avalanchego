@@ -5,7 +5,6 @@ package choices
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 )
@@ -19,36 +18,12 @@ type TestDecidable struct {
 	StatusV          Status
 }
 
-func (d *TestDecidable) ID() ids.ID {
-	return d.IDV
-}
+func (d *TestDecidable) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (d *TestDecidable) Accept(context.Context) error {
-	switch d.StatusV {
-	case Unknown, Rejected:
-		return fmt.Errorf("invalid state transition from %s to %s",
-			d.StatusV, Accepted)
-	default:
-		d.StatusV = Accepted
-		return d.AcceptV
-	}
-}
+func (d *TestDecidable) Accept(context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (d *TestDecidable) Reject(context.Context) error {
-	switch d.StatusV {
-	case Unknown, Accepted:
-		return fmt.Errorf("invalid state transition from %s to %s",
-			d.StatusV, Rejected)
-	default:
-		d.StatusV = Rejected
-		return d.RejectV
-	}
-}
+func (d *TestDecidable) Reject(context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (d *TestDecidable) Status() Status {
-	return d.StatusV
-}
+func (d *TestDecidable) Status() Status { _ = "STUB: not implemented"; return *new(Status) }
 
-func (d *TestDecidable) SetStatus(status Status) {
-	d.StatusV = status
-}
+func (d *TestDecidable) SetStatus(status Status) { _ = "STUB: not implemented"; return }

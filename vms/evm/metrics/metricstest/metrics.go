@@ -6,8 +6,6 @@ package metricstest
 import (
 	"sync"
 	"testing"
-
-	"github.com/ava-labs/libevm/metrics"
 )
 
 var metricsLock sync.Mutex
@@ -16,12 +14,4 @@ var metricsLock sync.Mutex
 // tests with metrics from running concurrently.
 //
 // [metrics.Enabled] is restored to its original value during testing cleanup.
-func WithMetrics(t testing.TB) {
-	metricsLock.Lock()
-	initialValue := metrics.Enabled
-	metrics.Enabled = true
-	t.Cleanup(func() {
-		metrics.Enabled = initialValue
-		metricsLock.Unlock()
-	})
-}
+func WithMetrics(t testing.TB) { _ = "STUB: not implemented"; return }

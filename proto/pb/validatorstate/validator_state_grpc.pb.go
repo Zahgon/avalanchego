@@ -8,9 +8,8 @@ package validatorstate
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
@@ -56,67 +55,38 @@ type validatorStateClient struct {
 }
 
 func NewValidatorStateClient(cc grpc.ClientConnInterface) ValidatorStateClient {
-	return &validatorStateClient{cc}
+	_ = "STUB: not implemented"
+	return *new(ValidatorStateClient)
 }
 
 func (c *validatorStateClient) GetMinimumHeight(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMinimumHeightResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMinimumHeightResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetMinimumHeight_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *validatorStateClient) GetCurrentHeight(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCurrentHeightResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCurrentHeightResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetCurrentHeight_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *validatorStateClient) GetSubnetID(ctx context.Context, in *GetSubnetIDRequest, opts ...grpc.CallOption) (*GetSubnetIDResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetSubnetIDResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetSubnetID_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *validatorStateClient) GetWarpValidatorSets(ctx context.Context, in *GetWarpValidatorSetsRequest, opts ...grpc.CallOption) (*GetWarpValidatorSetsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetWarpValidatorSetsResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetWarpValidatorSets_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *validatorStateClient) GetValidatorSet(ctx context.Context, in *GetValidatorSetRequest, opts ...grpc.CallOption) (*GetValidatorSetResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetValidatorSetResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetValidatorSet_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (c *validatorStateClient) GetCurrentValidatorSet(ctx context.Context, in *GetCurrentValidatorSetRequest, opts ...grpc.CallOption) (*GetCurrentValidatorSetResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCurrentValidatorSetResponse)
-	err := c.cc.Invoke(ctx, ValidatorState_GetCurrentValidatorSet_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ValidatorStateServer is the server API for ValidatorState service.
@@ -151,25 +121,40 @@ type ValidatorStateServer interface {
 type UnimplementedValidatorStateServer struct{}
 
 func (UnimplementedValidatorStateServer) GetMinimumHeight(context.Context, *emptypb.Empty) (*GetMinimumHeightResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMinimumHeight not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (UnimplementedValidatorStateServer) GetCurrentHeight(context.Context, *emptypb.Empty) (*GetCurrentHeightResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentHeight not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (UnimplementedValidatorStateServer) GetSubnetID(context.Context, *GetSubnetIDRequest) (*GetSubnetIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSubnetID not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (UnimplementedValidatorStateServer) GetWarpValidatorSets(context.Context, *GetWarpValidatorSetsRequest) (*GetWarpValidatorSetsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetWarpValidatorSets not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (UnimplementedValidatorStateServer) GetValidatorSet(context.Context, *GetValidatorSetRequest) (*GetValidatorSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetValidatorSet not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
 func (UnimplementedValidatorStateServer) GetCurrentValidatorSet(context.Context, *GetCurrentValidatorSetRequest) (*GetCurrentValidatorSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCurrentValidatorSet not implemented")
+	_ = "STUB: not implemented"
+	return nil, nil
 }
-func (UnimplementedValidatorStateServer) mustEmbedUnimplementedValidatorStateServer() {}
-func (UnimplementedValidatorStateServer) testEmbeddedByValue()                        {}
+
+func (UnimplementedValidatorStateServer) mustEmbedUnimplementedValidatorStateServer() {
+	_ = "STUB: not implemented"
+	return
+}
+func (UnimplementedValidatorStateServer) testEmbeddedByValue() { _ = "STUB: not implemented"; return }
 
 // UnsafeValidatorStateServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to ValidatorStateServer will
@@ -179,122 +164,42 @@ type UnsafeValidatorStateServer interface {
 }
 
 func RegisterValidatorStateServer(s grpc.ServiceRegistrar, srv ValidatorStateServer) {
+	_ = "STUB: not implemented"
 	// If the following call pancis, it indicates UnimplementedValidatorStateServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
-	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
-		t.testEmbeddedByValue()
-	}
-	s.RegisterService(&ValidatorState_ServiceDesc, srv)
+	return
 }
 
 func _ValidatorState_GetMinimumHeight_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetMinimumHeight(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetMinimumHeight_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetMinimumHeight(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _ValidatorState_GetCurrentHeight_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetCurrentHeight(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetCurrentHeight_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetCurrentHeight(ctx, req.(*emptypb.Empty))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _ValidatorState_GetSubnetID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSubnetIDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetSubnetID(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetSubnetID_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetSubnetID(ctx, req.(*GetSubnetIDRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _ValidatorState_GetWarpValidatorSets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetWarpValidatorSetsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetWarpValidatorSets(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetWarpValidatorSets_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetWarpValidatorSets(ctx, req.(*GetWarpValidatorSetsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _ValidatorState_GetValidatorSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetValidatorSetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetValidatorSet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetValidatorSet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetValidatorSet(ctx, req.(*GetValidatorSetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func _ValidatorState_GetCurrentValidatorSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCurrentValidatorSetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ValidatorStateServer).GetCurrentValidatorSet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ValidatorState_GetCurrentValidatorSet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ValidatorStateServer).GetCurrentValidatorSet(ctx, req.(*GetCurrentValidatorSetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ValidatorState_ServiceDesc is the grpc.ServiceDesc for ValidatorState service.

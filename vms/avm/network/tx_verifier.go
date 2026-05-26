@@ -21,16 +21,9 @@ type LockedTxVerifier struct {
 	txVerifier TxVerifier
 }
 
-func (l *LockedTxVerifier) VerifyTx(tx *txs.Tx) error {
-	l.lock.Lock()
-	defer l.lock.Unlock()
-
-	return l.txVerifier.VerifyTx(tx)
-}
+func (l *LockedTxVerifier) VerifyTx(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 func NewLockedTxVerifier(lock sync.Locker, txVerifier TxVerifier) *LockedTxVerifier {
-	return &LockedTxVerifier{
-		lock:       lock,
-		txVerifier: txVerifier,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }

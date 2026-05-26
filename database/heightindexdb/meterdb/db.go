@@ -4,9 +4,6 @@
 package meterdb
 
 import (
-	"errors"
-	"time"
-
 	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/ava-labs/avalanchego/database"
@@ -50,88 +47,19 @@ func New(
 	namespace string,
 	db database.HeightIndex,
 ) (*Database, error) {
-	meterDB := &Database{
-		heightDB: db,
-		calls: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Namespace: namespace,
-				Name:      "calls",
-				Help:      "number of calls to the database",
-			},
-			methodLabels,
-		),
-		duration: prometheus.NewGaugeVec(
-			prometheus.GaugeOpts{
-				Namespace: namespace,
-				Name:      "duration",
-				Help:      "time spent in database calls (ns)",
-			},
-			methodLabels,
-		),
-		size: prometheus.NewCounterVec(
-			prometheus.CounterOpts{
-				Namespace: namespace,
-				Name:      "size",
-				Help:      "size of data passed in database calls",
-			},
-			methodLabels,
-		),
-	}
-	return meterDB, errors.Join(
-		reg.Register(meterDB.calls),
-		reg.Register(meterDB.duration),
-		reg.Register(meterDB.size),
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (db *Database) Put(height uint64, block []byte) error {
-	start := time.Now()
-	err := db.heightDB.Put(height, block)
-	duration := time.Since(start)
+func (db *Database) Put(height uint64, block []byte) error { _ = "STUB: not implemented"; return nil }
 
-	db.calls.With(putLabel).Inc()
-	db.duration.With(putLabel).Add(float64(duration.Nanoseconds()))
-	db.size.With(putLabel).Add(float64(len(block)))
-	return err
-}
+func (db *Database) Get(height uint64) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (db *Database) Get(height uint64) ([]byte, error) {
-	start := time.Now()
-	block, err := db.heightDB.Get(height)
-	duration := time.Since(start)
-
-	db.calls.With(getLabel).Inc()
-	db.duration.With(getLabel).Add(float64(duration.Nanoseconds()))
-	db.size.With(getLabel).Add(float64(len(block)))
-	return block, err
-}
-
-func (db *Database) Has(height uint64) (bool, error) {
-	start := time.Now()
-	has, err := db.heightDB.Has(height)
-	duration := time.Since(start)
-
-	db.calls.With(hasLabel).Inc()
-	db.duration.With(hasLabel).Add(float64(duration.Nanoseconds()))
-	return has, err
-}
+func (db *Database) Has(height uint64) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
 func (db *Database) Sync(startHeight, endHeight uint64) error {
-	start := time.Now()
-	err := db.heightDB.Sync(startHeight, endHeight)
-	duration := time.Since(start)
-
-	db.calls.With(syncLabel).Inc()
-	db.duration.With(syncLabel).Add(float64(duration.Nanoseconds()))
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (db *Database) Close() error {
-	start := time.Now()
-	err := db.heightDB.Close()
-	duration := time.Since(start)
-
-	db.calls.With(closeLabel).Inc()
-	db.duration.With(closeLabel).Add(float64(duration.Nanoseconds()))
-	return err
-}
+func (db *Database) Close() error { _ = "STUB: not implemented"; return nil }

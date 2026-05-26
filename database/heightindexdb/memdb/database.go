@@ -18,69 +18,12 @@ type Database struct {
 	closed bool
 }
 
-func (db *Database) Put(height uint64, data []byte) error {
-	db.mu.Lock()
-	defer db.mu.Unlock()
+func (db *Database) Put(height uint64, data []byte) error { _ = "STUB: not implemented"; return nil }
 
-	if db.closed {
-		return database.ErrClosed
-	}
+func (db *Database) Get(height uint64) ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
-	if db.data == nil {
-		db.data = make(map[uint64][]byte)
-	}
+func (db *Database) Has(height uint64) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-	db.data[height] = data
-	return nil
-}
+func (db *Database) Sync(_, _ uint64) error { _ = "STUB: not implemented"; return nil }
 
-func (db *Database) Get(height uint64) ([]byte, error) {
-	db.mu.RLock()
-	defer db.mu.RUnlock()
-
-	if db.closed {
-		return nil, database.ErrClosed
-	}
-
-	data, ok := db.data[height]
-	if !ok {
-		return nil, database.ErrNotFound
-	}
-
-	return data, nil
-}
-
-func (db *Database) Has(height uint64) (bool, error) {
-	db.mu.RLock()
-	defer db.mu.RUnlock()
-
-	if db.closed {
-		return false, database.ErrClosed
-	}
-
-	_, ok := db.data[height]
-	return ok, nil
-}
-
-func (db *Database) Sync(_, _ uint64) error {
-	db.mu.RLock()
-	defer db.mu.RUnlock()
-
-	if db.closed {
-		return database.ErrClosed
-	}
-	return nil
-}
-
-func (db *Database) Close() error {
-	db.mu.Lock()
-	defer db.mu.Unlock()
-
-	if db.closed {
-		return database.ErrClosed
-	}
-
-	db.closed = true
-	db.data = nil
-	return nil
-}
+func (db *Database) Close() error { _ = "STUB: not implemented"; return nil }

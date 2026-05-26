@@ -4,7 +4,6 @@
 package syncutils
 
 import (
-	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/ethdb"
 
 	"github.com/ava-labs/avalanchego/graft/evm/core/state/snapshot"
@@ -23,48 +22,19 @@ type AccountIterator struct {
 	val []byte
 }
 
-func (it *AccountIterator) Next() bool {
-	if it.err != nil {
-		return false
-	}
-	for it.AccountIterator.Next() {
-		it.val, it.err = types.FullAccountRLP(it.Account())
-		return it.err == nil
-	}
-	it.val = nil
-	return false
-}
+func (it *AccountIterator) Next() bool { _ = "STUB: not implemented"; return false }
 
-func (it *AccountIterator) Key() []byte {
-	if it.err != nil {
-		return nil
-	}
-	return it.Hash().Bytes()
-}
+func (it *AccountIterator) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-func (it *AccountIterator) Value() []byte {
-	if it.err != nil {
-		return nil
-	}
-	return it.val
-}
+func (it *AccountIterator) Value() []byte { _ = "STUB: not implemented"; return nil }
 
-func (it *AccountIterator) Error() error {
-	if it.err != nil {
-		return it.err
-	}
-	return it.AccountIterator.Error()
-}
+func (it *AccountIterator) Error() error { _ = "STUB: not implemented"; return nil }
 
 // StorageIterator wraps a [snapshot.StorageIterator] to conform to [ethdb.Iterator]
 type StorageIterator struct {
 	snapshot.StorageIterator
 }
 
-func (it *StorageIterator) Key() []byte {
-	return it.Hash().Bytes()
-}
+func (it *StorageIterator) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-func (it *StorageIterator) Value() []byte {
-	return it.Slot()
-}
+func (it *StorageIterator) Value() []byte { _ = "STUB: not implemented"; return nil }

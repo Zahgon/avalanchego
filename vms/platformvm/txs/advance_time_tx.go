@@ -27,33 +27,23 @@ type AdvanceTimeTx struct {
 	unsignedBytes []byte // Unsigned byte representation of this data
 }
 
-func (tx *AdvanceTimeTx) SetBytes(unsignedBytes []byte) {
-	tx.unsignedBytes = unsignedBytes
+func (tx *AdvanceTimeTx) SetBytes(unsignedBytes []byte) { _ = "STUB: not implemented"; return }
+
+func (tx *AdvanceTimeTx) Bytes() []byte { _ = "STUB: not implemented"; return nil }
+
+func (*AdvanceTimeTx) InitCtx(*snow.Context) {
+	_ = "STUB: not implemented"
+
+	// Timestamp returns the time this block is proposing the chain should be set to
+	return
 }
 
-func (tx *AdvanceTimeTx) Bytes() []byte {
-	return tx.unsignedBytes
-}
+func (tx *AdvanceTimeTx) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func (*AdvanceTimeTx) InitCtx(*snow.Context) {}
+func (*AdvanceTimeTx) InputIDs() set.Set[ids.ID] { _ = "STUB: not implemented"; return nil }
 
-// Timestamp returns the time this block is proposing the chain should be set to
-func (tx *AdvanceTimeTx) Timestamp() time.Time {
-	return time.Unix(int64(tx.Time), 0)
-}
+func (*AdvanceTimeTx) Outputs() []*avax.TransferableOutput { _ = "STUB: not implemented"; return nil }
 
-func (*AdvanceTimeTx) InputIDs() set.Set[ids.ID] {
-	return nil
-}
+func (*AdvanceTimeTx) SyntacticVerify(*snow.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (*AdvanceTimeTx) Outputs() []*avax.TransferableOutput {
-	return nil
-}
-
-func (*AdvanceTimeTx) SyntacticVerify(*snow.Context) error {
-	return nil
-}
-
-func (tx *AdvanceTimeTx) Visit(visitor Visitor) error {
-	return visitor.AdvanceTimeTx(tx)
-}
+func (tx *AdvanceTimeTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

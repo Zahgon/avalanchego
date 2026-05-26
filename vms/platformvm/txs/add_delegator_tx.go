@@ -5,17 +5,12 @@ package txs
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/crypto/bls"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/vms/components/avax"
-	"github.com/ava-labs/avalanchego/vms/components/verify"
 	"github.com/ava-labs/avalanchego/vms/platformvm/fx"
-	"github.com/ava-labs/avalanchego/vms/secp256k1fx"
 )
 
 var (
@@ -41,92 +36,33 @@ type AddDelegatorTx struct {
 // InitCtx sets the FxID fields in the inputs and outputs of this
 // [UnsignedAddDelegatorTx]. Also sets the [ctx] to the given [vm.ctx] so that
 // the addresses can be json marshalled into human readable format
-func (tx *AddDelegatorTx) InitCtx(ctx *snow.Context) {
-	tx.BaseTx.InitCtx(ctx)
-	for _, out := range tx.StakeOuts {
-		out.FxID = secp256k1fx.ID
-		out.InitCtx(ctx)
-	}
-	tx.DelegationRewardsOwner.InitCtx(ctx)
-}
+func (tx *AddDelegatorTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (*AddDelegatorTx) SubnetID() ids.ID {
-	return constants.PrimaryNetworkID
-}
+func (*AddDelegatorTx) SubnetID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (tx *AddDelegatorTx) NodeID() ids.NodeID {
-	return tx.Validator.NodeID
-}
+func (tx *AddDelegatorTx) NodeID() ids.NodeID { _ = "STUB: not implemented"; return *new(ids.NodeID) }
 
 func (*AddDelegatorTx) PublicKey() (*bls.PublicKey, bool, error) {
+	_ = "STUB: not implemented"
 	return nil, false, nil
 }
 
-func (*AddDelegatorTx) PendingPriority() Priority {
-	return PrimaryNetworkDelegatorApricotPendingPriority
-}
+func (*AddDelegatorTx) PendingPriority() Priority { _ = "STUB: not implemented"; return *new(Priority) }
 
-func (*AddDelegatorTx) CurrentPriority() Priority {
-	return PrimaryNetworkDelegatorCurrentPriority
-}
+func (*AddDelegatorTx) CurrentPriority() Priority { _ = "STUB: not implemented"; return *new(Priority) }
 
-func (tx *AddDelegatorTx) Stake() []*avax.TransferableOutput {
-	return tx.StakeOuts
-}
+func (tx *AddDelegatorTx) Stake() []*avax.TransferableOutput { _ = "STUB: not implemented"; return nil }
 
-func (tx *AddDelegatorTx) RewardsOwner() fx.Owner {
-	return tx.DelegationRewardsOwner
-}
+func (tx *AddDelegatorTx) RewardsOwner() fx.Owner { _ = "STUB: not implemented"; return *new(fx.Owner) }
 
 // SyntacticVerify returns nil iff [tx] is valid
 func (tx *AddDelegatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified: // already passed syntactic verification
-		return nil
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-	if err := verify.All(&tx.Validator, tx.DelegationRewardsOwner); err != nil {
-		return fmt.Errorf("failed to verify validator or rewards owner: %w", err)
-	}
-
-	totalStakeWeight := uint64(0)
-	for _, out := range tx.StakeOuts {
-		if err := out.Verify(); err != nil {
-			return fmt.Errorf("output verification failed: %w", err)
-		}
-		newWeight, err := math.Add(totalStakeWeight, out.Output().Amount())
-		if err != nil {
-			return err
-		}
-		totalStakeWeight = newWeight
-
-		assetID := out.AssetID()
-		if assetID != ctx.AVAXAssetID {
-			return fmt.Errorf("%w but is %q", errStakeMustBeAVAX, assetID)
-		}
-	}
-
-	switch {
-	case !avax.IsSortedTransferableOutputs(tx.StakeOuts, Codec):
-		return errOutputsNotSorted
-	case totalStakeWeight != tx.Wght:
-		return fmt.Errorf("%w, delegator weight %d total stake weight %d",
-			errDelegatorWeightMismatch,
-			tx.Wght,
-			totalStakeWeight,
-		)
-	}
-
-	// cache that this is valid
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (tx *AddDelegatorTx) Visit(visitor Visitor) error {
-	return visitor.AddDelegatorTx(tx)
-}
+// already passed syntactic verification
+
+// cache that this is valid
+
+func (tx *AddDelegatorTx) Visit(visitor Visitor) error { _ = "STUB: not implemented"; return nil }

@@ -27,8 +27,6 @@
 
 package rpc
 
-import "fmt"
-
 // HTTPError is returned by client operations when the HTTP status code of the
 // response is not a 2xx status.
 type HTTPError struct {
@@ -37,12 +35,7 @@ type HTTPError struct {
 	Body       []byte
 }
 
-func (err HTTPError) Error() string {
-	if len(err.Body) == 0 {
-		return err.Status
-	}
-	return fmt.Sprintf("%v: %s", err.Status, err.Body)
-}
+func (err HTTPError) Error() string { _ = "STUB: not implemented"; return "" }
 
 // Error wraps RPC errors, which contain an error code in addition to the message.
 type Error interface {
@@ -86,82 +79,89 @@ const (
 
 type methodNotFoundError struct{ method string }
 
-func (e *methodNotFoundError) ErrorCode() int { return -32601 }
+func (e *methodNotFoundError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *methodNotFoundError) Error() string {
-	return fmt.Sprintf("the method %s does not exist/is not available", e.method)
-}
+func (e *methodNotFoundError) Error() string { _ = "STUB: not implemented"; return "" }
 
 type notificationsUnsupportedError struct{}
 
-func (e notificationsUnsupportedError) Error() string {
-	return "notifications not supported"
+func (e notificationsUnsupportedError) Error() string { _ = "STUB: not implemented"; return "" }
+
+func (e notificationsUnsupportedError) ErrorCode() int {
+	_ = "STUB: not implemented"
+
+	// Is checks for equivalence to another error. Here we define that all errors with code
+	// -32601 (method not found) are equivalent to notificationsUnsupportedError. This is
+	// done to enable the following pattern:
+	//
+	//	sub, err := client.Subscribe(...)
+	//	if errors.Is(err, rpc.ErrNotificationsUnsupported) {
+	//		// server doesn't support subscriptions
+	//	}
+	return 0
 }
 
-func (e notificationsUnsupportedError) ErrorCode() int { return -32601 }
-
-// Is checks for equivalence to another error. Here we define that all errors with code
-// -32601 (method not found) are equivalent to notificationsUnsupportedError. This is
-// done to enable the following pattern:
-//
-//	sub, err := client.Subscribe(...)
-//	if errors.Is(err, rpc.ErrNotificationsUnsupported) {
-//		// server doesn't support subscriptions
-//	}
 func (e notificationsUnsupportedError) Is(other error) bool {
-	if other == (notificationsUnsupportedError{}) {
-		return true
-	}
-	rpcErr, ok := other.(Error)
-	if ok {
-		code := rpcErr.ErrorCode()
-		return code == -32601 || code == legacyErrcodeNotificationsUnsupported
-	}
+	_ = "STUB: not implemented"
 	return false
 }
 
 type subscriptionNotFoundError struct{ namespace, subscription string }
 
-func (e *subscriptionNotFoundError) ErrorCode() int { return -32601 }
+func (e *subscriptionNotFoundError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *subscriptionNotFoundError) Error() string {
-	return fmt.Sprintf("no %q subscription in %s namespace", e.subscription, e.namespace)
-}
+func (e *subscriptionNotFoundError) Error() string { _ = "STUB: not implemented"; return "" }
 
 // Invalid JSON was received by the server.
 type parseError struct{ message string }
 
-func (e *parseError) ErrorCode() int { return -32700 }
+func (e *parseError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *parseError) Error() string { return e.message }
+func (e *parseError) Error() string {
+	_ = "STUB: not implemented"
 
-// received message isn't a valid request
+	// received message isn't a valid request
+	return ""
+}
+
 type invalidRequestError struct{ message string }
 
-func (e *invalidRequestError) ErrorCode() int { return -32600 }
+func (e *invalidRequestError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *invalidRequestError) Error() string { return e.message }
+func (e *invalidRequestError) Error() string {
+	_ = "STUB: not implemented"
 
-// received message is invalid
+	// received message is invalid
+	return ""
+}
+
 type invalidMessageError struct{ message string }
 
-func (e *invalidMessageError) ErrorCode() int { return -32700 }
+func (e *invalidMessageError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *invalidMessageError) Error() string { return e.message }
+func (e *invalidMessageError) Error() string {
+	_ = "STUB: not implemented"
 
-// unable to decode supplied params, or an invalid number of parameters
+	// unable to decode supplied params, or an invalid number of parameters
+	return ""
+}
+
 type invalidParamsError struct{ message string }
 
-func (e *invalidParamsError) ErrorCode() int { return -32602 }
+func (e *invalidParamsError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *invalidParamsError) Error() string { return e.message }
+func (e *invalidParamsError) Error() string {
+	_ = "STUB: not implemented"
 
-// internalServerError is used for server errors during request processing.
+	// internalServerError is used for server errors during request processing.
+	return ""
+}
+
 type internalServerError struct {
 	code    int
 	message string
 }
 
-func (e *internalServerError) ErrorCode() int { return e.code }
+func (e *internalServerError) ErrorCode() int { _ = "STUB: not implemented"; return 0 }
 
-func (e *internalServerError) Error() string { return e.message }
+func (e *internalServerError) Error() string { _ = "STUB: not implemented"; return "" }

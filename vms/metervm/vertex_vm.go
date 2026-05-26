@@ -5,7 +5,6 @@ package metervm
 
 import (
 	"context"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 
@@ -25,10 +24,8 @@ func NewVertexVM(
 	vm vertex.LinearizableVMWithEngine,
 	reg prometheus.Registerer,
 ) vertex.LinearizableVMWithEngine {
-	return &vertexVM{
-		LinearizableVMWithEngine: vm,
-		registry:                 reg,
-	}
+	_ = "STUB: not implemented"
+	return *new(vertex.LinearizableVMWithEngine)
 }
 
 type vertexVM struct {
@@ -47,35 +44,13 @@ func (vm *vertexVM) Initialize(
 	fxs []*common.Fx,
 	appSender common.AppSender,
 ) error {
-	if err := vm.vertexMetrics.Initialize(vm.registry); err != nil {
-		return err
-	}
-
-	return vm.LinearizableVMWithEngine.Initialize(
-		ctx,
-		chainCtx,
-		db,
-		genesisBytes,
-		upgradeBytes,
-		configBytes,
-		fxs,
-		appSender,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (vm *vertexVM) ParseTx(ctx context.Context, b []byte) (snowstorm.Tx, error) {
-	start := time.Now()
-	tx, err := vm.LinearizableVMWithEngine.ParseTx(ctx, b)
-	duration := float64(time.Since(start))
-	if err != nil {
-		vm.vertexMetrics.parseErr.Observe(duration)
-		return nil, err
-	}
-	vm.vertexMetrics.parse.Observe(duration)
-	return &meterTx{
-		Tx: tx,
-		vm: vm,
-	}, nil
+	_ = "STUB: not implemented"
+	return *new(snowstorm.Tx), nil
 }
 
 type meterTx struct {
@@ -84,28 +59,8 @@ type meterTx struct {
 	vm *vertexVM
 }
 
-func (mtx *meterTx) Verify(ctx context.Context) error {
-	start := time.Now()
-	err := mtx.Tx.Verify(ctx)
-	duration := float64(time.Since(start))
-	if err != nil {
-		mtx.vm.vertexMetrics.verifyErr.Observe(duration)
-	} else {
-		mtx.vm.vertexMetrics.verify.Observe(duration)
-	}
-	return err
-}
+func (mtx *meterTx) Verify(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (mtx *meterTx) Accept(ctx context.Context) error {
-	start := time.Now()
-	err := mtx.Tx.Accept(ctx)
-	mtx.vm.vertexMetrics.accept.Observe(float64(time.Since(start)))
-	return err
-}
+func (mtx *meterTx) Accept(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
-func (mtx *meterTx) Reject(ctx context.Context) error {
-	start := time.Now()
-	err := mtx.Tx.Reject(ctx)
-	mtx.vm.vertexMetrics.reject.Observe(float64(time.Since(start)))
-	return err
-}
+func (mtx *meterTx) Reject(ctx context.Context) error { _ = "STUB: not implemented"; return nil }

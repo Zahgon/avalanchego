@@ -4,8 +4,6 @@
 package warp
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/libevm/common"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
@@ -43,13 +41,14 @@ func init() {
 // MakeConfig returns a new precompile config instance.
 // This is required to Marshal/Unmarshal the precompile config.
 func (*configurator) MakeConfig() precompileconfig.Config {
-	return new(Config)
+	_ = "STUB: not implemented"
+	return *
+
+	// Configure is a no-op for warp since it does not need to store any information in the state
+	new(precompileconfig.Config)
 }
 
-// Configure is a no-op for warp since it does not need to store any information in the state
 func (*configurator) Configure(_ precompileconfig.ChainConfig, cfg precompileconfig.Config, _ contract.StateDB, _ contract.ConfigurationBlockContext) error {
-	if _, ok := cfg.(*Config); !ok {
-		return fmt.Errorf("expected config type %T, got %T: %v", &Config{}, cfg, cfg)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

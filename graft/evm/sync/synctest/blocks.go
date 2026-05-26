@@ -4,14 +4,10 @@
 package synctest
 
 import (
-	"math/big"
 	"testing"
 
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/crypto"
-	"github.com/ava-labs/libevm/params"
-	"github.com/ava-labs/libevm/trie"
-	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -44,97 +40,28 @@ type BlockGeneratorConfig struct {
 // unique block hashes. The blocks are minimal but structurally valid
 // for testing block sync functionality.
 func GenerateTestBlocks(t *testing.T, numBlocks int, cfg *BlockGeneratorConfig) []*types.Block {
-	t.Helper()
-
-	if cfg == nil {
-		cfg = &BlockGeneratorConfig{}
-	}
-
-	gasLimit := cfg.GasLimit
-	if gasLimit == 0 {
-		gasLimit = params.GenesisGasLimit
-	}
-
-	blocks := make([]*types.Block, numBlocks+1)
-	blocks[0] = newGenesisBlock(gasLimit)
-
-	for i := 1; i <= numBlocks; i++ {
-		txDataSize := cfg.TxDataSize
-		if cfg.TxDataSizeFunc != nil {
-			txDataSize = cfg.TxDataSizeFunc(i)
-		}
-		blocks[i] = newBlock(t, blocks[i-1], i, txDataSize, gasLimit)
-	}
-
-	return blocks
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func newGenesisBlock(gasLimit uint64) *types.Block {
-	header := &types.Header{
-		Number:      big.NewInt(0),
-		Difficulty:  big.NewInt(1),
-		GasLimit:    gasLimit,
-		Time:        0,
-		Extra:       []byte{},
-		Root:        types.EmptyRootHash,
-		TxHash:      types.EmptyTxsHash,
-		ReceiptHash: types.EmptyReceiptsHash,
-		UncleHash:   types.EmptyUncleHash,
-	}
-	return types.NewBlock(header, nil, nil, nil, trie.NewStackTrie(nil))
-}
+func newGenesisBlock(gasLimit uint64) *types.Block { _ = "STUB: not implemented"; return nil }
 
 func newBlock(t *testing.T, parent *types.Block, blockNum, txDataSize int, gasLimit uint64) *types.Block {
-	t.Helper()
-
-	txData := makeTxData(blockNum, txDataSize)
-	signedTx := newSignedTx(t, blockNum, txData)
-
-	header := &types.Header{
-		ParentHash:  parent.Hash(),
-		Number:      big.NewInt(int64(blockNum)),
-		Difficulty:  big.NewInt(1),
-		GasLimit:    gasLimit,
-		GasUsed:     signedTx.Gas(),
-		Time:        uint64(blockNum * 10), // 10 seconds between blocks
-		Extra:       []byte{},
-		Root:        types.EmptyRootHash,
-		ReceiptHash: types.EmptyReceiptsHash,
-		UncleHash:   types.EmptyUncleHash,
-	}
-
-	return types.NewBlock(header, []*types.Transaction{signedTx}, nil, nil, trie.NewStackTrie(nil))
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func makeTxData(blockNum, size int) []byte {
-	if size <= 0 {
-		return nil
-	}
-	data := make([]byte, size)
-	for i := range data {
-		data[i] = byte(blockNum + i)
-	}
-	return data
-}
+// 10 seconds between blocks
+
+func makeTxData(blockNum, size int) []byte { _ = "STUB: not implemented"; return nil }
 
 func newSignedTx(t *testing.T, blockNum int, txData []byte) *types.Transaction {
-	t.Helper()
+	_ = "STUB: not implemented"
 
 	// Use non-zero gas price to ensure gas cost is calculated.
 	// Calldata gas: 16 per non-zero byte, 4 per zero byte.
 	// We use 16 as upper bound since makeTxData produces non-zero bytes.
-	calldataGas := uint64(len(txData)) * params.TxDataNonZeroGasEIP2028
-
-	tx := types.NewTransaction(
-		uint64(blockNum-1), // nonce
-		testAddr,
-		big.NewInt(10),
-		params.TxGas+calldataGas,
-		big.NewInt(1),
-		txData,
-	)
-
-	signedTx, err := types.SignTx(tx, types.HomesteadSigner{}, testKey)
-	require.NoError(t, err)
-	return signedTx
+	return nil
 }
+
+// nonce

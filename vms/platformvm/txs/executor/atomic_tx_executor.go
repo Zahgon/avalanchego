@@ -4,8 +4,6 @@
 package executor
 
 import (
-	"fmt"
-
 	"github.com/ava-labs/avalanchego/chains/atomic"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/set"
@@ -28,18 +26,8 @@ func AtomicTx(
 	stateVersions state.Versions,
 	tx *txs.Tx,
 ) (*state.Diff, set.Set[ids.ID], map[ids.ID]*atomic.Requests, error) {
-	atomicExecutor := atomicTxExecutor{
-		backend:       backend,
-		feeCalculator: feeCalculator,
-		parentID:      parentID,
-		stateVersions: stateVersions,
-		tx:            tx,
-	}
-	if err := tx.Unsigned.Visit(&atomicExecutor); err != nil {
-		txID := tx.ID()
-		return nil, nil, nil, fmt.Errorf("atomic tx %s failed execution: %w", txID, err)
-	}
-	return atomicExecutor.onAccept, atomicExecutor.inputs, atomicExecutor.atomicRequests, nil
+	_ = "STUB: not implemented"
+	return nil, nil, nil, nil
 }
 
 type atomicTxExecutor struct {
@@ -57,101 +45,94 @@ type atomicTxExecutor struct {
 }
 
 func (*atomicTxExecutor) AddValidatorTx(*txs.AddValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) AddSubnetValidatorTx(*txs.AddSubnetValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) AddDelegatorTx(*txs.AddDelegatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) CreateChainTx(*txs.CreateChainTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) CreateSubnetTx(*txs.CreateSubnetTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) AdvanceTimeTx(*txs.AdvanceTimeTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) RewardValidatorTx(*txs.RewardValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) RemoveSubnetValidatorTx(*txs.RemoveSubnetValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) TransformSubnetTx(*txs.TransformSubnetTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) AddPermissionlessValidatorTx(*txs.AddPermissionlessValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) AddPermissionlessDelegatorTx(*txs.AddPermissionlessDelegatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) TransferSubnetOwnershipTx(*txs.TransferSubnetOwnershipTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (*atomicTxExecutor) BaseTx(*txs.BaseTx) error {
-	return ErrWrongTxType
-}
+func (*atomicTxExecutor) BaseTx(*txs.BaseTx) error { _ = "STUB: not implemented"; return nil }
 
 func (*atomicTxExecutor) ConvertSubnetToL1Tx(*txs.ConvertSubnetToL1Tx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) RegisterL1ValidatorTx(*txs.RegisterL1ValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) SetL1ValidatorWeightTx(*txs.SetL1ValidatorWeightTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) IncreaseL1ValidatorBalanceTx(*txs.IncreaseL1ValidatorBalanceTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (*atomicTxExecutor) DisableL1ValidatorTx(*txs.DisableL1ValidatorTx) error {
-	return ErrWrongTxType
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (e *atomicTxExecutor) ImportTx(*txs.ImportTx) error {
-	return e.atomicTx()
-}
+func (e *atomicTxExecutor) ImportTx(*txs.ImportTx) error { _ = "STUB: not implemented"; return nil }
 
-func (e *atomicTxExecutor) ExportTx(*txs.ExportTx) error {
-	return e.atomicTx()
-}
+func (e *atomicTxExecutor) ExportTx(*txs.ExportTx) error { _ = "STUB: not implemented"; return nil }
 
-func (e *atomicTxExecutor) atomicTx() error {
-	onAccept, err := state.NewDiff(
-		e.parentID,
-		e.stateVersions,
-		state.StakerAdditionAfterDeletionForbidden,
-	)
-	if err != nil {
-		return err
-	}
-
-	e.onAccept = onAccept
-	e.inputs, e.atomicRequests, _, err = StandardTx(
-		e.backend,
-		e.feeCalculator,
-		e.tx,
-		onAccept,
-	)
-	return err
-}
+func (e *atomicTxExecutor) atomicTx() error { _ = "STUB: not implemented"; return nil }

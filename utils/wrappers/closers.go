@@ -16,24 +16,8 @@ type Closer struct {
 }
 
 // Add a new object to be closed.
-func (c *Closer) Add(closer io.Closer) {
-	c.lock.Lock()
-	defer c.lock.Unlock()
-
-	c.closers = append(c.closers, closer)
-}
+func (c *Closer) Add(closer io.Closer) { _ = "STUB: not implemented"; return }
 
 // Close closes each of the closers add to [c] and returns the first error
 // that occurs or nil if no error occurs.
-func (c *Closer) Close() error {
-	c.lock.Lock()
-	closers := c.closers
-	c.closers = nil
-	c.lock.Unlock()
-
-	errs := Errs{}
-	for _, closer := range closers {
-		errs.Add(closer.Close())
-	}
-	return errs.Err
-}
+func (c *Closer) Close() error { _ = "STUB: not implemented"; return nil }

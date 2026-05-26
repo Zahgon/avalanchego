@@ -8,15 +8,10 @@ package worstcase
 
 import (
 	"errors"
-	"fmt"
-	"math"
 	"math/big"
-	"slices"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core"
 	"github.com/ava-labs/libevm/core/state"
-	"github.com/ava-labs/libevm/core/txpool"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/params"
 	"github.com/holiman/uint256"
@@ -70,21 +65,8 @@ func NewState(
 	settled *blocks.Block,
 	opener saedb.StateDBOpener,
 ) (*State, error) {
-	if !settled.Executed() {
-		return nil, errSettledBlockNotExecuted
-	}
-
-	db, err := opener.StateDB(settled.PostExecutionStateRoot())
-	if err != nil {
-		return nil, err
-	}
-	return &State{
-		hooks:              hooks,
-		config:             config,
-		db:                 db,
-		clock:              settled.ExecutedByGasTime(),
-		expectedParentHash: settled.Hash(),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 const (
@@ -108,61 +90,26 @@ var (
 // [types.Header.ParentHash] must match the previous block's hash.
 //
 // If the queue is too full to accept another block, [ErrQueueFull] is returned.
-func (s *State) StartBlock(h *types.Header) error {
-	if h.ParentHash != s.expectedParentHash {
-		return fmt.Errorf("%w: expected parent hash of %s but was %s",
-			errNonConsecutiveBlocks,
-			s.expectedParentHash,
-			h.ParentHash,
-		)
-	}
+func (s *State) StartBlock(h *types.Header) error { _ = "STUB: not implemented"; return nil }
 
-	s.clock.BeforeBlock(s.hooks.BlockTime(h))
-	s.blockSize = 0
+// [State.FinishBlock] returns a clone so we can reuse the alloc here
 
-	s.maxBlockSize = safeMaxBlockSize(s.clock)
-	if maxOpenQSize := saeparams.MaxFullBlocksInOpenQueue * s.maxBlockSize; s.qSize > maxOpenQSize {
-		return fmt.Errorf("%w: current size %d exceeds maximum size for accepting new blocks %d", ErrQueueFull, s.qSize, maxOpenQSize)
-	}
+// expectedParentHash is updated prior to modifying the GasLimit and BaseFee
+// to ensure that historical block hashes are not modified.
 
-	s.baseFee = s.clock.BaseFee()
-	clear(s.minOpBurnerBalances) // [State.FinishBlock] returns a clone so we can reuse the alloc here
-	s.minOpBurnerBalances = s.minOpBurnerBalances[:0]
-
-	// expectedParentHash is updated prior to modifying the GasLimit and BaseFee
-	// to ensure that historical block hashes are not modified.
-	s.expectedParentHash = h.Hash()
-	s.curr = types.CopyHeader(h)
-	s.curr.GasLimit = uint64(s.maxBlockSize)
-	s.curr.BaseFee = s.baseFee.ToBig()
-
-	// We MUST use the block's timestamp, not the execution clock's, otherwise
-	// we might enable an upgrade too early.
-	s.signer = types.MakeSigner(s.config, h.Number, h.Time)
-	return nil
-}
+// We MUST use the block's timestamp, not the execution clock's, otherwise
+// we might enable an upgrade too early.
 
 // safeMaxBlockSize returns the maximum block size for the clock's rate,
 // possibly capping it so a full closed queue still fits in [gas.Gas]. At the
 // time of writing, the cap is ~6e17, so capping is exceedingly unlikely.
-func safeMaxBlockSize(clock *gastime.Time) gas.Gas {
-	const (
-		maxGasSecondsInClosedQueue         = saeparams.MaxFullBlocksInClosedQueue * maxGasSecondsPerBlock
-		maxGasInClosedQueue        gas.Gas = math.MaxUint64
-		maxSafeRate                gas.Gas = maxGasInClosedQueue / maxGasSecondsInClosedQueue
-	)
-	return min(clock.Rate(), maxSafeRate) * maxGasSecondsPerBlock
-}
+func safeMaxBlockSize(clock *gastime.Time) gas.Gas { _ = "STUB: not implemented"; return *new(gas.Gas) }
 
 // GasLimit returns the available gas limit for the current block.
-func (s *State) GasLimit() uint64 {
-	return uint64(s.maxBlockSize)
-}
+func (s *State) GasLimit() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // BaseFee returns the worst-case base fee for the current block.
-func (s *State) BaseFee() *uint256.Int {
-	return s.baseFee
-}
+func (s *State) BaseFee() *uint256.Int { _ = "STUB: not implemented"; return nil }
 
 var errCostOverflow = errors.New("Cost() overflows uint256")
 
@@ -177,108 +124,38 @@ var errCostOverflow = errors.New("Cost() overflows uint256")
 // not modified.
 //
 // TODO: Consider exporting txToOp and expecting users to call Apply directly.
-func (s *State) ApplyTx(tx *types.Transaction) error {
-	opts := &txpool.ValidationOptions{
-		Config: s.config,
-		Accept: 0 |
-			1<<types.LegacyTxType |
-			1<<types.AccessListTxType |
-			1<<types.DynamicFeeTxType,
-		// No byte-size limit needed as gas validation (intrinsic gas ≤
-		// tx gas ≤ block gas limit) already enforces an implicit size
-		// limit (2MB) on transactions.
-		MaxSize: math.MaxUint,
-		MinTip:  big.NewInt(0),
-	}
-	if err := txpool.ValidateTransaction(tx, s.curr, s.signer, opts); err != nil {
-		return fmt.Errorf("validating transaction: %w", err)
-	}
+func (s *State) ApplyTx(tx *types.Transaction) error { _ = "STUB: not implemented"; return nil }
 
-	from, err := types.Sender(s.signer, tx)
-	if err != nil {
-		return fmt.Errorf("determining sender: %w", err)
-	}
+// No byte-size limit needed as gas validation (intrinsic gas ≤
+// tx gas ≤ block gas limit) already enforces an implicit size
+// limit (2MB) on transactions.
 
-	// While EOA enforcement is not possible to guarantee in worst-case
-	// execution, we can prevent most cases here.
-	//
-	// TODO: We must still handle non-EOA issuance later during actual
-	// execution.
-	if codeHash := s.db.GetCodeHash(from); codeHash != (common.Hash{}) && codeHash != types.EmptyCodeHash {
-		return fmt.Errorf("%w: address %v, codehash: %s", core.ErrSenderNoEOA, from.Hex(), codeHash)
-	}
-
-	if err := s.hooks.CanExecuteTransaction(from, tx.To(), s.db); err != nil {
-		return fmt.Errorf("transaction blocked by CanExecuteTransaction hook: %w", err)
-	}
-
-	op, err := txToOp(from, tx, s.baseFee)
-	if err != nil {
-		return fmt.Errorf("converting transaction to operation: %w", err)
-	}
-	return s.Apply(op)
-}
+// While EOA enforcement is not possible to guarantee in worst-case
+// execution, we can prevent most cases here.
+//
+// TODO: We must still handle non-EOA issuance later during actual
+// execution.
 
 func bigToUint256(v *big.Int) (_ uint256.Int, overflow bool) {
-	var x uint256.Int
-	overflow = x.SetFromBig(v)
-	return x, overflow
+	_ = "STUB: not implemented"
+	return *new(uint256.Int), false
 }
 
 // mulAdd returns a*b + c and reports whether overflow occurred.
 func mulAdd(a uint64, b, c *uint256.Int) (_ uint256.Int, overflow bool) {
-	var x uint256.Int
-	x.SetUint64(a)
-	if _, overflow := x.MulOverflow(&x, b); overflow {
-		return uint256.Int{}, true
-	}
-	_, overflow = x.AddOverflow(&x, c)
-	return x, overflow
+	_ = "STUB: not implemented"
+	return *new(uint256.Int), false
 }
 
 func txToOp(from common.Address, tx *types.Transaction, baseFee *uint256.Int) (hook.Op, error) {
-	type Op = hook.Op // for convenience when returning zero value
-
-	gasFeeCap, overflow := bigToUint256(tx.GasFeeCap())
-	if overflow {
-		return Op{}, core.ErrFeeCapVeryHigh
-	}
-	value, overflow := bigToUint256(tx.Value())
-	if overflow {
-		return Op{}, core.ErrInsufficientFundsForTransfer
-	}
-	minBalance, overflow := mulAdd(tx.Gas(), &gasFeeCap, &value)
-	if overflow {
-		return Op{}, errCostOverflow
-	}
-
-	// effectiveGasPrice = min(gasFeeCap, baseFee + gasTipCap)
-	gasTipCap, overflow := bigToUint256(tx.GasTipCap())
-	if overflow {
-		return Op{}, core.ErrTipVeryHigh
-	}
-	var effectiveGasPrice uint256.Int
-	if _, overflow := effectiveGasPrice.AddOverflow(baseFee, &gasTipCap); overflow || gasFeeCap.Lt(&effectiveGasPrice) {
-		effectiveGasPrice.Set(&gasFeeCap)
-	}
-
-	amount, overflow := mulAdd(tx.Gas(), &effectiveGasPrice, &value)
-	if overflow {
-		return Op{}, errCostOverflow
-	}
-	return Op{
-		Gas:       gas.Gas(tx.Gas()),
-		GasFeeCap: gasFeeCap,
-		Burn: map[common.Address]hook.AccountDebit{
-			from: {
-				Nonce:      tx.Nonce(),
-				Amount:     amount,
-				MinBalance: minBalance,
-			},
-		},
-		// Mint MUST NOT be populated here because this transaction may revert.
-	}, nil
+	_ = "STUB: not implemented"
+	// for convenience when returning zero value
+	return *new(hook.Op), nil
 }
+
+// effectiveGasPrice = min(gasFeeCap, baseFee + gasTipCap)
+
+// Mint MUST NOT be populated here because this transaction may revert.
 
 // Apply attempts to apply the operation to this state.
 //
@@ -291,40 +168,12 @@ func txToOp(from common.Address, tx *types.Transaction, baseFee *uint256.Int) (h
 //   - The operation specifies too low of a gas price.
 //   - The operation is from an account with an incorrect or invalid nonce.
 //   - The operation is from an account with an insufficient balance.
-func (s *State) Apply(o hook.Op) error {
-	if o.Gas > s.maxBlockSize-s.blockSize {
-		return core.ErrGasLimitReached
-	}
-	if o.GasFeeCap.Lt(s.baseFee) {
-		return core.ErrFeeCapTooLow
-	}
+func (s *State) Apply(o hook.Op) error { _ = "STUB: not implemented"; return nil }
 
-	burnerBalances := make(map[common.Address]*uint256.Int, len(o.Burn))
-	for from, ad := range o.Burn {
-		switch nonce, next := ad.Nonce, s.db.GetNonce(from); {
-		case nonce < next:
-			return fmt.Errorf("%w: %d < %d", core.ErrNonceTooLow, nonce, next)
-		case nonce > next:
-			return fmt.Errorf("%w: %d > %d", core.ErrNonceTooHigh, nonce, next)
-		case next == math.MaxUint64:
-			return core.ErrNonceMax
-		}
-		// MUST be before `o.ApplyTo()` to mirror [saexec.Executor] check
-		burnerBalances[from] = s.db.GetBalance(from)
-	}
-
-	if err := o.ApplyTo(s.db); err != nil {
-		return err
-	}
-	s.minOpBurnerBalances = append(s.minOpBurnerBalances, burnerBalances)
-	s.blockSize += o.Gas
-	return nil
-}
+// MUST be before `o.ApplyTo()` to mirror [saexec.Executor] check
 
 // GasUsed returns the gas used for the current block.
-func (s *State) GasUsed() uint64 {
-	return uint64(s.blockSize)
-}
+func (s *State) GasUsed() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // FinishBlock advances the [gastime.Time] in preparation for the next block.
 //
@@ -332,14 +181,6 @@ func (s *State) GasUsed() uint64 {
 // resulted in said transaction being included, which is reflected in the
 // indexing of tx-sender balances.
 func (s *State) FinishBlock() (*blocks.WorstCaseBounds, error) {
-	target, gasCfg := s.hooks.GasConfigAfter(s.curr)
-	if err := s.clock.AfterBlock(s.blockSize, target, gasCfg); err != nil {
-		return nil, fmt.Errorf("finishing block gas time update: %w", err)
-	}
-	s.qSize += s.blockSize
-	return &blocks.WorstCaseBounds{
-		MaxBaseFee:          s.baseFee,
-		LatestEndTime:       s.clock.Clone(),
-		MinOpBurnerBalances: slices.Clone(s.minOpBurnerBalances),
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

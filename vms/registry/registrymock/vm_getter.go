@@ -10,8 +10,6 @@
 package registrymock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	vms "github.com/ava-labs/avalanchego/vms"
 	gomock "go.uber.org/mock/gomock"
@@ -30,29 +28,20 @@ type VMGetterMockRecorder struct {
 }
 
 // NewVMGetter creates a new mock instance.
-func NewVMGetter(ctrl *gomock.Controller) *VMGetter {
-	mock := &VMGetter{ctrl: ctrl}
-	mock.recorder = &VMGetterMockRecorder{mock}
-	return mock
-}
+func NewVMGetter(ctrl *gomock.Controller) *VMGetter { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *VMGetter) EXPECT() *VMGetterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Get mocks base method.
+	return nil
 }
 
-// Get mocks base method.
 func (m *VMGetter) Get() (map[ids.ID]vms.Factory, map[ids.ID]vms.Factory, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get")
-	ret0, _ := ret[0].(map[ids.ID]vms.Factory)
-	ret1, _ := ret[1].(map[ids.ID]vms.Factory)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // Get indicates an expected call of Get.
-func (mr *VMGetterMockRecorder) Get() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*VMGetter)(nil).Get))
-}
+func (mr *VMGetterMockRecorder) Get() *gomock.Call { _ = "STUB: not implemented"; return nil }

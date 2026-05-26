@@ -14,49 +14,45 @@ type Client struct {
 	Requester rpc.EndpointRequester
 }
 
-func NewClient(uri string) *Client {
-	return &Client{Requester: rpc.NewEndpointRequester(
-		uri + "/ext/health",
-	)}
-}
+func NewClient(uri string) *Client { _ = "STUB: not implemented"; return nil }
 
 // Readiness returns if the node has finished initialization
 func (c *Client) Readiness(ctx context.Context, tags []string, options ...rpc.Option) (*APIReply, error) {
-	res := &APIReply{}
-	err := c.Requester.SendRequest(ctx, "health.readiness", &APIArgs{Tags: tags}, res, options...)
-	return res, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Health returns a summation of the health of the node
 func (c *Client) Health(ctx context.Context, tags []string, options ...rpc.Option) (*APIReply, error) {
-	res := &APIReply{}
-	err := c.Requester.SendRequest(ctx, "health.health", &APIArgs{Tags: tags}, res, options...)
-	return res, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Liveness returns if the node is in need of a restart
 func (c *Client) Liveness(ctx context.Context, tags []string, options ...rpc.Option) (*APIReply, error) {
-	res := &APIReply{}
-	err := c.Requester.SendRequest(ctx, "health.liveness", &APIArgs{Tags: tags}, res, options...)
-	return res, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AwaitReady polls the node every [freq] until the node reports ready.
 // Only returns an error if [ctx] returns an error.
 func AwaitReady(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error) {
-	return await(ctx, freq, c.Readiness, tags, options...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // AwaitHealthy polls the node every [freq] until the node reports healthy.
 // Only returns an error if [ctx] returns an error.
 func AwaitHealthy(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error) {
-	return await(ctx, freq, c.Health, tags, options...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 // AwaitAlive polls the node every [freq] until the node reports liveness.
 // Only returns an error if [ctx] returns an error.
 func AwaitAlive(ctx context.Context, c *Client, freq time.Duration, tags []string, options ...rpc.Option) (bool, error) {
-	return await(ctx, freq, c.Liveness, tags, options...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func await(
@@ -66,19 +62,6 @@ func await(
 	tags []string,
 	options ...rpc.Option,
 ) (bool, error) {
-	ticker := time.NewTicker(freq)
-	defer ticker.Stop()
-
-	for {
-		res, err := check(ctx, tags, options...)
-		if err == nil && res.Healthy {
-			return true, nil
-		}
-
-		select {
-		case <-ticker.C:
-		case <-ctx.Done():
-			return false, ctx.Err()
-		}
-	}
+	_ = "STUB: not implemented"
+	return false, nil
 }

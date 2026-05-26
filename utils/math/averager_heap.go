@@ -36,30 +36,26 @@ type averagerHeap struct {
 
 // NewMaxAveragerHeap returns a new empty max heap. The returned heap is not
 // thread safe.
-func NewMaxAveragerHeap() AveragerHeap {
-	return averagerHeap{
-		heap: heap.NewMap[ids.NodeID, Averager](func(a, b Averager) bool {
-			return a.Read() > b.Read()
-		}),
-	}
-}
+func NewMaxAveragerHeap() AveragerHeap { _ = "STUB: not implemented"; return *new(AveragerHeap) }
 
 func (h averagerHeap) Add(nodeID ids.NodeID, averager Averager) (Averager, bool) {
-	return h.heap.Push(nodeID, averager)
+	_ = "STUB: not implemented"
+	return *new(Averager), false
 }
 
 func (h averagerHeap) Remove(nodeID ids.NodeID) (Averager, bool) {
-	return h.heap.Remove(nodeID)
+	_ = "STUB: not implemented"
+	return *new(Averager), false
 }
 
 func (h averagerHeap) Pop() (ids.NodeID, Averager, bool) {
-	return h.heap.Pop()
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), *new(Averager), false
 }
 
 func (h averagerHeap) Peek() (ids.NodeID, Averager, bool) {
-	return h.heap.Peek()
+	_ = "STUB: not implemented"
+	return *new(ids.NodeID), *new(Averager), false
 }
 
-func (h averagerHeap) Len() int {
-	return h.heap.Len()
-}
+func (h averagerHeap) Len() int { _ = "STUB: not implemented"; return 0 }

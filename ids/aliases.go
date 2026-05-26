@@ -5,7 +5,6 @@ package ids
 
 import (
 	"errors"
-	"fmt"
 	"sync"
 )
 
@@ -54,91 +53,25 @@ type aliaser struct {
 	aliases map[ID][]string
 }
 
-func NewAliaser() Aliaser {
-	return &aliaser{
-		dealias: make(map[string]ID),
-		aliases: make(map[ID][]string),
-	}
-}
+func NewAliaser() Aliaser { _ = "STUB: not implemented"; return *new(Aliaser) }
 
-func (a *aliaser) Lookup(alias string) (ID, error) {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
+func (a *aliaser) Lookup(alias string) (ID, error) { _ = "STUB: not implemented"; return *new(ID), nil }
 
-	if id, ok := a.dealias[alias]; ok {
-		return id, nil
-	}
-	return ID{}, fmt.Errorf("%w: %s", ErrNoIDWithAlias, alias)
-}
+func (a *aliaser) PrimaryAlias(id ID) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-func (a *aliaser) PrimaryAlias(id ID) (string, error) {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
+func (a *aliaser) PrimaryAliasOrDefault(id ID) string { _ = "STUB: not implemented"; return "" }
 
-	aliases := a.aliases[id]
-	if len(aliases) == 0 {
-		return "", fmt.Errorf("%w: %s", errNoAliasForID, id)
-	}
-	return aliases[0], nil
-}
+func (a *aliaser) Aliases(id ID) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func (a *aliaser) PrimaryAliasOrDefault(id ID) string {
-	alias, err := a.PrimaryAlias(id)
-	if err != nil {
-		return id.String()
-	}
-	return alias
-}
+func (a *aliaser) Alias(id ID, alias string) error { _ = "STUB: not implemented"; return nil }
 
-func (a *aliaser) Aliases(id ID) ([]string, error) {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	return a.aliases[id], nil
-}
-
-func (a *aliaser) Alias(id ID, alias string) error {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	if _, exists := a.dealias[alias]; exists {
-		return fmt.Errorf("%w: %s", errAliasAlreadyMapped, alias)
-	}
-
-	a.dealias[alias] = id
-	a.aliases[id] = append(a.aliases[id], alias)
-	return nil
-}
-
-func (a *aliaser) RemoveAliases(id ID) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	aliases := a.aliases[id]
-	delete(a.aliases, id)
-	for _, alias := range aliases {
-		delete(a.dealias, alias)
-	}
-}
+func (a *aliaser) RemoveAliases(id ID) { _ = "STUB: not implemented"; return }
 
 // GetRelevantAliases returns the aliases with the redundant identity alias
 // removed (each id is aliased to at least itself).
 func GetRelevantAliases(aliaser Aliaser, ids []ID) (map[ID][]string, error) {
-	result := make(map[ID][]string, len(ids))
-	for _, id := range ids {
-		aliases, err := aliaser.Aliases(id)
-		if err != nil {
-			return nil, err
-		}
-
-		// remove the redundant alias where alias = id.
-		relevantAliases := make([]string, 0, len(aliases)-1)
-		for _, alias := range aliases {
-			if alias != id.String() {
-				relevantAliases = append(relevantAliases, alias)
-			}
-		}
-		result[id] = relevantAliases
-	}
-	return result, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
+
+// remove the redundant alias where alias = id.

@@ -11,7 +11,6 @@ package snowmanmock
 
 import (
 	context "context"
-	reflect "reflect"
 	time "time"
 
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -31,125 +30,59 @@ type BlockMockRecorder struct {
 }
 
 // NewBlock creates a new mock instance.
-func NewBlock(ctrl *gomock.Controller) *Block {
-	mock := &Block{ctrl: ctrl}
-	mock.recorder = &BlockMockRecorder{mock}
-	return mock
-}
+func NewBlock(ctrl *gomock.Controller) *Block { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Block) EXPECT() *BlockMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Accept mocks base method.
+	return nil
 }
 
-// Accept mocks base method.
-func (m *Block) Accept(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Accept", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Block) Accept(arg0 context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Accept indicates an expected call of Accept.
-func (mr *BlockMockRecorder) Accept(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Accept", reflect.TypeOf((*Block)(nil).Accept), arg0)
-}
+func (mr *BlockMockRecorder) Accept(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Bytes mocks base method.
-func (m *Block) Bytes() []byte {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Bytes")
-	ret0, _ := ret[0].([]byte)
-	return ret0
-}
+func (m *Block) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 // Bytes indicates an expected call of Bytes.
-func (mr *BlockMockRecorder) Bytes() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Bytes", reflect.TypeOf((*Block)(nil).Bytes))
-}
+func (mr *BlockMockRecorder) Bytes() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Height mocks base method.
-func (m *Block) Height() uint64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Height")
-	ret0, _ := ret[0].(uint64)
-	return ret0
-}
+func (m *Block) Height() uint64 { _ = "STUB: not implemented"; return 0 }
 
 // Height indicates an expected call of Height.
-func (mr *BlockMockRecorder) Height() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Height", reflect.TypeOf((*Block)(nil).Height))
-}
+func (mr *BlockMockRecorder) Height() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // ID mocks base method.
-func (m *Block) ID() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ID")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Block) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // ID indicates an expected call of ID.
-func (mr *BlockMockRecorder) ID() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*Block)(nil).ID))
-}
+func (mr *BlockMockRecorder) ID() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Parent mocks base method.
-func (m *Block) Parent() ids.ID {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Parent")
-	ret0, _ := ret[0].(ids.ID)
-	return ret0
-}
+func (m *Block) Parent() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
 // Parent indicates an expected call of Parent.
-func (mr *BlockMockRecorder) Parent() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Parent", reflect.TypeOf((*Block)(nil).Parent))
-}
+func (mr *BlockMockRecorder) Parent() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Reject mocks base method.
-func (m *Block) Reject(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Reject", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Block) Reject(arg0 context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Reject indicates an expected call of Reject.
-func (mr *BlockMockRecorder) Reject(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Reject", reflect.TypeOf((*Block)(nil).Reject), arg0)
-}
+func (mr *BlockMockRecorder) Reject(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Timestamp mocks base method.
-func (m *Block) Timestamp() time.Time {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Timestamp")
-	ret0, _ := ret[0].(time.Time)
-	return ret0
-}
+func (m *Block) Timestamp() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // Timestamp indicates an expected call of Timestamp.
-func (mr *BlockMockRecorder) Timestamp() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Timestamp", reflect.TypeOf((*Block)(nil).Timestamp))
-}
+func (mr *BlockMockRecorder) Timestamp() *gomock.Call { _ = "STUB: not implemented"; return nil }
 
 // Verify mocks base method.
-func (m *Block) Verify(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Verify", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *Block) Verify(arg0 context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Verify indicates an expected call of Verify.
-func (mr *BlockMockRecorder) Verify(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Verify", reflect.TypeOf((*Block)(nil).Verify), arg0)
-}
+func (mr *BlockMockRecorder) Verify(arg0 any) *gomock.Call { _ = "STUB: not implemented"; return nil }

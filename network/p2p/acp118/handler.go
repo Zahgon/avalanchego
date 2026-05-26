@@ -5,15 +5,11 @@ package acp118
 
 import (
 	"context"
-	"fmt"
 	"time"
-
-	"google.golang.org/protobuf/proto"
 
 	"github.com/ava-labs/avalanchego/cache"
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p"
-	"github.com/ava-labs/avalanchego/proto/pb/sdk"
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
@@ -39,11 +35,8 @@ type Verifier interface {
 
 // NewHandler returns an instance of Handler
 func NewHandler(verifier Verifier, signer warp.Signer) *Handler {
-	return NewCachedHandler(
-		&cache.Empty[ids.ID, []byte]{},
-		verifier,
-		signer,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewCachedHandler returns an instance of Handler that caches successful
@@ -53,11 +46,8 @@ func NewCachedHandler(
 	verifier Verifier,
 	signer warp.Signer,
 ) *Handler {
-	return &Handler{
-		signatureCache: cacher,
-		verifier:       verifier,
-		signer:         signer,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Handler signs warp messages
@@ -75,57 +65,16 @@ func (h *Handler) AppRequest(
 	_ time.Time,
 	requestBytes []byte,
 ) ([]byte, *common.AppError) {
-	request := &sdk.SignatureRequest{}
-	if err := proto.Unmarshal(requestBytes, request); err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to unmarshal request: %s", err),
-		}
-	}
-
-	msg, err := warp.ParseUnsignedMessage(request.Message)
-	if err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to parse warp unsigned message: %s", err),
-		}
-	}
-
-	msgID := msg.ID()
-	if signatureBytes, ok := h.signatureCache.Get(msgID); ok {
-		return signatureToResponse(signatureBytes)
-	}
-
-	// Verify that the payload is valid to sign.
-	if err := h.verifier.Verify(ctx, msg, request.Justification); err != nil {
-		return nil, err
-	}
-
-	// The signer internally verifies that the NetworkID and SourceChainID are
-	// populated with the expected values.
-	signature, err := h.signer.Sign(msg)
-	if err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to sign message: %s", err),
-		}
-	}
-
-	h.signatureCache.Put(msgID, signature)
-	return signatureToResponse(signature)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func signatureToResponse(signature []byte) ([]byte, *common.AppError) {
-	response := &sdk.SignatureResponse{
-		Signature: signature,
-	}
+// Verify that the payload is valid to sign.
 
-	responseBytes, err := proto.Marshal(response)
-	if err != nil {
-		return nil, &common.AppError{
-			Code:    p2p.ErrUnexpected.Code,
-			Message: fmt.Sprintf("failed to marshal response: %s", err),
-		}
-	}
-	return responseBytes, nil
+// The signer internally verifies that the NetworkID and SourceChainID are
+// populated with the expected values.
+
+func signatureToResponse(signature []byte) ([]byte, *common.AppError) {
+	_ = "STUB: not implemented"
+	return nil, nil
 }

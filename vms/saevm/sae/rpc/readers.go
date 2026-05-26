@@ -4,8 +4,6 @@
 package rpc
 
 import (
-	"errors"
-
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/rpc"
 
@@ -16,16 +14,15 @@ import (
 // functions, to avoid having to cast them as [blocks.DBReader] before calling
 // [blocks.DBReader.WithNilErr]. It makes call sites cleaner.
 func neverErrs[T any](r blocks.DBReader[T]) blocks.DBReaderWithErr[T] {
-	return r.WithNilErr()
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func notFoundIsNil[T any](x *T, err error) (*T, error) {
+	_ = "STUB: not implemented"
 	// [blocks.ErrNonCanonicalBlock] wraps [blocks.ErrNotFound], which
 	// would be a misleading error to return.
-	if errors.Is(err, blocks.ErrNotFound) {
-		return nil, nil
-	}
-	return x, err
+	return nil, nil
 }
 
 // Note that these readers will only work for canonical blocks (blocks that are guaranteed
@@ -33,18 +30,21 @@ func notFoundIsNil[T any](x *T, err error) (*T, error) {
 // Non-canonical blocks are rejected with [blocks.ErrNonCanonicalBlock].
 
 func readByNumber[T any](c Chain, n rpc.BlockNumber, read blocks.DBReader[T]) (*T, error) {
-	return notFoundIsNil(blocks.FromNumber(c, n, read.WithNilErr()))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func readByHash[T any](c Chain, hash common.Hash, fromMem blocks.Extractor[T], fromDB blocks.DBReader[T]) (*T, error) {
-	return notFoundIsNil(blocks.FromHash(c, hash, true, fromMem, fromDB.WithNilErr()))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func readByNumberOrHash[T any](c Chain, blockNrOrHash rpc.BlockNumberOrHash, fromMem blocks.Extractor[T], fromDB blocks.DBReaderWithErr[T]) (*T, error) {
-	blockNrOrHash.RequireCanonical = true
-	return notFoundIsNil(blocks.FromNumberOrHash(c, blockNrOrHash, fromMem, fromDB))
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func readByNumberAndHash[T any](c Chain, h common.Hash, num rpc.BlockNumber, fromMem blocks.Extractor[T], fromDB blocks.DBReader[T]) (*T, error) {
-	return notFoundIsNil(blocks.FromNumberAndHash(c, h, num, fromMem, fromDB.WithNilErr()))
+	_ = "STUB: not implemented"
+	return nil, nil
 }

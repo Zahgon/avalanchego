@@ -16,12 +16,4 @@ type metrics struct {
 	discardedTxs metricspkg.Counter // Count of all discarded transactions
 }
 
-func newMetrics() *metrics {
-	return &metrics{
-		pendingTxs:   metricspkg.GetOrRegisterGauge("atomic_mempool_pending_txs", nil),
-		currentTxs:   metricspkg.GetOrRegisterGauge("atomic_mempool_current_txs", nil),
-		issuedTxs:    metricspkg.GetOrRegisterGauge("atomic_mempool_issued_txs", nil),
-		addedTxs:     metricspkg.GetOrRegisterCounter("atomic_mempool_added_txs", nil),
-		discardedTxs: metricspkg.GetOrRegisterCounter("atomic_mempool_discarded_txs", nil),
-	}
-}
+func newMetrics() *metrics { _ = "STUB: not implemented"; return nil }

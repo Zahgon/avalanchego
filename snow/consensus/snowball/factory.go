@@ -13,23 +13,23 @@ var (
 type snowballFactory struct{}
 
 func (snowballFactory) NewNnary(params Parameters, choice ids.ID) Nnary {
-	sb := newNnarySnowball(params.AlphaPreference, newSingleTerminationCondition(params.AlphaConfidence, params.Beta), choice)
-	return &sb
+	_ = "STUB: not implemented"
+	return *new(Nnary)
 }
 
 func (snowballFactory) NewUnary(params Parameters) Unary {
-	sb := newUnarySnowball(params.AlphaPreference, newSingleTerminationCondition(params.AlphaConfidence, params.Beta))
-	return &sb
+	_ = "STUB: not implemented"
+	return *new(Unary)
 }
 
 type snowflakeFactory struct{}
 
 func (snowflakeFactory) NewNnary(params Parameters, choice ids.ID) Nnary {
-	sf := newNnarySnowflake(params.AlphaPreference, newSingleTerminationCondition(params.AlphaConfidence, params.Beta), choice)
-	return &sf
+	_ = "STUB: not implemented"
+	return *new(Nnary)
 }
 
 func (snowflakeFactory) NewUnary(params Parameters) Unary {
-	sf := newUnarySnowflake(params.AlphaPreference, newSingleTerminationCondition(params.AlphaConfidence, params.Beta))
-	return &sf
+	_ = "STUB: not implemented"
+	return *new(Unary)
 }

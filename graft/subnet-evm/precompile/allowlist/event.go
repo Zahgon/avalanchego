@@ -8,10 +8,8 @@
 package allowlist
 
 import (
-	"math/big"
-
-	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
+	"github.com/ava-labs/libevm/common"
 )
 
 const (
@@ -24,17 +22,12 @@ const (
 // PackRoleSetEvent packs the event into the appropriate arguments for RoleSet.
 // It returns topic hashes and the encoded non-indexed data.
 func PackRoleSetEvent(role Role, account common.Address, caller common.Address, oldRole Role) ([]common.Hash, []byte, error) {
-	return AllowListABI.PackEvent("RoleSet", role.Big(), account, caller, oldRole.Big())
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // UnpackRoleSetEventData attempts to unpack non-indexed [dataBytes].
 func UnpackRoleSetEventData(dataBytes []byte) (Role, error) {
-	eventData := struct {
-		OldRole *big.Int
-	}{}
-	err := AllowListABI.UnpackIntoInterface(&eventData, "RoleSet", dataBytes)
-	if err != nil {
-		return Role{}, err
-	}
-	return FromBig(eventData.OldRole)
+	_ = "STUB: not implemented"
+	return *new(Role), nil
 }

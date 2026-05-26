@@ -4,18 +4,11 @@
 package precompiletest
 
 import (
-	"math/big"
 	"testing"
-	"time"
 
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/core/rawdb"
-	"github.com/ava-labs/libevm/core/state"
-	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 
-	"github.com/ava-labs/avalanchego/graft/evm/utils/utilstest"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/commontype"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/core/extstate"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
@@ -74,163 +67,39 @@ type PrecompileRunparams struct {
 }
 
 func (test PrecompileTest) Run(t *testing.T, module modules.Module) {
-	state := newTestStateDB(t, map[common.Address][]predicate.Predicate{
-		module.Address: test.Predicates,
-	})
-	runParams := test.setup(t, module, state)
-
-	if runParams.Input != nil {
-		ret, remainingGas, err := module.Contract.Run(runParams.AccessibleState, runParams.Caller, runParams.ContractAddress, runParams.Input, runParams.SuppliedGas, runParams.ReadOnly)
-		require.ErrorIs(t, err, test.ExpectedErr)
-		require.Equal(t, uint64(0), remainingGas)
-		require.Equal(t, test.ExpectedRes, ret)
-	}
-
-	if test.AfterHook != nil {
-		test.AfterHook(t, state.StateDB)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 func (test PrecompileTest) Bench(b *testing.B, module modules.Module) {
-	state := newTestStateDB(b, map[common.Address][]predicate.Predicate{
-		module.Address: test.Predicates,
-	})
-	runParams := test.setup(b, module, state)
-
-	if runParams.Input == nil {
-		b.Skip("Skipping precompile benchmark due to nil input (used for configuration tests)")
-	}
-
-	stateDB := runParams.AccessibleState.GetStateDB()
-	snapshot := stateDB.Snapshot()
-
-	ret, remainingGas, err := module.Contract.Run(runParams.AccessibleState, runParams.Caller, runParams.ContractAddress, runParams.Input, runParams.SuppliedGas, runParams.ReadOnly)
-	require.ErrorIs(b, err, test.ExpectedErr)
-	require.Equal(b, uint64(0), remainingGas)
-	require.Equal(b, test.ExpectedRes, ret)
-
-	if test.AfterHook != nil {
-		test.AfterHook(b, state.StateDB)
-	}
-
-	b.ReportAllocs()
-	start := time.Now()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		// Revert to the previous snapshot and take a new snapshot, so we can reset the state after execution
-		stateDB.RevertToSnapshot(snapshot)
-		snapshot = stateDB.Snapshot()
-
-		// Ignore return values for benchmark
-		_, _, _ = module.Contract.Run(runParams.AccessibleState, runParams.Caller, runParams.ContractAddress, runParams.Input, runParams.SuppliedGas, runParams.ReadOnly)
-	}
-	b.StopTimer()
-
-	elapsed := uint64(time.Since(start))
-	if elapsed < 1 {
-		elapsed = 1
-	}
-	gasUsed := runParams.SuppliedGas * uint64(b.N)
-	b.ReportMetric(float64(runParams.SuppliedGas), "gas/op")
-	// Keep it as uint64, multiply 100 to get two digit float later
-	mgasps := (100 * 1000 * gasUsed) / elapsed
-	b.ReportMetric(float64(mgasps)/100, "mgas/s")
-
-	// Execute the test one final time to ensure that if our RevertToSnapshot logic breaks such that each run is actually failing or resulting in unexpected behavior
-	// the benchmark should catch the error here.
-	stateDB.RevertToSnapshot(snapshot)
-	ret, remainingGas, err = module.Contract.Run(runParams.AccessibleState, runParams.Caller, runParams.ContractAddress, runParams.Input, runParams.SuppliedGas, runParams.ReadOnly)
-	require.ErrorIs(b, err, test.ExpectedErr)
-	require.Equal(b, uint64(0), remainingGas)
-	require.Equal(b, test.ExpectedRes, ret)
-
-	if test.AfterHook != nil {
-		test.AfterHook(b, state.StateDB)
-	}
+	_ = "STUB: not implemented"
+	return
 }
+
+// Revert to the previous snapshot and take a new snapshot, so we can reset the state after execution
+
+// Ignore return values for benchmark
+
+// Keep it as uint64, multiply 100 to get two digit float later
+
+// Execute the test one final time to ensure that if our RevertToSnapshot logic breaks such that each run is actually failing or resulting in unexpected behavior
+// the benchmark should catch the error here.
 
 func (test PrecompileTest) setup(t testing.TB, module modules.Module, state *testStateDB) PrecompileRunparams {
-	t.Helper()
-	contractAddress := module.Address
-
-	ctrl := gomock.NewController(t)
-
-	if test.BeforeHook != nil {
-		test.BeforeHook(t, state.StateDB)
-	}
-
-	if test.ChainConfigFn == nil {
-		test.ChainConfigFn = func(ctrl *gomock.Controller) precompileconfig.ChainConfig {
-			mockChainConfig := precompileconfig.NewMockChainConfig(ctrl)
-			mockChainConfig.EXPECT().GetFeeConfig().AnyTimes().Return(commontype.ValidTestFeeConfig)
-			mockChainConfig.EXPECT().AllowedFeeRecipients().AnyTimes().Return(false)
-			mockChainConfig.EXPECT().IsDurango(gomock.Any()).AnyTimes().Return(true)
-			return mockChainConfig
-		}
-	}
-	chainConfig := test.ChainConfigFn(ctrl)
-
-	blockContext := contract.NewMockBlockContext(ctrl)
-	blockContext.EXPECT().Timestamp().Return(uint64(time.Now().Unix())).AnyTimes()
-	if test.SetupBlockContext != nil {
-		test.SetupBlockContext(blockContext)
-	} else {
-		blockContext.EXPECT().Number().Return(big.NewInt(0)).AnyTimes()
-	}
-	snowContext := utilstest.NewTestSnowContext(t, utilstest.SubnetEVMTestChainID)
-
-	// If Rules is explicitly set, use it; otherwise derive from ChainConfig
-	rules := test.Rules
-	if (rules == extras.AvalancheRules{}) {
-		rules = extras.AvalancheRules{
-			IsDurango: chainConfig.IsDurango(blockContext.Timestamp()),
-		}
-	}
-
-	accessibleState := contract.NewMockAccessibleState(ctrl)
-	accessibleState.EXPECT().GetStateDB().Return(state).AnyTimes()
-	accessibleState.EXPECT().GetBlockContext().Return(blockContext).AnyTimes()
-	accessibleState.EXPECT().GetSnowContext().Return(snowContext).AnyTimes()
-	accessibleState.EXPECT().GetRules().Return(rules).AnyTimes()
-
-	if test.Config != nil {
-		require.NoError(t, module.Configure(chainConfig, test.Config, state, blockContext))
-	}
-
-	input := test.Input
-	if test.InputFn != nil {
-		input = test.InputFn(t)
-	}
-
-	return PrecompileRunparams{
-		AccessibleState: accessibleState,
-		Caller:          test.Caller,
-		ContractAddress: contractAddress,
-		Input:           input,
-		SuppliedGas:     test.SuppliedGas,
-		ReadOnly:        test.ReadOnly,
-	}
+	_ = "STUB: not implemented"
+	return *new(PrecompileRunparams)
 }
 
-func RunPrecompileTests(t *testing.T, module modules.Module, tests []PrecompileTest) {
-	t.Helper()
+// If Rules is explicitly set, use it; otherwise derive from ChainConfig
 
-	for _, test := range tests {
-		t.Run(test.Name, func(t *testing.T) {
-			test.Run(t, module)
-		})
-	}
+func RunPrecompileTests(t *testing.T, module modules.Module, tests []PrecompileTest) {
+	_ = "STUB: not implemented"
+	return
 }
 
 func RunPrecompileBenchmarks(b *testing.B, module modules.Module, tests []PrecompileTest) {
-	b.Helper()
-
-	for _, test := range tests {
-		b.Run(test.Name, func(b *testing.B) {
-			test.Bench(b, module)
-		})
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // testStateDB allows for mocking the predicate storage slots without calling
@@ -242,19 +111,11 @@ type testStateDB struct {
 }
 
 func newTestStateDB(t testing.TB, predicates map[common.Address][]predicate.Predicate) *testStateDB {
-	db := rawdb.NewMemoryDatabase()
-	statedb, err := state.New(common.Hash{}, state.NewDatabase(db), nil)
-	require.NoError(t, err)
-	return &testStateDB{
-		StateDB:    extstate.New(statedb),
-		predicates: predicates,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *testStateDB) GetPredicate(address common.Address, index int) (predicate.Predicate, bool) {
-	preds := s.predicates[address]
-	if index < 0 || index >= len(preds) {
-		return nil, false
-	}
-	return preds[index], true
+	_ = "STUB: not implemented"
+	return *new(predicate.Predicate), false
 }

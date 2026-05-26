@@ -5,7 +5,6 @@ package genesis
 
 import (
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/hashing"
 	"github.com/ava-labs/avalanchego/vms/example/xsvm/block"
 )
 
@@ -19,19 +18,6 @@ type Allocation struct {
 	Balance uint64      `serialize:"true" json:"balance"`
 }
 
-func Parse(bytes []byte) (*Genesis, error) {
-	genesis := &Genesis{}
-	_, err := Codec.Unmarshal(bytes, genesis)
-	return genesis, err
-}
+func Parse(bytes []byte) (*Genesis, error) { _ = "STUB: not implemented"; return nil, nil }
 
-func Block(genesis *Genesis) (*block.Stateless, error) {
-	bytes, err := Codec.Marshal(CodecVersion, genesis)
-	if err != nil {
-		return nil, err
-	}
-	return &block.Stateless{
-		ParentID:  hashing.ComputeHash256Array(bytes),
-		Timestamp: genesis.Timestamp,
-	}, nil
-}
+func Block(genesis *Genesis) (*block.Stateless, error) { _ = "STUB: not implemented"; return nil, nil }

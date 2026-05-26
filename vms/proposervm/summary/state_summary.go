@@ -28,22 +28,12 @@ type stateSummary struct {
 	bytes []byte
 }
 
-func (s *stateSummary) ID() ids.ID {
-	return s.id
-}
+func (s *stateSummary) ID() ids.ID { _ = "STUB: not implemented"; return *new(ids.ID) }
 
-func (s *stateSummary) ForkHeight() uint64 {
-	return s.Height
-}
+func (s *stateSummary) ForkHeight() uint64 { _ = "STUB: not implemented"; return 0 }
 
-func (s *stateSummary) BlockBytes() []byte {
-	return s.Block
-}
+func (s *stateSummary) BlockBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (s *stateSummary) InnerSummaryBytes() []byte {
-	return s.InnerSummary
-}
+func (s *stateSummary) InnerSummaryBytes() []byte { _ = "STUB: not implemented"; return nil }
 
-func (s *stateSummary) Bytes() []byte {
-	return s.bytes
-}
+func (s *stateSummary) Bytes() []byte { _ = "STUB: not implemented"; return nil }

@@ -4,21 +4,12 @@
 package genesis
 
 import (
-	"cmp"
-	"encoding/base64"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/formatting/address"
-	"github.com/ava-labs/avalanchego/utils/math"
 	"github.com/ava-labs/avalanchego/vms/platformvm/signer"
 )
 
@@ -43,26 +34,11 @@ type Allocation struct {
 }
 
 func (a Allocation) Unparse(networkID uint32) (UnparsedAllocation, error) {
-	ua := UnparsedAllocation{
-		InitialAmount:  a.InitialAmount,
-		UnlockSchedule: a.UnlockSchedule,
-		ETHAddr:        "0x" + hex.EncodeToString(a.ETHAddr.Bytes()),
-	}
-	avaxAddr, err := address.Format(
-		"X",
-		constants.GetHRP(networkID),
-		a.AVAXAddr.Bytes(),
-	)
-	ua.AVAXAddr = avaxAddr
-	return ua, err
+	_ = "STUB: not implemented"
+	return *new(UnparsedAllocation), nil
 }
 
-func (a Allocation) Compare(other Allocation) int {
-	if amountCmp := cmp.Compare(a.InitialAmount, other.InitialAmount); amountCmp != 0 {
-		return amountCmp
-	}
-	return a.AVAXAddr.Compare(other.AVAXAddr)
-}
+func (a Allocation) Compare(other Allocation) int { _ = "STUB: not implemented"; return 0 }
 
 type Staker struct {
 	NodeID        ids.NodeID                `json:"nodeID"`
@@ -72,17 +48,8 @@ type Staker struct {
 }
 
 func (s Staker) Unparse(networkID uint32) (UnparsedStaker, error) {
-	avaxAddr, err := address.Format(
-		"X",
-		constants.GetHRP(networkID),
-		s.RewardAddress.Bytes(),
-	)
-	return UnparsedStaker{
-		NodeID:        s.NodeID,
-		RewardAddress: avaxAddr,
-		DelegationFee: s.DelegationFee,
-		Signer:        s.Signer,
-	}, err
+	_ = "STUB: not implemented"
+	return *new(UnparsedStaker), nil
 }
 
 // Config contains the genesis addresses used to construct a genesis
@@ -103,63 +70,11 @@ type Config struct {
 }
 
 func (c Config) Unparse() (UnparsedConfig, error) {
-	uc := UnparsedConfig{
-		NetworkID:                  c.NetworkID,
-		Allocations:                make([]UnparsedAllocation, len(c.Allocations)),
-		StartTime:                  c.StartTime,
-		InitialStakeDuration:       c.InitialStakeDuration,
-		InitialStakeDurationOffset: c.InitialStakeDurationOffset,
-		InitialStakedFunds:         make([]string, len(c.InitialStakedFunds)),
-		InitialStakers:             make([]UnparsedStaker, len(c.InitialStakers)),
-		CChainGenesis:              c.CChainGenesis,
-		Message:                    c.Message,
-	}
-	for i, a := range c.Allocations {
-		ua, err := a.Unparse(uc.NetworkID)
-		if err != nil {
-			return uc, err
-		}
-		uc.Allocations[i] = ua
-	}
-	for i, isa := range c.InitialStakedFunds {
-		avaxAddr, err := address.Format(
-			"X",
-			constants.GetHRP(uc.NetworkID),
-			isa.Bytes(),
-		)
-		if err != nil {
-			return uc, err
-		}
-		uc.InitialStakedFunds[i] = avaxAddr
-	}
-	for i, is := range c.InitialStakers {
-		uis, err := is.Unparse(c.NetworkID)
-		if err != nil {
-			return uc, err
-		}
-		uc.InitialStakers[i] = uis
-	}
-
-	return uc, nil
+	_ = "STUB: not implemented"
+	return *new(UnparsedConfig), nil
 }
 
-func (c *Config) InitialSupply() (uint64, error) {
-	initialSupply := uint64(0)
-	for _, allocation := range c.Allocations {
-		newInitialSupply, err := math.Add(initialSupply, allocation.InitialAmount)
-		if err != nil {
-			return 0, err
-		}
-		for _, unlock := range allocation.UnlockSchedule {
-			newInitialSupply, err = math.Add(newInitialSupply, unlock.Amount)
-			if err != nil {
-				return 0, err
-			}
-		}
-		initialSupply = newInitialSupply
-	}
-	return initialSupply, nil
-}
+func (c *Config) InitialSupply() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 var (
 	// MainnetConfig is the config that should be used to generate the mainnet
@@ -220,50 +135,20 @@ func init() {
 	LocalConfig.StartTime = uint64(recentStartTime.Unix())
 }
 
-func GetConfig(networkID uint32) *Config {
-	switch networkID {
-	case constants.MainnetID:
-		return &MainnetConfig
-	case constants.FujiID:
-		return &FujiConfig
-	case constants.LocalID:
-		return &LocalConfig
-	default:
-		tempConfig := LocalConfig
-		tempConfig.NetworkID = networkID
-		return &tempConfig
-	}
-}
+func GetConfig(networkID uint32) *Config { _ = "STUB: not implemented"; return nil }
 
 // GetConfigFile loads a *Config from a provided filepath.
-func GetConfigFile(fp string) (*Config, error) {
-	bytes, err := os.ReadFile(filepath.Clean(fp))
-	if err != nil {
-		return nil, fmt.Errorf("unable to load file %s: %w", fp, err)
-	}
-	return parseGenesisJSONBytesToConfig(bytes)
-}
+func GetConfigFile(fp string) (*Config, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // GetConfigContent loads a *Config from a provided environment variable
 func GetConfigContent(genesisContent string) (*Config, error) {
-	bytes, err := base64.StdEncoding.DecodeString(genesisContent)
-	if err != nil {
-		return nil, fmt.Errorf("unable to decode base64 content: %w", err)
-	}
-	return parseGenesisJSONBytesToConfig(bytes)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func parseGenesisJSONBytesToConfig(bytes []byte) (*Config, error) {
-	var unparsedConfig UnparsedConfig
-	if err := json.Unmarshal(bytes, &unparsedConfig); err != nil {
-		return nil, fmt.Errorf("%w: %w", errInvalidGenesisJSON, err)
-	}
-
-	config, err := unparsedConfig.Parse()
-	if err != nil {
-		return nil, fmt.Errorf("unable to parse config: %w", err)
-	}
-	return &config, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // getRecentStartTime advances [definedStartTime] in chunks of [period]. It
@@ -273,13 +158,6 @@ func getRecentStartTime(
 	now time.Time,
 	period time.Duration,
 ) time.Time {
-	startTime := definedStartTime
-	for {
-		nextStartTime := startTime.Add(period)
-		if now.Before(nextStartTime) {
-			break
-		}
-		startTime = nextStartTime
-	}
-	return startTime
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }

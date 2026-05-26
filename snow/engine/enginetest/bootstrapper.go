@@ -7,8 +7,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/ava-labs/avalanchego/snow/engine/common"
 )
 
@@ -26,18 +24,6 @@ type Bootstrapper struct {
 	ClearF func(ctx context.Context) error
 }
 
-func (b *Bootstrapper) Default(cant bool) {
-	b.Engine.Default(cant)
+func (b *Bootstrapper) Default(cant bool) { _ = "STUB: not implemented"; return }
 
-	b.CantClear = cant
-}
-
-func (b *Bootstrapper) Clear(ctx context.Context) error {
-	if b.ClearF != nil {
-		return b.ClearF(ctx)
-	}
-	if b.T != nil {
-		require.False(b.T, b.CantClear, errClear)
-	}
-	return errClear
-}
+func (b *Bootstrapper) Clear(ctx context.Context) error { _ = "STUB: not implemented"; return nil }

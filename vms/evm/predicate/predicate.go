@@ -5,7 +5,6 @@ package predicate
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
@@ -35,45 +34,16 @@ type Predicate []common.Hash
 //
 // It chunks the predicate by appending [predicate.Delimiter] and zero-padding
 // to a multiple of 32 bytes.
-func New(b []byte) Predicate {
-	numUnpaddedChunks := len(b) / common.HashLength
-	chunks := make([]common.Hash, numUnpaddedChunks+1)
-	// Copy over chunks that don't require padding.
-	for i := range chunks[:numUnpaddedChunks] {
-		chunks[i] = common.Hash(b[common.HashLength*i:])
-	}
+func New(b []byte) Predicate { _ = "STUB: not implemented"; return *new(Predicate) }
 
-	// Add the delimiter and required padding to the last chunk.
-	copy(chunks[numUnpaddedChunks][:], b[common.HashLength*numUnpaddedChunks:])
-	chunks[numUnpaddedChunks][len(b)%common.HashLength] = delimiter
-	return chunks
-}
+// Copy over chunks that don't require padding.
+
+// Add the delimiter and required padding to the last chunk.
 
 // Bytes converts the chunked predicate into the original message.
 //
 // Returns an error if it finds an incorrect encoding.
-func (p Predicate) Bytes() ([]byte, error) {
-	padded := make([]byte, common.HashLength*len(p))
-	for i, chunk := range p {
-		copy(padded[common.HashLength*i:], chunk[:])
-	}
-	trimmed := common.TrimRightZeroes(padded)
-	if len(trimmed) == 0 {
-		return nil, fmt.Errorf("%w: length (%d)", errMissingDelimiter, len(p))
-	}
-
-	expectedLen := (len(trimmed) + common.HashLength - 1) / common.HashLength
-	if expectedLen != len(p) {
-		return nil, fmt.Errorf("%w: got length (%d), expected length (%d)", errExcessPadding, len(p), expectedLen)
-	}
-
-	delimiterIndex := len(trimmed) - 1
-	if trimmed[delimiterIndex] != delimiter {
-		return nil, errWrongDelimiter
-	}
-
-	return trimmed[:delimiterIndex], nil
-}
+func (p Predicate) Bytes() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 type Predicates interface {
 	HasPredicate(address common.Address) bool
@@ -84,13 +54,6 @@ type Predicates interface {
 // If an address is specified multiple times in the access list, each set of
 // storage keys for that address is considered an individual predicate.
 func FromAccessList(rules Predicates, list types.AccessList) map[common.Address][]Predicate {
-	predicates := make(map[common.Address][]Predicate)
-	for _, el := range list {
-		if !rules.HasPredicate(el.Address) {
-			continue
-		}
-		predicates[el.Address] = append(predicates[el.Address], el.StorageKeys)
-	}
-
-	return predicates
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -29,11 +29,7 @@ type Scheduler[T comparable] struct {
 	dependents map[T][]*job[T]
 }
 
-func NewScheduler[T comparable]() *Scheduler[T] {
-	return &Scheduler[T]{
-		dependents: make(map[T][]*job[T]),
-	}
-}
+func NewScheduler[T comparable]() *Scheduler[T] { _ = "STUB: not implemented"; return nil }
 
 // Schedule a job to be executed once all of its dependencies are resolved. If a
 // job is scheduled with no dependencies, it's executed immediately.
@@ -44,33 +40,21 @@ func NewScheduler[T comparable]() *Scheduler[T] {
 // While registering a job with duplicate dependencies is discouraged, it is
 // allowed.
 func (s *Scheduler[T]) Schedule(ctx context.Context, userJob Job[T], dependencies ...T) error {
-	numUnresolved := len(dependencies)
-	if numUnresolved == 0 {
-		return userJob.Execute(ctx, nil, nil)
-	}
-
-	j := &job[T]{
-		numUnresolved: numUnresolved,
-		job:           userJob,
-	}
-	for _, d := range dependencies {
-		s.dependents[d] = append(s.dependents[d], j)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
 // NumDependencies returns the number of dependencies that jobs are currently
 // blocking on.
-func (s *Scheduler[_]) NumDependencies() int {
-	return len(s.dependents)
-}
+func (s *Scheduler[_]) NumDependencies() int { _ = "STUB: not implemented"; return 0 }
 
 // Fulfill a dependency. If all dependencies for a job are resolved, the job
 // will be executed.
 //
 // It is safe to call the scheduler during the execution of a job.
 func (s *Scheduler[T]) Fulfill(ctx context.Context, dependency T) error {
-	return s.resolveDependency(ctx, dependency, true)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Abandon a dependency. If all dependencies for a job are resolved, the job
@@ -78,7 +62,8 @@ func (s *Scheduler[T]) Fulfill(ctx context.Context, dependency T) error {
 //
 // It is safe to call the scheduler during the execution of a job.
 func (s *Scheduler[T]) Abandon(ctx context.Context, dependency T) error {
-	return s.resolveDependency(ctx, dependency, false)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Scheduler[T]) resolveDependency(
@@ -86,24 +71,6 @@ func (s *Scheduler[T]) resolveDependency(
 	dependency T,
 	fulfilled bool,
 ) error {
-	jobs := s.dependents[dependency]
-	delete(s.dependents, dependency)
-
-	for _, job := range jobs {
-		job.numUnresolved--
-		if fulfilled {
-			job.fulfilled = append(job.fulfilled, dependency)
-		} else {
-			job.abandoned = append(job.abandoned, dependency)
-		}
-
-		if job.numUnresolved > 0 {
-			continue
-		}
-
-		if err := job.job.Execute(ctx, job.fulfilled, job.abandoned); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

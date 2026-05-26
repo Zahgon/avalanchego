@@ -4,11 +4,7 @@
 package nativeminter
 
 import (
-	"fmt"
-	"math/big"
-
 	"github.com/ava-labs/libevm/common"
-	"github.com/holiman/uint256"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/modules"
@@ -42,23 +38,15 @@ func init() {
 // MakeConfig returns a new precompile config instance.
 // This is required to Marshal/Unmarshal the precompile config.
 func (*configurator) MakeConfig() precompileconfig.Config {
-	return new(Config)
+	_ = "STUB: not implemented"
+	return *
+
+	// Configure configures [state] with the given [cfg] precompileconfig.
+	// This function is called by the EVM once per precompile contract activation.
+	new(precompileconfig.Config)
 }
 
-// Configure configures [state] with the given [cfg] precompileconfig.
-// This function is called by the EVM once per precompile contract activation.
 func (*configurator) Configure(chainConfig precompileconfig.ChainConfig, cfg precompileconfig.Config, state contract.StateDB, blockContext contract.ConfigurationBlockContext) error {
-	config, ok := cfg.(*Config)
-	if !ok {
-		return fmt.Errorf("expected config type %T, got %T: %v", &Config{}, cfg, cfg)
-	}
-	for to, amount := range config.InitialMint {
-		if amount != nil {
-			amountBig := (*big.Int)(amount)
-			amountU256, _ := uint256.FromBig(amountBig)
-			state.AddBalance(to, amountU256)
-		}
-	}
-
-	return config.AllowListConfig.Configure(chainConfig, ContractAddress, state, blockContext)
+	_ = "STUB: not implemented"
+	return nil
 }

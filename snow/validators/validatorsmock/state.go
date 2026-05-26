@@ -11,7 +11,6 @@ package validatorsmock
 
 import (
 	context "context"
-	reflect "reflect"
 
 	ids "github.com/ava-labs/avalanchego/ids"
 	validators "github.com/ava-labs/avalanchego/snow/validators"
@@ -31,104 +30,83 @@ type StateMockRecorder struct {
 }
 
 // NewState creates a new mock instance.
-func NewState(ctrl *gomock.Controller) *State {
-	mock := &State{ctrl: ctrl}
-	mock.recorder = &StateMockRecorder{mock}
-	return mock
-}
+func NewState(ctrl *gomock.Controller) *State { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *State) EXPECT() *StateMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// GetCurrentHeight mocks base method.
+	return nil
 }
 
-// GetCurrentHeight mocks base method.
 func (m *State) GetCurrentHeight(arg0 context.Context) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCurrentHeight", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GetCurrentHeight indicates an expected call of GetCurrentHeight.
 func (mr *StateMockRecorder) GetCurrentHeight(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCurrentHeight", reflect.TypeOf((*State)(nil).GetCurrentHeight), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetCurrentValidatorSet mocks base method.
 func (m *State) GetCurrentValidatorSet(ctx context.Context, subnetID ids.ID) (map[ids.ID]*validators.GetCurrentValidatorOutput, uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetCurrentValidatorSet", ctx, subnetID)
-	ret0, _ := ret[0].(map[ids.ID]*validators.GetCurrentValidatorOutput)
-	ret1, _ := ret[1].(uint64)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // GetCurrentValidatorSet indicates an expected call of GetCurrentValidatorSet.
 func (mr *StateMockRecorder) GetCurrentValidatorSet(ctx, subnetID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCurrentValidatorSet", reflect.TypeOf((*State)(nil).GetCurrentValidatorSet), ctx, subnetID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetMinimumHeight mocks base method.
 func (m *State) GetMinimumHeight(arg0 context.Context) (uint64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetMinimumHeight", arg0)
-	ret0, _ := ret[0].(uint64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // GetMinimumHeight indicates an expected call of GetMinimumHeight.
 func (mr *StateMockRecorder) GetMinimumHeight(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMinimumHeight", reflect.TypeOf((*State)(nil).GetMinimumHeight), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetSubnetID mocks base method.
 func (m *State) GetSubnetID(ctx context.Context, chainID ids.ID) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSubnetID", ctx, chainID)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // GetSubnetID indicates an expected call of GetSubnetID.
 func (mr *StateMockRecorder) GetSubnetID(ctx, chainID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubnetID", reflect.TypeOf((*State)(nil).GetSubnetID), ctx, chainID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetValidatorSet mocks base method.
 func (m *State) GetValidatorSet(ctx context.Context, height uint64, subnetID ids.ID) (map[ids.NodeID]*validators.GetValidatorOutput, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetValidatorSet", ctx, height, subnetID)
-	ret0, _ := ret[0].(map[ids.NodeID]*validators.GetValidatorOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetValidatorSet indicates an expected call of GetValidatorSet.
 func (mr *StateMockRecorder) GetValidatorSet(ctx, height, subnetID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetValidatorSet", reflect.TypeOf((*State)(nil).GetValidatorSet), ctx, height, subnetID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetWarpValidatorSets mocks base method.
 func (m *State) GetWarpValidatorSets(ctx context.Context, height uint64) (map[ids.ID]validators.WarpSet, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetWarpValidatorSets", ctx, height)
-	ret0, _ := ret[0].(map[ids.ID]validators.WarpSet)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // GetWarpValidatorSets indicates an expected call of GetWarpValidatorSets.
 func (mr *StateMockRecorder) GetWarpValidatorSets(ctx, height any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWarpValidatorSets", reflect.TypeOf((*State)(nil).GetWarpValidatorSets), ctx, height)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -7,15 +7,7 @@ var _ Iterator[any] = (*slice[any])(nil)
 
 // ToSlice returns a slice that contains all of the elements from [it] in order.
 // [it] will be released before returning.
-func ToSlice[T any](it Iterator[T]) []T {
-	defer it.Release()
-
-	var elements []T
-	for it.Next() {
-		elements = append(elements, it.Value())
-	}
-	return elements
-}
+func ToSlice[T any](it Iterator[T]) []T { _ = "STUB: not implemented"; return nil }
 
 type slice[T any] struct {
 	index    int
@@ -24,20 +16,10 @@ type slice[T any] struct {
 
 // FromSlice returns an iterator that contains [elements] in order. Doesn't sort
 // by anything.
-func FromSlice[T any](elements ...T) Iterator[T] {
-	return &slice[T]{
-		index:    -1,
-		elements: elements,
-	}
-}
+func FromSlice[T any](elements ...T) Iterator[T] { _ = "STUB: not implemented"; return nil }
 
-func (i *slice[_]) Next() bool {
-	i.index++
-	return i.index < len(i.elements)
-}
+func (i *slice[_]) Next() bool { _ = "STUB: not implemented"; return false }
 
-func (i *slice[T]) Value() T {
-	return i.elements[i.index]
-}
+func (i *slice[T]) Value() T { _ = "STUB: not implemented"; return *new(T) }
 
-func (*slice[_]) Release() {}
+func (*slice[_]) Release() { _ = "STUB: not implemented"; return }

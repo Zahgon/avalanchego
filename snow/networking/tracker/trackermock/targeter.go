@@ -10,8 +10,6 @@
 package trackermock
 
 import (
-	reflect "reflect"
-
 	ids "github.com/ava-labs/avalanchego/ids"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -29,27 +27,20 @@ type TargeterMockRecorder struct {
 }
 
 // NewTargeter creates a new mock instance.
-func NewTargeter(ctrl *gomock.Controller) *Targeter {
-	mock := &Targeter{ctrl: ctrl}
-	mock.recorder = &TargeterMockRecorder{mock}
-	return mock
-}
+func NewTargeter(ctrl *gomock.Controller) *Targeter { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *Targeter) EXPECT() *TargeterMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// TargetUsage mocks base method.
+	return nil
 }
 
-// TargetUsage mocks base method.
-func (m *Targeter) TargetUsage(nodeID ids.NodeID) float64 {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TargetUsage", nodeID)
-	ret0, _ := ret[0].(float64)
-	return ret0
-}
+func (m *Targeter) TargetUsage(nodeID ids.NodeID) float64 { _ = "STUB: not implemented"; return 0 }
 
 // TargetUsage indicates an expected call of TargetUsage.
 func (mr *TargeterMockRecorder) TargetUsage(nodeID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TargetUsage", reflect.TypeOf((*Targeter)(nil).TargetUsage), nodeID)
+	_ = "STUB: not implemented"
+	return nil
 }

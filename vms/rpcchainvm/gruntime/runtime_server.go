@@ -21,12 +21,9 @@ type Server struct {
 	runtime runtime.Initializer
 }
 
-func NewServer(runtime runtime.Initializer) *Server {
-	return &Server{
-		runtime: runtime,
-	}
-}
+func NewServer(runtime runtime.Initializer) *Server { _ = "STUB: not implemented"; return nil }
 
 func (s *Server) Initialize(ctx context.Context, req *pb.InitializeRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, s.runtime.Initialize(ctx, uint(req.ProtocolVersion), req.Addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

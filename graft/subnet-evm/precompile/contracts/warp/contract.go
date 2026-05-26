@@ -5,20 +5,14 @@ package warp
 
 import (
 	"errors"
-	"fmt"
 
-	"github.com/ava-labs/libevm/accounts/abi"
 	"github.com/ava-labs/libevm/common"
-	"github.com/ava-labs/libevm/common/math"
-	"github.com/ava-labs/libevm/core/types"
-	"github.com/ava-labs/libevm/core/vm"
 
 	_ "embed"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/contract"
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/precompile/precompileconfig"
 	"github.com/ava-labs/avalanchego/vms/platformvm/warp"
-	"github.com/ava-labs/avalanchego/vms/platformvm/warp/payload"
 )
 
 const addWarpMessageBaseGasCost uint64 = 20_000 // Cost of producing and serving a BLS Signature
@@ -123,110 +117,91 @@ type SendWarpMessageEventData struct {
 
 // PackGetBlockchainID packs the include selector (first 4 func signature bytes).
 // This function is mostly used for tests.
-func PackGetBlockchainID() ([]byte, error) {
-	return WarpABI.Pack("getBlockchainID")
-}
+func PackGetBlockchainID() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // PackGetBlockchainIDOutput attempts to pack given blockchainID of type common.Hash
 // to conform the ABI outputs.
 func PackGetBlockchainIDOutput(blockchainID common.Hash) ([]byte, error) {
-	return WarpABI.PackOutput("getBlockchainID", blockchainID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // getBlockchainID returns the snow Chain Context ChainID of this blockchain.
 //
 //nolint:revive // General-purpose types lose the meaning of args if unused ones are removed
 func getBlockchainID(accessibleState contract.AccessibleState, caller common.Address, addr common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
-	warpGasConfig := CurrentGasConfig(accessibleState.GetRules())
-	if remainingGas, err = contract.DeductGas(suppliedGas, warpGasConfig.GetBlockchainID); err != nil {
-		return nil, 0, err
-	}
-	packedOutput, err := PackGetBlockchainIDOutput(common.Hash(accessibleState.GetSnowContext().ChainID))
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	// Return the packed output and the remaining gas
-	return packedOutput, remainingGas, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
+
+// Return the packed output and the remaining gas
 
 // UnpackGetVerifiedWarpBlockHashInput attempts to unpack [input] into the uint32 type argument
 // assumes that [input] does not include selector (omits first 4 func signature bytes)
 func UnpackGetVerifiedWarpBlockHashInput(input []byte) (uint32, error) {
+	_ = "STUB: not implemented"
 	// We don't use strict mode here because it was disabled with Durango.
 	// Since Warp will be deployed after Durango, we don't need to validate padding length.
-	var unpacked uint32
-	if err := WarpABI.UnpackInputIntoInterface(&unpacked, "getVerifiedWarpBlockHash", input); err != nil {
-		return 0, err
-	}
-	return unpacked, nil
+	return 0, nil
 }
 
 // PackGetVerifiedWarpBlockHash packs [index] of type uint32 into the appropriate arguments for getVerifiedWarpBlockHash.
 // the packed bytes include selector (first 4 func signature bytes).
 // This function is mostly used for tests.
 func PackGetVerifiedWarpBlockHash(index uint32) ([]byte, error) {
-	return WarpABI.Pack("getVerifiedWarpBlockHash", index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PackGetVerifiedWarpBlockHashOutput attempts to pack given [outputStruct] of type GetVerifiedWarpBlockHashOutput
 // to conform the ABI outputs.
 func PackGetVerifiedWarpBlockHashOutput(outputStruct GetVerifiedWarpBlockHashOutput) ([]byte, error) {
-	return WarpABI.PackOutput("getVerifiedWarpBlockHash",
-		outputStruct.WarpBlockHash,
-		outputStruct.Valid,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackGetVerifiedWarpBlockHashOutput attempts to unpack [output] as GetVerifiedWarpBlockHashOutput
 // assumes that [output] does not include selector (omits first 4 func signature bytes)
 func UnpackGetVerifiedWarpBlockHashOutput(output []byte) (GetVerifiedWarpBlockHashOutput, error) {
-	outputStruct := GetVerifiedWarpBlockHashOutput{}
-	err := WarpABI.UnpackIntoInterface(&outputStruct, "getVerifiedWarpBlockHash", output)
-
-	return outputStruct, err
+	_ = "STUB: not implemented"
+	return *new(GetVerifiedWarpBlockHashOutput), nil
 }
 
 //nolint:revive // General-purpose types lose the meaning of args if unused ones are removed
 func getVerifiedWarpBlockHash(accessibleState contract.AccessibleState, caller common.Address, addr common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
-	return handleWarpMessage(accessibleState, input, suppliedGas, blockHashHandler{})
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // UnpackGetVerifiedWarpMessageInput attempts to unpack [input] into the uint32 type argument
 // assumes that [input] does not include selector (omits first 4 func signature bytes)
 func UnpackGetVerifiedWarpMessageInput(input []byte) (uint32, error) {
+	_ = "STUB: not implemented"
 	// We don't use strict mode here because it was disabled with Durango.
 	// Since Warp will be deployed after Durango, we don't need to validate padding length.
-	var unpacked uint32
-	if err := WarpABI.UnpackInputIntoInterface(&unpacked, "getVerifiedWarpMessage", input); err != nil {
-		return 0, err
-	}
-	return unpacked, nil
+	return 0, nil
 }
 
 // PackGetVerifiedWarpMessage packs [index] of type uint32 into the appropriate arguments for getVerifiedWarpMessage.
 // the packed bytes include selector (first 4 func signature bytes).
 // This function is mostly used for tests.
 func PackGetVerifiedWarpMessage(index uint32) ([]byte, error) {
-	return WarpABI.Pack("getVerifiedWarpMessage", index)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PackGetVerifiedWarpMessageOutput attempts to pack given [outputStruct] of type GetVerifiedWarpMessageOutput
 // to conform the ABI outputs.
 func PackGetVerifiedWarpMessageOutput(outputStruct GetVerifiedWarpMessageOutput) ([]byte, error) {
-	return WarpABI.PackOutput("getVerifiedWarpMessage",
-		outputStruct.Message,
-		outputStruct.Valid,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackGetVerifiedWarpMessageOutput attempts to unpack [output] as GetVerifiedWarpMessageOutput
 // assumes that [output] does not include selector (omits first 4 func signature bytes)
 func UnpackGetVerifiedWarpMessageOutput(output []byte) (GetVerifiedWarpMessageOutput, error) {
-	outputStruct := GetVerifiedWarpMessageOutput{}
-	err := WarpABI.UnpackIntoInterface(&outputStruct, "getVerifiedWarpMessage", output)
-
-	return outputStruct, err
+	_ = "STUB: not implemented"
+	return *new(GetVerifiedWarpMessageOutput), nil
 }
 
 // getVerifiedWarpMessage retrieves the pre-verified warp message from the predicate storage slots and returns
@@ -234,159 +209,76 @@ func UnpackGetVerifiedWarpMessageOutput(output []byte) (GetVerifiedWarpMessageOu
 //
 //nolint:revive // General-purpose types lose the meaning of args if unused ones are removed
 func getVerifiedWarpMessage(accessibleState contract.AccessibleState, caller common.Address, addr common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
-	return handleWarpMessage(accessibleState, input, suppliedGas, addressedPayloadHandler{})
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 // UnpackSendWarpMessageInput attempts to unpack [input] as []byte
 // assumes that [input] does not include selector (omits first 4 func signature bytes)
 func UnpackSendWarpMessageInput(input []byte) ([]byte, error) {
+	_ = "STUB: not implemented"
 	// We don't use strict mode here because it was disabled with Durango.
 	// Since Warp will be deployed after Durango, we don't need to validate padding length.
-	var unpacked []byte
-	if err := WarpABI.UnpackInputIntoInterface(&unpacked, "sendWarpMessage", input); err != nil {
-		return []byte{}, err
-	}
-	return unpacked, nil
+	return nil, nil
 }
 
 // PackSendWarpMessage packs [inputStruct] of type []byte into the appropriate arguments for sendWarpMessage.
 func PackSendWarpMessage(payloadData []byte) ([]byte, error) {
-	return WarpABI.Pack("sendWarpMessage", payloadData)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // PackSendWarpMessageOutput attempts to pack given messageID of type common.Hash
 // to conform the ABI outputs.
 func PackSendWarpMessageOutput(messageID common.Hash) ([]byte, error) {
-	return WarpABI.PackOutput("sendWarpMessage", messageID)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // UnpackSendWarpMessageOutput attempts to unpack given [output] into the common.Hash type output
 // assumes that [output] does not include selector (omits first 4 func signature bytes)
 func UnpackSendWarpMessageOutput(output []byte) (common.Hash, error) {
-	res, err := WarpABI.Unpack("sendWarpMessage", output)
-	if err != nil {
-		return common.Hash{}, err
-	}
-	unpacked := *abi.ConvertType(res[0], new(common.Hash)).(*common.Hash)
-	return unpacked, nil
+	_ = "STUB: not implemented"
+	return *new(common.Hash), nil
 }
 
 // sendWarpMessage constructs an Avalanche Warp Message containing an AddressedPayload and emits a log to signal validators that they should
 // be willing to sign this message.
 func sendWarpMessage(accessibleState contract.AccessibleState, caller common.Address, _ common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
-	warpGasConfig := CurrentGasConfig(accessibleState.GetRules())
-	if remainingGas, err = contract.DeductGas(suppliedGas, warpGasConfig.SendWarpMessageBase); err != nil {
-		return nil, 0, err
-	}
-	// This gas cost includes buffer room because it is based off of the total size of the input instead of the produced payload.
-	// This ensures that we charge gas before we unpack the variable sized input.
-	payloadGas, overflow := math.SafeMul(warpGasConfig.PerWarpMessageByte, uint64(len(input)))
-	if overflow {
-		return nil, 0, vm.ErrOutOfGas
-	}
-	if remainingGas, err = contract.DeductGas(remainingGas, payloadGas); err != nil {
-		return nil, 0, err
-	}
-	if readOnly {
-		return nil, remainingGas, vm.ErrWriteProtection
-	}
-	// unpack the arguments
-	payloadData, err := UnpackSendWarpMessageInput(input)
-	if err != nil {
-		return nil, remainingGas, fmt.Errorf("%w: %w", errInvalidSendInput, err)
-	}
-
-	var (
-		sourceChainID = accessibleState.GetSnowContext().ChainID
-		sourceAddress = caller
-	)
-
-	addressedPayload, err := payload.NewAddressedCall(
-		sourceAddress.Bytes(),
-		payloadData,
-	)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-	unsignedWarpMessage, err := warp.NewUnsignedMessage(
-		accessibleState.GetSnowContext().NetworkID,
-		sourceChainID,
-		addressedPayload.Bytes(),
-	)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	// Add a log to be handled if this action is finalized.
-	topics, data, err := PackSendWarpMessageEvent(
-		sourceAddress,
-		common.Hash(unsignedWarpMessage.ID()),
-		unsignedWarpMessage.Bytes(),
-	)
-	if err != nil {
-		return nil, remainingGas, err
-	}
-	accessibleState.GetStateDB().AddLog(&types.Log{
-		Address:     ContractAddress,
-		Topics:      topics,
-		Data:        data,
-		BlockNumber: accessibleState.GetBlockContext().Number().Uint64(),
-	})
-
-	packed, err := PackSendWarpMessageOutput(common.Hash(unsignedWarpMessage.ID()))
-	if err != nil {
-		return nil, remainingGas, err
-	}
-
-	// Return the packed message ID and the remaining gas
-	return packed, remainingGas, nil
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
+
+// This gas cost includes buffer room because it is based off of the total size of the input instead of the produced payload.
+// This ensures that we charge gas before we unpack the variable sized input.
+
+// unpack the arguments
+
+// Add a log to be handled if this action is finalized.
+
+// Return the packed message ID and the remaining gas
 
 // PackSendWarpMessageEvent packs the given arguments into SendWarpMessage events including topics and data.
 func PackSendWarpMessageEvent(sourceAddress common.Address, unsignedMessageID common.Hash, unsignedMessageBytes []byte) ([]common.Hash, []byte, error) {
-	return WarpABI.PackEvent("SendWarpMessage", sourceAddress, unsignedMessageID, unsignedMessageBytes)
+	_ = "STUB: not implemented"
+	return nil, nil, nil
 }
 
 // UnpackSendWarpEventDataToMessage attempts to unpack event [data] as warp.UnsignedMessage.
 func UnpackSendWarpEventDataToMessage(data []byte) (*warp.UnsignedMessage, error) {
-	event := SendWarpMessageEventData{}
-	err := WarpABI.UnpackIntoInterface(&event, "SendWarpMessage", data)
-	if err != nil {
-		return nil, err
-	}
-	return warp.ParseUnsignedMessage(event.Message)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // createWarpPrecompile returns a StatefulPrecompiledContract with getters and setters for the precompile.
 func createWarpPrecompile() contract.StatefulPrecompiledContract {
-	abiFunctionMap := map[string]contract.RunStatefulPrecompileFunc{
-		"getBlockchainID":          getBlockchainID,
-		"getVerifiedWarpBlockHash": getVerifiedWarpBlockHash,
-		"getVerifiedWarpMessage":   getVerifiedWarpMessage,
-		"sendWarpMessage":          sendWarpMessage,
-	}
-	functions := make([]*contract.StatefulPrecompileFunction, 0, len(abiFunctionMap))
-
-	for name, function := range abiFunctionMap {
-		method, ok := WarpABI.Methods[name]
-		if !ok {
-			panic(fmt.Errorf("given method (%s) does not exist in the ABI", name))
-		}
-		functions = append(functions, contract.NewStatefulPrecompileFunction(method.ID, function))
-	}
-	// Construct the contract with no fallback function.
-	statefulContract, err := contract.NewStatefulPrecompileContract(nil, functions)
-	if err != nil {
-		panic(err)
-	}
-	return statefulContract
+	_ = "STUB: not implemented"
+	return *new(contract.StatefulPrecompiledContract)
 }
 
+// Construct the contract with no fallback function.
+
 func CurrentGasConfig(rules precompileconfig.Rules) GasConfig {
-	switch {
-	case rules.IsGraniteActivated():
-		return graniteGasConfig
-	default:
-		return preGraniteGasConfig
-	}
+	_ = "STUB: not implemented"
+	return *new(GasConfig)
 }

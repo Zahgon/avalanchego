@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"go.opentelemetry.io/otel/attribute"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/message"
@@ -19,8 +18,6 @@ import (
 	"github.com/ava-labs/avalanchego/utils/logging"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/version"
-
-	oteltrace "go.opentelemetry.io/otel/trace"
 )
 
 var _ Router = (*tracedRouter)(nil)
@@ -31,10 +28,8 @@ type tracedRouter struct {
 }
 
 func Trace(router Router, tracer trace.Tracer) Router {
-	return &tracedRouter{
-		router: router,
-		tracer: tracer,
-	}
+	_ = "STUB: not implemented"
+	return *new(Router)
 }
 
 func (r *tracedRouter) Initialize(
@@ -49,18 +44,8 @@ func (r *tracedRouter) Initialize(
 	healthConfig HealthConfig,
 	reg prometheus.Registerer,
 ) error {
-	return r.router.Initialize(
-		nodeID,
-		log,
-		timeoutManager,
-		closeTimeout,
-		criticalChains,
-		sybilProtectionEnabled,
-		trackedSubnets,
-		onFatal,
-		healthConfig,
-		reg,
-	)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (r *tracedRouter) RegisterRequest(
@@ -72,90 +57,45 @@ func (r *tracedRouter) RegisterRequest(
 	failedMsg *message.InboundMessage,
 	engineType p2p.EngineType,
 ) {
-	r.router.RegisterRequest(
-		ctx,
-		nodeID,
-		chainID,
-		requestID,
-		op,
-		failedMsg,
-		engineType,
-	)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (r *tracedRouter) HandleInbound(ctx context.Context, msg *message.InboundMessage) {
-	m := msg.Message
-	chainID, err := message.GetChainID(m)
-	if err != nil {
-		r.router.HandleInbound(ctx, msg)
-		return
-	}
-
-	ctx, span := r.tracer.Start(ctx, "tracedRouter.HandleInbound", oteltrace.WithAttributes(
-		attribute.Stringer("nodeID", msg.NodeID),
-		attribute.Stringer("messageOp", msg.Op),
-		attribute.Stringer("chainID", chainID),
-	))
-	defer span.End()
-
-	r.router.HandleInbound(ctx, msg)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (r *tracedRouter) HandleInternal(ctx context.Context, msg *message.InboundMessage) {
-	m := msg.Message
-	chainID, err := message.GetChainID(m)
-	if err != nil {
-		r.router.HandleInternal(ctx, msg)
-		return
-	}
-
-	ctx, span := r.tracer.Start(ctx, "tracedRouter.HandleInternal", oteltrace.WithAttributes(
-		attribute.Stringer("nodeID", msg.NodeID),
-		attribute.Stringer("messageOp", msg.Op),
-		attribute.Stringer("chainID", chainID),
-	))
-	defer span.End()
-
-	r.router.HandleInternal(ctx, msg)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (r *tracedRouter) Shutdown(ctx context.Context) {
-	ctx, span := r.tracer.Start(ctx, "tracedRouter.Shutdown")
-	defer span.End()
-
-	r.router.Shutdown(ctx)
-}
+func (r *tracedRouter) Shutdown(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 func (r *tracedRouter) AddChain(ctx context.Context, chain handler.Handler) {
-	chainCtx := chain.Context()
-	ctx, span := r.tracer.Start(ctx, "tracedRouter.AddChain", oteltrace.WithAttributes(
-		attribute.Stringer("subnetID", chainCtx.SubnetID),
-		attribute.Stringer("chainID", chainCtx.ChainID),
-	))
-	defer span.End()
-
-	r.router.AddChain(ctx, chain)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (r *tracedRouter) Connected(nodeID ids.NodeID, nodeVersion *version.Application, subnetID ids.ID) {
-	r.router.Connected(nodeID, nodeVersion, subnetID)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (r *tracedRouter) Disconnected(nodeID ids.NodeID) {
-	r.router.Disconnected(nodeID)
-}
+func (r *tracedRouter) Disconnected(nodeID ids.NodeID) { _ = "STUB: not implemented"; return }
 
 func (r *tracedRouter) Benched(chainID ids.ID, nodeID ids.NodeID) {
-	r.router.Benched(chainID, nodeID)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (r *tracedRouter) Unbenched(chainID ids.ID, nodeID ids.NodeID) {
-	r.router.Unbenched(chainID, nodeID)
+	_ = "STUB: not implemented"
+	return
 }
 
 func (r *tracedRouter) HealthCheck(ctx context.Context) (interface{}, error) {
-	ctx, span := r.tracer.Start(ctx, "tracedRouter.HealthCheck")
-	defer span.End()
-
-	return r.router.HealthCheck(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

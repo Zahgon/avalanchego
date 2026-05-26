@@ -13,22 +13,11 @@ type syncAverager struct {
 	averager Averager
 }
 
-func NewSyncAverager(averager Averager) Averager {
-	return &syncAverager{
-		averager: averager,
-	}
-}
+func NewSyncAverager(averager Averager) Averager { _ = "STUB: not implemented"; return *new(Averager) }
 
 func (a *syncAverager) Observe(value float64, currentTime time.Time) {
-	a.lock.Lock()
-	defer a.lock.Unlock()
-
-	a.averager.Observe(value, currentTime)
+	_ = "STUB: not implemented"
+	return
 }
 
-func (a *syncAverager) Read() float64 {
-	a.lock.RLock()
-	defer a.lock.RUnlock()
-
-	return a.averager.Read()
-}
+func (a *syncAverager) Read() float64 { _ = "STUB: not implemented"; return 0 }

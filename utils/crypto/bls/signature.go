@@ -24,34 +24,19 @@ type (
 )
 
 // SignatureToBytes returns the compressed big-endian format of the signature.
-func SignatureToBytes(sig *Signature) []byte {
-	return sig.Compress()
-}
+func SignatureToBytes(sig *Signature) []byte { _ = "STUB: not implemented"; return nil }
 
 // SignatureFromBytes parses the compressed big-endian format of the signature
 // into a signature.
 func SignatureFromBytes(sigBytes []byte) (*Signature, error) {
-	sig := new(Signature).Uncompress(sigBytes)
-	if sig == nil {
-		return nil, ErrFailedSignatureDecompress
-	}
-	if !sig.SigValidate(false) {
-		return nil, ErrInvalidSignature
-	}
-	return sig, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // AggregateSignatures aggregates a non-zero number of signatures into a single
 // aggregated signature.
 // Invariant: all [sigs] have been validated.
 func AggregateSignatures(sigs []*Signature) (*Signature, error) {
-	if len(sigs) == 0 {
-		return nil, ErrNoSignatures
-	}
-
-	var agg AggregateSignature
-	if !agg.Aggregate(sigs, false) {
-		return nil, ErrFailedSignatureAggregation
-	}
-	return agg.ToAffine(), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

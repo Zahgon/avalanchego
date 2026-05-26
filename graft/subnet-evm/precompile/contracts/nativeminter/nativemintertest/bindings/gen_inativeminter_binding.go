@@ -8,9 +8,9 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	ethereum "github.com/ava-labs/libevm"
 	"github.com/ava-labs/libevm/accounts/abi"
-	"github.com/ava-labs/avalanchego/graft/subnet-evm/accounts/abi/bind"
 	"github.com/ava-labs/libevm/common"
 	"github.com/ava-labs/libevm/core/types"
 	"github.com/ava-labs/libevm/event"
@@ -99,47 +99,32 @@ type INativeMinterTransactorRaw struct {
 
 // NewINativeMinter creates a new instance of INativeMinter, bound to a specific deployed contract.
 func NewINativeMinter(address common.Address, backend bind.ContractBackend) (*INativeMinter, error) {
-	contract, err := bindINativeMinter(address, backend, backend, backend)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinter{INativeMinterCaller: INativeMinterCaller{contract: contract}, INativeMinterTransactor: INativeMinterTransactor{contract: contract}, INativeMinterFilterer: INativeMinterFilterer{contract: contract}}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewINativeMinterCaller creates a new read-only instance of INativeMinter, bound to a specific deployed contract.
 func NewINativeMinterCaller(address common.Address, caller bind.ContractCaller) (*INativeMinterCaller, error) {
-	contract, err := bindINativeMinter(address, caller, nil, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinterCaller{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewINativeMinterTransactor creates a new write-only instance of INativeMinter, bound to a specific deployed contract.
 func NewINativeMinterTransactor(address common.Address, transactor bind.ContractTransactor) (*INativeMinterTransactor, error) {
-	contract, err := bindINativeMinter(address, nil, transactor, nil)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinterTransactor{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewINativeMinterFilterer creates a new log filterer instance of INativeMinter, bound to a specific deployed contract.
 func NewINativeMinterFilterer(address common.Address, filterer bind.ContractFilterer) (*INativeMinterFilterer, error) {
-	contract, err := bindINativeMinter(address, nil, nil, filterer)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinterFilterer{contract: contract}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // bindINativeMinter binds a generic wrapper to an already deployed contract.
 func bindINativeMinter(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := INativeMinterMetaData.GetAbi()
-	if err != nil {
-		return nil, err
-	}
-	return bind.NewBoundContract(address, *parsed, caller, transactor, filterer), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -147,18 +132,21 @@ func bindINativeMinter(address common.Address, caller bind.ContractCaller, trans
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_INativeMinter *INativeMinterRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _INativeMinter.Contract.INativeMinterCaller.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_INativeMinter *INativeMinterRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _INativeMinter.Contract.INativeMinterTransactor.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_INativeMinter *INativeMinterRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _INativeMinter.Contract.INativeMinterTransactor.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Call invokes the (constant) contract method with params as input values and
@@ -166,154 +154,165 @@ func (_INativeMinter *INativeMinterRaw) Transact(opts *bind.TransactOpts, method
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
 func (_INativeMinter *INativeMinterCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _INativeMinter.Contract.contract.Call(opts, result, method, params...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
 func (_INativeMinter *INativeMinterTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _INativeMinter.Contract.contract.Transfer(opts)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Transact invokes the (paid) contract method with params as input values.
 func (_INativeMinter *INativeMinterTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _INativeMinter.Contract.contract.Transact(opts, method, params...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_INativeMinter *INativeMinterCaller) ReadAllowList(opts *bind.CallOpts, addr common.Address) (*big.Int, error) {
-	var out []interface{}
-	err := _INativeMinter.contract.Call(opts, &out, "readAllowList", addr)
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_INativeMinter *INativeMinterSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _INativeMinter.Contract.ReadAllowList(&_INativeMinter.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // ReadAllowList is a free data retrieval call binding the contract method 0xeb54dae1.
 //
 // Solidity: function readAllowList(address addr) view returns(uint256 role)
 func (_INativeMinter *INativeMinterCallerSession) ReadAllowList(addr common.Address) (*big.Int, error) {
-	return _INativeMinter.Contract.ReadAllowList(&_INativeMinter.CallOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_INativeMinter *INativeMinterTransactor) MintNativeCoin(opts *bind.TransactOpts, addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _INativeMinter.contract.Transact(opts, "mintNativeCoin", addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_INativeMinter *INativeMinterSession) MintNativeCoin(addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _INativeMinter.Contract.MintNativeCoin(&_INativeMinter.TransactOpts, addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // MintNativeCoin is a paid mutator transaction binding the contract method 0x4f5aaaba.
 //
 // Solidity: function mintNativeCoin(address addr, uint256 amount) returns()
 func (_INativeMinter *INativeMinterTransactorSession) MintNativeCoin(addr common.Address, amount *big.Int) (*types.Transaction, error) {
-	return _INativeMinter.Contract.MintNativeCoin(&_INativeMinter.TransactOpts, addr, amount)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_INativeMinter *INativeMinterTransactor) SetAdmin(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.contract.Transact(opts, "setAdmin", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_INativeMinter *INativeMinterSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetAdmin(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetAdmin is a paid mutator transaction binding the contract method 0x704b6c02.
 //
 // Solidity: function setAdmin(address addr) returns()
 func (_INativeMinter *INativeMinterTransactorSession) SetAdmin(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetAdmin(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_INativeMinter *INativeMinterTransactor) SetEnabled(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.contract.Transact(opts, "setEnabled", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_INativeMinter *INativeMinterSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetEnabled(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetEnabled is a paid mutator transaction binding the contract method 0x0aaf7043.
 //
 // Solidity: function setEnabled(address addr) returns()
 func (_INativeMinter *INativeMinterTransactorSession) SetEnabled(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetEnabled(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_INativeMinter *INativeMinterTransactor) SetManager(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.contract.Transact(opts, "setManager", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_INativeMinter *INativeMinterSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetManager(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetManager is a paid mutator transaction binding the contract method 0xd0ebdbe7.
 //
 // Solidity: function setManager(address addr) returns()
 func (_INativeMinter *INativeMinterTransactorSession) SetManager(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetManager(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_INativeMinter *INativeMinterTransactor) SetNone(opts *bind.TransactOpts, addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.contract.Transact(opts, "setNone", addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_INativeMinter *INativeMinterSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetNone(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // SetNone is a paid mutator transaction binding the contract method 0x8c6bfb3b.
 //
 // Solidity: function setNone(address addr) returns()
 func (_INativeMinter *INativeMinterTransactorSession) SetNone(addr common.Address) (*types.Transaction, error) {
-	return _INativeMinter.Contract.SetNone(&_INativeMinter.TransactOpts, addr)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // INativeMinterNativeCoinMintedIterator is returned from FilterNativeCoinMinted and is used to iterate over the raw logs and unpacked data for NativeCoinMinted events raised by the INativeMinter contract.
@@ -333,53 +332,26 @@ type INativeMinterNativeCoinMintedIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *INativeMinterNativeCoinMintedIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(INativeMinterNativeCoinMinted)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(INativeMinterNativeCoinMinted)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *INativeMinterNativeCoinMintedIterator) Error() error {
-	return it.fail
+	_ = "STUB: not implemented"
+
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
+	return nil
 }
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
 func (it *INativeMinterNativeCoinMintedIterator) Close() error {
-	it.sub.Unsubscribe()
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -395,79 +367,26 @@ type INativeMinterNativeCoinMinted struct {
 //
 // Solidity: event NativeCoinMinted(address indexed sender, address indexed recipient, uint256 amount)
 func (_INativeMinter *INativeMinterFilterer) FilterNativeCoinMinted(opts *bind.FilterOpts, sender []common.Address, recipient []common.Address) (*INativeMinterNativeCoinMintedIterator, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-	var recipientRule []interface{}
-	for _, recipientItem := range recipient {
-		recipientRule = append(recipientRule, recipientItem)
-	}
-
-	logs, sub, err := _INativeMinter.contract.FilterLogs(opts, "NativeCoinMinted", senderRule, recipientRule)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinterNativeCoinMintedIterator{contract: _INativeMinter.contract, event: "NativeCoinMinted", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchNativeCoinMinted is a free log subscription operation binding the contract event 0x400cd392f3d56fd10bb1dbd5839fdda8298208ddaa97b368faa053e1850930ee.
 //
 // Solidity: event NativeCoinMinted(address indexed sender, address indexed recipient, uint256 amount)
 func (_INativeMinter *INativeMinterFilterer) WatchNativeCoinMinted(opts *bind.WatchOpts, sink chan<- *INativeMinterNativeCoinMinted, sender []common.Address, recipient []common.Address) (event.Subscription, error) {
-
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-	var recipientRule []interface{}
-	for _, recipientItem := range recipient {
-		recipientRule = append(recipientRule, recipientItem)
-	}
-
-	logs, sub, err := _INativeMinter.contract.WatchLogs(opts, "NativeCoinMinted", senderRule, recipientRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(INativeMinterNativeCoinMinted)
-				if err := _INativeMinter.contract.UnpackLog(event, "NativeCoinMinted", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseNativeCoinMinted is a log parse operation binding the contract event 0x400cd392f3d56fd10bb1dbd5839fdda8298208ddaa97b368faa053e1850930ee.
 //
 // Solidity: event NativeCoinMinted(address indexed sender, address indexed recipient, uint256 amount)
 func (_INativeMinter *INativeMinterFilterer) ParseNativeCoinMinted(log types.Log) (*INativeMinterNativeCoinMinted, error) {
-	event := new(INativeMinterNativeCoinMinted)
-	if err := _INativeMinter.contract.UnpackLog(event, "NativeCoinMinted", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // INativeMinterRoleSetIterator is returned from FilterRoleSet and is used to iterate over the raw logs and unpacked data for RoleSet events raised by the INativeMinter contract.
@@ -487,55 +406,25 @@ type INativeMinterRoleSetIterator struct {
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
 func (it *INativeMinterRoleSetIterator) Next() bool {
+	_ = "STUB: not implemented"
 	// If the iterator failed, stop iterating
-	if it.fail != nil {
-		return false
-	}
-	// If the iterator completed, deliver directly whatever's available
-	if it.done {
-		select {
-		case log := <-it.logs:
-			it.Event = new(INativeMinterRoleSet)
-			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-				it.fail = err
-				return false
-			}
-			it.Event.Raw = log
-			return true
-
-		default:
-			return false
-		}
-	}
-	// Iterator still in progress, wait for either a data or an error event
-	select {
-	case log := <-it.logs:
-		it.Event = new(INativeMinterRoleSet)
-		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
-			it.fail = err
-			return false
-		}
-		it.Event.Raw = log
-		return true
-
-	case err := <-it.sub.Err():
-		it.done = true
-		it.fail = err
-		return it.Next()
-	}
+	return false
 }
+
+// If the iterator completed, deliver directly whatever's available
+
+// Iterator still in progress, wait for either a data or an error event
 
 // Error returns any retrieval or parsing error occurred during filtering.
 func (it *INativeMinterRoleSetIterator) Error() error {
-	return it.fail
-}
+	_ = "STUB: not implemented"
 
-// Close terminates the iteration process, releasing any pending underlying
-// resources.
-func (it *INativeMinterRoleSetIterator) Close() error {
-	it.sub.Unsubscribe()
+	// Close terminates the iteration process, releasing any pending underlying
+	// resources.
 	return nil
 }
+
+func (it *INativeMinterRoleSetIterator) Close() error { _ = "STUB: not implemented"; return nil }
 
 // INativeMinterRoleSet represents a RoleSet event raised by the INativeMinter contract.
 type INativeMinterRoleSet struct {
@@ -550,85 +439,24 @@ type INativeMinterRoleSet struct {
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_INativeMinter *INativeMinterFilterer) FilterRoleSet(opts *bind.FilterOpts, role []*big.Int, account []common.Address, sender []common.Address) (*INativeMinterRoleSetIterator, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _INativeMinter.contract.FilterLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return &INativeMinterRoleSetIterator{contract: _INativeMinter.contract, event: "RoleSet", logs: logs, sub: sub}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // WatchRoleSet is a free log subscription operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_INativeMinter *INativeMinterFilterer) WatchRoleSet(opts *bind.WatchOpts, sink chan<- *INativeMinterRoleSet, role []*big.Int, account []common.Address, sender []common.Address) (event.Subscription, error) {
-
-	var roleRule []interface{}
-	for _, roleItem := range role {
-		roleRule = append(roleRule, roleItem)
-	}
-	var accountRule []interface{}
-	for _, accountItem := range account {
-		accountRule = append(accountRule, accountItem)
-	}
-	var senderRule []interface{}
-	for _, senderItem := range sender {
-		senderRule = append(senderRule, senderItem)
-	}
-
-	logs, sub, err := _INativeMinter.contract.WatchLogs(opts, "RoleSet", roleRule, accountRule, senderRule)
-	if err != nil {
-		return nil, err
-	}
-	return event.NewSubscription(func(quit <-chan struct{}) error {
-		defer sub.Unsubscribe()
-		for {
-			select {
-			case log := <-logs:
-				// New log arrived, parse the event and forward to the user
-				event := new(INativeMinterRoleSet)
-				if err := _INativeMinter.contract.UnpackLog(event, "RoleSet", log); err != nil {
-					return err
-				}
-				event.Raw = log
-
-				select {
-				case sink <- event:
-				case err := <-sub.Err():
-					return err
-				case <-quit:
-					return nil
-				}
-			case err := <-sub.Err():
-				return err
-			case <-quit:
-				return nil
-			}
-		}
-	}), nil
+	_ = "STUB: not implemented"
+	return *new(event.Subscription), nil
 }
+
+// New log arrived, parse the event and forward to the user
 
 // ParseRoleSet is a log parse operation binding the contract event 0xcdb7ea01f00a414d78757bdb0f6391664ba3fedf987eed280927c1e7d695be3e.
 //
 // Solidity: event RoleSet(uint256 indexed role, address indexed account, address indexed sender, uint256 oldRole)
 func (_INativeMinter *INativeMinterFilterer) ParseRoleSet(log types.Log) (*INativeMinterRoleSet, error) {
-	event := new(INativeMinterRoleSet)
-	if err := _INativeMinter.contract.UnpackLog(event, "RoleSet", log); err != nil {
-		return nil, err
-	}
-	event.Raw = log
-	return event, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

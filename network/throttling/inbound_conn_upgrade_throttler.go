@@ -10,8 +10,6 @@ import (
 
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/utils/timer/mockable"
-
-	timerpkg "github.com/ava-labs/avalanchego/utils/timer"
 )
 
 var (
@@ -56,25 +54,20 @@ type InboundConnUpgradeThrottlerConfig struct {
 // Returns an InboundConnUpgradeThrottler that upgrades an inbound
 // connection from a given IP at most every [UpgradeCooldown].
 func NewInboundConnUpgradeThrottler(config InboundConnUpgradeThrottlerConfig) InboundConnUpgradeThrottler {
-	if config.UpgradeCooldown <= 0 || config.MaxRecentConnsUpgraded <= 0 {
-		return &noInboundConnUpgradeThrottler{}
-	}
-	return &inboundConnUpgradeThrottler{
-		InboundConnUpgradeThrottlerConfig: config,
-		done:                              make(chan struct{}),
-		recentIPsAndTimes:                 make(chan ipAndTime, config.MaxRecentConnsUpgraded),
-	}
+	_ = "STUB: not implemented"
+	return *new(InboundConnUpgradeThrottler)
 }
 
 // noInboundConnUpgradeThrottler upgrades all inbound connections
 type noInboundConnUpgradeThrottler struct{}
 
-func (*noInboundConnUpgradeThrottler) Dispatch() {}
+func (*noInboundConnUpgradeThrottler) Dispatch() { _ = "STUB: not implemented"; return }
 
-func (*noInboundConnUpgradeThrottler) Stop() {}
+func (*noInboundConnUpgradeThrottler) Stop() { _ = "STUB: not implemented"; return }
 
 func (*noInboundConnUpgradeThrottler) ShouldUpgrade(netip.AddrPort) bool {
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 type ipAndTime struct {
@@ -101,59 +94,20 @@ type inboundConnUpgradeThrottler struct {
 
 // Returns whether we should upgrade an inbound connection from [ipStr].
 func (n *inboundConnUpgradeThrottler) ShouldUpgrade(addrPort netip.AddrPort) bool {
+	_ = "STUB: not implemented"
 	// Only use addr (not port). This mitigates DoS attacks from many nodes on one
 	// host.
-	addr := addrPort.Addr()
-	if addr.IsLoopback() {
-		// Don't rate-limit loopback IPs
-		return true
-	}
-
-	n.lock.Lock()
-	defer n.lock.Unlock()
-
-	if n.recentIPs.Contains(addr) {
-		// We recently upgraded an inbound connection from this IP
-		return false
-	}
-
-	select {
-	case n.recentIPsAndTimes <- ipAndTime{
-		ip:                addr,
-		cooldownElapsedAt: n.clock.Time().Add(n.UpgradeCooldown),
-	}:
-		n.recentIPs.Add(addr)
-		return true
-	default:
-		return false
-	}
+	return false
 }
 
-func (n *inboundConnUpgradeThrottler) Dispatch() {
-	timer := timerpkg.StoppedTimer()
+// Don't rate-limit loopback IPs
 
-	defer timer.Stop()
-	for {
-		select {
-		case next := <-n.recentIPsAndTimes:
-			// Sleep until it's time to remove the next IP
-			timer.Reset(next.cooldownElapsedAt.Sub(n.clock.Time()))
+// We recently upgraded an inbound connection from this IP
 
-			select {
-			case <-timer.C:
-				// Remove the next IP (we'd upgrade another inbound connection from it)
-				n.lock.Lock()
-				n.recentIPs.Remove(next.ip)
-				n.lock.Unlock()
-			case <-n.done:
-				return
-			}
-		case <-n.done:
-			return
-		}
-	}
-}
+func (n *inboundConnUpgradeThrottler) Dispatch() { _ = "STUB: not implemented"; return }
 
-func (n *inboundConnUpgradeThrottler) Stop() {
-	close(n.done)
-}
+// Sleep until it's time to remove the next IP
+
+// Remove the next IP (we'd upgrade another inbound connection from it)
+
+func (n *inboundConnUpgradeThrottler) Stop() { _ = "STUB: not implemented"; return }

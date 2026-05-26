@@ -4,7 +4,6 @@
 package config
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/ava-labs/avalanchego/utils/units"
@@ -54,12 +53,8 @@ type Config struct {
 // configuration is not provided in the bytes, the default value is set. If
 // empty bytes are provided, the default config is returned.
 func GetConfig(b []byte) (*Config, error) {
-	ec := Default
+	_ = "STUB: not implemented"
 
 	// An empty slice is invalid json, so handle that as a special case.
-	if len(b) == 0 {
-		return &ec, nil
-	}
-
-	return &ec, json.Unmarshal(b, &ec)
+	return nil, nil
 }

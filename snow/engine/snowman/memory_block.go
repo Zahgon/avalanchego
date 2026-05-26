@@ -22,19 +22,7 @@ type memoryBlock struct {
 }
 
 // Accept accepts the underlying block & removes sibling subtrees
-func (mb *memoryBlock) Accept(ctx context.Context) error {
-	mb.tree.RemoveDescendants(mb.Parent())
-	mb.metrics.numNonVerifieds.Set(float64(mb.tree.Len()))
-	if err := mb.Block.Accept(ctx); err != nil {
-		return err
-	}
-	mb.onAccept()
-	return nil
-}
+func (mb *memoryBlock) Accept(ctx context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Reject rejects the underlying block & removes child subtrees
-func (mb *memoryBlock) Reject(ctx context.Context) error {
-	mb.tree.RemoveDescendants(mb.ID())
-	mb.metrics.numNonVerifieds.Set(float64(mb.tree.Len()))
-	return mb.Block.Reject(ctx)
-}
+func (mb *memoryBlock) Reject(ctx context.Context) error { _ = "STUB: not implemented"; return nil }

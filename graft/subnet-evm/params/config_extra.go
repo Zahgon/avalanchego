@@ -4,13 +4,10 @@
 package params
 
 import (
-	"encoding/json"
-	"errors"
 	"math/big"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/params/extras"
 	"github.com/ava-labs/avalanchego/upgrade"
-	"github.com/ava-labs/avalanchego/utils"
 )
 
 const (
@@ -35,72 +32,18 @@ var (
 // TODO: Prior to Cancun, Avalanche upgrades are referenced inline in the
 // code in place of their Ethereum counterparts. The original Ethereum names
 // should be restored for maintainability.
-func SetEthUpgrades(c *ChainConfig) error {
-	if c.HomesteadBlock == nil {
-		c.HomesteadBlock = big.NewInt(0)
-	}
-	if c.EIP150Block == nil {
-		c.EIP150Block = big.NewInt(0)
-	}
-	if c.EIP155Block == nil {
-		c.EIP155Block = big.NewInt(0)
-	}
-	if c.EIP158Block == nil {
-		c.EIP158Block = big.NewInt(0)
-	}
-	if c.ByzantiumBlock == nil {
-		c.ByzantiumBlock = big.NewInt(0)
-	}
-	if c.ConstantinopleBlock == nil {
-		c.ConstantinopleBlock = big.NewInt(0)
-	}
-	if c.PetersburgBlock == nil {
-		c.PetersburgBlock = big.NewInt(0)
-	}
-	if c.IstanbulBlock == nil {
-		c.IstanbulBlock = big.NewInt(0)
-	}
-	if c.MuirGlacierBlock == nil {
-		c.MuirGlacierBlock = big.NewInt(0)
-	}
-	if c.BerlinBlock == nil {
-		c.BerlinBlock = big.NewInt(0)
-	}
-	if c.LondonBlock == nil {
-		c.LondonBlock = big.NewInt(0)
-	}
+func SetEthUpgrades(c *ChainConfig) error { _ = "STUB: not implemented"; return nil }
 
-	extra := GetExtra(c)
-	// We only mark Eth upgrades as enabled if we have marked them as scheduled.
-	if durango := extra.DurangoTimestamp; durango != nil && *durango < unscheduledActivation {
-		c.ShanghaiTime = utils.PointerTo(*durango)
-	}
+// We only mark Eth upgrades as enabled if we have marked them as scheduled.
 
-	if etna := extra.EtnaTimestamp; etna != nil && *etna < unscheduledActivation {
-		c.CancunTime = utils.PointerTo(*etna)
-	}
-	return nil
-}
+func GetExtra(c *ChainConfig) *extras.ChainConfig { _ = "STUB: not implemented"; return nil }
 
-func GetExtra(c *ChainConfig) *extras.ChainConfig {
-	ex := payloads.ChainConfig.Get(c)
-	if ex == nil {
-		ex = &extras.ChainConfig{}
-		payloads.ChainConfig.Set(c, ex)
-	}
-	return ex
-}
-
-func Copy(c *ChainConfig) ChainConfig {
-	cpy := *c
-	extraCpy := *GetExtra(c)
-	return *WithExtra(&cpy, &extraCpy)
-}
+func Copy(c *ChainConfig) ChainConfig { _ = "STUB: not implemented"; return *new(ChainConfig) }
 
 // WithExtra sets the extra payload on `c` and returns the modified argument.
 func WithExtra(c *ChainConfig, extra *extras.ChainConfig) *ChainConfig {
-	payloads.ChainConfig.Set(c, extra)
-	return c
+	_ = "STUB: not implemented"
+	return nil
 }
 
 type ChainConfigWithUpgradesJSON struct {
@@ -114,51 +57,15 @@ type ChainConfigWithUpgradesJSON struct {
 // TODO: consider removing this method by allowing external tag for the embedded
 // ChainConfig struct.
 func (cu ChainConfigWithUpgradesJSON) MarshalJSON() ([]byte, error) {
+	_ = "STUB: not implemented"
 	// embed the ChainConfig struct into the response
-	chainConfigJSON, err := json.Marshal(&cu.ChainConfig)
-	if err != nil {
-		return nil, err
-	}
-	if len(chainConfigJSON) > maxJSONLen {
-		return nil, errors.New("value too large")
-	}
-
-	type upgrades struct {
-		UpgradeConfig extras.UpgradeConfig `json:"upgrades"`
-	}
-
-	upgradeJSON, err := json.Marshal(upgrades{cu.UpgradeConfig})
-	if err != nil {
-		return nil, err
-	}
-	if len(upgradeJSON) > maxJSONLen {
-		return nil, errors.New("value too large")
-	}
-
-	// merge the two JSON objects
-	mergedJSON := make([]byte, 0, len(chainConfigJSON)+len(upgradeJSON)+1)
-	mergedJSON = append(mergedJSON, chainConfigJSON[:len(chainConfigJSON)-1]...)
-	mergedJSON = append(mergedJSON, ',')
-	mergedJSON = append(mergedJSON, upgradeJSON[1:]...)
-	return mergedJSON, nil
+	return nil, nil
 }
 
+// merge the two JSON objects
+
 func (cu *ChainConfigWithUpgradesJSON) UnmarshalJSON(input []byte) error {
-	var cc ChainConfig
-	if err := json.Unmarshal(input, &cc); err != nil {
-		return err
-	}
-
-	type upgrades struct {
-		UpgradeConfig extras.UpgradeConfig `json:"upgrades"`
-	}
-
-	var u upgrades
-	if err := json.Unmarshal(input, &u); err != nil {
-		return err
-	}
-	cu.ChainConfig = cc
-	cu.UpgradeConfig = u.UpgradeConfig
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -166,12 +73,8 @@ func (cu *ChainConfigWithUpgradesJSON) UnmarshalJSON(input []byte) error {
 // ChainConfig does not include upgrades in its JSON output.
 // This is a workaround for showing upgrades in the JSON output.
 func ToWithUpgradesJSON(c *ChainConfig) *ChainConfigWithUpgradesJSON {
-	return &ChainConfigWithUpgradesJSON{
-		ChainConfig:   *c,
-		UpgradeConfig: GetExtra(c).UpgradeConfig,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func SetNetworkUpgradeDefaults(c *ChainConfig) {
-	GetExtra(c).NetworkUpgrades.SetDefaults(GetExtra(c).SnowCtx.NetworkUpgrades)
-}
+func SetNetworkUpgradeDefaults(c *ChainConfig) { _ = "STUB: not implemented"; return }

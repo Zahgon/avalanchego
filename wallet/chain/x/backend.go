@@ -30,38 +30,11 @@ type backend struct {
 }
 
 func NewBackend(context *builder.Context, utxos common.ChainUTXOs) Backend {
-	return &backend{
-		ChainUTXOs: utxos,
-		context:    context,
-	}
+	_ = "STUB: not implemented"
+	return *new(Backend)
 }
 
 func (b *backend) AcceptTx(ctx context.Context, tx *txs.Tx) error {
-	err := tx.Unsigned.Visit(&backendVisitor{
-		b:    b,
-		ctx:  ctx,
-		txID: tx.ID(),
-	})
-	if err != nil {
-		return err
-	}
-
-	chainID := b.context.BlockchainID
-	inputUTXOs := tx.Unsigned.InputUTXOs()
-	for _, utxoID := range inputUTXOs {
-		if utxoID.Symbol {
-			continue
-		}
-		if err := b.RemoveUTXO(ctx, chainID, utxoID.InputID()); err != nil {
-			return err
-		}
-	}
-
-	outputUTXOs := tx.UTXOs()
-	for _, utxo := range outputUTXOs {
-		if err := b.AddUTXO(ctx, chainID, utxo); err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

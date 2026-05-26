@@ -16,9 +16,7 @@ type Payload struct {
 	bytes []byte
 }
 
-func (p *Payload) Bytes() []byte {
-	return p.bytes
-}
+func (p *Payload) Bytes() []byte { _ = "STUB: not implemented"; return nil }
 
 func NewPayload(
 	sender ids.ShortID,
@@ -27,22 +25,8 @@ func NewPayload(
 	amount uint64,
 	to ids.ShortID,
 ) (*Payload, error) {
-	p := &Payload{
-		Sender:   sender,
-		Nonce:    nonce,
-		IsReturn: isReturn,
-		Amount:   amount,
-		To:       to,
-	}
-	bytes, err := Codec.Marshal(CodecVersion, p)
-	p.bytes = bytes
-	return p, err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func ParsePayload(bytes []byte) (*Payload, error) {
-	p := &Payload{
-		bytes: bytes,
-	}
-	_, err := Codec.Unmarshal(bytes, p)
-	return p, err
-}
+func ParsePayload(bytes []byte) (*Payload, error) { _ = "STUB: not implemented"; return nil, nil }

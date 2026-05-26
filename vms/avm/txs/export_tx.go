@@ -26,13 +26,6 @@ type ExportTx struct {
 	ExportedOuts []*avax.TransferableOutput `serialize:"true" json:"exportedOutputs"`
 }
 
-func (t *ExportTx) InitCtx(ctx *snow.Context) {
-	for _, out := range t.ExportedOuts {
-		out.InitCtx(ctx)
-	}
-	t.BaseTx.InitCtx(ctx)
-}
+func (t *ExportTx) InitCtx(ctx *snow.Context) { _ = "STUB: not implemented"; return }
 
-func (t *ExportTx) Visit(v Visitor) error {
-	return v.ExportTx(t)
-}
+func (t *ExportTx) Visit(v Visitor) error { _ = "STUB: not implemented"; return nil }

@@ -19,5 +19,6 @@ type Checker interface {
 type CheckerFunc func(context.Context) (interface{}, error)
 
 func (f CheckerFunc) HealthCheck(ctx context.Context) (interface{}, error) {
-	return f(ctx)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

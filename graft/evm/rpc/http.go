@@ -28,17 +28,9 @@
 package rpc
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
 	"io"
-	"math"
-	"mime"
 	"net/http"
-	"net/url"
-	"strconv"
 	"sync"
 	"time"
 )
@@ -66,35 +58,33 @@ type httpConn struct {
 // this special treatment is correct.
 
 func (hc *httpConn) writeJSON(ctx context.Context, val interface{}, isError bool) error {
-	return hc.writeJSONSkipDeadline(ctx, val, isError, false)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (hc *httpConn) writeJSONSkipDeadline(context.Context, interface{}, bool, bool) error {
-	panic("writeJSON called on httpConn")
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (hc *httpConn) peerInfo() PeerInfo {
-	panic("peerInfo called on httpConn")
-}
+func (hc *httpConn) peerInfo() PeerInfo { _ = "STUB: not implemented"; return *new(PeerInfo) }
 
-func (hc *httpConn) remoteAddr() string {
-	return hc.url
-}
+func (hc *httpConn) remoteAddr() string { _ = "STUB: not implemented"; return "" }
 
 func (hc *httpConn) readBatch() ([]*jsonrpcMessage, bool, error) {
-	<-hc.closeCh
-	return nil, false, io.EOF
+	_ = "STUB: not implemented"
+	return nil, false, nil
 }
 
-func (hc *httpConn) close() {
-	hc.closeOnce.Do(func() { close(hc.closeCh) })
-}
+func (hc *httpConn) close() { _ = "STUB: not implemented"; return }
 
 func (hc *httpConn) closed() <-chan interface{} {
-	return hc.closeCh
+	_ = "STUB: not implemented"
+
+	// HTTPTimeouts represents the configuration params for the HTTP RPC server.
+	return nil
 }
 
-// HTTPTimeouts represents the configuration params for the HTTP RPC server.
 type HTTPTimeouts struct {
 	// ReadTimeout is the maximum duration for reading the entire
 	// request, including the body.
@@ -136,138 +126,46 @@ var DefaultHTTPTimeouts = HTTPTimeouts{
 }
 
 // DialHTTP creates a new RPC client that connects to an RPC server over HTTP.
-func DialHTTP(endpoint string) (*Client, error) {
-	return DialHTTPWithClient(endpoint, new(http.Client))
-}
+func DialHTTP(endpoint string) (*Client, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // DialHTTPWithClient creates a new RPC client that connects to an RPC server over HTTP
 // using the provided HTTP Client.
 //
 // Deprecated: use DialOptions and the WithHTTPClient option.
 func DialHTTPWithClient(endpoint string, client *http.Client) (*Client, error) {
+	_ = "STUB: not implemented"
 	// Sanity check URL so we don't end up with a client that will fail every request.
-	_, err := url.Parse(endpoint)
-	if err != nil {
-		return nil, err
-	}
-
-	var cfg clientConfig
-	cfg.httpClient = client
-	fn := newClientTransportHTTP(endpoint, &cfg)
-	return newClient(context.Background(), &cfg, fn)
+	return nil, nil
 }
 
 func newClientTransportHTTP(endpoint string, cfg *clientConfig) reconnectFunc {
-	headers := make(http.Header, 2+len(cfg.httpHeaders))
-	headers.Set("accept", contentType)
-	headers.Set("content-type", contentType)
-	for key, values := range cfg.httpHeaders {
-		headers[key] = values
-	}
-
-	client := cfg.httpClient
-	if client == nil {
-		client = new(http.Client)
-	}
-
-	hc := &httpConn{
-		client:  client,
-		headers: headers,
-		url:     endpoint,
-		auth:    cfg.httpAuth,
-		closeCh: make(chan interface{}),
-	}
-
-	return func(ctx context.Context) (ServerCodec, error) {
-		return hc, nil
-	}
+	_ = "STUB: not implemented"
+	return *new(reconnectFunc)
 }
 
 // cleanlyCloseBody avoids sending unnecessary RST_STREAM and PING frames by
 // ensuring the whole body is read before being closed.
 // See https://blog.cloudflare.com/go-and-enhance-your-calm/#reading-bodies-in-go-can-be-unintuitive
-func cleanlyCloseBody(body io.ReadCloser) error {
-	io.Copy(io.Discard, body)
-	return body.Close()
-}
+func cleanlyCloseBody(body io.ReadCloser) error { _ = "STUB: not implemented"; return nil }
 
 func (c *Client) sendHTTP(ctx context.Context, op *requestOp, msg interface{}) error {
-	hc := c.writeConn.(*httpConn)
-	respBody, err := hc.doRequest(ctx, msg)
-	if err != nil {
-		return err
-	}
-	defer cleanlyCloseBody(respBody)
-
-	var resp jsonrpcMessage
-	batch := [1]*jsonrpcMessage{&resp}
-	if err := json.NewDecoder(respBody).Decode(&resp); err != nil {
-		return err
-	}
-	op.resp <- batch[:]
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (c *Client) sendBatchHTTP(ctx context.Context, op *requestOp, msgs []*jsonrpcMessage) error {
-	hc := c.writeConn.(*httpConn)
-	respBody, err := hc.doRequest(ctx, msgs)
-	if err != nil {
-		return err
-	}
-	defer cleanlyCloseBody(respBody)
-
-	var respmsgs []*jsonrpcMessage
-	if err := json.NewDecoder(respBody).Decode(&respmsgs); err != nil {
-		return err
-	}
-	op.resp <- respmsgs
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (hc *httpConn) doRequest(ctx context.Context, msg interface{}) (io.ReadCloser, error) {
-	body, err := json.Marshal(msg)
-	if err != nil {
-		return nil, err
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, hc.url, io.NopCloser(bytes.NewReader(body)))
-	if err != nil {
-		return nil, err
-	}
-	req.ContentLength = int64(len(body))
-	req.GetBody = func() (io.ReadCloser, error) { return io.NopCloser(bytes.NewReader(body)), nil }
-
-	// set headers
-	hc.mu.Lock()
-	req.Header = hc.headers.Clone()
-	hc.mu.Unlock()
-	setHeaders(req.Header, headersFromContext(ctx))
-
-	if hc.auth != nil {
-		if err := hc.auth(req.Header); err != nil {
-			return nil, err
-		}
-	}
-
-	// do request
-	resp, err := hc.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		var buf bytes.Buffer
-		var body []byte
-		if _, err := buf.ReadFrom(resp.Body); err == nil {
-			body = buf.Bytes()
-		}
-		cleanlyCloseBody(resp.Body)
-		return nil, HTTPError{
-			Status:     resp.Status,
-			StatusCode: resp.StatusCode,
-			Body:       body,
-		}
-	}
-	return resp.Body, nil
+	_ = "STUB: not implemented"
+	return *new(io.ReadCloser), nil
 }
+
+// set headers
+
+// do request
 
 // httpServerConn turns a HTTP connection into a Conn.
 type httpServerConn struct {
@@ -277,142 +175,77 @@ type httpServerConn struct {
 }
 
 func (s *Server) newHTTPServerConn(r *http.Request, w http.ResponseWriter) ServerCodec {
-	body := io.LimitReader(r.Body, int64(s.httpBodyLimit))
-	conn := &httpServerConn{Reader: body, Writer: w, r: r}
-
-	encoder := func(v any, isErrorResponse bool) error {
-		if !isErrorResponse {
-			return json.NewEncoder(conn).Encode(v)
-		}
-
-		// It's an error response and requires special treatment.
-		//
-		// In case of a timeout error, the response must be written before the HTTP
-		// server's write timeout occurs. So we need to flush the response. The
-		// Content-Length header also needs to be set to ensure the client knows
-		// when it has the full response.
-		encdata, err := json.Marshal(v)
-		if err != nil {
-			return err
-		}
-		w.Header().Set("content-length", strconv.Itoa(len(encdata)))
-
-		// If this request is wrapped in a handler that might remove Content-Length (such
-		// as the automatic gzip we do in package node), we need to ensure the HTTP server
-		// doesn't perform chunked encoding. In case WriteTimeout is reached, the chunked
-		// encoding might not be finished correctly, and some clients do not like it when
-		// the final chunk is missing.
-		w.Header().Set("transfer-encoding", "identity")
-
-		_, err = w.Write(encdata)
-		if f, ok := w.(http.Flusher); ok {
-			f.Flush()
-		}
-		return err
-	}
-
-	dec := json.NewDecoder(conn)
-	dec.UseNumber()
-
-	return NewFuncCodec(conn, encoder, dec.Decode)
+	_ = "STUB: not implemented"
+	return *new(ServerCodec)
 }
+
+// It's an error response and requires special treatment.
+//
+// In case of a timeout error, the response must be written before the HTTP
+// server's write timeout occurs. So we need to flush the response. The
+// Content-Length header also needs to be set to ensure the client knows
+// when it has the full response.
+
+// If this request is wrapped in a handler that might remove Content-Length (such
+// as the automatic gzip we do in package node), we need to ensure the HTTP server
+// doesn't perform chunked encoding. In case WriteTimeout is reached, the chunked
+// encoding might not be finished correctly, and some clients do not like it when
+// the final chunk is missing.
 
 // Close does nothing and always returns nil.
-func (t *httpServerConn) Close() error { return nil }
+func (t *httpServerConn) Close() error {
+	_ = "STUB: not implemented"
 
-// RemoteAddr returns the peer address of the underlying connection.
-func (t *httpServerConn) RemoteAddr() string {
-	return t.r.RemoteAddr
+	// RemoteAddr returns the peer address of the underlying connection.
+	return nil
 }
+
+func (t *httpServerConn) RemoteAddr() string { _ = "STUB: not implemented"; return "" }
 
 // SetWriteDeadline does nothing and always returns nil.
-func (t *httpServerConn) SetWriteDeadline(time.Time) error { return nil }
+func (t *httpServerConn) SetWriteDeadline(time.Time) error {
+	_ = "STUB: not implemented"
 
-// ServeHTTP serves JSON-RPC requests over HTTP.
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Permit dumb empty requests for remote health-checks (AWS)
-	if r.Method == http.MethodGet && r.ContentLength == 0 && r.URL.RawQuery == "" {
-		w.WriteHeader(http.StatusOK)
-		return
-	}
-	if code, err := s.validateRequest(r); err != nil {
-		http.Error(w, err.Error(), code)
-		return
-	}
-
-	// Create request-scoped context.
-	connInfo := PeerInfo{Transport: "http", RemoteAddr: r.RemoteAddr}
-	connInfo.HTTP.Version = r.Proto
-	connInfo.HTTP.Host = r.Host
-	connInfo.HTTP.Origin = r.Header.Get("Origin")
-	connInfo.HTTP.UserAgent = r.Header.Get("User-Agent")
-	ctx := r.Context()
-	ctx = context.WithValue(ctx, peerInfoContextKey{}, connInfo)
-
-	// All checks passed, create a codec that reads directly from the request body
-	// until EOF, writes the response to w, and orders the server to process a
-	// single request.
-	w.Header().Set("content-type", contentType)
-	codec := s.newHTTPServerConn(r, w)
-	defer codec.close()
-	s.serveSingleRequest(ctx, codec)
+	// ServeHTTP serves JSON-RPC requests over HTTP.
+	return nil
 }
+
+func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	_ = "STUB: not implemented"
+	// Permit dumb empty requests for remote health-checks (AWS)
+	return
+}
+
+// Create request-scoped context.
+
+// All checks passed, create a codec that reads directly from the request body
+// until EOF, writes the response to w, and orders the server to process a
+// single request.
 
 // validateRequest returns a non-zero response code and error message if the
 // request is invalid.
 func (s *Server) validateRequest(r *http.Request) (int, error) {
-	if r.Method == http.MethodPut || r.Method == http.MethodDelete {
-		return http.StatusMethodNotAllowed, errors.New("method not allowed")
-	}
-	if r.ContentLength > int64(s.httpBodyLimit) {
-		err := fmt.Errorf("content length too large (%d>%d)", r.ContentLength, s.httpBodyLimit)
-		return http.StatusRequestEntityTooLarge, err
-	}
-	// Allow OPTIONS (regardless of content-type)
-	if r.Method == http.MethodOptions {
-		return 0, nil
-	}
-	// Check content-type
-	if mt, _, err := mime.ParseMediaType(r.Header.Get("content-type")); err == nil {
-		for _, accepted := range acceptedContentTypes {
-			if accepted == mt {
-				return 0, nil
-			}
-		}
-	}
-	// Invalid content-type
-	err := fmt.Errorf("invalid content type, only %s is supported", contentType)
-	return http.StatusUnsupportedMediaType, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// Allow OPTIONS (regardless of content-type)
+
+// Check content-type
+
+// Invalid content-type
 
 // ContextRequestTimeout returns the request timeout derived from the given context.
 func ContextRequestTimeout(ctx context.Context) (time.Duration, bool) {
-	timeout := time.Duration(math.MaxInt64)
-	hasTimeout := false
-	setTimeout := func(d time.Duration) {
-		if d < timeout {
-			timeout = d
-			hasTimeout = true
-		}
-	}
-
-	if deadline, ok := ctx.Deadline(); ok {
-		setTimeout(time.Until(deadline))
-	}
-
-	// If the context is an HTTP request context, use the server's WriteTimeout.
-	httpSrv, ok := ctx.Value(http.ServerContextKey).(*http.Server)
-	if ok && httpSrv.WriteTimeout > 0 {
-		wt := httpSrv.WriteTimeout
-		// When a write timeout is configured, we need to send the response message before
-		// the HTTP server cuts connection. So our internal timeout must be earlier than
-		// the server's true timeout.
-		//
-		// Note: Timeouts are sanitized to be a minimum of 1 second.
-		// Also see issue: https://github.com/golang/go/issues/47229
-		wt -= 100 * time.Millisecond
-		setTimeout(wt)
-	}
-
-	return timeout, hasTimeout
+	_ = "STUB: not implemented"
+	return *new(time.Duration), false
 }
+
+// If the context is an HTTP request context, use the server's WriteTimeout.
+
+// When a write timeout is configured, we need to send the response message before
+// the HTTP server cuts connection. So our internal timeout must be earlier than
+// the server's true timeout.
+//
+// Note: Timeouts are sanitized to be a minimum of 1 second.
+// Also see issue: https://github.com/golang/go/issues/47229

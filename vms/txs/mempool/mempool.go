@@ -6,7 +6,6 @@ package mempool
 import (
 	"context"
 	"errors"
-	"fmt"
 	"sync"
 
 	"github.com/ava-labs/avalanchego/cache/lru"
@@ -87,154 +86,37 @@ type mempool[T Tx] struct {
 func New[T Tx](
 	metrics Metrics,
 ) *mempool[T] {
-	m := &mempool[T]{
-		unissuedTxs:    linked.NewHashmap[ids.ID, T](),
-		consumedUTXOs:  setmap.New[ids.ID, ids.ID](),
-		bytesAvailable: maxMempoolSize,
-		droppedTxIDs:   lru.NewCache[ids.ID, error](droppedTxIDsCacheSize),
-		metrics:        metrics,
-	}
-	m.cond = lock.NewCond(&m.lock)
-	m.updateMetrics()
-	return m
-}
-
-func (m *mempool[T]) updateMetrics() {
-	m.metrics.Update(m.unissuedTxs.Len(), m.bytesAvailable)
-}
-
-func (m *mempool[T]) Add(tx T) error {
-	txID := tx.ID()
-
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	if _, ok := m.unissuedTxs.Get(txID); ok {
-		return fmt.Errorf("%w: %s", ErrDuplicateTx, txID)
-	}
-
-	txSize := tx.Size()
-	if txSize > MaxTxSize {
-		return fmt.Errorf("%w: %s size (%d) > max size (%d)",
-			ErrTxTooLarge,
-			txID,
-			txSize,
-			MaxTxSize,
-		)
-	}
-	if txSize > m.bytesAvailable {
-		return fmt.Errorf("%w: %s size (%d) > available space (%d)",
-			ErrMempoolFull,
-			txID,
-			txSize,
-			m.bytesAvailable,
-		)
-	}
-
-	inputs := tx.InputIDs()
-	if m.consumedUTXOs.HasOverlap(inputs) {
-		return fmt.Errorf("%w: %s", ErrConflictsWithOtherTx, txID)
-	}
-
-	m.bytesAvailable -= txSize
-	m.unissuedTxs.Put(txID, tx)
-	m.updateMetrics()
-
-	// Mark these UTXOs as consumed in the mempool
-	m.consumedUTXOs.Put(txID, inputs)
-
-	// An added tx must not be marked as dropped.
-	m.droppedTxIDs.Evict(txID)
-	m.cond.Broadcast()
+	_ = "STUB: not implemented"
 	return nil
 }
 
-func (m *mempool[T]) Get(txID ids.ID) (T, bool) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
+func (m *mempool[T]) updateMetrics() { _ = "STUB: not implemented"; return }
 
-	return m.unissuedTxs.Get(txID)
-}
+func (m *mempool[T]) Add(tx T) error { _ = "STUB: not implemented"; return nil }
 
-func (m *mempool[T]) Remove(txs ...T) {
-	m.lock.Lock()
-	defer m.lock.Unlock()
+// Mark these UTXOs as consumed in the mempool
 
-	for _, tx := range txs {
-		txID := tx.ID()
-		// If the transaction is in the mempool, remove it.
-		if _, ok := m.consumedUTXOs.DeleteKey(txID); ok {
-			m.unissuedTxs.Delete(txID)
-			m.bytesAvailable += tx.Size()
-			continue
-		}
+// An added tx must not be marked as dropped.
 
-		// If the transaction isn't in the mempool, remove any conflicts it has.
-		inputs := tx.InputIDs()
-		for _, removed := range m.consumedUTXOs.DeleteOverlapping(inputs) {
-			tx, _ := m.unissuedTxs.Get(removed.Key)
-			m.unissuedTxs.Delete(removed.Key)
-			m.bytesAvailable += tx.Size()
-		}
-	}
-	m.updateMetrics()
-}
+func (m *mempool[T]) Get(txID ids.ID) (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
-func (m *mempool[T]) Peek() (T, bool) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
+func (m *mempool[T]) Remove(txs ...T) { _ = "STUB: not implemented"; return }
 
-	_, tx, exists := m.unissuedTxs.Oldest()
-	return tx, exists
-}
+// If the transaction is in the mempool, remove it.
 
-func (m *mempool[T]) Iterate(f func(T) bool) {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
+// If the transaction isn't in the mempool, remove any conflicts it has.
 
-	it := m.unissuedTxs.NewIterator()
-	for it.Next() {
-		if !f(it.Value()) {
-			return
-		}
-	}
-}
+func (m *mempool[T]) Peek() (T, bool) { _ = "STUB: not implemented"; return *new(T), false }
 
-func (m *mempool[_]) MarkDropped(txID ids.ID, reason error) {
-	if errors.Is(reason, ErrMempoolFull) {
-		return
-	}
+func (m *mempool[T]) Iterate(f func(T) bool) { _ = "STUB: not implemented"; return }
 
-	m.lock.RLock()
-	defer m.lock.RUnlock()
+func (m *mempool[_]) MarkDropped(txID ids.ID, reason error) { _ = "STUB: not implemented"; return }
 
-	if _, ok := m.unissuedTxs.Get(txID); ok {
-		return
-	}
+func (m *mempool[_]) GetDropReason(txID ids.ID) error { _ = "STUB: not implemented"; return nil }
 
-	m.droppedTxIDs.Put(txID, reason)
-}
-
-func (m *mempool[_]) GetDropReason(txID ids.ID) error {
-	err, _ := m.droppedTxIDs.Get(txID)
-	return err
-}
-
-func (m *mempool[_]) Len() int {
-	m.lock.RLock()
-	defer m.lock.RUnlock()
-
-	return m.unissuedTxs.Len()
-}
+func (m *mempool[_]) Len() int { _ = "STUB: not implemented"; return 0 }
 
 func (m *mempool[_]) WaitForEvent(ctx context.Context) (common.Message, error) {
-	m.lock.Lock()
-	defer m.lock.Unlock()
-
-	for m.unissuedTxs.Len() == 0 {
-		if err := m.cond.Wait(ctx); err != nil {
-			return 0, err
-		}
-	}
-	return common.PendingTxs, nil
+	_ = "STUB: not implemented"
+	return *new(common.Message), nil
 }

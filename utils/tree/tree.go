@@ -6,8 +6,6 @@ package tree
 import (
 	"context"
 
-	"golang.org/x/exp/maps"
-
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
 )
@@ -47,63 +45,27 @@ type tree struct {
 	nodes map[ids.ID]map[ids.ID]snowman.Block
 }
 
-func New() Tree {
-	return &tree{
-		nodes: make(map[ids.ID]map[ids.ID]snowman.Block),
-	}
-}
+func New() Tree { _ = "STUB: not implemented"; return *new(Tree) }
 
-func (t *tree) Add(blk snowman.Block) {
-	parentID := blk.Parent()
-	children, exists := t.nodes[parentID]
-	if !exists {
-		children = make(map[ids.ID]snowman.Block)
-		t.nodes[parentID] = children
-	}
-	blkID := blk.ID()
-	children[blkID] = blk
-}
+func (t *tree) Add(blk snowman.Block) { _ = "STUB: not implemented"; return }
 
 func (t *tree) Get(blk snowman.Block) (snowman.Block, bool) {
-	parentID := blk.Parent()
-	children := t.nodes[parentID]
-	blkID := blk.ID()
-	originalBlk, exists := children[blkID]
-	return originalBlk, exists
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), false
 }
 
 func (t *tree) Accept(ctx context.Context, blk snowman.Block) error {
+	_ = "STUB: not implemented"
 	// accept the provided block
-	if err := blk.Accept(ctx); err != nil {
-		return err
-	}
-
-	// get the siblings of the block
-	parentID := blk.Parent()
-	children := t.nodes[parentID]
-	blkID := blk.ID()
-	delete(children, blkID)
-	delete(t.nodes, parentID)
-
-	// mark the siblings of the accepted block as rejectable
-	childrenToReject := maps.Values(children)
-
-	// reject all the rejectable blocks
-	for len(childrenToReject) > 0 {
-		i := len(childrenToReject) - 1
-		child := childrenToReject[i]
-		childrenToReject = childrenToReject[:i]
-
-		// reject the block
-		if err := child.Reject(ctx); err != nil {
-			return err
-		}
-
-		// mark the progeny of this block as being rejectable
-		blkID := child.ID()
-		children := t.nodes[blkID]
-		childrenToReject = append(childrenToReject, maps.Values(children)...)
-		delete(t.nodes, blkID)
-	}
 	return nil
 }
+
+// get the siblings of the block
+
+// mark the siblings of the accepted block as rejectable
+
+// reject all the rejectable blocks
+
+// reject the block
+
+// mark the progeny of this block as being rejectable

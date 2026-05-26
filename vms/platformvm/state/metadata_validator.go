@@ -9,7 +9,6 @@ import (
 	"github.com/ava-labs/avalanchego/codec"
 	"github.com/ava-labs/avalanchego/database"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
 	"github.com/ava-labs/avalanchego/utils/set"
 	"github.com/ava-labs/avalanchego/utils/wrappers"
 )
@@ -42,38 +41,18 @@ type validatorMetadata struct {
 // With Cortina we wrote the potential reward with the potential delegatee reward.
 // We now write the uptime, reward, and delegatee reward together.
 func parseValidatorMetadata(bytes []byte, metadata *validatorMetadata) error {
-	switch len(bytes) {
-	case 0:
-	// nothing was stored
-
-	case database.Uint64Size:
-		// only potential reward was stored
-		var err error
-		metadata.PotentialReward, err = database.ParseUInt64(bytes)
-		if err != nil {
-			return err
-		}
-
-	case preDelegateeRewardSize:
-		// potential reward and uptime was stored but potential delegatee reward
-		// was not
-		tmp := preDelegateeRewardMetadata{}
-		if _, err := MetadataCodec.Unmarshal(bytes, &tmp); err != nil {
-			return err
-		}
-
-		metadata.UpDuration = tmp.UpDuration
-		metadata.LastUpdated = tmp.LastUpdated
-		metadata.PotentialReward = tmp.PotentialReward
-	default:
-		// everything was stored
-		if _, err := MetadataCodec.Unmarshal(bytes, metadata); err != nil {
-			return err
-		}
-	}
-	metadata.lastUpdated = time.Unix(int64(metadata.LastUpdated), 0)
+	_ = "STUB: not implemented"
 	return nil
+
+	// nothing was stored
 }
+
+// only potential reward was stored
+
+// potential reward and uptime was stored but potential delegatee reward
+// was not
+
+// everything was stored
 
 // StakingInfo holds mutable validator data that can be modified.
 type StakingInfo struct {
@@ -81,9 +60,8 @@ type StakingInfo struct {
 }
 
 func stakingInfoFromMetadata(vdrMetadata *validatorMetadata) StakingInfo {
-	return StakingInfo{
-		DelegateeReward: vdrMetadata.PotentialDelegateeReward,
-	}
+	_ = "STUB: not implemented"
+	return *new(StakingInfo)
 }
 
 type validatorState struct {
@@ -93,12 +71,7 @@ type validatorState struct {
 	updatedMetadata map[ids.NodeID]map[ids.ID]set.Set[ids.ID]
 }
 
-func newValidatorState() *validatorState {
-	return &validatorState{
-		metadata:        make(map[ids.NodeID]map[ids.ID]*validatorMetadata),
-		updatedMetadata: make(map[ids.NodeID]map[ids.ID]set.Set[ids.ID]),
-	}
-}
+func newValidatorState() *validatorState { _ = "STUB: not implemented"; return nil }
 
 // LoadValidatorMetadata sets the `uptime` of `vdrID` on `subnetID`.
 // [GetUptime] and [SetUptime] will return an error if `vdrID` and
@@ -109,12 +82,8 @@ func (vs *validatorState) LoadValidatorMetadata(
 	subnetID ids.ID,
 	uptime *validatorMetadata,
 ) {
-	subnetMetadata, ok := vs.metadata[vdrID]
-	if !ok {
-		subnetMetadata = make(map[ids.ID]*validatorMetadata)
-		vs.metadata[vdrID] = subnetMetadata
-	}
-	subnetMetadata[subnetID] = uptime
+	_ = "STUB: not implemented"
+	return
 }
 
 // AddValidatorMetadata loads the metadata and marks it as updated so it will
@@ -124,8 +93,8 @@ func (vs *validatorState) AddValidatorMetadata(
 	subnetID ids.ID,
 	vm *validatorMetadata,
 ) {
-	vs.LoadValidatorMetadata(vdrID, subnetID, vm)
-	vs.addUpdatedTxID(vdrID, subnetID, vm.txID)
+	_ = "STUB: not implemented"
+	return
 }
 
 // GetUptime returns the current uptime measurements of `vdrID` on
@@ -134,11 +103,8 @@ func (vs *validatorState) GetUptime(
 	vdrID ids.NodeID,
 	subnetID ids.ID,
 ) (time.Duration, time.Time, error) {
-	metadata, exists := vs.metadata[vdrID][subnetID]
-	if !exists {
-		return 0, time.Time{}, database.ErrNotFound
-	}
-	return metadata.UpDuration, metadata.lastUpdated, nil
+	_ = "STUB: not implemented"
+	return *new(time.Duration), *new(time.Time), nil
 }
 
 // SetUptime updates the uptime measurements of `vdrID` on `subnetID`.
@@ -152,14 +118,7 @@ func (vs *validatorState) SetUptime(
 	upDuration time.Duration,
 	lastUpdated time.Time,
 ) error {
-	metadata, exists := vs.metadata[vdrID][subnetID]
-	if !exists {
-		return database.ErrNotFound
-	}
-	metadata.UpDuration = upDuration
-	metadata.lastUpdated = lastUpdated
-
-	vs.addUpdatedTxID(vdrID, subnetID, metadata.txID)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -168,11 +127,8 @@ func (vs *validatorState) GetStakingInfo(
 	subnetID ids.ID,
 	vdrID ids.NodeID,
 ) (StakingInfo, error) {
-	metadata, exists := vs.metadata[vdrID][subnetID]
-	if !exists {
-		return StakingInfo{}, database.ErrNotFound
-	}
-	return stakingInfoFromMetadata(metadata), nil
+	_ = "STUB: not implemented"
+	return *new(StakingInfo), nil
 }
 
 // SetStakingInfo updates the mutable staking info of `vdrID` on `subnetID`.
@@ -184,13 +140,7 @@ func (vs *validatorState) SetStakingInfo(
 	vdrID ids.NodeID,
 	stakingInfo StakingInfo,
 ) error {
-	metadata, exists := vs.metadata[vdrID][subnetID]
-	if !exists {
-		return database.ErrNotFound
-	}
-	metadata.PotentialDelegateeReward = stakingInfo.DelegateeReward
-
-	vs.addUpdatedTxID(vdrID, subnetID, metadata.txID)
+	_ = "STUB: not implemented"
 	return nil
 }
 
@@ -199,16 +149,8 @@ func (vs *validatorState) SetStakingInfo(
 // next [WriteValidatorMetadata]. Any staged updates from [SetUptime] or
 // [SetStakingInfo] are dropped.
 func (vs *validatorState) DeleteValidatorMetadata(vdrID ids.NodeID, subnetID ids.ID) {
-	subnetMetadata := vs.metadata[vdrID]
-	md, exists := subnetMetadata[subnetID]
-	if exists {
-		vs.addUpdatedTxID(vdrID, subnetID, md.txID)
-	}
-
-	delete(subnetMetadata, subnetID)
-	if len(subnetMetadata) == 0 {
-		delete(vs.metadata, vdrID)
-	}
+	_ = "STUB: not implemented"
+	return
 }
 
 // WriteValidatorMetadata persists all entries in updatedMetadata to disk. For
@@ -219,46 +161,11 @@ func (vs *validatorState) WriteValidatorMetadata(
 	dbSubnet database.KeyValueWriterDeleter,
 	codecVersion uint16,
 ) error {
-	for vdrID, bySubnet := range vs.updatedMetadata {
-		for subnetID, txIDs := range bySubnet {
-			db := dbSubnet
-			if subnetID == constants.PrimaryNetworkID {
-				db = dbPrimary
-			}
-
-			metadata, hasMetadata := vs.metadata[vdrID][subnetID]
-			for txID := range txIDs {
-				if !hasMetadata || txID != metadata.txID {
-					if err := db.Delete(txID[:]); err != nil {
-						return err
-					}
-				} else {
-					metadata.LastUpdated = uint64(metadata.lastUpdated.Unix())
-					metadataBytes, err := MetadataCodec.Marshal(codecVersion, metadata)
-					if err != nil {
-						return err
-					}
-					if err := db.Put(metadata.txID[:], metadataBytes); err != nil {
-						return err
-					}
-				}
-			}
-		}
-	}
-	vs.updatedMetadata = make(map[ids.NodeID]map[ids.ID]set.Set[ids.ID])
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (vs *validatorState) addUpdatedTxID(vdrID ids.NodeID, subnetID ids.ID, txID ids.ID) {
-	subnet, ok := vs.updatedMetadata[vdrID]
-	if !ok {
-		subnet = make(map[ids.ID]set.Set[ids.ID])
-		vs.updatedMetadata[vdrID] = subnet
-	}
-	txIDs, ok := subnet[subnetID]
-	if !ok {
-		txIDs = set.Set[ids.ID]{}
-		subnet[subnetID] = txIDs
-	}
-	txIDs.Add(txID)
+	_ = "STUB: not implemented"
+	return
 }

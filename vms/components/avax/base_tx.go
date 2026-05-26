@@ -5,7 +5,6 @@ package avax
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/snow"
@@ -32,54 +31,21 @@ type BaseTx struct {
 }
 
 // InputUTXOs track which UTXOs this transaction is consuming.
-func (t *BaseTx) InputUTXOs() []*UTXOID {
-	utxos := make([]*UTXOID, len(t.Ins))
-	for i, in := range t.Ins {
-		utxos[i] = &in.UTXOID
-	}
-	return utxos
-}
+func (t *BaseTx) InputUTXOs() []*UTXOID { _ = "STUB: not implemented"; return nil }
 
 // NumCredentials returns the number of expected credentials
 func (t *BaseTx) NumCredentials() int {
-	return len(t.Ins)
+	_ = "STUB: not implemented"
+
+	// Verify ensures that transaction metadata is valid
+	return 0
 }
 
-// Verify ensures that transaction metadata is valid
-func (t *BaseTx) Verify(ctx *snow.Context) error {
-	switch {
-	case t == nil:
-		return ErrNilTx
-	case t.NetworkID != ctx.NetworkID:
-		return ErrWrongNetworkID
-	case t.BlockchainID != ctx.ChainID:
-		return ErrWrongChainID
-	case len(t.Memo) > MaxMemoSize:
-		return fmt.Errorf(
-			"%w: %d > %d",
-			ErrMemoTooLarge,
-			len(t.Memo),
-			MaxMemoSize,
-		)
-	default:
-		return nil
-	}
-}
+func (t *BaseTx) Verify(ctx *snow.Context) error { _ = "STUB: not implemented"; return nil }
 
 func VerifyMemoFieldLength(memo types.JSONByteSlice, isDurangoActive bool) error {
-	if !isDurangoActive {
-		// SyntacticVerify validates this field pre-Durango
-		return nil
-	}
-
-	if len(memo) != 0 {
-		return fmt.Errorf(
-			"%w: %d > %d",
-			ErrMemoTooLarge,
-			len(memo),
-			0,
-		)
-	}
-
+	_ = "STUB: not implemented"
 	return nil
+
+	// SyntacticVerify validates this field pre-Durango
 }

@@ -20,10 +20,6 @@ var ciphersuiteBytes = [...][]byte{
 	[]byte(ciphersuiteStrings[1]),
 }
 
-func (c Ciphersuite) String() string {
-	return ciphersuiteStrings[c]
-}
+func (c Ciphersuite) String() string { _ = "STUB: not implemented"; return "" }
 
-func (c Ciphersuite) Bytes() []byte {
-	return ciphersuiteBytes[c]
-}
+func (c Ciphersuite) Bytes() []byte { _ = "STUB: not implemented"; return nil }

@@ -4,16 +4,12 @@
 package trace
 
 import (
-	"context"
 	"io"
 	"time"
 
-	"go.opentelemetry.io/otel/attribute"
-	"go.opentelemetry.io/otel/sdk/resource"
 	"go.opentelemetry.io/otel/trace"
 
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-	semconv "go.opentelemetry.io/otel/semconv/v1.4.0"
 )
 
 const (
@@ -46,34 +42,6 @@ type tracer struct {
 	tp *sdktrace.TracerProvider
 }
 
-func (t *tracer) Close() error {
-	ctx, cancel := context.WithTimeout(context.Background(), tracerProviderShutdownTimeout)
-	defer cancel()
-	return t.tp.Shutdown(ctx)
-}
+func (t *tracer) Close() error { _ = "STUB: not implemented"; return nil }
 
-func New(config Config) (Tracer, error) {
-	if config.ExporterConfig.Type == Disabled {
-		return Noop, nil
-	}
-
-	exporter, err := newExporter(config.ExporterConfig)
-	if err != nil {
-		return nil, err
-	}
-
-	tracerProviderOpts := []sdktrace.TracerProviderOption{
-		sdktrace.WithBatcher(exporter, sdktrace.WithExportTimeout(tracerExportTimeout)),
-		sdktrace.WithResource(resource.NewWithAttributes(semconv.SchemaURL,
-			attribute.String("version", config.Version),
-			semconv.ServiceNameKey.String(config.AppName),
-		)),
-		sdktrace.WithSampler(sdktrace.TraceIDRatioBased(config.TraceSampleRate)),
-	}
-
-	tracerProvider := sdktrace.NewTracerProvider(tracerProviderOpts...)
-	return &tracer{
-		Tracer: tracerProvider.Tracer(config.AppName),
-		tp:     tracerProvider,
-	}, nil
-}
+func New(config Config) (Tracer, error) { _ = "STUB: not implemented"; return *new(Tracer), nil }

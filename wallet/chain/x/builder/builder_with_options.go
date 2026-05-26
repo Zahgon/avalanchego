@@ -27,42 +27,33 @@ type builderWithOptions struct {
 //   - [options] will be provided to the builder in addition to the options
 //     provided in the method calls.
 func NewWithOptions(builder Builder, options ...common.Option) Builder {
-	return &builderWithOptions{
-		builder: builder,
-		options: options,
-	}
+	_ = "STUB: not implemented"
+	return *new(Builder)
 }
 
-func (b *builderWithOptions) Context() *Context {
-	return b.builder.Context()
-}
+func (b *builderWithOptions) Context() *Context { _ = "STUB: not implemented"; return nil }
 
 func (b *builderWithOptions) GetFTBalance(
 	options ...common.Option,
 ) (map[ids.ID]uint64, error) {
-	return b.builder.GetFTBalance(
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) GetImportableBalance(
 	chainID ids.ID,
 	options ...common.Option,
 ) (map[ids.ID]uint64, error) {
-	return b.builder.GetImportableBalance(
-		chainID,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewBaseTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.BaseTx, error) {
-	return b.builder.NewBaseTx(
-		outputs,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewCreateAssetTx(
@@ -72,33 +63,24 @@ func (b *builderWithOptions) NewCreateAssetTx(
 	initialState map[uint32][]verify.State,
 	options ...common.Option,
 ) (*txs.CreateAssetTx, error) {
-	return b.builder.NewCreateAssetTx(
-		name,
-		symbol,
-		denomination,
-		initialState,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewOperationTx(
 	operations []*txs.Operation,
 	options ...common.Option,
 ) (*txs.OperationTx, error) {
-	return b.builder.NewOperationTx(
-		operations,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewOperationTxMintFT(
 	outputs map[ids.ID]*secp256k1fx.TransferOutput,
 	options ...common.Option,
 ) (*txs.OperationTx, error) {
-	return b.builder.NewOperationTxMintFT(
-		outputs,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewOperationTxMintNFT(
@@ -107,12 +89,8 @@ func (b *builderWithOptions) NewOperationTxMintNFT(
 	owners []*secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.OperationTx, error) {
-	return b.builder.NewOperationTxMintNFT(
-		assetID,
-		payload,
-		owners,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewOperationTxMintProperty(
@@ -120,21 +98,16 @@ func (b *builderWithOptions) NewOperationTxMintProperty(
 	owner *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.OperationTx, error) {
-	return b.builder.NewOperationTxMintProperty(
-		assetID,
-		owner,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewOperationTxBurnProperty(
 	assetID ids.ID,
 	options ...common.Option,
 ) (*txs.OperationTx, error) {
-	return b.builder.NewOperationTxBurnProperty(
-		assetID,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewImportTx(
@@ -142,11 +115,8 @@ func (b *builderWithOptions) NewImportTx(
 	to *secp256k1fx.OutputOwners,
 	options ...common.Option,
 ) (*txs.ImportTx, error) {
-	return b.builder.NewImportTx(
-		chainID,
-		to,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *builderWithOptions) NewExportTx(
@@ -154,9 +124,6 @@ func (b *builderWithOptions) NewExportTx(
 	outputs []*avax.TransferableOutput,
 	options ...common.Option,
 ) (*txs.ExportTx, error) {
-	return b.builder.NewExportTx(
-		chainID,
-		outputs,
-		common.UnionOptions(b.options, options)...,
-	)
+	_ = "STUB: not implemented"
+	return nil, nil
 }

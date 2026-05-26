@@ -10,8 +10,6 @@
 package atomicmock
 
 import (
-	reflect "reflect"
-
 	atomic "github.com/ava-labs/avalanchego/chains/atomic"
 	database "github.com/ava-labs/avalanchego/database"
 	ids "github.com/ava-labs/avalanchego/ids"
@@ -31,64 +29,47 @@ type SharedMemoryMockRecorder struct {
 }
 
 // NewSharedMemory creates a new mock instance.
-func NewSharedMemory(ctrl *gomock.Controller) *SharedMemory {
-	mock := &SharedMemory{ctrl: ctrl}
-	mock.recorder = &SharedMemoryMockRecorder{mock}
-	return mock
-}
+func NewSharedMemory(ctrl *gomock.Controller) *SharedMemory { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *SharedMemory) EXPECT() *SharedMemoryMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// Apply mocks base method.
+	return nil
 }
 
-// Apply mocks base method.
 func (m *SharedMemory) Apply(requests map[ids.ID]*atomic.Requests, batches ...database.Batch) error {
-	m.ctrl.T.Helper()
-	varargs := []any{requests}
-	for _, a := range batches {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "Apply", varargs...)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Apply indicates an expected call of Apply.
 func (mr *SharedMemoryMockRecorder) Apply(requests any, batches ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{requests}, batches...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*SharedMemory)(nil).Apply), varargs...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Get mocks base method.
 func (m *SharedMemory) Get(peerChainID ids.ID, keys [][]byte) ([][]byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", peerChainID, keys)
-	ret0, _ := ret[0].([][]byte)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Get indicates an expected call of Get.
 func (mr *SharedMemoryMockRecorder) Get(peerChainID, keys any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*SharedMemory)(nil).Get), peerChainID, keys)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Indexed mocks base method.
 func (m *SharedMemory) Indexed(peerChainID ids.ID, traits [][]byte, startTrait, startKey []byte, limit int) ([][]byte, []byte, []byte, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Indexed", peerChainID, traits, startTrait, startKey, limit)
-	ret0, _ := ret[0].([][]byte)
-	ret1, _ := ret[1].([]byte)
-	ret2, _ := ret[2].([]byte)
-	ret3, _ := ret[3].(error)
-	return ret0, ret1, ret2, ret3
+	_ = "STUB: not implemented"
+	return nil, nil, nil, nil
 }
 
 // Indexed indicates an expected call of Indexed.
 func (mr *SharedMemoryMockRecorder) Indexed(peerChainID, traits, startTrait, startKey, limit any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Indexed", reflect.TypeOf((*SharedMemory)(nil).Indexed), peerChainID, traits, startTrait, startKey, limit)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -13,5 +13,6 @@ var _ vms.Factory = (*Factory)(nil)
 type Factory struct{}
 
 func (*Factory) New(logging.Logger) (interface{}, error) {
-	return &VM{}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

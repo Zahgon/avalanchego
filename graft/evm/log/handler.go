@@ -14,38 +14,35 @@ package log
 
 import (
 	"context"
-	"fmt"
 	"io"
-	"math/big"
-	"reflect"
 	"sync"
-	"time"
 
-	"github.com/holiman/uint256"
 	"golang.org/x/exp/slog"
 )
 
 type discardHandler struct{}
 
 // DiscardHandler returns a no-op handler
-func DiscardHandler() slog.Handler {
-	return &discardHandler{}
-}
+func DiscardHandler() slog.Handler { _ = "STUB: not implemented"; return *new(slog.Handler) }
 
 func (h *discardHandler) Handle(_ context.Context, r slog.Record) error {
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (h *discardHandler) Enabled(_ context.Context, level slog.Level) bool {
+	_ = "STUB: not implemented"
 	return false
 }
 
 func (h *discardHandler) WithGroup(name string) slog.Handler {
-	panic("not implemented")
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 func (h *discardHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	return &discardHandler{}
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 type TerminalHandler struct {
@@ -74,135 +71,72 @@ type TerminalHandler struct {
 //
 //	[DBUG] [May 16 20:58:45] remove route ns=haproxy addr=127.0.0.1:50002
 func NewTerminalHandler(wr io.Writer, useColor bool) *TerminalHandler {
-	return NewTerminalHandlerWithLevel(wr, levelMaxVerbosity, useColor)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewTerminalHandlerWithLevel returns the same handler as NewTerminalHandler but only outputs
 // records which are less than or equal to the specified verbosity level.
 func NewTerminalHandlerWithLevel(wr io.Writer, lvl slog.Leveler, useColor bool) *TerminalHandler {
-	return &TerminalHandler{
-		wr:           wr,
-		lvl:          lvl,
-		useColor:     useColor,
-		fieldPadding: make(map[string]int),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (h *TerminalHandler) Handle(_ context.Context, r slog.Record) error {
-	h.mu.Lock()
-	defer h.mu.Unlock()
-	buf := h.format(h.buf, r, h.useColor)
-	h.wr.Write(buf)
-	h.buf = buf[:0]
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (h *TerminalHandler) Enabled(_ context.Context, level slog.Level) bool {
-	return level >= h.lvl.Level()
+	_ = "STUB: not implemented"
+	return false
 }
 
 func (h *TerminalHandler) WithGroup(name string) slog.Handler {
-	panic("not implemented")
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 func (h *TerminalHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
-	return &TerminalHandler{
-		wr:           h.wr,
-		lvl:          h.lvl,
-		useColor:     h.useColor,
-		attrs:        append(h.attrs, attrs...),
-		fieldPadding: make(map[string]int),
-	}
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 // ResetFieldPadding zeroes the field-padding for all attribute pairs.
-func (t *TerminalHandler) ResetFieldPadding() {
-	t.mu.Lock()
-	t.fieldPadding = make(map[string]int)
-	t.mu.Unlock()
-}
+func (t *TerminalHandler) ResetFieldPadding() { _ = "STUB: not implemented"; return }
 
 // JSONHandler returns a handler which prints records in JSON format.
-func JSONHandler(wr io.Writer) slog.Handler {
-	return slog.NewJSONHandler(wr, &slog.HandlerOptions{
-		ReplaceAttr: builtinReplaceJSON,
-	})
-}
+func JSONHandler(wr io.Writer) slog.Handler { _ = "STUB: not implemented"; return *new(slog.Handler) }
 
 func JSONHandlerWithLevel(wr io.Writer, level slog.Leveler) slog.Handler {
-	return slog.NewJSONHandler(wr, &slog.HandlerOptions{
-		ReplaceAttr: builtinReplaceJSON,
-		Level:       level,
-	})
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 // LogfmtHandler returns a handler which prints records in logfmt format, an easy machine-parseable but human-readable
 // format for key/value pairs.
 //
 // For more details see: http://godoc.org/github.com/kr/logfmt
-func LogfmtHandler(wr io.Writer) slog.Handler {
-	return slog.NewTextHandler(wr, &slog.HandlerOptions{
-		ReplaceAttr: builtinReplaceLogfmt,
-	})
-}
+func LogfmtHandler(wr io.Writer) slog.Handler { _ = "STUB: not implemented"; return *new(slog.Handler) }
 
 // LogfmtHandlerWithLevel returns the same handler as LogfmtHandler but it only outputs
 // records which are less than or equal to the specified verbosity level.
 func LogfmtHandlerWithLevel(wr io.Writer, level slog.Leveler) slog.Handler {
-	return slog.NewTextHandler(wr, &slog.HandlerOptions{
-		ReplaceAttr: builtinReplaceLogfmt,
-		Level:       level,
-	})
+	_ = "STUB: not implemented"
+	return *new(slog.Handler)
 }
 
 func builtinReplaceLogfmt(_ []string, attr slog.Attr) slog.Attr {
-	return builtinReplace(nil, attr, true)
+	_ = "STUB: not implemented"
+	return *new(slog.Attr)
 }
 
 func builtinReplaceJSON(_ []string, attr slog.Attr) slog.Attr {
-	return builtinReplace(nil, attr, false)
+	_ = "STUB: not implemented"
+	return *new(slog.Attr)
 }
 
 func builtinReplace(_ []string, attr slog.Attr, logfmt bool) slog.Attr {
-	switch attr.Key {
-	case slog.TimeKey:
-		if attr.Value.Kind() == slog.KindTime {
-			if logfmt {
-				return slog.String("timestamp", attr.Value.Time().Format(timeFormat))
-			} else {
-				return slog.Attr{Key: "timestamp", Value: attr.Value}
-			}
-		}
-	case slog.LevelKey:
-		if l, ok := attr.Value.Any().(slog.Level); ok {
-			attr = slog.Any("level", LevelString(l))
-			return attr
-		}
-	}
-
-	switch v := attr.Value.Any().(type) {
-	case time.Time:
-		if logfmt {
-			attr = slog.String(attr.Key, v.Format(timeFormat))
-		}
-	case *big.Int:
-		if v == nil {
-			attr.Value = slog.StringValue("<nil>")
-		} else {
-			attr.Value = slog.StringValue(v.String())
-		}
-	case *uint256.Int:
-		if v == nil {
-			attr.Value = slog.StringValue("<nil>")
-		} else {
-			attr.Value = slog.StringValue(v.Dec())
-		}
-	case fmt.Stringer:
-		if v == nil || (reflect.ValueOf(v).Kind() == reflect.Pointer && reflect.ValueOf(v).IsNil()) {
-			attr.Value = slog.StringValue("<nil>")
-		} else {
-			attr.Value = slog.StringValue(v.String())
-		}
-	}
-	return attr
+	_ = "STUB: not implemented"
+	return *new(slog.Attr)
 }

@@ -72,20 +72,12 @@ type IteratorError struct {
 	Err error
 }
 
-func (*IteratorError) Next() bool {
-	return false
-}
+func (*IteratorError) Next() bool { _ = "STUB: not implemented"; return false }
 
-func (i *IteratorError) Error() error {
-	return i.Err
-}
+func (i *IteratorError) Error() error { _ = "STUB: not implemented"; return nil }
 
-func (*IteratorError) Key() []byte {
-	return nil
-}
+func (*IteratorError) Key() []byte { _ = "STUB: not implemented"; return nil }
 
-func (*IteratorError) Value() []byte {
-	return nil
-}
+func (*IteratorError) Value() []byte { _ = "STUB: not implemented"; return nil }
 
-func (*IteratorError) Release() {}
+func (*IteratorError) Release() { _ = "STUB: not implemented"; return }

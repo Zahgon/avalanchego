@@ -48,90 +48,13 @@ func New(
 	registerer prometheus.Registerer,
 	config Config,
 ) (*Network, error) {
-	validators := p2p.NewValidators(
-		log,
-		subnetID,
-		vdrs,
-		config.MaxValidatorSetStaleness,
-	)
-
-	p2pNetwork, err := p2p.NewNetwork(
-		log,
-		appSender,
-		registerer,
-		"p2p",
-		validators,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	gossipMempool, err := newGossipMempool(
-		mempool,
-		registerer,
-		log,
-		txVerifier,
-		config.ExpectedBloomFilterElements,
-		config.ExpectedBloomFilterFalsePositiveProbability,
-		config.MaxBloomFilterFalsePositiveProbability,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	handler, pullGossiper, pushGossiper, err := gossip.NewSystem(
-		nodeID,
-		p2pNetwork,
-		validators,
-		gossipMempool,
-		&txParser{
-			parser: parser,
-		},
-		gossip.SystemConfig{
-			Log:               log,
-			Registry:          registerer,
-			Namespace:         "tx_gossip",
-			TargetMessageSize: config.TargetGossipSize,
-			ThrottlingPeriod:  config.PullGossipThrottlingPeriod,
-			RequestPeriod:     config.PullGossipFrequency,
-			PushGossipParams: gossip.BranchingFactor{
-				StakePercentage: config.PushGossipPercentStake,
-				Validators:      config.PushGossipNumValidators,
-				Peers:           config.PushGossipNumPeers,
-			},
-			PushRegossipParams: gossip.BranchingFactor{
-				Validators: config.PushRegossipNumValidators,
-				Peers:      config.PushRegossipNumPeers,
-			},
-			DiscardedPushCacheSize: config.PushGossipDiscardedCacheSize,
-			RegossipPeriod:         config.PushGossipMaxRegossipFrequency,
-		},
-	)
-	if err != nil {
-		return nil, err
-	}
-	if err := p2pNetwork.AddHandler(p2p.TxGossipHandlerID, handler); err != nil {
-		return nil, err
-	}
-
-	return &Network{
-		Network:               p2pNetwork,
-		log:                   log,
-		mempool:               gossipMempool,
-		txPushGossiper:        pushGossiper,
-		txPushGossipFrequency: config.PushGossipFrequency,
-		txPullGossiper:        pullGossiper,
-		txPullGossipFrequency: config.PullGossipFrequency,
-	}, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (n *Network) PushGossip(ctx context.Context) {
-	gossip.Every(ctx, n.log, n.txPushGossiper, n.txPushGossipFrequency)
-}
+func (n *Network) PushGossip(ctx context.Context) { _ = "STUB: not implemented"; return }
 
-func (n *Network) PullGossip(ctx context.Context) {
-	gossip.Every(ctx, n.log, n.txPullGossiper, n.txPullGossipFrequency)
-}
+func (n *Network) PullGossip(ctx context.Context) { _ = "STUB: not implemented"; return }
 
 // IssueTxFromRPC attempts to add a tx to the mempool, after verifying it. If
 // the tx is added to the mempool, it will attempt to push gossip the tx to
@@ -140,13 +63,7 @@ func (n *Network) PullGossip(ctx context.Context) {
 // If the tx is already in the mempool, mempool.ErrDuplicateTx will be
 // returned.
 // If the tx is not added to the mempool, an error will be returned.
-func (n *Network) IssueTxFromRPC(tx *txs.Tx) error {
-	if err := n.mempool.Add(tx); err != nil {
-		return err
-	}
-	n.txPushGossiper.Add(tx)
-	return nil
-}
+func (n *Network) IssueTxFromRPC(tx *txs.Tx) error { _ = "STUB: not implemented"; return nil }
 
 // IssueTxFromRPCWithoutVerification attempts to add a tx to the mempool,
 // without first verifying it. If the tx is added to the mempool, it will
@@ -156,9 +73,6 @@ func (n *Network) IssueTxFromRPC(tx *txs.Tx) error {
 // returned.
 // If the tx is not added to the mempool, an error will be returned.
 func (n *Network) IssueTxFromRPCWithoutVerification(tx *txs.Tx) error {
-	if err := n.mempool.AddWithoutVerification(tx); err != nil {
-		return err
-	}
-	n.txPushGossiper.Add(tx)
+	_ = "STUB: not implemented"
 	return nil
 }

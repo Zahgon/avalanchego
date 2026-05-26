@@ -4,12 +4,6 @@
 package bag
 
 import (
-	"fmt"
-	"strings"
-
-	"golang.org/x/exp/maps"
-
-	"github.com/ava-labs/avalanchego/utils"
 	"github.com/ava-labs/avalanchego/utils/set"
 )
 
@@ -23,93 +17,45 @@ func (b *UniqueBag[T]) init() {
 }
 
 // Adds [n] to the bitset associated with each key in [keys].
-func (b *UniqueBag[T]) Add(n uint, keys ...T) {
-	var bs set.Bits64
-	bs.Add(n)
-
-	for _, key := range keys {
-		b.UnionSet(key, bs)
-	}
-}
+func (b *UniqueBag[T]) Add(n uint, keys ...T) { _ = "STUB: not implemented"; return }
 
 // Unions [set] with the bitset associated with [key].
-func (b *UniqueBag[T]) UnionSet(key T, set set.Bits64) {
-	b.init()
-
-	previousSet := (*b)[key]
-	previousSet.Union(set)
-	(*b)[key] = previousSet
-}
+func (b *UniqueBag[T]) UnionSet(key T, set set.Bits64) { _ = "STUB: not implemented"; return }
 
 // Removes each element of [set] from the bitset associated with [key].
-func (b *UniqueBag[T]) DifferenceSet(key T, set set.Bits64) {
-	b.init()
-
-	previousSet := (*b)[key]
-	previousSet.Difference(set)
-	(*b)[key] = previousSet
-}
+func (b *UniqueBag[T]) DifferenceSet(key T, set set.Bits64) { _ = "STUB: not implemented"; return }
 
 // For each key/bitset pair in [diff], removes each element of the bitset
 // from the bitset associated with the key in [b].
 // Keys in [diff] that are not in [b] are ignored.
 // Bitset elements in [diff] that are not in the bitset associated with
 // the key in [b] are ignored.
-func (b *UniqueBag[T]) Difference(diff *UniqueBag[T]) {
-	b.init()
-
-	for key, previousSet := range *b {
-		if previousSetDiff, exists := (*diff)[key]; exists {
-			previousSet.Difference(previousSetDiff)
-		}
-		(*b)[key] = previousSet
-	}
-}
+func (b *UniqueBag[T]) Difference(diff *UniqueBag[T]) { _ = "STUB: not implemented"; return }
 
 // Returns the bitset associated with [key].
 func (b *UniqueBag[T]) GetSet(key T) set.Bits64 {
-	return (*b)[key]
+	_ = "STUB: not implemented"
+
+	// Removes the bitset associated with [key].
+	return *new(set.Bits64)
 }
 
-// Removes the bitset associated with [key].
 func (b *UniqueBag[T]) RemoveSet(key T) {
-	delete(*b, key)
+	_ = "STUB: not implemented"
+
+	// Returns the keys.
+	return
 }
 
-// Returns the keys.
-func (b *UniqueBag[T]) List() []T {
-	return maps.Keys(*b)
-}
+func (b *UniqueBag[T]) List() []T { _ = "STUB: not implemented"; return nil }
 
 // Returns a bag with the given [threshold] where each key is
 // in the bag once for each element in the key's bitset.
-func (b *UniqueBag[T]) Bag(threshold int) Bag[T] {
-	bag := Bag[T]{
-		counts: make(map[T]int, len(*b)),
-	}
-	bag.SetThreshold(threshold)
-	for key, bs := range *b {
-		bag.AddCount(key, bs.Len())
-	}
-	return bag
-}
+func (b *UniqueBag[T]) Bag(threshold int) Bag[T] { _ = "STUB: not implemented"; return nil }
 
-func (b *UniqueBag[T]) PrefixedString(prefix string) string {
-	sb := strings.Builder{}
+func (b *UniqueBag[T]) PrefixedString(prefix string) string { _ = "STUB: not implemented"; return "" }
 
-	sb.WriteString(fmt.Sprintf("UniqueBag[%T]: (Size = %d)", utils.Zero[T](), len(*b)))
-	for key, set := range *b {
-		sb.WriteString(fmt.Sprintf("\n%s    %v: %s", prefix, key, set))
-	}
-
-	return sb.String()
-}
-
-func (b *UniqueBag[_]) String() string {
-	return b.PrefixedString("")
-}
+func (b *UniqueBag[_]) String() string { _ = "STUB: not implemented"; return "" }
 
 // Removes all key --> bitset pairs.
-func (b *UniqueBag[_]) Clear() {
-	clear(*b)
-}
+func (b *UniqueBag[_]) Clear() { _ = "STUB: not implemented"; return }

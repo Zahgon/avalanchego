@@ -23,21 +23,8 @@ type Throttler interface {
 // time over [period].
 // [period] and [limit] should both be > 0.
 func NewSlidingWindowThrottler(period time.Duration, limit int) *SlidingWindowThrottler {
-	now := time.Now()
-	return &SlidingWindowThrottler{
-		period: period,
-		limit:  float64(limit),
-		windows: [2]window{
-			{
-				start: now,
-				hits:  make(map[ids.NodeID]float64),
-			},
-			{
-				start: now.Add(-period),
-				hits:  make(map[ids.NodeID]float64),
-			},
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // window is used internally by SlidingWindowThrottler to represent the amount
@@ -65,47 +52,15 @@ type SlidingWindowThrottler struct {
 // This is calculated by adding the current period's count to a weighted count
 // of the previous period.
 func (s *SlidingWindowThrottler) Handle(nodeID ids.NodeID) bool {
-	s.lock.Lock()
-	defer s.lock.Unlock()
-
-	// The current window becomes the previous window if the current evaluation
-	// period is over
-	now := s.clock.Time()
-	sinceUpdate := now.Sub(s.windows[s.current].start)
-	if sinceUpdate >= 2*s.period {
-		s.rotate(now.Add(-s.period))
-	}
-	if sinceUpdate >= s.period {
-		s.rotate(now)
-		sinceUpdate = 0
-	}
-
-	currentHits := s.windows[s.current].hits
-	current := currentHits[nodeID]
-	currentHits[nodeID]++
-
-	previousFraction := float64(s.period-sinceUpdate) / float64(s.period)
-	previous := s.windows[1-s.current].hits[nodeID]
-	estimatedHits := current + previousFraction*previous
-	if estimatedHits >= s.limit {
-		// The peer has sent too many requests, drop this request.
-		return false
-	}
-
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
-func (s *SlidingWindowThrottler) rotate(t time.Time) {
-	s.current = 1 - s.current
-	s.windows[s.current] = window{
-		start: t,
-		hits:  make(map[ids.NodeID]float64),
-	}
-}
+// The current window becomes the previous window if the current evaluation
+// period is over
 
-func (s *SlidingWindowThrottler) setLimit(limit float64) {
-	s.lock.Lock()
-	defer s.lock.Unlock()
+// The peer has sent too many requests, drop this request.
 
-	s.limit = limit
-}
+func (s *SlidingWindowThrottler) rotate(t time.Time) { _ = "STUB: not implemented"; return }
+
+func (s *SlidingWindowThrottler) setLimit(limit float64) { _ = "STUB: not implemented"; return }

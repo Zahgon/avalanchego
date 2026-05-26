@@ -6,11 +6,7 @@
 package ap4
 
 import (
-	"math"
-
 	"github.com/ava-labs/avalanchego/graft/evm/utils"
-
-	safemath "github.com/ava-labs/avalanchego/utils/math"
 )
 
 const (
@@ -56,34 +52,9 @@ func BlockGasCost(
 	step uint64,
 	timeElapsed uint64,
 ) uint64 {
-	deviation := safemath.AbsDiff(TargetBlockRate, timeElapsed)
-	change, err := safemath.Mul(step, deviation)
-	if err != nil {
-		change = math.MaxUint64
-	}
-
-	var (
-		op                 = safemath.Add[uint64]
-		defaultCost uint64 = MaxBlockGasCost
-	)
-	if timeElapsed > TargetBlockRate {
-		op = safemath.Sub
-		defaultCost = MinBlockGasCost
-	}
-
-	cost, err := op(parentCost, change)
-	if err != nil {
-		cost = defaultCost
-	}
-
-	switch {
-	case cost < MinBlockGasCost:
-		// This is technically dead code because [MinBlockGasCost] is 0, but it
-		// makes the code more clear.
-		return MinBlockGasCost
-	case cost > MaxBlockGasCost:
-		return MaxBlockGasCost
-	default:
-		return cost
-	}
+	_ = "STUB: not implemented"
+	return 0
 }
+
+// This is technically dead code because [MinBlockGasCost] is 0, but it
+// makes the code more clear.

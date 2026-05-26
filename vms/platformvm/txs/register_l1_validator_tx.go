@@ -24,22 +24,13 @@ type RegisterL1ValidatorTx struct {
 }
 
 func (tx *RegisterL1ValidatorTx) SyntacticVerify(ctx *snow.Context) error {
-	switch {
-	case tx == nil:
-		return ErrNilTx
-	case tx.SyntacticallyVerified:
-		// already passed syntactic verification
-		return nil
-	}
-
-	if err := tx.BaseTx.SyntacticVerify(ctx); err != nil {
-		return err
-	}
-
-	tx.SyntacticallyVerified = true
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// already passed syntactic verification
+
 func (tx *RegisterL1ValidatorTx) Visit(visitor Visitor) error {
-	return visitor.RegisterL1ValidatorTx(tx)
+	_ = "STUB: not implemented"
+	return nil
 }

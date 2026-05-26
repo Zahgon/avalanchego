@@ -4,13 +4,7 @@
 package merkledb
 
 import (
-	"bytes"
-	"encoding/binary"
 	"errors"
-	"io"
-	"math"
-	"math/bits"
-	"slices"
 
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/utils/maybe"
@@ -36,201 +30,64 @@ var (
 )
 
 func childSize(index byte, childEntry *child) int {
+	_ = "STUB: not implemented"
 	// * index
 	// * child ID
 	// * child key
 	// * bool indicating whether the child has a value
-	return uintSize(uint64(index)) + ids.IDLen + keySize(childEntry.compressedKey) + boolLen
+	return 0
 }
 
 // based on the implementation of encodeUint which uses binary.PutUvarint
-func uintSize(value uint64) int {
-	if value == 0 {
-		return 1
-	}
-	return (bits.Len64(value) + 6) / 7
-}
+func uintSize(value uint64) int { _ = "STUB: not implemented"; return 0 }
 
-func keySize(p Key) int {
-	return uintSize(uint64(p.length)) + bytesNeeded(p.length)
-}
+func keySize(p Key) int { _ = "STUB: not implemented"; return 0 }
 
 // Assumes [n] is non-nil.
 func encodedDBNodeSize(n *dbNode) int {
+	_ = "STUB: not implemented"
 	// * number of children
 	// * bool indicating whether [n] has a value
 	// * the value (optional)
 	// * children
-	size := uintSize(uint64(len(n.children))) + boolLen
-	if n.value.HasValue() {
-		valueLen := len(n.value.Value())
-		size += uintSize(uint64(valueLen)) + valueLen
-	}
-	// for each non-nil entry, we add the additional size of the child entry
-	for index, entry := range n.children {
-		size += childSize(index, entry)
-	}
-	return size
+	return 0
 }
+
+// for each non-nil entry, we add the additional size of the child entry
 
 // Assumes [n] is non-nil.
-func encodeDBNode(n *dbNode) []byte {
-	length := encodedDBNodeSize(n)
-	w := codecWriter{
-		b: make([]byte, 0, length),
-	}
+func encodeDBNode(n *dbNode) []byte { _ = "STUB: not implemented"; return nil }
 
-	w.MaybeBytes(n.value)
+// Avoid allocating keys entirely if the node doesn't have any children.
 
-	numChildren := len(n.children)
-	w.Uvarint(uint64(numChildren))
+// By allocating BranchFactorLargest rather than [numChildren], this slice
+// is allocated on the stack rather than the heap. BranchFactorLargest is
+// at least [numChildren] which avoids memory allocations.
 
-	// Avoid allocating keys entirely if the node doesn't have any children.
-	if numChildren == 0 {
-		return w.b
-	}
+// Ensure that the order of entries is correct.
 
-	// By allocating BranchFactorLargest rather than [numChildren], this slice
-	// is allocated on the stack rather than the heap. BranchFactorLargest is
-	// at least [numChildren] which avoids memory allocations.
-	keys := make([]byte, numChildren, BranchFactorLargest)
-	i := 0
-	for k := range n.children {
-		keys[i] = k
-		i++
-	}
-
-	// Ensure that the order of entries is correct.
-	slices.Sort(keys)
-	for _, index := range keys {
-		entry := n.children[index]
-		w.Uvarint(uint64(index))
-		w.Key(entry.compressedKey)
-		w.ID(entry.id)
-		w.Bool(entry.hasValue)
-	}
-
-	return w.b
-}
-
-func encodeKey(key Key) []byte {
-	length := uintSize(uint64(key.length)) + len(key.Bytes())
-	w := codecWriter{
-		b: make([]byte, 0, length),
-	}
-	w.Key(key)
-	return w.b
-}
+func encodeKey(key Key) []byte { _ = "STUB: not implemented"; return nil }
 
 type codecWriter struct {
 	b []byte
 }
 
-func (w *codecWriter) Bool(v bool) {
-	if v {
-		w.b = append(w.b, trueByte)
-	} else {
-		w.b = append(w.b, falseByte)
-	}
-}
+func (w *codecWriter) Bool(v bool) { _ = "STUB: not implemented"; return }
 
-func (w *codecWriter) Uvarint(v uint64) {
-	w.b = binary.AppendUvarint(w.b, v)
-}
+func (w *codecWriter) Uvarint(v uint64) { _ = "STUB: not implemented"; return }
 
-func (w *codecWriter) ID(v ids.ID) {
-	w.b = append(w.b, v[:]...)
-}
+func (w *codecWriter) ID(v ids.ID) { _ = "STUB: not implemented"; return }
 
-func (w *codecWriter) Bytes(v []byte) {
-	w.Uvarint(uint64(len(v)))
-	w.b = append(w.b, v...)
-}
+func (w *codecWriter) Bytes(v []byte) { _ = "STUB: not implemented"; return }
 
-func (w *codecWriter) MaybeBytes(v maybe.Maybe[[]byte]) {
-	hasValue := v.HasValue()
-	w.Bool(hasValue)
-	if hasValue {
-		w.Bytes(v.Value())
-	}
-}
+func (w *codecWriter) MaybeBytes(v maybe.Maybe[[]byte]) { _ = "STUB: not implemented"; return }
 
-func (w *codecWriter) Key(v Key) {
-	w.Uvarint(uint64(v.length))
-	w.b = append(w.b, v.Bytes()...)
-}
+func (w *codecWriter) Key(v Key) { _ = "STUB: not implemented"; return }
 
 // Assumes [n] is non-nil.
-func decodeDBNode(b []byte, n *dbNode) error {
-	r := codecReader{
-		b:    b,
-		copy: true,
-	}
+func decodeDBNode(b []byte, n *dbNode) error { _ = "STUB: not implemented"; return nil }
 
-	var err error
-	n.value, err = r.MaybeBytes()
-	if err != nil {
-		return err
-	}
-
-	numChildren, err := r.Uvarint()
-	if err != nil {
-		return err
-	}
-	if numChildren > uint64(BranchFactorLargest) {
-		return errTooManyChildren
-	}
-
-	n.children = make(map[byte]*child, numChildren)
-	var previousChild uint64
-	for i := uint64(0); i < numChildren; i++ {
-		index, err := r.Uvarint()
-		if err != nil {
-			return err
-		}
-		if (i != 0 && index <= previousChild) || index > math.MaxUint8 {
-			return errChildIndexTooLarge
-		}
-		previousChild = index
-
-		compressedKey, err := r.Key()
-		if err != nil {
-			return err
-		}
-		childID, err := r.ID()
-		if err != nil {
-			return err
-		}
-		hasValue, err := r.Bool()
-		if err != nil {
-			return err
-		}
-		n.children[byte(index)] = &child{
-			compressedKey: compressedKey,
-			id:            childID,
-			hasValue:      hasValue,
-		}
-	}
-	if len(r.b) != 0 {
-		return errExtraSpace
-	}
-	return nil
-}
-
-func decodeKey(b []byte) (Key, error) {
-	r := codecReader{
-		b:    b,
-		copy: true,
-	}
-	key, err := r.Key()
-	if err != nil {
-		return Key{}, err
-	}
-	if len(r.b) != 0 {
-		return Key{}, errExtraSpace
-	}
-	return key, nil
-}
+func decodeKey(b []byte) (Key, error) { _ = "STUB: not implemented"; return *new(Key), nil }
 
 type codecReader struct {
 	b []byte
@@ -239,103 +96,28 @@ type codecReader struct {
 	copy bool
 }
 
-func (r *codecReader) Bool() (bool, error) {
-	if len(r.b) < boolLen {
-		return false, io.ErrUnexpectedEOF
-	}
-	boolByte := r.b[0]
-	if boolByte > trueByte {
-		return false, errInvalidBool
-	}
+func (r *codecReader) Bool() (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-	r.b = r.b[boolLen:]
-	return boolByte == trueByte, nil
-}
+func (r *codecReader) Uvarint() (uint64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (r *codecReader) Uvarint() (uint64, error) {
-	length, bytesRead := binary.Uvarint(r.b)
-	if bytesRead <= 0 {
-		return 0, io.ErrUnexpectedEOF
-	}
+// To ensure decoding is canonical, we check for leading zeroes in the
+// varint.
+// The last byte of the varint includes the most significant bits.
+// If the last byte is 0, then the number should have been encoded more
+// efficiently by removing this leading zero.
 
-	// To ensure decoding is canonical, we check for leading zeroes in the
-	// varint.
-	// The last byte of the varint includes the most significant bits.
-	// If the last byte is 0, then the number should have been encoded more
-	// efficiently by removing this leading zero.
-	if bytesRead > 1 && r.b[bytesRead-1] == 0x00 {
-		return 0, errLeadingZeroes
-	}
+func (r *codecReader) ID() (ids.ID, error) { _ = "STUB: not implemented"; return *new(ids.ID), nil }
 
-	r.b = r.b[bytesRead:]
-	return length, nil
-}
-
-func (r *codecReader) ID() (ids.ID, error) {
-	if len(r.b) < ids.IDLen {
-		return ids.Empty, io.ErrUnexpectedEOF
-	}
-	id := ids.ID(r.b[:ids.IDLen])
-
-	r.b = r.b[ids.IDLen:]
-	return id, nil
-}
-
-func (r *codecReader) Bytes() ([]byte, error) {
-	length, err := r.Uvarint()
-	if err != nil {
-		return nil, err
-	}
-
-	if length > uint64(len(r.b)) {
-		return nil, io.ErrUnexpectedEOF
-	}
-	result := r.b[:length]
-	if r.copy {
-		result = bytes.Clone(result)
-	}
-
-	r.b = r.b[length:]
-	return result, nil
-}
+func (r *codecReader) Bytes() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 func (r *codecReader) MaybeBytes() (maybe.Maybe[[]byte], error) {
-	if hasValue, err := r.Bool(); err != nil || !hasValue {
-		return maybe.Nothing[[]byte](), err
-	}
-
-	bytes, err := r.Bytes()
-	return maybe.Some(bytes), err
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (r *codecReader) Key() (Key, error) {
-	bitLen, err := r.Uvarint()
-	if err != nil {
-		return Key{}, err
-	}
-	if bitLen > math.MaxInt {
-		return Key{}, errIntOverflow
-	}
+func (r *codecReader) Key() (Key, error) { _ = "STUB: not implemented"; return *new(Key), nil }
 
-	result := Key{
-		length: int(bitLen),
-	}
-	byteLen := bytesNeeded(result.length)
-	if byteLen > len(r.b) {
-		return Key{}, io.ErrUnexpectedEOF
-	}
-	if result.hasPartialByte() {
-		// Confirm that the padding bits in the partial byte are 0.
-		// We want to only look at the bits to the right of the last token,
-		// which is at index length-1.
-		// Generate a mask where the (result.length % 8) left bits are 0.
-		paddingMask := byte(0xFF >> (result.length % 8))
-		if r.b[byteLen-1]&paddingMask != 0 {
-			return Key{}, errNonZeroKeyPadding
-		}
-	}
-	result.value = string(r.b[:byteLen])
-
-	r.b = r.b[byteLen:]
-	return result, nil
-}
+// Confirm that the padding bits in the partial byte are 0.
+// We want to only look at the bits to the right of the last token,
+// which is at index length-1.
+// Generate a mask where the (result.length % 8) left bits are 0.

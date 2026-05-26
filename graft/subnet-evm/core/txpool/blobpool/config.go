@@ -27,10 +27,6 @@
 
 package blobpool
 
-import (
-	"github.com/ava-labs/libevm/log"
-)
-
 // Config are the configuration parameters of the blob transaction pool.
 type Config struct {
 	Datadir   string // Data directory containing the currently executable blobs
@@ -47,15 +43,4 @@ var DefaultConfig = Config{
 
 // sanitize checks the provided user configurations and changes anything that's
 // unreasonable or unworkable.
-func (config *Config) sanitize() Config {
-	conf := *config
-	if conf.Datacap < 1 {
-		log.Warn("Sanitizing invalid blobpool storage cap", "provided", conf.Datacap, "updated", DefaultConfig.Datacap)
-		conf.Datacap = DefaultConfig.Datacap
-	}
-	if conf.PriceBump < 1 {
-		log.Warn("Sanitizing invalid blobpool price bump", "provided", conf.PriceBump, "updated", DefaultConfig.PriceBump)
-		conf.PriceBump = DefaultConfig.PriceBump
-	}
-	return conf
-}
+func (config *Config) sanitize() Config { _ = "STUB: not implemented"; return *new(Config) }

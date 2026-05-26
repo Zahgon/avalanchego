@@ -12,7 +12,6 @@ package blockmock
 import (
 	context "context"
 	http "net/http"
-	reflect "reflect"
 	time "time"
 
 	database "github.com/ava-labs/avalanchego/database"
@@ -37,303 +36,248 @@ type ChainVMMockRecorder struct {
 }
 
 // NewChainVM creates a new mock instance.
-func NewChainVM(ctrl *gomock.Controller) *ChainVM {
-	mock := &ChainVM{ctrl: ctrl}
-	mock.recorder = &ChainVMMockRecorder{mock}
-	return mock
-}
+func NewChainVM(ctrl *gomock.Controller) *ChainVM { _ = "STUB: not implemented"; return nil }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
 func (m *ChainVM) EXPECT() *ChainVMMockRecorder {
-	return m.recorder
+	_ = "STUB: not implemented"
+
+	// AppGossip mocks base method.
+	return nil
 }
 
-// AppGossip mocks base method.
 func (m *ChainVM) AppGossip(ctx context.Context, nodeID ids.NodeID, msg []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppGossip", ctx, nodeID, msg)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppGossip indicates an expected call of AppGossip.
 func (mr *ChainVMMockRecorder) AppGossip(ctx, nodeID, msg any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppGossip", reflect.TypeOf((*ChainVM)(nil).AppGossip), ctx, nodeID, msg)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest mocks base method.
 func (m *ChainVM) AppRequest(ctx context.Context, nodeID ids.NodeID, requestID uint32, deadline time.Time, request []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppRequest", ctx, nodeID, requestID, deadline, request)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequest indicates an expected call of AppRequest.
 func (mr *ChainVMMockRecorder) AppRequest(ctx, nodeID, requestID, deadline, request any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppRequest", reflect.TypeOf((*ChainVM)(nil).AppRequest), ctx, nodeID, requestID, deadline, request)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequestFailed mocks base method.
 func (m *ChainVM) AppRequestFailed(ctx context.Context, nodeID ids.NodeID, requestID uint32, appErr *common.AppError) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppRequestFailed", ctx, nodeID, requestID, appErr)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppRequestFailed indicates an expected call of AppRequestFailed.
 func (mr *ChainVMMockRecorder) AppRequestFailed(ctx, nodeID, requestID, appErr any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppRequestFailed", reflect.TypeOf((*ChainVM)(nil).AppRequestFailed), ctx, nodeID, requestID, appErr)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppResponse mocks base method.
 func (m *ChainVM) AppResponse(ctx context.Context, nodeID ids.NodeID, requestID uint32, response []byte) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AppResponse", ctx, nodeID, requestID, response)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // AppResponse indicates an expected call of AppResponse.
 func (mr *ChainVMMockRecorder) AppResponse(ctx, nodeID, requestID, response any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppResponse", reflect.TypeOf((*ChainVM)(nil).AppResponse), ctx, nodeID, requestID, response)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // BuildBlock mocks base method.
 func (m *ChainVM) BuildBlock(arg0 context.Context) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "BuildBlock", arg0)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // BuildBlock indicates an expected call of BuildBlock.
 func (mr *ChainVMMockRecorder) BuildBlock(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BuildBlock", reflect.TypeOf((*ChainVM)(nil).BuildBlock), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Connected mocks base method.
 func (m *ChainVM) Connected(ctx context.Context, nodeID ids.NodeID, nodeVersion *version.Application) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Connected", ctx, nodeID, nodeVersion)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Connected indicates an expected call of Connected.
 func (mr *ChainVMMockRecorder) Connected(ctx, nodeID, nodeVersion any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Connected", reflect.TypeOf((*ChainVM)(nil).Connected), ctx, nodeID, nodeVersion)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // CreateHandlers mocks base method.
 func (m *ChainVM) CreateHandlers(arg0 context.Context) (map[string]http.Handler, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateHandlers", arg0)
-	ret0, _ := ret[0].(map[string]http.Handler)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // CreateHandlers indicates an expected call of CreateHandlers.
 func (mr *ChainVMMockRecorder) CreateHandlers(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateHandlers", reflect.TypeOf((*ChainVM)(nil).CreateHandlers), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Disconnected mocks base method.
 func (m *ChainVM) Disconnected(ctx context.Context, nodeID ids.NodeID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Disconnected", ctx, nodeID)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Disconnected indicates an expected call of Disconnected.
 func (mr *ChainVMMockRecorder) Disconnected(ctx, nodeID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Disconnected", reflect.TypeOf((*ChainVM)(nil).Disconnected), ctx, nodeID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlock mocks base method.
 func (m *ChainVM) GetBlock(ctx context.Context, blkID ids.ID) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlock", ctx, blkID)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // GetBlock indicates an expected call of GetBlock.
 func (mr *ChainVMMockRecorder) GetBlock(ctx, blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*ChainVM)(nil).GetBlock), ctx, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // GetBlockIDAtHeight mocks base method.
 func (m *ChainVM) GetBlockIDAtHeight(ctx context.Context, height uint64) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetBlockIDAtHeight", ctx, height)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // GetBlockIDAtHeight indicates an expected call of GetBlockIDAtHeight.
 func (mr *ChainVMMockRecorder) GetBlockIDAtHeight(ctx, height any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockIDAtHeight", reflect.TypeOf((*ChainVM)(nil).GetBlockIDAtHeight), ctx, height)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // HealthCheck mocks base method.
 func (m *ChainVM) HealthCheck(arg0 context.Context) (any, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "HealthCheck", arg0)
-	ret0, _ := ret[0].(any)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 // HealthCheck indicates an expected call of HealthCheck.
 func (mr *ChainVMMockRecorder) HealthCheck(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HealthCheck", reflect.TypeOf((*ChainVM)(nil).HealthCheck), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize mocks base method.
 func (m *ChainVM) Initialize(ctx context.Context, chainCtx *snow.Context, db database.Database, genesisBytes, upgradeBytes, configBytes []byte, fxs []*common.Fx, appSender common.AppSender) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Initialize", ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Initialize indicates an expected call of Initialize.
 func (mr *ChainVMMockRecorder) Initialize(ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Initialize", reflect.TypeOf((*ChainVM)(nil).Initialize), ctx, chainCtx, db, genesisBytes, upgradeBytes, configBytes, fxs, appSender)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // LastAccepted mocks base method.
 func (m *ChainVM) LastAccepted(arg0 context.Context) (ids.ID, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "LastAccepted", arg0)
-	ret0, _ := ret[0].(ids.ID)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }
 
 // LastAccepted indicates an expected call of LastAccepted.
 func (mr *ChainVMMockRecorder) LastAccepted(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LastAccepted", reflect.TypeOf((*ChainVM)(nil).LastAccepted), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // NewHTTPHandler mocks base method.
 func (m *ChainVM) NewHTTPHandler(ctx context.Context) (http.Handler, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewHTTPHandler", ctx)
-	ret0, _ := ret[0].(http.Handler)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(http.Handler), nil
 }
 
 // NewHTTPHandler indicates an expected call of NewHTTPHandler.
 func (mr *ChainVMMockRecorder) NewHTTPHandler(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewHTTPHandler", reflect.TypeOf((*ChainVM)(nil).NewHTTPHandler), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ParseBlock mocks base method.
 func (m *ChainVM) ParseBlock(ctx context.Context, blockBytes []byte) (snowman.Block, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ParseBlock", ctx, blockBytes)
-	ret0, _ := ret[0].(snowman.Block)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(snowman.Block), nil
 }
 
 // ParseBlock indicates an expected call of ParseBlock.
 func (mr *ChainVMMockRecorder) ParseBlock(ctx, blockBytes any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ParseBlock", reflect.TypeOf((*ChainVM)(nil).ParseBlock), ctx, blockBytes)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPreference mocks base method.
 func (m *ChainVM) SetPreference(ctx context.Context, blkID ids.ID) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetPreference", ctx, blkID)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetPreference indicates an expected call of SetPreference.
 func (mr *ChainVMMockRecorder) SetPreference(ctx, blkID any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetPreference", reflect.TypeOf((*ChainVM)(nil).SetPreference), ctx, blkID)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetState mocks base method.
 func (m *ChainVM) SetState(ctx context.Context, state snow.State) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SetState", ctx, state)
-	ret0, _ := ret[0].(error)
-	return ret0
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // SetState indicates an expected call of SetState.
 func (mr *ChainVMMockRecorder) SetState(ctx, state any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetState", reflect.TypeOf((*ChainVM)(nil).SetState), ctx, state)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Shutdown mocks base method.
-func (m *ChainVM) Shutdown(arg0 context.Context) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Shutdown", arg0)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
+func (m *ChainVM) Shutdown(arg0 context.Context) error { _ = "STUB: not implemented"; return nil }
 
 // Shutdown indicates an expected call of Shutdown.
 func (mr *ChainVMMockRecorder) Shutdown(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Shutdown", reflect.TypeOf((*ChainVM)(nil).Shutdown), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Version mocks base method.
 func (m *ChainVM) Version(arg0 context.Context) (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Version", arg0)
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 // Version indicates an expected call of Version.
 func (mr *ChainVMMockRecorder) Version(arg0 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Version", reflect.TypeOf((*ChainVM)(nil).Version), arg0)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // WaitForEvent mocks base method.
 func (m *ChainVM) WaitForEvent(ctx context.Context) (common.Message, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "WaitForEvent", ctx)
-	ret0, _ := ret[0].(common.Message)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	_ = "STUB: not implemented"
+	return *new(common.Message), nil
 }
 
 // WaitForEvent indicates an expected call of WaitForEvent.
 func (mr *ChainVMMockRecorder) WaitForEvent(ctx any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "WaitForEvent", reflect.TypeOf((*ChainVM)(nil).WaitForEvent), ctx)
+	_ = "STUB: not implemented"
+	return nil
 }

@@ -6,9 +6,6 @@ package warp
 import (
 	"context"
 	"errors"
-	"fmt"
-
-	"github.com/ava-labs/libevm/log"
 
 	"github.com/ava-labs/avalanchego/cache"
 	"github.com/ava-labs/avalanchego/cache/lru"
@@ -16,7 +13,6 @@ import (
 	"github.com/ava-labs/avalanchego/ids"
 	"github.com/ava-labs/avalanchego/network/p2p/acp118"
 	"github.com/ava-labs/avalanchego/snow/consensus/snowman"
-	"github.com/ava-labs/avalanchego/vms/platformvm/warp/payload"
 
 	avalancheWarp "github.com/ava-labs/avalanchego/vms/platformvm/warp"
 )
@@ -75,132 +71,40 @@ func NewBackend(
 	signatureCache cache.Cacher[ids.ID, []byte],
 	offchainMessages [][]byte,
 ) (Backend, error) {
-	b := &backend{
-		networkID:                 networkID,
-		sourceChainID:             sourceChainID,
-		db:                        db,
-		warpSigner:                warpSigner,
-		blockClient:               blockClient,
-		signatureCache:            signatureCache,
-		messageCache:              lru.NewCache[ids.ID, *avalancheWarp.UnsignedMessage](messageCacheSize),
-		stats:                     newVerifierStats(),
-		offchainAddressedCallMsgs: make(map[ids.ID]*avalancheWarp.UnsignedMessage),
-	}
-	return b, b.initOffChainMessages(offchainMessages)
+	_ = "STUB: not implemented"
+	return *new(Backend), nil
 }
 
 func (b *backend) initOffChainMessages(offchainMessages [][]byte) error {
-	for i, offchainMsg := range offchainMessages {
-		unsignedMsg, err := avalancheWarp.ParseUnsignedMessage(offchainMsg)
-		if err != nil {
-			return fmt.Errorf("%w at index %d: %w", errParsingOffChainMessage, i, err)
-		}
-
-		if unsignedMsg.NetworkID != b.networkID {
-			return fmt.Errorf("%w at index %d", avalancheWarp.ErrWrongNetworkID, i)
-		}
-
-		if unsignedMsg.SourceChainID != b.sourceChainID {
-			return fmt.Errorf("%w at index %d", avalancheWarp.ErrWrongSourceChainID, i)
-		}
-
-		_, err = payload.ParseAddressedCall(unsignedMsg.Payload)
-		if err != nil {
-			return fmt.Errorf("%w at index %d as AddressedCall: %w", errParsingOffChainMessage, i, err)
-		}
-		b.offchainAddressedCallMsgs[unsignedMsg.ID()] = unsignedMsg
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
 func (b *backend) AddMessage(unsignedMessage *avalancheWarp.UnsignedMessage) error {
-	messageID := unsignedMessage.ID()
-	log.Debug("Adding warp message to backend", "messageID", messageID)
-
-	// In the case when a node restarts, and possibly changes its bls key, the cache gets emptied but the database does not.
-	// So to avoid having incorrect signatures saved in the database after a bls key change, we save the full message in the database.
-	// Whereas for the cache, after the node restart, the cache would be emptied so we can directly save the signatures.
-	if err := b.db.Put(messageID[:], unsignedMessage.Bytes()); err != nil {
-		return fmt.Errorf("failed to put warp signature in db: %w", err)
-	}
-
-	if _, err := b.signMessage(unsignedMessage); err != nil {
-		return fmt.Errorf("failed to sign warp message: %w", err)
-	}
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// In the case when a node restarts, and possibly changes its bls key, the cache gets emptied but the database does not.
+// So to avoid having incorrect signatures saved in the database after a bls key change, we save the full message in the database.
+// Whereas for the cache, after the node restart, the cache would be emptied so we can directly save the signatures.
+
 func (b *backend) GetMessageSignature(ctx context.Context, unsignedMessage *avalancheWarp.UnsignedMessage) ([]byte, error) {
-	messageID := unsignedMessage.ID()
-
-	log.Debug("Getting warp message from backend", "messageID", messageID)
-	if sig, ok := b.signatureCache.Get(messageID); ok {
-		return sig, nil
-	}
-
-	if err := b.Verify(ctx, unsignedMessage, nil); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrVerifyWarpMessage, err)
-	}
-	return b.signMessage(unsignedMessage)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) GetBlockSignature(ctx context.Context, blockID ids.ID) ([]byte, error) {
-	log.Debug("Getting block from backend", "blockID", blockID)
-
-	blockHashPayload, err := payload.NewHash(blockID)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create new block hash payload: %w", err)
-	}
-
-	unsignedMessage, err := avalancheWarp.NewUnsignedMessage(b.networkID, b.sourceChainID, blockHashPayload.Bytes())
-	if err != nil {
-		return nil, fmt.Errorf("failed to create new unsigned warp message: %w", err)
-	}
-
-	if sig, ok := b.signatureCache.Get(unsignedMessage.ID()); ok {
-		return sig, nil
-	}
-
-	if err := b.verifyBlockMessage(ctx, blockHashPayload); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrValidateBlock, err)
-	}
-
-	sig, err := b.signMessage(unsignedMessage)
-	if err != nil {
-		return nil, fmt.Errorf("failed to sign block message: %w", err)
-	}
-	return sig, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) GetMessage(messageID ids.ID) (*avalancheWarp.UnsignedMessage, error) {
-	if message, ok := b.messageCache.Get(messageID); ok {
-		return message, nil
-	}
-	if message, ok := b.offchainAddressedCallMsgs[messageID]; ok {
-		return message, nil
-	}
-
-	unsignedMessageBytes, err := b.db.Get(messageID[:])
-	if err != nil {
-		return nil, err
-	}
-
-	unsignedMessage, err := avalancheWarp.ParseUnsignedMessage(unsignedMessageBytes)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse unsigned message %s: %w", messageID.String(), err)
-	}
-	b.messageCache.Put(messageID, unsignedMessage)
-
-	return unsignedMessage, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (b *backend) signMessage(unsignedMessage *avalancheWarp.UnsignedMessage) ([]byte, error) {
-	sig, err := b.warpSigner.Sign(unsignedMessage)
-	if err != nil {
-		return nil, fmt.Errorf("failed to sign warp message: %w", err)
-	}
-
-	b.signatureCache.Put(unsignedMessage.ID(), sig)
-	return sig, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

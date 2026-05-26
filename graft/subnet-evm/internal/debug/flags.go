@@ -28,22 +28,14 @@
 package debug
 
 import (
-	"fmt"
 	"io"
-	"net"
-	"net/http"
 	_ "net/http/pprof"
 	"os"
-	"path/filepath"
 	"runtime"
 
 	"github.com/ava-labs/avalanchego/graft/subnet-evm/internal/flags"
 	"github.com/ava-labs/libevm/log"
-	"github.com/mattn/go-colorable"
-	"github.com/mattn/go-isatty"
 	"github.com/urfave/cli/v2"
-	"golang.org/x/exp/slog"
-	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 var (
@@ -184,162 +176,29 @@ func init() {
 
 // Setup initializes profiling and logging based on the CLI flags.
 // It should be called as early as possible in the program.
-func Setup(ctx *cli.Context) error {
-	var (
-		handler        slog.Handler
-		terminalOutput = io.Writer(os.Stderr)
-		output         io.Writer
-		logFmtFlag     = ctx.String(logFormatFlag.Name)
-	)
-	var (
-		logFile  = ctx.String(logFileFlag.Name)
-		rotation = ctx.Bool(logRotateFlag.Name)
-	)
-	if len(logFile) > 0 {
-		if err := validateLogLocation(filepath.Dir(logFile)); err != nil {
-			return fmt.Errorf("failed to initiatilize file logger: %v", err)
-		}
-	}
-	context := []interface{}{"rotate", rotation}
-	if len(logFmtFlag) > 0 {
-		context = append(context, "format", logFmtFlag)
-	} else {
-		context = append(context, "format", "terminal")
-	}
-	if rotation {
-		// Lumberjack uses <processname>-lumberjack.log in is.TempDir() if empty.
-		// so typically /tmp/geth-lumberjack.log on linux
-		if len(logFile) > 0 {
-			context = append(context, "location", logFile)
-		} else {
-			context = append(context, "location", filepath.Join(os.TempDir(), "geth-lumberjack.log"))
-		}
-		logOutputFile = &lumberjack.Logger{
-			Filename:   logFile,
-			MaxSize:    ctx.Int(logMaxSizeMBsFlag.Name),
-			MaxBackups: ctx.Int(logMaxBackupsFlag.Name),
-			MaxAge:     ctx.Int(logMaxAgeFlag.Name),
-			Compress:   ctx.Bool(logCompressFlag.Name),
-		}
-		output = io.MultiWriter(terminalOutput, logOutputFile)
-	} else if logFile != "" {
-		var err error
-		if logOutputFile, err = os.OpenFile(logFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644); err != nil {
-			return err
-		}
-		output = io.MultiWriter(logOutputFile, terminalOutput)
-		context = append(context, "location", logFile)
-	} else {
-		output = terminalOutput
-	}
+func Setup(ctx *cli.Context) error { _ = "STUB: not implemented"; return nil }
 
-	switch {
-	case ctx.Bool(logjsonFlag.Name):
-		// Retain backwards compatibility with `--log.json` flag if `--log.format` not set
-		defer log.Warn("The flag '--log.json' is deprecated, please use '--log.format=json' instead")
-		handler = log.JSONHandler(output)
-	case logFmtFlag == "json":
-		handler = log.JSONHandler(output)
-	case logFmtFlag == "logfmt":
-		handler = log.LogfmtHandler(output)
-	case logFmtFlag == "", logFmtFlag == "terminal":
-		useColor := (isatty.IsTerminal(os.Stderr.Fd()) || isatty.IsCygwinTerminal(os.Stderr.Fd())) && os.Getenv("TERM") != "dumb"
-		if useColor {
-			terminalOutput = colorable.NewColorableStderr()
-			if logOutputFile != nil {
-				output = io.MultiWriter(logOutputFile, terminalOutput)
-			} else {
-				output = terminalOutput
-			}
-		}
-		handler = log.NewTerminalHandler(output, useColor)
-	default:
-		// Unknown log format specified
-		return fmt.Errorf("unknown log format: %v", ctx.String(logFormatFlag.Name))
-	}
+// Lumberjack uses <processname>-lumberjack.log in is.TempDir() if empty.
+// so typically /tmp/geth-lumberjack.log on linux
 
-	glogger = log.NewGlogHandler(handler)
+// Retain backwards compatibility with `--log.json` flag if `--log.format` not set
 
-	// logging
-	verbosity := log.FromLegacyLevel(ctx.Int(verbosityFlag.Name))
-	glogger.Verbosity(verbosity)
-	vmodule := ctx.String(logVmoduleFlag.Name)
-	if vmodule == "" {
-		// Retain backwards compatibility with `--vmodule` flag if `--log.vmodule` not set
-		vmodule = ctx.String(vmoduleFlag.Name)
-		if vmodule != "" {
-			defer log.Warn("The flag '--vmodule' is deprecated, please use '--log.vmodule' instead")
-		}
-	}
-	glogger.Vmodule(vmodule)
+// Unknown log format specified
 
-	log.SetDefault(log.NewLogger(glogger))
+// logging
 
-	// profiling, tracing
-	runtime.MemProfileRate = memprofilerateFlag.Value
-	if ctx.IsSet(memprofilerateFlag.Name) {
-		runtime.MemProfileRate = ctx.Int(memprofilerateFlag.Name)
-	}
+// Retain backwards compatibility with `--vmodule` flag if `--log.vmodule` not set
 
-	blockProfileRate := ctx.Int(blockprofilerateFlag.Name)
-	Handler.SetBlockProfileRate(blockProfileRate)
+// profiling, tracing
 
-	if traceFile := ctx.String(traceFlag.Name); traceFile != "" {
-		if err := Handler.StartGoTrace(traceFile); err != nil {
-			return err
-		}
-	}
+// pprof server
 
-	if cpuFile := ctx.String(cpuprofileFlag.Name); cpuFile != "" {
-		if err := Handler.StartCPUProfile(cpuFile); err != nil {
-			return err
-		}
-	}
-
-	// pprof server
-	if ctx.Bool(pprofFlag.Name) {
-		listenHost := ctx.String(pprofAddrFlag.Name)
-
-		port := ctx.Int(pprofPortFlag.Name)
-
-		address := net.JoinHostPort(listenHost, fmt.Sprintf("%d", port))
-		StartPProf(address)
-	}
-	if len(logFile) > 0 || rotation {
-		log.Info("Logging configured", context...)
-	}
-	return nil
-}
-
-func StartPProf(address string) {
-	log.Info("Starting pprof server", "addr", fmt.Sprintf("http://%s/debug/pprof", address))
-	go func() {
-		if err := http.ListenAndServe(address, nil); err != nil {
-			log.Error("Failure in running pprof server", "err", err)
-		}
-	}()
-}
+func StartPProf(address string) { _ = "STUB: not implemented"; return }
 
 // Exit stops all running profiles, flushing their output to the
 // respective file.
-func Exit() {
-	Handler.StopCPUProfile()
-	Handler.StopGoTrace()
-	if logOutputFile != nil {
-		logOutputFile.Close()
-	}
-}
+func Exit() { _ = "STUB: not implemented"; return }
 
-func validateLogLocation(path string) error {
-	if err := os.MkdirAll(path, os.ModePerm); err != nil {
-		return fmt.Errorf("error creating the directory: %w", err)
-	}
-	// Check if the path is writable by trying to create a temporary file
-	tmp := filepath.Join(path, "tmp")
-	if f, err := os.Create(tmp); err != nil {
-		return err
-	} else {
-		f.Close()
-	}
-	return os.Remove(tmp)
-}
+func validateLogLocation(path string) error { _ = "STUB: not implemented"; return nil }
+
+// Check if the path is writable by trying to create a temporary file

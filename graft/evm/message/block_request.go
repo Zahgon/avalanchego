@@ -5,7 +5,6 @@ package message
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/ava-labs/libevm/common"
 
@@ -21,15 +20,11 @@ type BlockRequest struct {
 	Parents uint16      `serialize:"true"`
 }
 
-func (b BlockRequest) String() string {
-	return fmt.Sprintf(
-		"BlockRequest(Hash=%s, Height=%d, Parents=%d)",
-		b.Hash, b.Height, b.Parents,
-	)
-}
+func (b BlockRequest) String() string { _ = "STUB: not implemented"; return "" }
 
 func (b BlockRequest) Handle(ctx context.Context, nodeID ids.NodeID, requestID uint32, handler RequestHandler) ([]byte, error) {
-	return handler.HandleBlockRequest(ctx, nodeID, requestID, b)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // BlockResponse is a response to a BlockRequest

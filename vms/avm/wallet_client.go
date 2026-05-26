@@ -5,12 +5,8 @@ package avm
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/ava-labs/avalanchego/api"
 	"github.com/ava-labs/avalanchego/ids"
-	"github.com/ava-labs/avalanchego/utils/constants"
-	"github.com/ava-labs/avalanchego/utils/formatting"
 	"github.com/ava-labs/avalanchego/utils/rpc"
 )
 
@@ -27,28 +23,10 @@ type WalletClient struct {
 //
 // Deprecated: Transactions should be issued using the
 // `avalanchego/wallet/chain/x.Wallet` utility.
-func NewWalletClient(uri, chain string) *WalletClient {
-	path := fmt.Sprintf(
-		"%s/ext/%s/%s/wallet",
-		uri,
-		constants.ChainAliasPrefix,
-		chain,
-	)
-	return &WalletClient{
-		Requester: rpc.NewEndpointRequester(path),
-	}
-}
+func NewWalletClient(uri, chain string) *WalletClient { _ = "STUB: not implemented"; return nil }
 
 // IssueTx issues a transaction to a node and returns the TxID
 func (c *WalletClient) IssueTx(ctx context.Context, txBytes []byte, options ...rpc.Option) (ids.ID, error) {
-	txStr, err := formatting.Encode(formatting.Hex, txBytes)
-	if err != nil {
-		return ids.Empty, err
-	}
-	res := &api.JSONTxID{}
-	err = c.Requester.SendRequest(ctx, "wallet.issueTx", &api.FormattedTx{
-		Tx:       txStr,
-		Encoding: formatting.Hex,
-	}, res, options...)
-	return res.TxID, err
+	_ = "STUB: not implemented"
+	return *new(ids.ID), nil
 }

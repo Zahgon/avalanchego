@@ -7,12 +7,11 @@
 package responsewriter
 
 import (
+	sync "sync"
+
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
 )
 
 const (
@@ -32,49 +31,23 @@ type Header struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Header) Reset() {
-	*x = Header{}
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *Header) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *Header) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *Header) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*Header) ProtoMessage() {}
+func (*Header) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *Header) ProtoReflect() protoreflect.Message {
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use Header.ProtoReflect.Descriptor instead.
-func (*Header) Descriptor() ([]byte, []int) {
-	return file_http_responsewriter_responsewriter_proto_rawDescGZIP(), []int{0}
-}
+func (*Header) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *Header) GetKey() string {
-	if x != nil {
-		return x.Key
-	}
-	return ""
-}
+func (x *Header) GetKey() string { _ = "STUB: not implemented"; return "" }
 
-func (x *Header) GetValues() []string {
-	if x != nil {
-		return x.Values
-	}
-	return nil
-}
+func (x *Header) GetValues() []string { _ = "STUB: not implemented"; return nil }
 
 type WriteRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -86,49 +59,23 @@ type WriteRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteRequest) Reset() {
-	*x = WriteRequest{}
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteRequest) ProtoMessage() {}
+func (*WriteRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteRequest.ProtoReflect.Descriptor instead.
-func (*WriteRequest) Descriptor() ([]byte, []int) {
-	return file_http_responsewriter_responsewriter_proto_rawDescGZIP(), []int{1}
-}
+func (*WriteRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteRequest) GetHeaders() []*Header {
-	if x != nil {
-		return x.Headers
-	}
-	return nil
-}
+func (x *WriteRequest) GetHeaders() []*Header { _ = "STUB: not implemented"; return nil }
 
-func (x *WriteRequest) GetPayload() []byte {
-	if x != nil {
-		return x.Payload
-	}
-	return nil
-}
+func (x *WriteRequest) GetPayload() []byte { _ = "STUB: not implemented"; return nil }
 
 type WriteResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -138,42 +85,21 @@ type WriteResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteResponse) Reset() {
-	*x = WriteResponse{}
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteResponse) ProtoMessage() {}
+func (*WriteResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteResponse.ProtoReflect.Descriptor instead.
-func (*WriteResponse) Descriptor() ([]byte, []int) {
-	return file_http_responsewriter_responsewriter_proto_rawDescGZIP(), []int{2}
-}
+func (*WriteResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteResponse) GetWritten() int32 {
-	if x != nil {
-		return x.Written
-	}
-	return 0
-}
+func (x *WriteResponse) GetWritten() int32 { _ = "STUB: not implemented"; return 0 }
 
 type WriteHeaderRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -185,49 +111,23 @@ type WriteHeaderRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *WriteHeaderRequest) Reset() {
-	*x = WriteHeaderRequest{}
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *WriteHeaderRequest) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *WriteHeaderRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *WriteHeaderRequest) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*WriteHeaderRequest) ProtoMessage() {}
+func (*WriteHeaderRequest) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *WriteHeaderRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use WriteHeaderRequest.ProtoReflect.Descriptor instead.
-func (*WriteHeaderRequest) Descriptor() ([]byte, []int) {
-	return file_http_responsewriter_responsewriter_proto_rawDescGZIP(), []int{3}
-}
+func (*WriteHeaderRequest) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *WriteHeaderRequest) GetHeaders() []*Header {
-	if x != nil {
-		return x.Headers
-	}
-	return nil
-}
+func (x *WriteHeaderRequest) GetHeaders() []*Header { _ = "STUB: not implemented"; return nil }
 
-func (x *WriteHeaderRequest) GetStatusCode() int32 {
-	if x != nil {
-		return x.StatusCode
-	}
-	return 0
-}
+func (x *WriteHeaderRequest) GetStatusCode() int32 { _ = "STUB: not implemented"; return 0 }
 
 type HijackResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -246,70 +146,29 @@ type HijackResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HijackResponse) Reset() {
-	*x = HijackResponse{}
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
+func (x *HijackResponse) Reset() { _ = "STUB: not implemented"; return }
 
-func (x *HijackResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
+func (x *HijackResponse) String() string { _ = "STUB: not implemented"; return "" }
 
-func (*HijackResponse) ProtoMessage() {}
+func (*HijackResponse) ProtoMessage() { _ = "STUB: not implemented"; return }
 
 func (x *HijackResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_http_responsewriter_responsewriter_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
+	_ = "STUB: not implemented"
+	return *new(protoreflect.Message)
 }
 
 // Deprecated: Use HijackResponse.ProtoReflect.Descriptor instead.
-func (*HijackResponse) Descriptor() ([]byte, []int) {
-	return file_http_responsewriter_responsewriter_proto_rawDescGZIP(), []int{4}
-}
+func (*HijackResponse) Descriptor() ([]byte, []int) { _ = "STUB: not implemented"; return nil, nil }
 
-func (x *HijackResponse) GetLocalNetwork() string {
-	if x != nil {
-		return x.LocalNetwork
-	}
-	return ""
-}
+func (x *HijackResponse) GetLocalNetwork() string { _ = "STUB: not implemented"; return "" }
 
-func (x *HijackResponse) GetLocalString() string {
-	if x != nil {
-		return x.LocalString
-	}
-	return ""
-}
+func (x *HijackResponse) GetLocalString() string { _ = "STUB: not implemented"; return "" }
 
-func (x *HijackResponse) GetRemoteNetwork() string {
-	if x != nil {
-		return x.RemoteNetwork
-	}
-	return ""
-}
+func (x *HijackResponse) GetRemoteNetwork() string { _ = "STUB: not implemented"; return "" }
 
-func (x *HijackResponse) GetRemoteString() string {
-	if x != nil {
-		return x.RemoteString
-	}
-	return ""
-}
+func (x *HijackResponse) GetRemoteString() string { _ = "STUB: not implemented"; return "" }
 
-func (x *HijackResponse) GetServerAddr() string {
-	if x != nil {
-		return x.ServerAddr
-	}
-	return ""
-}
+func (x *HijackResponse) GetServerAddr() string { _ = "STUB: not implemented"; return "" }
 
 var File_http_responsewriter_responsewriter_proto protoreflect.FileDescriptor
 
@@ -347,10 +206,8 @@ var (
 )
 
 func file_http_responsewriter_responsewriter_proto_rawDescGZIP() []byte {
-	file_http_responsewriter_responsewriter_proto_rawDescOnce.Do(func() {
-		file_http_responsewriter_responsewriter_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_http_responsewriter_responsewriter_proto_rawDesc), len(file_http_responsewriter_responsewriter_proto_rawDesc)))
-	})
-	return file_http_responsewriter_responsewriter_proto_rawDescData
+	_ = "STUB: not implemented"
+	return nil
 }
 
 var file_http_responsewriter_responsewriter_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
@@ -380,26 +237,5 @@ var file_http_responsewriter_responsewriter_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_http_responsewriter_responsewriter_proto_init() }
-func file_http_responsewriter_responsewriter_proto_init() {
-	if File_http_responsewriter_responsewriter_proto != nil {
-		return
-	}
-	type x struct{}
-	out := protoimpl.TypeBuilder{
-		File: protoimpl.DescBuilder{
-			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_http_responsewriter_responsewriter_proto_rawDesc), len(file_http_responsewriter_responsewriter_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   5,
-			NumExtensions: 0,
-			NumServices:   1,
-		},
-		GoTypes:           file_http_responsewriter_responsewriter_proto_goTypes,
-		DependencyIndexes: file_http_responsewriter_responsewriter_proto_depIdxs,
-		MessageInfos:      file_http_responsewriter_responsewriter_proto_msgTypes,
-	}.Build()
-	File_http_responsewriter_responsewriter_proto = out.File
-	file_http_responsewriter_responsewriter_proto_goTypes = nil
-	file_http_responsewriter_responsewriter_proto_depIdxs = nil
-}
+func init()                                               { file_http_responsewriter_responsewriter_proto_init() }
+func file_http_responsewriter_responsewriter_proto_init() { _ = "STUB: not implemented"; return }
